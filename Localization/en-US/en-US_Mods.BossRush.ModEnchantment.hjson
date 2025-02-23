@@ -34,7 +34,7 @@ Revolver.Description:
 Minishark.Description:
 	'''
 	During item animation, weapon will shoot bullet toward cursor position
-	+ If player in their inventory have ammo then it will instead shoot that
+	+ If player in their inventory have ammo then it will use that ammo
 	( trigger every 8 tick )
 	Increases attack speed by 5%
 	'''
@@ -640,7 +640,12 @@ SandGun.Description:
 	Increases your critical strike chance by 10
 	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)
 	'''
-TheMeatball.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict ichor debuff
+TheMeatball.Description:
+	'''
+	20% Melee damage and 5% critcal strike chance
+	Melee attacks inflict ichor
+	Have 1 in 5 chance to shoot out The Meat Ball
+	'''
 BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
 SwordFish.Description:
 	'''

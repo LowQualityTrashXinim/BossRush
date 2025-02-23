@@ -7,7 +7,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.RoguelikeChange.ItemOverhaul;
+namespace BossRush.Common.RoguelikeChange.ItemOverhaul.AxeOverhaul;
 internal class BattleAxeOverhaul : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
@@ -152,9 +152,10 @@ internal class BattleAxeOverhaul : GlobalItem {
 	}
 	private void Swipe(float start, float end, float percentDone, Player player) {
 		float currentAngle = MathHelper.Lerp(start, end, percentDone);
+		Vector2 handPos = player.HandPosition ?? player.Center;
 		player.itemRotation = currentAngle;
 		player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 		player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3;
-		player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+		player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * 12;
 	}
 }

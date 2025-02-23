@@ -118,6 +118,11 @@ SpiritBurst: {
 	Description: Bursts out a powerful spirit that homes in on the nearest enemy.
 }
 
+EnergyBolt: {
+	DisplayName: Energy Bolt
+	Description: Increases skill cost and damage for each active skill, shoot out bunch of energy orb
+}
+
 InfiniteManaSupply: {
 	DisplayName: Astral Overcharge
 	Description: Overflows your character with Mana Regeneration
@@ -211,6 +216,11 @@ TransferStation: {
 OrbOfPurity: {
 	DisplayName: Orb Of Purity
 	Description: A ancient orb
+}
+
+PhoenixBlazingTornado: {
+	DisplayName: Phoenix Blazing Tornado
+	Description: Wait, I know this one, I saw this one before
 }
 
 // UNRELEASED

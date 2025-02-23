@@ -21,6 +21,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public bool IsFromMinion = false;
+	public bool IsFromRelic = false;
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
@@ -30,9 +31,10 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			return;
 		}
 		InitialTimeLeft = projectile.timeLeft;
-		Item itemUse = null;
 		if (source is EntitySource_ItemUse parent) {
-			itemUse = parent.Item;
+			if (parent.Item.ModItem is Relic) {
+				IsFromRelic = true;
+			}
 			Source_ItemType = parent.Item.type;
 		}
 		if (source is EntitySource_Misc parent2 && parent2.Context == "OnKill_ScatterShot") {

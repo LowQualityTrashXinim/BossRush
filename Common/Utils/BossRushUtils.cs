@@ -49,7 +49,26 @@ namespace BossRush {
 			Main.EntitySpriteDraw(sparkleTexture, drawpos, null, smallColor, 0f + rotation, origin, scaleUpDown * 0.6f, dir);
 
 		}
-
+		/// <summary>
+		/// Attempt to add a tooltip before JourneyResearch line
+		/// </summary>
+		/// <param name="tooltipsLines"></param>
+		/// <param name="newline"></param>
+		public static void AddTooltip(ref List<TooltipLine> tooltipsLines, TooltipLine newline) {
+			int index = tooltipsLines.FindIndex(l => l.Name == "Tooltip0");
+			if(index != -1) {
+				tooltipsLines.Insert(index, newline);
+			}
+			else {
+				index = tooltipsLines.FindIndex(l => l.Name == "JourneyResearch");
+				if(index != -1 && index > 0) {
+					tooltipsLines.Insert(index, newline);
+				}
+				else {
+					tooltipsLines.Add(newline);
+				}
+			}
+		}
 		public static T NextFromHashSet<T>(this UnifiedRandom r, HashSet<T> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
 		}

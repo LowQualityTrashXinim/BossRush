@@ -1400,22 +1400,60 @@ public class BallOHurt : ModEnchantment {
 
 
 }
-
 public class TheMeatball : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TheMeatball;
 	}
-
-	public override void Update(Player player) {
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.GetDamage(DamageClass.Melee) += 0.2f;
 		player.GetCritChance(DamageClass.Melee) += 5;
+		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax / 2) {
+			if (Main.rand.NextBool(5)) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<TheMeatBallProjectile>(), item.damage, item.knockBack, player.whoAmI);
+			}
+		}
+	}
+	public override void Update(Player player) {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));
 	}
 }
+public class TheMeatBallProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.TheMeatball);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.tileCollide = true;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.timeLeft = 300;
+	}
+	public override bool OnTileCollide(Vector2 oldVelocity) {
+		if (Projectile.velocity.X != oldVelocity.X) {
+			Projectile.velocity.X = -oldVelocity.X * 0.85f;
+		}
+		if (Projectile.velocity.Y != oldVelocity.Y) {
+			Projectile.velocity.Y = -oldVelocity.Y * 0.85f;
+		}
+		return false;
+	}
+	public override void AI() {
+		Projectile.rotation = Projectile.direction * MathHelper.ToRadians(Projectile.timeLeft * -10 - Projectile.velocity.Length());
+		if (++Projectile.ai[0] <= 10) {
+			return;
+		}
+		if (!Projectile.wet) {
+			if (Projectile.velocity.Y <= 20)
+				Projectile.velocity.Y += .5f;
+		}
+		else {
+			if (Projectile.velocity.Y >= -10)
+				Projectile.velocity.Y -= .5f;
+		}
 
+	}
+}
 public class SwordFish : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Swordfish;

@@ -107,3 +107,13 @@ DemonScytheTemplate: {
 	DisplayName: Crawling Sinful: [c/{4}:{5}] Edition
 	Description: When close to an enemy, creates [c/{0}:{1} Demon Scythe(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 2s
 }
+
+BlizzardTemplate: {
+	DisplayName: Blizzard : [c/{4}:{5}] Edition
+	Description: When close to an enemy, shoots [c/{0}:1 Blizzard Missle(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s]
+}
+
+MiniHeartStatuesTemplate: {
+	DisplayName: Mini heart statues
+	Description: Every 10s, heal you for [c/{0}:{1} hp]
+}

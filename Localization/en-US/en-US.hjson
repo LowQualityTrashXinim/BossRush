@@ -330,6 +330,8 @@ Mods: {
 			SunflowerProjectile.DisplayName: Sunflower Projectile
 			SnowBlockProjectile.DisplayName: Snow Block Projectile
 			BlazingTornado.DisplayName: Blazing Tornado
+			SentientBlood.DisplayName: Sentient Blood
+			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 		}
 
 		NPCs: {
@@ -2787,6 +2789,11 @@ Mods: {
 			TungstenEmpowerment: {
 				DisplayName: Tungsten Empowerment
 				Description: " "
+			}
+
+			NightInfection: {
+				DisplayName: Night Infection
+				Description: Mods.BossRush.Buffs.NightInfection.Description
 			}
 		}
 

@@ -2,8 +2,6 @@
 using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class CorruptionLootBox : LootBoxBase {
@@ -21,6 +19,8 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
 
 			itempool.DropItemMelee.Add(ItemID.Code1);
+			itempool.DropItemMelee.Add(ItemID.BloodLustCluster);
+			itempool.DropItemMelee.Add(ItemID.WarAxeoftheNight);
 			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
 
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);

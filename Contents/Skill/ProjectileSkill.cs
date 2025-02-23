@@ -517,3 +517,37 @@ public class ElectricChain : ModSkill {
 		Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<ElectricChainBolt>(), damage, knockback, player.whoAmI);
 	}
 }
+public class BulletHell : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ElectricChain>();
+	public override void SetDefault() {
+		Skill_EnergyRequire = 666;
+		Skill_Duration = BossRushUtils.ToSecond(6.66f);
+		Skill_CoolDown = BossRushUtils.ToSecond(15);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		int weaponDamage = (int)(player.GetWeaponDamage(player.HeldItem) * .5f);
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(22) + weaponDamage;
+		damage = (int)modplayer.skilldamage.ApplyTo(damage);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
+		if (modplayer.Duration % 100 == 0) {
+			for (int i = 0; i < 32; i++) {
+				Projectile proj = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenlyPlus(32, 360, i) * 10, ProjectileID.GoldenBullet, damage, knockback, player.whoAmI);
+				proj.tileCollide = false;
+				proj.timeLeft = 120;
+			}
+		}
+		for (int i = 0; i < 8; i++) {
+			Projectile proj;
+			if (i % 2 == 0) {
+				proj = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(modplayer.Duration + 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, player.whoAmI);
+			}
+			else {
+				proj = Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Vector2.UnitX.RotatedBy(MathHelper.ToRadians(-modplayer.Duration - 45 * i)) * 10, ProjectileID.Bullet, damage, knockback, player.whoAmI);
+			}
+			proj.timeLeft = 90;
+			proj.tileCollide = true;
+		}
+	}
+}

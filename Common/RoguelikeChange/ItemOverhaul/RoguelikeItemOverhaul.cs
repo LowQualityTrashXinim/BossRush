@@ -13,6 +13,7 @@ using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using ReLogic.Content;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.AxeOverhaul;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
