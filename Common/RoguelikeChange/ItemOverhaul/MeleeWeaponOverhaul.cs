@@ -417,7 +417,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
-			return null;
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
 				float extra = 0;
 				if (target.boss) {
@@ -703,7 +702,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override bool CanUseItem(Item item) {
 			if (UniversalSystem.Check_RLOH()) {
-				return delaytimer <= 0;
+				if (item.IsAWeapon()) {
+					return delaytimer <= 0;
+				}
 			}
 			return base.CanUseItem(item);
 		}

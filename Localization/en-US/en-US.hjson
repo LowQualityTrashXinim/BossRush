@@ -2289,6 +2289,16 @@ Mods: {
 					by viewing what they do!
 					'''
 			}
+
+			ScrollofStrike: {
+				DisplayName: Scroll of Strike
+				Tooltip: Give user strike spell
+			}
+
+			DryadSoulItem: {
+				DisplayName: Dryad Soul Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2807,6 +2817,11 @@ Mods: {
 			NightInfection: {
 				DisplayName: Night Infection
 				Description: Mods.BossRush.Buffs.NightInfection.Description
+			}
+
+			StrikeSpell: {
+				DisplayName: Strike Spell
+				Description: Make your next attack do a additional 10 strikes
 			}
 		}
 

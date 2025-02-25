@@ -16,6 +16,16 @@ SharpshooterGuidance: {
 		'''
 }
 
+DryadSoul: {
+	DisplayName: Dryad's Soul
+	Description:
+		'''
+		[+] Increases regeration by {0}% and flat {1}%
+		[+] Increases defenses by {1}
+		[-] Decreases maximum energy by {2}%
+		'''
+}
+
 OuterGodTheNihilism: {
 	DisplayName: Outer God : The Nihilism
 	Description:

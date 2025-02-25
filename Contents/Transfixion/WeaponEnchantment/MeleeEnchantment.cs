@@ -1407,14 +1407,17 @@ public class TheMeatball : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.GetDamage(DamageClass.Melee) += 0.2f;
 		player.GetCritChance(DamageClass.Melee) += 5;
-		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax / 2) {
-			if (Main.rand.NextBool(5)) {
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<TheMeatBallProjectile>(), item.damage, item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<TheMeatBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
+				globalItem.Item_Counter1[index] = 30;
 			}
 		}
-	}
-	public override void Update(Player player) {
+		else {
+			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));

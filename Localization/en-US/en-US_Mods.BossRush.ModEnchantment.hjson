@@ -588,6 +588,18 @@ FlowerOfFire.Description:
 	Increases damage by 27% when hitting a enemy on fire
 	Every 2nd shot, shoot out a fire ball
 	'''
+SkyFacture.Description:
+	'''
+	Increases mana cost by 12% and magic damage by 22%
+	Shooting will create a sky facture fly toward cursor
+	Hitting a enemy will create a sky facture fly toward enemy
+	'''
+CrystalSerpent.Description:
+	'''
+	Increases magic damage by 22%
+	Shooting will create crystal charge fly toward cursor
+	Hitting a enemy will create crystal charge fly toward enemy
+	'''
 BabyBirdStaff.Description:
 	'''
 	Spawn elite baby bird to aid you during fight

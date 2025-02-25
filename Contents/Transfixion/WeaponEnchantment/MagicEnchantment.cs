@@ -575,6 +575,62 @@ class FlowerOfFire : ModEnchantment {
 		}
 	}
 }
+public class SkyFacture : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SkyFracture;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi += .12f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MagicDMG, 1.22f);
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 12;
+			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
+			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.SkyFracture, 22 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 12;
+			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
+			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.SkyFracture, 22 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+}
+public class CrystalSerpent : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CrystalSerpent;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MagicDMG, 1.22f);
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 42;
+			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
+			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, Main.rand.NextBool() ? ProjectileID.CrystalPulse : ProjectileID.CrystalPulse2, 30 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 60;
+			int amount = Main.rand.Next(1, 4);
+			for (int i = 0; i < amount; i++) {
+				Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
+				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, Main.rand.NextBool() ? ProjectileID.CrystalPulse : ProjectileID.CrystalPulse2, 30 + item.damage, item.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
 /// <summary>
 /// This is a example for mod enchantment and how to utilize most of the stuff
 /// </summary>
