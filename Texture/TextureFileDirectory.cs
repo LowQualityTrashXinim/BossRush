@@ -2,6 +2,7 @@
 	static class BossRushTexture {
 		public const string CommonTextureStringPattern = "BossRush/Texture/";
 		public const string MissingTexture_Folder = "MissingTexture/";
+		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";
 
 		public const string WHITEDOT = "BossRush/Texture/WhiteDot";
 		public const string MISSINGTEXTUREPOTION = "BossRush/Texture/MissingTexturePotion";

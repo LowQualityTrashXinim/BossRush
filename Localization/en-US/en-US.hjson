@@ -2276,6 +2276,19 @@ Mods: {
 				DisplayName: Sun Item
 				Tooltip: ""
 			}
+
+			UserInfoTablet: {
+				DisplayName: User Info Tablet
+				Tooltip:
+					'''
+					[Player Info]
+					View your current stats, your current perks and current artifact
+					See how much you progress you made and how much you lack!
+					Create broken builds by looking at what you are currently most strong at
+					Or even create synergistic build using the current stats, perks and aritfact 
+					by viewing what they do!
+					'''
+			}
 		}
 
 		Buffs: {

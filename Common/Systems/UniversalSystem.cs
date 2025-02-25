@@ -25,19 +25,20 @@ using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.aDebugItem;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
-using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
-using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Contents.Items.Consumable.SpecialReward;
+using Steamworks;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -247,6 +248,7 @@ internal class UniversalSystem : ModSystem {
 		catch {
 
 		}
+		InfoUI.InfoShowToItem = null;
 		GivenBossSpawnItem = null;
 
 		Enchant_uiState = null;
@@ -290,6 +292,17 @@ internal class UniversalSystem : ModSystem {
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
 		user2ndInterface?.Update(gameTime);
+		if (infoUI != null) {
+			InfoUI.InfoShowToItem = string.Empty;
+			foreach (var item in infoUI.list_info) {
+				if (item.StatePressed) {
+					if (item.action != null) {
+						item.action.Invoke();
+						InfoUI.InfoShowToItem += item.text.Text + "\n";
+					}
+				}
+			}
+		}
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -949,7 +962,59 @@ class Info_ArtifactImage : Roguelike_UIImage {
 		artifact.DrawInUI(spriteBatch, style);
 	}
 }
+public class Roguelike_Info {
+	public Roguelike_UIImageButton btn;
+	public Roguelike_UIText text;
+	public string Info = string.Empty;
+	public bool StatePressed = false;
+	public Action action;
+	public int Index = -1;
+	public Roguelike_Info(UIElement state) {
+		btn = new(ModContent.Request<Texture2D>(BossRushTexture.PinIcon));
+		btn.UISetWidthHeight(18, 18);
+		btn.OnLeftClick += Btn_OnLeftClick;
+		btn.OnUpdate += Btn_OnUpdate;
+		state.Append(btn);
+
+		text = new("");
+		text.MarginLeft = 24;
+		state.Append(text);
+	}
+
+	private void Btn_OnUpdate(UIElement affectedElement) {
+		if (StatePressed) {
+			InfoUI.InfoShowToItem += Info + "\n";
+		}
+	}
+
+	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		StatePressed = !StatePressed;
+		if (StatePressed) {
+			btn.SetVisibility(1f, 1f);
+			text.TextColor = Color.Yellow;
+		}
+		else {
+			btn.SetVisibility(1f, .4f);
+			text.TextColor = Color.White;
+		}
+	}
+	public void SetAlign(float x, float y) {
+		btn.HAlign = x;
+		text.HAlign = x;
+		btn.VAlign = y;
+		text.VAlign = y;
+	}
+	public void SetInfo(string info) {
+		Info = info;
+		text.SetText(info);
+	}
+	public void Visibility(bool hide) {
+		text.Hide = hide;
+		btn.Hide = hide;
+	}
+}
 class InfoUI : UIState {
+	public static string InfoShowToItem = string.Empty;
 	UIPanel panel;
 	Roguelike_WrapTextUIPanel textpanel;
 	Roguelike_UITextPanel generalTextPanel;
@@ -961,7 +1026,7 @@ class InfoUI : UIState {
 	UIImageButton btn_Perks;
 	ExitUI btn_Exit;
 	int CurrentState = 0;
-	StructureEnterText stet;
+	public List<Roguelike_Info> list_info = new();
 	public override void OnInitialize() {
 		textlist = new Dictionary<Roguelike_UIText, int>();
 		panel = new UIPanel();
@@ -1106,8 +1171,12 @@ class InfoUI : UIState {
 	}
 	public string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
 	public override void Update(GameTime gameTime) {
+		InfoShowToItem = string.Empty;
 		base.Update(gameTime);
 		if (panel.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (textpanel.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		var player = Main.LocalPlayer;
@@ -1115,26 +1184,54 @@ class InfoUI : UIState {
 		var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 		switch (CurrentState) {
 			case 0:
-				line =
-					$"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
-					$"\n{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
-					$"\n{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
-					$"\n{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
-					$"\n{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
-					$"\n{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%" +
-					$"\n{ItemIcon(ItemID.BreakerBlade)} Damage bonus to undamaged enemy : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%" +
-					$"\n{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}" +
-					$"\n{ItemIcon(ItemID.BandofRegeneration)} Health regenaration : {player.lifeRegen}" +
-					$"\n{ItemIcon(ItemID.ManaRegenerationBand)} Mana regenaration : {player.manaRegen}" +
-					$"\n{ItemIcon(ItemID.ManaFlower)} Mana reduction : {player.manaCost}" +
-					$"\n{ItemIcon(ItemID.ShieldStatue)} Defense effectiveness : {player.DefenseEffectiveness.Value}" +
-					$"\n{ItemIcon(ItemID.WormScarf)} Damage reduction: {Math.Round(player.endurance * 100, 2)}%" +
-					$"\n{ItemIcon(ItemID.HermesBoots)} Movement speed : {Math.Round(player.moveSpeed, 2)}" +
-					$"\n{ItemIcon(ItemID.FrogLeg)} Jump boost : {player.jumpSpeedBoost}" +
-					$"\n{ItemIcon(ItemID.BewitchingTable)}Max minion : {player.maxMinions}" +
-					$"\n{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}" +
-					$"\n{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}";
-				textpanel.SetText(line);
+				// 0 to 17 is default stats
+				if (list_info.Count < 1) {
+					list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[0].SetInfo($"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[1].SetInfo($"{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[2].SetInfo($"{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[3].SetInfo($"{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[7].SetInfo($"{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[8].SetInfo($"{ItemIcon(ItemID.BandofRegeneration)} Health regenaration : {player.lifeRegen}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[9].SetInfo($"{ItemIcon(ItemID.ManaRegenerationBand)} Mana regenaration : {player.manaRegen}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[10].SetInfo($"{ItemIcon(ItemID.ManaFlower)} Mana reduction : {player.manaCost}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[11].SetInfo($"{ItemIcon(ItemID.ShieldStatue)} Defense effectiveness : {player.DefenseEffectiveness.Value}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[12].SetInfo($"{ItemIcon(ItemID.WormScarf)} Damage reduction: {Math.Round(player.endurance * 100, 2)}%");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[13].SetInfo($"{ItemIcon(ItemID.HermesBoots)} Movement speed : {Math.Round(player.moveSpeed, 2)}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[14].SetInfo($"{ItemIcon(ItemID.FrogLeg)} Jump boost : {player.jumpSpeedBoost}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[15].SetInfo($"{ItemIcon(ItemID.BewitchingTable)} Max minion : {player.maxMinions}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[16].SetInfo($"{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}");
+					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+					list_info[list_info.Count - 1].action = () => list_info[17].SetInfo($"{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}");
+					for (int i = 0; i < list_info.Count; i++) {
+						float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
+						list_info[i].SetAlign(0, Y);
+					}
+				}
+				for (int i = 0; i < list_info.Count; i++) {
+					if (list_info[i].action != null) {
+						list_info[i].action.Invoke();
+					}
+				}
 				break;
 			case 1:
 				var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
