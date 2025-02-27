@@ -84,7 +84,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			if (progression <= 0) {
 				if (Projectile.timeLeft > 10)
 					Projectile.timeLeft = 10;
-				Projectile.alpha = (int)MathHelper.Lerp(0, 255, (10 - Projectile.timeLeft) / 10f);
 				Projectile.velocity = Vector2.Zero;
 				Projectile.Center = player.Center + offset;
 				return;
@@ -98,6 +97,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			else {
 				progress = progression / (float)halfmaxProgress;
 			}
+			Projectile.alpha = (int)(255 * (1 - progress));
+			Projectile.Opacity = BossRushUtils.InOutExpo(progress, 20);
 			float X = MathHelper.SmoothStep(-30, MaxLengthX, progress);
 			ProgressYHandle(progression, halfmaxProgress, quadmaxProgress, out float Y);
 			Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
@@ -138,11 +139,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			}
 			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-			Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(texture, drawPos, null, new Color(255, 255, 255, Projectile.alpha) * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 			for (int k = 0; k < Projectile.oldPos.Length; k++) {
 				Vector2 drawPos2 = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos2, null, color, Projectile.oldRot[k], origin, Projectile.scale, SpriteEffects.None, 0);
+				Color color = new Color(255, 255, 255, Projectile.alpha) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Main.EntitySpriteDraw(texture, drawPos2, null, color * Projectile.Opacity, Projectile.oldRot[k], origin, Projectile.scale, SpriteEffects.None, 0);
 			}
 			return false;
 		}

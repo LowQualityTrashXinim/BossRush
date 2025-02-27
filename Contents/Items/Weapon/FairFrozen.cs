@@ -7,7 +7,6 @@ using Terraria.DataStructures;
 using Terraria.Audio;
 using BossRush.Common.Systems;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon {
 	public class FairFrozen : ModItem {
@@ -25,9 +24,8 @@ namespace BossRush.Contents.Items.Weapon {
 			Item.knockBack = 9f;
 
 			Item.DamageType = DamageClass.Summon;
-			Item.buffType = ModContent.BuffType<FairFrozenModbuff>();
 
-			Item.shoot = ModContent.ProjectileType<FairFrozenMinion>();
+			Item.shoot = 1;
 			Item.scale = 1.25f;
 
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul globalitem)) {
@@ -36,22 +34,26 @@ namespace BossRush.Contents.Items.Weapon {
 				Item.Set_ItemCriticalDamage(1f);
 			}
 		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			position = player.Center;
-		}
 		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
 			if (player.GetModPlayer<PlayerStatsHandle>().CurrentMinionAmount >= player.maxMinions) {
 				mult *= 0;
 			}
 		}
+		public override bool AltFunctionUse(Player player) {
+			return true;
+		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (player.GetModPlayer<PlayerStatsHandle>().CurrentMinionAmount < player.maxMinions) {
+			float amount = player.GetModPlayer<PlayerStatsHandle>().CurrentMinionAmount;
+			if (amount < player.maxMinions) {
 				SoundEngine.PlaySound(SoundID.Item44);
-				player.AddBuff(Item.buffType, 2);
-				var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+				player.AddBuff(ModContent.BuffType<FairFrozenModbuff>(), 2);
+				var projectile = Projectile.NewProjectileDirect(source, player.Center, velocity, ModContent.ProjectileType<FairFrozenMinion>(), damage, knockback, player.whoAmI);
 				projectile.originalDamage = Item.damage;
 				projectile.OriginalCritChance = Item.crit;
 				projectile.knockBack = 0;
+			}
+			if(player.altFunctionUse == 2) {
+				player.MinionNPCTargetAim(false);
 			}
 			return false;
 		}
@@ -85,9 +87,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<FairFrozen>();
 		public override void SetStaticDefaults() {
 			Main.projPet[Projectile.type] = true;
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Type] = true;
+			ProjectileID.Sets.MinionSacrificable[Type] = true;
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 		}
 		public override void SetDefaults() {
 			Projectile.width = 38;

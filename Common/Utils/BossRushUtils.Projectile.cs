@@ -43,6 +43,7 @@ namespace BossRush {
 				for (int k = 0; k < projectile.oldPos.Length; k++) {
 					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
 					Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
+					color.A = (byte)projectile.alpha;
 					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
 				}
 			}
@@ -50,6 +51,7 @@ namespace BossRush {
 				for (int k = 0; k < projectile.oldPos.Length; k++) {
 					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
 					Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
+					color.A = (byte)projectile.alpha;
 					float scaling = Math.Clamp(k * ManualScaleAccordinglyToLength, 0, 10f);
 					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.oldRot[k], origin, projectile.scale - scaling, SpriteEffects.None, 0);
 				}

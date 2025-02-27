@@ -188,7 +188,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		CurrentMinionAmount = 0;
 		for (int i = 0; i < Main.projectile.Length; i++) {
-			if (Main.projectile[i].minion) {
+			if (Main.projectile[i].minion && Main.projectile[i].active) {
 				CurrentMinionAmount += Main.projectile[i].minionSlots;
 			}
 		}

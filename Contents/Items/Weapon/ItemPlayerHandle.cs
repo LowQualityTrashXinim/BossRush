@@ -328,6 +328,7 @@ namespace BossRush.Contents.Items.Weapon {
 			crit += 4 * modplayer.SynergyBonus;
 		}
 		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+			return;
 			float damageIncreasement = 0;
 			float damageMultiplier = 0;
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
