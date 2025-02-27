@@ -1412,12 +1412,10 @@ public class TheMeatball : ModEnchantment {
 
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<TheMeatBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
-				globalItem.Item_Counter1[index] = 30;
+				globalItem.Item_Counter1[index] = 60;
 			}
 		}
-		else {
-			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
-		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));

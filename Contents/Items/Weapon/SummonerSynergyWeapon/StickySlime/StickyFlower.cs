@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime {
 
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
-			Item.buffType = ModContent.BuffType<StickyFriend>();
+			Item.buffType = ModContent.BuffType<FairFrozenModbuff>();
 
 			Item.shoot = ModContent.ProjectileType<GhostSlime>();
 		}

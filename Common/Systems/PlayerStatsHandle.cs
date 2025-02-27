@@ -181,9 +181,16 @@ public class PlayerStatsHandle : ModPlayer {
 		TemporaryLife_Limit += limit;
 		TemporaryLife_CounterLimit += counterlimit;
 	}
+	public float CurrentMinionAmount = 0;
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
+		}
+		CurrentMinionAmount = 0;
+		for (int i = 0; i < Main.projectile.Length; i++) {
+			if (Main.projectile[i].minion) {
+				CurrentMinionAmount += Main.projectile[i].minionSlots;
+			}
 		}
 		synchronize_Counter = BossRushUtils.Safe_SwitchValue(synchronize_Counter, int.MaxValue);
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();

@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
 using BossRush.Texture;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.AxeOverhaul;

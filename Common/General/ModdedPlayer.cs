@@ -19,6 +19,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Toggle;
 using System;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
@@ -153,6 +154,13 @@ namespace BossRush.Common.General {
 					yield return new Item(ItemID.NinjaHood);
 					yield return new Item(ItemID.NinjaShirt);
 					yield return new Item(ItemID.NinjaPants);
+				}
+				if (Player.name == "pototo" || Player.name == "eatpotato") {
+					yield return new Item(ModContent.ItemType<SlipGun>());
+					yield return new Item(ModContent.ItemType<FairFrozen>());
+					yield return new Item(ItemID.MusketBall, 350);
+					yield return new Item(ItemID.NinjaPants);
+					yield return new Item(ItemID.PotatoChips, 99);
 				}
 				if (Player.name.Trim() == "hmdebug") {
 					yield return new Item(ModContent.ItemType<LootboxLordSummon>());

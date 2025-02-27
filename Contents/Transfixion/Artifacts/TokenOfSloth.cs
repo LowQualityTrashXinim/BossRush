@@ -39,7 +39,7 @@ public class TokenOfSlothPlayer : ModPlayer {
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].fadeIn = 0;
 			}
-			if (Player.velocity == Vector2.Zero) {
+			if (!Player.ItemAnimationActive && Player.HeldItem.IsAWeapon()) {
 				if (++Counter_Sloth >= ThreeSecond) {
 					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 2);
 					Counter_Sloth = 0;

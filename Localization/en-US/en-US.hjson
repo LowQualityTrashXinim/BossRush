@@ -332,6 +332,7 @@ Mods: {
 			BlazingTornado.DisplayName: Blazing Tornado
 			SentientBlood.DisplayName: Sentient Blood
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
+			FairFrozenMinion.DisplayName: Fair Frozen Minion
 		}
 
 		NPCs: {
@@ -2299,6 +2300,15 @@ Mods: {
 				DisplayName: Dryad Soul Item
 				Tooltip: ""
 			}
+
+			FairFrozen: {
+				DisplayName: Fair Frozen
+				Tooltip:
+					'''
+					Swing your sword to summon a floating frozen blade
+					Also function as a sword
+					'''
+			}
 		}
 
 		Buffs: {
@@ -2822,6 +2832,11 @@ Mods: {
 			StrikeSpell: {
 				DisplayName: Strike Spell
 				Description: Make your next attack do a additional 10 strikes
+			}
+
+			FairFrozenModbuff: {
+				DisplayName: Fair Frozen Modbuff
+				Description: Mods.BossRush.Buffs.FairFrozenModbuff.Description
 			}
 		}
 
