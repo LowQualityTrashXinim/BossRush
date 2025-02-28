@@ -5,11 +5,11 @@ using Terraria.ModLoader.IO;
 using BossRush.Contents.Items.Consumable.Potion;
 using System.IO;
 using BossRush.Contents.Transfixion.Artifacts;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {
 		public int ActiveArtifact { get; set; } = Artifact.ArtifactType<NormalizeArtifact>();
-
 		public override void OnEnterWorld() {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {

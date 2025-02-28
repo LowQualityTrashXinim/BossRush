@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
 	internal class PaintRifle : SynergyModItem {
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(114, 40, 36, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
+			Item.BossRushDefaultRange(114, 40, 30, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
 			Item.rare = ItemRarityID.Orange;
 			Item.crit = 7;
 			Item.reuseDelay = 11;

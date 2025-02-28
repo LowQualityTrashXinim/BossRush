@@ -20,6 +20,8 @@ using BossRush.Contents.Items.Toggle;
 using System;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.Projectiles;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
@@ -94,6 +96,15 @@ namespace BossRush.Common.General {
 				amountOfTimeGotHit = 0;
 			}
 		}
+		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (Secert_PapyroVer && item.type == ModContent.ItemType<ChaosMiniShark>()) {
+				if (Main.rand.NextBool(10000)) {
+					type = ModContent.ProjectileType<SpaceGuyProjectile>();
+				}
+			}
+		}
+		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia";
+		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
@@ -155,7 +166,7 @@ namespace BossRush.Common.General {
 					yield return new Item(ItemID.NinjaShirt);
 					yield return new Item(ItemID.NinjaPants);
 				}
-				if (Player.name == "pototo" || Player.name == "eatpotato") {
+				if (Secert_PototoVer) {
 					yield return new Item(ModContent.ItemType<SlipGun>());
 					yield return new Item(ModContent.ItemType<FairFrozen>());
 					yield return new Item(ItemID.MusketBall, 350);

@@ -30,7 +30,7 @@ namespace BossRush {
 		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
-			where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
+			where T : Artifact => Artifact.PlayerCurrentArtifact<T>(player);
 		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? -1 : 1;
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());

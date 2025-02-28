@@ -3,6 +3,8 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Terraria.ModLoader;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark {
 	internal class ChaosMiniShark : SynergyModItem {

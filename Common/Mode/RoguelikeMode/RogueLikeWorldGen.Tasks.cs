@@ -220,6 +220,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+	}
+	[Task]
+	public void Generate_TrialTest() {
 		Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
 	}
 	[Task]
@@ -319,7 +322,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	public void Generate_TrialTest(int X, int Y) {
-		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 100, 100));
+		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 50, 50));
 		WorldGen.PlaceTile(X + 50, Y + 50, ModContent.TileType<StartTrialAltar_Template_1>());
 	}
 	public void Generate_Shrine(string shrineType, int X, int Y, int width = 11, int height = 12) {
