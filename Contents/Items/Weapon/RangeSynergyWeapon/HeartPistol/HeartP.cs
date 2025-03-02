@@ -21,6 +21,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			if (npc.lifeMax > 5 && !npc.friendly && npc.type != NPCID.TargetDummy) {
 				player.Heal(Main.rand.Next(1, 3));
 			}
+			if (Main.rand.NextBool(50)) {
+				Item.NewItem(Projectile.GetSource_OnHit(npc), npc.Hitbox, ItemID.Heart);
+			}
 		}
 
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {

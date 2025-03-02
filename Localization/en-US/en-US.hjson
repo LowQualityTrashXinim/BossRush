@@ -333,6 +333,7 @@ Mods: {
 			SentientBlood.DisplayName: Sentient Blood
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 			FairFrozenMinion.DisplayName: Fair Frozen Minion
+			SpaceGuyProjectile.DisplayName: Space Guy Projectile
 		}
 
 		NPCs: {
@@ -2308,6 +2309,11 @@ Mods: {
 					Swing your sword to summon a floating frozen blade
 					Also function as a sword
 					'''
+			}
+
+			PulseRifle: {
+				DisplayName: Pulse Rifle
+				Tooltip: ""
 			}
 		}
 

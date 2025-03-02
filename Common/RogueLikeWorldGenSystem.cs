@@ -16,6 +16,7 @@ using Terraria;
 using ReLogic.Content;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Build.Tasks;
 
 namespace BossRush.Common;
 public enum StructureUI_State : byte {
@@ -305,6 +306,10 @@ public class RogueLikeWorldGenSystem : ModSystem {
 	public List<GenPassData> list_genPass = new();
 	public Dictionary<string, List<GenPassData>> dict_Struture = new();
 	public const string FileDestination = "Assets/Structures/";
+	public override void Unload() {
+		list_genPass = null;
+		dict_Struture = null;
+	}
 	public override void PostSetupContent() {
 		Stopwatch watch = new();
 		try {
@@ -339,7 +344,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				}
 				else if (currentchar == '2') {
 					r.Read();
-					FileFormatVer2(ref currentchar, ref r, ref strbld, ref amount, ref tile);
+					FileFormatVer2(ref currentchar, ref r, ref strbld, ref tile);
 					dict_Struture.Add(fileName, new(list_genPass));
 				}
 				else {
@@ -366,7 +371,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 	}
 	Dictionary<char, TileData> data = new();
-	public void FileFormatVer2(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref ushort amount, ref TileData tile) {
+	public void FileFormatVer2(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref TileData tile) {
 		bool SwitchToTileMap = false;
 		bool DataTileSaving = true;
 		char cached = ' ';
@@ -390,16 +395,14 @@ public class RogueLikeWorldGenSystem : ModSystem {
 					//Creating tiledata
 					tile = new(strbld.ToString());
 					//Resetting
-					//Checking if the tile is empty or not
-					if (!tile.Equals(TileData.Default)) {
-						//If it is not empty then check if the data contain cached character in case of error
-						if (!data.ContainsKey(cached)) {
-							//Add data
-							data.Add(cached, tile);
-						}
-						//Resetting
-						tile = TileData.Default;
+
+					if (!data.ContainsKey(cached)) {
+						//Add data
+						data.Add(cached, tile);
 					}
+					//Resetting
+					tile = TileData.Default;
+
 					strbld.Clear();
 					DataTileSaving = true;
 				}
@@ -407,6 +410,13 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				else if (c == '{') {
 					//Check in case the previous check if tile data is present or not
 					strbld.Clear();
+					continue;
+				}
+				if (c == '>') {
+					SwitchToTileMap = true;
+					DataTileSaving = true;
+					strbld.Clear();
+					continue;
 				}
 			}
 			else {
@@ -416,14 +426,9 @@ public class RogueLikeWorldGenSystem : ModSystem {
 					if (ushort.TryParse(strbld.ToString(), out ushort result)) {
 						list_genPass.Add(new(data[cached], result));
 						DataTileSaving = true;
+						strbld.Clear();
 					}
 				}
-			}
-			if (c == '>') {
-				SwitchToTileMap = true;
-				DataTileSaving = true;
-				strbld.Clear();
-				continue;
 			}
 			//Checking if the currentchar value is not equal to -1, -1 dictate that the reader has reach the end of the file
 			//This also act as our actual reader, while currentchar is more like iterator

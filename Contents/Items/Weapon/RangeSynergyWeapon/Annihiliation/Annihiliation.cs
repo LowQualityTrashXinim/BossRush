@@ -45,6 +45,10 @@ public class AnnihiliationBullet : SynergyModProjectile {
 	public override Color? GetAlpha(Color lightColor) {
 		Color color = Color.White;
 		color.A = 0;
+		int timeleft = 300;
+		if (Projectile.timeLeft > timeleft) {
+			Projectile.timeLeft = timeleft;
+		}
 		//money symbol
 		return color * Projectile.Opacity;
 	}

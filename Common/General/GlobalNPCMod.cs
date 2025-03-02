@@ -101,6 +101,7 @@ namespace BossRush.Common.General {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GuideVoodooDoll));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GoldLootBox>()));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new NoHitAndIsRakan(), ItemID.Handgun));
 			}
 			else if (npc.type == NPCID.Deerclops) {
 				//NoHit mode drop

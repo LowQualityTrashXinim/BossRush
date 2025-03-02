@@ -37,6 +37,17 @@ namespace BossRush.Common.General {
 
 		public string GetConditionDescription() => "";
 	}
+	public class NoHitAndIsRakan : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation)
+				return info.player.GetModPlayer<ModdedPlayer>().Secret_MrRakan && info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0;
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
 	public class EvilBossChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)

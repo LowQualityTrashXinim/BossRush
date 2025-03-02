@@ -12,6 +12,11 @@ public class ImageStructureLoader : ILoadable {
 	private static readonly Dictionary<string, ImageData> Images = new();
 	private static readonly Dictionary<string, ImageData> ImagesTemplate = new();
 	private static readonly Dictionary<string, ImageData> ImagesTrial = new();
+	public void Unload() {
+		Images.Clear();
+		ImagesTemplate.Clear();
+		ImagesTrial.Clear();
+	}
 	public void Load(Mod mod) {
 		foreach (string filePath in mod.GetFileNames()) {
 			if (!filePath.EndsWith(".rawimg")) {
@@ -52,8 +57,6 @@ public class ImageStructureLoader : ILoadable {
 	}
 	public static ImageData Get_Trials(string structureName) {
 		return ImagesTrial[structureName + ".rawimg"];
-	}
-	public void Unload() {
 	}
 
 	public const string OverworldArena = "2x1OverworldArena";

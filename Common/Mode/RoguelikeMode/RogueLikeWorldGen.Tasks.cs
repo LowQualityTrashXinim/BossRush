@@ -322,8 +322,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	public void Generate_TrialTest(int X, int Y) {
-		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 50, 50));
-		WorldGen.PlaceTile(X + 50, Y + 50, ModContent.TileType<StartTrialAltar_Template_1>());
+		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 49, 49));
+		WorldGen.PlaceTile(X + 25, Y + 25, ModContent.TileType<StartTrialAltar_Template_1>());
 	}
 	public void Generate_Shrine(string shrineType, int X, int Y, int width = 11, int height = 12) {
 		if (shrineType == string.Empty) {

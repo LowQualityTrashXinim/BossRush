@@ -22,6 +22,7 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
+using Steamworks;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
@@ -105,6 +106,7 @@ namespace BossRush.Common.General {
 		}
 		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia";
 		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
+		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			int LifeCrystal = 0;
 			int ManaCrystal = 0;
@@ -170,7 +172,6 @@ namespace BossRush.Common.General {
 					yield return new Item(ModContent.ItemType<SlipGun>());
 					yield return new Item(ModContent.ItemType<FairFrozen>());
 					yield return new Item(ItemID.MusketBall, 350);
-					yield return new Item(ItemID.NinjaPants);
 					yield return new Item(ItemID.PotatoChips, 99);
 				}
 				if (Player.name.Trim() == "hmdebug") {
@@ -256,6 +257,7 @@ namespace BossRush.Common.General {
 			itemsByMod["Terraria"].Clear();
 		}
 		public int amountOfTimeGotHit = 0;
+		public bool AllowForAchievement = true;
 		public override void OnHurt(Player.HurtInfo info) {
 			if (BossRushUtils.IsAnyVanillaBossAlive())
 				amountOfTimeGotHit++;
@@ -272,15 +274,18 @@ namespace BossRush.Common.General {
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(EnchantingEnable);
 			packet.Write(SkillEnable);
+			packet.Write(AllowForAchievement);
 			packet.Send(toWho, fromWho);
 		}
 		public override void Initialize() {
 			EnchantingEnable = 0;
 			SkillEnable = 0;
+			AllowForAchievement = true;
 		}
 		public override void SaveData(TagCompound tag) {
 			tag["EnchantingEnable"] = EnchantingEnable;
 			tag["SkillEnable"] = SkillEnable;
+			tag["AllowForAchievement"] = AllowForAchievement;
 		}
 		public override void LoadData(TagCompound tag) {
 			if (tag.TryGet("EnchantingEnable", out int value1)) {
@@ -289,22 +294,28 @@ namespace BossRush.Common.General {
 			if (tag.TryGet("SkillEnable", out int value2)) {
 				SkillEnable = value2;
 			}
+			if (tag.TryGet("AllowForAchievement", out bool all)) {
+				AllowForAchievement = all;
+			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
 			EnchantingEnable = reader.ReadInt32();
 			SkillEnable = reader.ReadInt32();
+			AllowForAchievement = reader.ReadBoolean();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
 			ModdedPlayer clone = (ModdedPlayer)targetCopy;
 			clone.EnchantingEnable = EnchantingEnable;
 			clone.SkillEnable = SkillEnable;
+			clone.AllowForAchievement = AllowForAchievement;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			ModdedPlayer clone = (ModdedPlayer)clientPlayer;
 			if (EnchantingEnable != clone.EnchantingEnable
-				|| SkillEnable != clone.SkillEnable) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+				|| SkillEnable != clone.SkillEnable
+				|| AllowForAchievement != clone.AllowForAchievement) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
 }

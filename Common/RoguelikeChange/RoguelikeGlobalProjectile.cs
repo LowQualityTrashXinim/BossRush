@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Common.Systems;
 using SteelSeries.GameSense;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 
 namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -36,6 +37,10 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				IsFromRelic = true;
 			}
 			Source_ItemType = parent.Item.type;
+			if (Source_ItemType == ModContent.ItemType<PulseRifle>()) {
+				projectile.usesLocalNPCImmunity = true;
+				projectile.localNPCHitCooldown = 10;
+			}
 		}
 		if (source is EntitySource_Misc parent2 && parent2.Context == "OnKill_ScatterShot") {
 			Source_FromDeathScatterShot = true;

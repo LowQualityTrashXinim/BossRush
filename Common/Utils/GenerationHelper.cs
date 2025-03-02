@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using BossRush.Common.RoguelikeChange.Prefixes;
+using System.Security.Permissions;
+using Terraria.ObjectData;
 
 namespace BossRush.Common.Utils;
 
@@ -426,6 +428,9 @@ internal static partial class GenerationHelper {
 					else {
 						FastRemoveTile(holdX, holdY);
 						tile.WallType = data.Tile_WallData;
+						if (data.Tile_WireData != 1) {
+							data.PlaceWire(holdX, holdY);
+						}
 					}
 				}
 				offsetY++;
@@ -513,7 +518,7 @@ internal static partial class GenerationHelper {
 			Tile outSideLoop = new();
 			outSideLoop.TileType = ushort.MaxValue;
 			int distance = 0;
-			string TileData = string.Empty;
+			string td = string.Empty;
 			string structureData = string.Empty;
 			for (int x = target.X; x <= target.X + target.Width; x++) {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
@@ -521,11 +526,22 @@ internal static partial class GenerationHelper {
 					Tile tile = Framing.GetTileSafely(x, y);
 					TileData tileA = new(tile);
 					TileData tileB = new(outSideLoop);
-					if (!tileA.Equals(tileB)) {
+					if (distance == 0) {
 						outSideLoop = tile;
-						if (distance == 0) {
+						distance = 1;
+						char c;
+						c = AlphabetCharacter.ElementAt(indexCounter);
+						indexCounter++;
+						td += c + tileA.ToString();
+						dict_TileData.Add(tileA, c);
+						continue;
+					}
+					if (!tileA.Equals(tileB)) {
+						if (dict_TileData.ContainsKey(tileB)) {
+							structureData += $"{dict_TileData[tileB]}{distance.ToString()}";
 							distance = 1;
 						}
+						outSideLoop = tile;
 						if (indexCounter >= AlphabetCharacter.Count) {
 							throw new Exception("GenerationHelper.SaveStructureV2.ExceedTileVarityAllowing");
 						}
@@ -535,14 +551,11 @@ internal static partial class GenerationHelper {
 						}
 						else {
 							c = AlphabetCharacter.ElementAt(indexCounter);
-							TileData += c + tileA.ToString();
+							td += c + tileA.ToString();
 							indexCounter++;
 							dict_TileData.Add(tileA, c);
 						}
 						//string extra = "{" + c.ToString() + 'X' + td.Tile_FrameX + 'Y' + td.Tile_FrameY + "}";
-						string extra = c.ToString();
-						structureData += $"{extra}{distance.ToString()}";
-						distance = 1;
 					}
 					else {
 						distance++;
@@ -550,12 +563,13 @@ internal static partial class GenerationHelper {
 				}
 			}
 			if (distance != 0) {
-				structureData += distance;
+				structureData += $"{dict_TileData[new(outSideLoop)]}{distance}";
 			}
-			string finalWrapper = $"{TileData}>{structureData}";
+			string finalWrapper = $"{td}>{structureData}";
 			using FileStream file = File.Create(Path.Combine(path, name));
 			using StreamWriter m = new(file);
 			m.Write(finalWrapper);
+			m.Dispose();
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());
@@ -700,7 +714,7 @@ public struct TileData : ICloneable {
 	public short Tile_FrameX = 0;
 	public short Tile_FrameY = 0;
 	public ushort Tile_WallData = 0;
-	public byte Tile_WireData = 0;
+	public short Tile_WireData = 1;
 	public byte Tile_LiquidData = byte.MaxValue;
 	public byte Tile_Liquid = 0;
 	public bool Tile_HasActuator = false;
@@ -714,7 +728,7 @@ public struct TileData : ICloneable {
 		Tile_FrameX = 0;
 		Tile_FrameY = 0;
 		Tile_WallData = 0;
-		Tile_WireData = 0;
+		Tile_WireData = 1;
 		Tile_LiquidData = byte.MaxValue;
 		Tile_Liquid = 0;
 		Tile_HasActuator = false;
@@ -726,7 +740,7 @@ public struct TileData : ICloneable {
 	public char Slope_Parser(SlopeType type) {
 		switch (type) {
 			case SlopeType.SlopeDownLeft:
-				return 'b';
+				return 'x';
 			case SlopeType.SlopeDownRight:
 				return 'c';
 			case SlopeType.SlopeUpLeft:
@@ -739,7 +753,7 @@ public struct TileData : ICloneable {
 	}
 	public SlopeType Slope_Parser(char type) {
 		switch (type) {
-			case 'b':
+			case 'x':
 				return SlopeType.SlopeDownLeft;
 			case 'c':
 				return SlopeType.SlopeDownRight;
@@ -751,7 +765,7 @@ public struct TileData : ICloneable {
 				return SlopeType.Solid;
 		}
 	}
-	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
+	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, short tile_WireData, bool tile_HasActuator) {
 		Tile_Type = tileType;
 		Tile_FrameX = tileFrameX;
 		Tile_FrameY = tileFrameY;
@@ -776,16 +790,16 @@ public struct TileData : ICloneable {
 			Tile_WallData = tile.WallType;
 		}
 		if (tile.RedWire) {
-			Tile_WireData = 1;
+			Tile_WireData *= 3;
 		}
 		if (tile.BlueWire) {
-			Tile_WireData = 2;
+			Tile_WireData *= 5;
 		}
 		if (tile.YellowWire) {
-			Tile_WireData = 3;
+			Tile_WireData *= 7;
 		}
 		if (tile.GreenWire) {
-			Tile_WireData = 4;
+			Tile_WireData *= 11;
 		}
 		if (tile.LiquidAmount != 0) {
 			Tile_Liquid = (byte)tile.LiquidType;
@@ -848,24 +862,87 @@ public struct TileData : ICloneable {
 				Tile_WallEcho = true; break;
 		}
 		Tile_Slope = Slope_Parser(c);
-		Tile_WireData = (byte)(c == 'r' ? 1 : c == 'b' ? 2 : c == 'y' ? 3 : c == 'g' ? 4 : 0);
+		Tile_WireData *= ParseStringToWireData(c);
+
 	}
 	/// <summary>
 	/// Use this method during world gen is advised<br/>
 	/// But only if there are actually anything implemented into this method
 	/// </summary>
-	public void PlaceTile(Tile tile, bool PreciseFrameTilePlace = false) {
+	public void PlaceTile(Tile tile) {
 		tile.TileType = Tile_Type;
-		if (PreciseFrameTilePlace) {
-			tile.TileFrameX = Tile_FrameX;
-			tile.TileFrameY = Tile_FrameY;
-		}
+		tile.TileFrameX = Tile_FrameX;
+		tile.TileFrameY = Tile_FrameY;
 		tile.WallType = Tile_WallData;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 		tile.IsTileInvisible = Tile_Echo;
 		tile.Slope = Tile_Slope;
 		tile.IsTileInvisible = Tile_Echo;
 		tile.IsWallInvisible = Tile_WallEcho;
+		if (Tile_WireData != 1) {
+			if (Tile_WireData % 3 == 0) {
+				tile.Get<TileWallWireStateData>().RedWire = true;
+				tile.RedWire = true;
+			}
+			if (Tile_WireData % 5 == 0) {
+				tile.Get<TileWallWireStateData>().BlueWire = true;
+				tile.BlueWire = true;
+			}
+			if (Tile_WireData % 7 == 0) {
+				tile.Get<TileWallWireStateData>().YellowWire = true;
+				tile.YellowWire = true;
+			}
+			if (Tile_WireData % 11 == 0) {
+				tile.Get<TileWallWireStateData>().GreenWire = true;
+				tile.GreenWire = true;
+			}
+		}
+	}
+	/// <summary>
+	/// Use this method during world gen is advised<br/>
+	/// But only if there are actually anything implemented into this method
+	/// </summary>
+	public void PlaceTile(int X, int Y) {
+		Tile tile = Main.tile[X, Y];
+		tile.TileType = Tile_Type;
+		tile.TileFrameX = Tile_FrameX;
+		tile.TileFrameY = Tile_FrameY;
+		tile.WallType = Tile_WallData;
+		tile.Get<TileWallWireStateData>().HasTile = true;
+		tile.IsTileInvisible = Tile_Echo;
+		tile.Slope = Tile_Slope;
+		tile.IsTileInvisible = Tile_Echo;
+		tile.IsWallInvisible = Tile_WallEcho;
+		if (Tile_WireData != 1) {
+			if (Tile_WireData % 3 == 0) {
+				WorldGen.PlaceWire(X, Y);
+			}
+			if (Tile_WireData % 5 == 0) {
+				WorldGen.PlaceWire2(X, Y);
+			}
+			if (Tile_WireData % 7 == 0) {
+				WorldGen.PlaceWire3(X, Y);
+			}
+			if (Tile_WireData % 11 == 0) {
+				WorldGen.PlaceWire4(X, Y);
+			}
+		}
+	}
+	public void PlaceWire(int X, int Y) {
+		if (Tile_WireData != 0) {
+			if (Tile_WireData % 3 == 0) {
+				WorldGen.PlaceWire(X, Y);
+			}
+			if (Tile_WireData % 5 == 0) {
+				WorldGen.PlaceWire2(X, Y);
+			}
+			if (Tile_WireData % 7 == 0) {
+				WorldGen.PlaceWire3(X, Y);
+			}
+			if (Tile_WireData % 11 == 0) {
+				WorldGen.PlaceWire4(X, Y);
+			}
+		}
 	}
 	public override string ToString() {
 		StringBuilder sb = new StringBuilder();
@@ -897,25 +974,29 @@ public struct TileData : ICloneable {
 			sb.Append(Slope_Parser(Tile_Slope));
 		}
 		if (Tile_WireData != 0) {
-			switch (Tile_WireData) {
-				case 1:
-					sb.Append("r");
-					break;
-				case 2:
-					sb.Append("b");
-					break;
-				case 3:
-					sb.Append("y");
-					break;
-				case 4:
-					sb.Append("g");
-					break;
-			}
+			sb.Append(TileWireToString(Tile_WireData));
 		}
-
 		return "{" + sb.ToString() + "}";
 	}
-
+	public string TileWireToString(short num) {
+		string str = string.Empty;
+		if (num % 3 == 0) {
+			str += 'r';
+		}
+		if (num % 5 == 0) {
+			str += 'b';
+		}
+		if (num % 7 == 0) {
+			str += 'y';
+		}
+		if (num % 11 == 0) {
+			str += 'g';
+		}
+		return str;
+	}
+	public short ParseStringToWireData(char c) {
+		return (short)(c == 'r' ? 3 : c == 'b' ? 5 : c == 'y' ? 7 : c == 'g' ? 11 : 1);
+	}
 	public object Clone() {
 		return this.MemberwiseClone();
 	}

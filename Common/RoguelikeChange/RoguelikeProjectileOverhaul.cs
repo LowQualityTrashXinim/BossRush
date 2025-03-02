@@ -46,7 +46,7 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 			if (pos != Vector2.Zero) {
 				float rotateTo = (pos - projectile.Center).SafeNormalize(Vector2.Zero).ToRotation();
 				float currentRotation = projectile.velocity.ToRotation();
-				
+
 				projectile.velocity = projectile.velocity.RotatedBy(rotateTo - currentRotation);
 			}
 			if (player.strongBees) {
