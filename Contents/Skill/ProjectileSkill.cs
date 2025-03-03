@@ -518,7 +518,6 @@ public class ElectricChain : ModSkill {
 	}
 }
 public class BulletHell : ModSkill {
-	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ElectricChain>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 666;
 		Skill_Duration = BossRushUtils.ToSecond(6.66f);

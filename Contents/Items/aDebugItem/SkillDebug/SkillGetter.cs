@@ -60,9 +60,6 @@ class SkillGetterUI : UIState {
 	int currentSelectTemplate = -1;
 
 	private int linePosition;
-	private int maxLinePosition;
-	private const int MAX_LINES = 6;
-
 	List<btn_Skill> btn_list;
 	public const int SKILL_MAXLINE = 10;
 	public override void OnInitialize() {
@@ -144,8 +141,8 @@ class SkillGetterUI : UIState {
 		}
 	}
 	private void Text_OnUpdate(UIElement affectedElement) {
-		if (currentSelectTemplate == affectedElement.UniqueId) {
-			btn_Skill text = btn_list.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
+		if (affectedElement.IsMouseHovering) {
+			btn_Skill text = btn_list.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
 			if (text == null) {
 				return;
 			}
@@ -159,7 +156,6 @@ class SkillGetterUI : UIState {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
-
 	private void Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		currentSelectTemplate = listeningElement.UniqueId;
 	}

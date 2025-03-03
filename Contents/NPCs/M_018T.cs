@@ -14,6 +14,7 @@ using BossRush.Contents.Skill;
 using BossRush.Contents.Items.aDebugItem.StatsInform;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Common.General;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.NPCs;
 internal class M_018T : ModNPC {
@@ -54,7 +55,7 @@ internal class M_018T : ModNPC {
 			chat.Add("Do not sell that thing to me, no mortal would want to buy that !");
 		}
 		else {
-			if(UniversalSystem.Check_RLOH()) {
+			if (UniversalSystem.Check_RLOH()) {
 				chat.Add("A lot of normal item are quite good now, sadly their selling price haven't change");
 			}
 			chat.Add("What ?");
@@ -72,8 +73,7 @@ internal class M_018T : ModNPC {
 		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 17) });
 		shop.Add(new Item(ModContent.ItemType<WorldEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
 		shop.Add(new Item(ModContent.ItemType<CelestialEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
-		shop.Add(new Item(ModContent.ItemType<ModStatsDebugger>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
-		shop.Add(new Item(ModContent.ItemType<ShowPlayerStats>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
+		shop.Add(new Item(ModContent.ItemType<UserInfoTablet>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
 		shop.Register();
 	}
 }

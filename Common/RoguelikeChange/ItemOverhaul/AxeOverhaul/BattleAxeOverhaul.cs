@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -61,7 +62,9 @@ internal class BattleAxeOverhaul : GlobalItem {
 				if (target.boss) {
 					extra += .25f;
 				}
-				float itemsize = item.Size.Length() * (player.GetAdjustedItemScale(player.HeldItem) + extra) + BossRushUtilsPlayer.PLAYERARMLENGTH;
+				Asset<Texture2D> texture = TextureAssets.Item[item.type];
+				float itemlength = texture.Value.Size().Length() * .9f;
+				float itemsize = itemlength * (player.GetAdjustedItemScale(player.HeldItem) + extra) + BossRushUtilsPlayer.PLAYERARMLENGTH;
 				int laserline = (int)itemsize;
 				if (laserline <= 1) {
 					laserline = 2;

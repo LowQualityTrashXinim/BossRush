@@ -223,6 +223,11 @@ PhoenixBlazingTornado: {
 	Description: Wait, I know this one, I saw this one before
 }
 
+BulletHell: {
+	DisplayName: Bullet Hell
+	Description: Create a vortex of bullet [Base: 22 damage]
+}
+
 // UNRELEASED
 
 LucidNightmares: {

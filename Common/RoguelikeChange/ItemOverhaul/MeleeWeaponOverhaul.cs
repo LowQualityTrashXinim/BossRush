@@ -10,6 +10,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System;
 using System.Linq.Expressions;
+using ReLogic.Content;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -422,7 +423,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				if (target.boss) {
 					extra += .25f;
 				}
-				float itemsize = item.Size.Length() * (player.GetAdjustedItemScale(player.HeldItem) + extra);
+				Asset<Texture2D> texture = TextureAssets.Item[item.type];
+				float itemlength = texture.Value.Size().Length() * .9f;
+				float itemsize = itemlength * (player.GetAdjustedItemScale(player.HeldItem) + extra);
 				int laserline = (int)itemsize;
 				if (laserline <= 0) {
 					laserline = 1;

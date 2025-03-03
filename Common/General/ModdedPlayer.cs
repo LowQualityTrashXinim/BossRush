@@ -59,7 +59,6 @@ namespace BossRush.Common.General {
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
 				Player.itemAnimationMax = Player.HeldItem.useAnimation;
 			}
-			BossRushUtils.Reflesh_GlobalItem(Mod, Player);
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {
