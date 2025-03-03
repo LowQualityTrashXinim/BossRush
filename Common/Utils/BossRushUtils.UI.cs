@@ -305,5 +305,41 @@ namespace BossRush {
 			DrawImage(spriteBatch);
 		}
 	}
+	/// <summary>
+	/// This is a framework of a UI menu<br/>
+	/// This UI menu support paging and book type UI<br/>
+	/// </summary>
+	public abstract class Roguelike_UImenu<T> : UIElement {
+		protected int CurrentPage = 0;
+		protected List<Roguelike_UIImageButton> list_Btn = new();
+		protected Roguelike_UIPanel panel = new();
+		public bool Hide = false;
+		public sealed override void OnInitialize() {
+			panel = new();
+			list_Btn = new();
+			CurrentPage = 0;
+			SetStaticDefaults();
+
+			Append(panel);
+		}
+		public virtual void SetStaticDefaults() { }
+		public void AddDataElement() {
+
+		}
+		public virtual void PreDraw(SpriteBatch spriteBatch) {
+
+		}
+		public virtual void PostDraw(SpriteBatch spriteBatch) {
+
+		}
+		public sealed override void Draw(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			PreDraw(spriteBatch);
+			base.Draw(spriteBatch);
+			PostDraw(spriteBatch);
+		}
+	}
 }
 

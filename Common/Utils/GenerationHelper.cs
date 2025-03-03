@@ -432,6 +432,12 @@ internal static partial class GenerationHelper {
 							data.PlaceWire(holdX, holdY);
 						}
 					}
+					Point16 point = new(holdX, holdY);
+					if (TileEntity.ByPosition.ContainsKey(point)) {
+						if (TileEntity.ByPosition[point] != null) {
+							TileEntity.ByPosition[point].Update();
+						}
+					}
 				}
 				offsetY++;
 			}

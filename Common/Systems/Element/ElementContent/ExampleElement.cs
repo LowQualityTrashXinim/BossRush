@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.Element.ElementContent;
 internal class ExampleElement : Element {
@@ -12,7 +8,7 @@ internal class ExampleElement : Element {
 	//First we will set data
 	public override void SetDefault() {
 		//We will mainly uses this to set data
-		ElementSystem.AssignedNPC(NPCID.Demon, Type, 1.2f, true);
+		//ElementSystem.AssignedNPC(NPCID.Demon, Type, 1.2f, true);
 		//Let break down this method
 		//This method allow dev to easily assigned data during load time
 		//ElementSystem.AssingedNPC take 4 parameters, NPCID | Element ID | Element resistance/weakness value | Whenever or not the NPC have this element
@@ -21,12 +17,12 @@ internal class ExampleElement : Element {
 		//Pleases referred to this site if you don't have VS https://terraria.wiki.gg/wiki/NPC_IDs so that you can assigned NPCID
 
 		//You don't really need to assign any value to NPCHasElem parameter because it is automatically assigned that for you
-		ElementSystem.AssignedNPC(NPCID.FireImp, Type, 1.4f);
-		ElementSystem.AssignedNPC(NPCID.LavaSlime, Type, 1.5f);
+		//ElementSystem.AssignedNPC(NPCID.FireImp, Type, 1.4f);
+		//ElementSystem.AssignedNPC(NPCID.LavaSlime, Type, 1.5f);
 
 		//I recommend to seperate ElementSystem.AssignedNPC and ElementSystem.AssignedItem into 2 different paragraph, do note that they still have to be in this method
-		ElementSystem.AssignedItem(ItemID.FieryGreatsword, Type);
-		ElementSystem.AssignedItem(ItemID.Muramasa, Type);
+		//ElementSystem.AssignedItem(ItemID.FieryGreatsword, Type);
+		//ElementSystem.AssignedItem(ItemID.Muramasa, Type);
 		//Also referred to this for Item ID https://terraria.wiki.gg/wiki/Item_IDs
 	}
 	//Moving on to writing custom reaction to element, here I will write you a basic line that will make your life easier
@@ -37,7 +33,7 @@ internal class ExampleElement : Element {
 	private bool OneInXChance(int X) => Main.rand.NextBool(X);
 	private bool PercentageChance(int Percentage) => Main.rand.NextFloat() >= Percentage * .01f;
 	//Now in this method, this is where the magic happen, for now as a example we will do some simple elemental reaction
-	public override void OnHitNPC(NPC target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
+	public override void OnHitNPC(Item item, Projectile projectile, NPC target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
 		//1st example : Example Element + Fire Element
 		if (HasElement<Fire>(hash_elementType)) {
 			//Let do some funny stuff

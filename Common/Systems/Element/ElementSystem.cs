@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.RoguelikeChange;
 using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -12,9 +13,6 @@ internal class ElementSystem : ModSystem {
 	public static List<Element> list_Element { get; private set; } = new();
 	public static Dictionary<string, Element> dict_Element { get; private set; } = new();
 	public static int TotalCount => list_Element.Count;
-	public static Dictionary<int, HashSet<ushort>> dict_NPC_Element = new();
-	public static Dictionary<int, HashSet<ushort>> dict_Item_Element = new();
-	public static Dictionary<int, HashSet<ushort>> dict_Armor_Element = new();
 	public static ushort Register(Element element) {
 		ModTypeLookup<Element>.Register(element);
 		list_Element.Add(element);
@@ -41,48 +39,15 @@ internal class ElementSystem : ModSystem {
 		//	modplayer.Item_Element.Clear();
 		//}
 	}
-
+	//public static Dictionary<int, HashSet<ushort>> dict_NPC_Element = new();
+	//public static Dictionary<int, HashSet<ushort>> dict_Item_Element = new();
+	//public static Dictionary<int, HashSet<ushort>> dict_Armor_Element = new();
 	public override void Unload() {
 		list_Element = null;
 		dict_Element = null;
-		dict_NPC_Element = null;
-		dict_Item_Element = null;
-		dict_Armor_Element = null;
-	}
-	[Obsolete]
-	/// <summary>
-	/// Use this to assigned basic element stats
-	/// </summary>
-	/// <param name="npcID">The ID of NPC, use <see cref="NPCID"/> for this</param>
-	/// <param name="ElemID">The ElemID, use <see cref="Element.Type"/></param>
-	/// <param name="res">The multiplicative value that will be applied</param>
-	/// <param name="NPCHasElem">Determined whenever or not the NPC in <paramref name="npcID"/> has this Element or not</param>
-	public static void AssignedNPC(int npcID, int ElemID, float res, bool NPCHasElem = true) {
-		Element element = GetElement(ElemID);
-		if (element == null) {
-			BossRush.Instance.Logger.Info($"Unable to find element correct to ElemID, did you correctly assigned id ? | Element ID : {ElemID}");
-			return;
-		}
-		else if (npcID < 0 || npcID >= NPCID.Count) {
-			BossRush.Instance.Logger.Info($"There are no NPC with this ID, did you correctly write the ID ? | NPC ID : {npcID}");
-			return;
-		}
-		element.NPCElemResValue[npcID] = res;
-		element.AppliedToNPC[npcID] = NPCHasElem;
-	}
-	[Obsolete]
-	/// <summary>
-	/// Use this to assigned Element to Item
-	/// </summary>
-	///  <param name="ItemID">The ID of Item, use <see cref="ItemID"/> for this</param>
-	/// <param name="ItemHasElem">Determined whenever or not the Item in <paramref name="ItemID"/> in has this Element or not</param>
-	public static void AssignedItem(int ItemID, int ElemID, bool ItemHasElem = true) {
-		Element element = GetElement(ElemID);
-		if (element == null) {
-			BossRush.Instance.Logger.Info($"Unable to find element correct to ElemID, did you correctly assigned id ? | Element ID : {ElemID}");
-			return;
-		}
-		element.AppliedToItem[ItemID] = ItemHasElem;
+		//dict_NPC_Element = null;
+		//dict_Item_Element = null;
+		//dict_Armor_Element = null;
 	}
 }
 public class Element_Item : GlobalItem {
@@ -92,16 +57,37 @@ public class Element_Item : GlobalItem {
 		dict_Element.Add(type, MathF.Round(res, 2));
 	}
 	public override void SetDefaults(Item entity) {
-		if (ElementSystem.dict_Item_Element.ContainsKey(entity.type)) {
-			if (ElementSystem.dict_Item_Element.Count == 1) {
-				int Element = ElementSystem.dict_Item_Element[entity.type].First();
-				ElementSystem.GetElement(Element).Item_SetDefault(entity, this);
-			}
-			else {
-				HashSet<ushort> elementType = ElementSystem.dict_Item_Element[entity.type];
-				foreach (var e in elementType) {
-					ElementSystem.GetElement(e).Item_SetDefault(entity, this);
-				}
+		foreach (Element el in ElementSystem.list_Element) {
+			el.Item_SetDefault(entity, this);
+		}
+	}
+	public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
+		float mulitplier = 1;
+		if (dict_Element.Count == 1) {
+			mulitplier += dict_Element.Values.First();
+		}
+		else {
+			mulitplier += dict_Element.Values.Sum();
+		}
+		HashSet<float> NPCelement = new();
+		if (target.TryGetGlobalNPC(out Element_NPC globalNPC)) {
+			NPCelement = globalNPC.dict_Element.Values.ToHashSet();
+		}
+		modifiers.SourceDamage *= mulitplier - NPCelement.Sum();
+	}
+	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+		HashSet<ushort> NPCelement = new();
+		if (target.TryGetGlobalNPC(out Element_NPC globalNPC)) {
+			NPCelement = globalNPC.dict_Element.Keys.ToHashSet();
+		}
+		if (dict_Element.Count == 1) {
+			int Element = dict_Element.Keys.First();
+			ElementSystem.GetElement(Element).OnHitNPC(player, item, null, target, hit, NPCelement);
+		}
+		else {
+			HashSet<ushort> elementType = dict_Element.Keys.ToHashSet();
+			foreach (var e in elementType) {
+				ElementSystem.GetElement(e).OnHitNPC(player, item, null, target, hit, NPCelement);
 			}
 		}
 	}
@@ -115,12 +101,67 @@ public class Element_Projectile : GlobalProjectile {
 		}
 		if (source is EntitySource_ItemUse parentItem) {
 			if (parentItem.Item.TryGetGlobalItem(out Element_Item globalitem)) {
-
+				ElementContainFromSource.UnionWith(globalitem.dict_Element.Keys);
 			}
 			else {
 				if (parentItem.Player.TryGetModPlayer(out Element_ModPlayer modplayer)) {
-
+					ElementContainFromSource.UnionWith(modplayer.dict_Element.Keys);
 				}
+			}
+		}
+		else if (source is EntitySource_Parent parent) {
+			if (parent.Entity is NPC npc) {
+				if (npc.TryGetGlobalNPC(out Element_NPC globalNPC)) {
+					ElementContainFromSource.UnionWith(globalNPC.dict_Element.Keys);
+				}
+			}
+			else if (parent.Entity is Projectile parentProjectile) {
+				if (parentProjectile.TryGetGlobalProjectile(out Element_Projectile globalProjectile)) {
+					ElementContainFromSource.UnionWith(globalProjectile.ElementContainFromSource);
+				}
+			}
+			else if (parent.Entity is Player player) {
+				if (player.TryGetModPlayer(out Element_ModPlayer modplayer)) {
+					ElementContainFromSource.UnionWith(modplayer.dict_Element.Keys);
+				}
+			}
+			else if (parent.Entity is Item itemParent) {
+				if (itemParent.TryGetGlobalItem(out Element_Item globalitem)) {
+					ElementContainFromSource.UnionWith(globalitem.dict_Element.Keys);
+				}
+			}
+		}
+	}
+	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
+		HashSet<ushort> NPCelement = new();
+		if (target.TryGetGlobalNPC(out Element_NPC globalNPC)) {
+			NPCelement = globalNPC.dict_Element.Keys.ToHashSet();
+		}
+		Player player = Main.player[projectile.owner];
+		if (ElementContainFromSource.Count == 1) {
+			int Element = ElementContainFromSource.First();
+			ElementSystem.GetElement(Element).OnHitNPC(player, null, projectile, target, hit, NPCelement);
+		}
+		else {
+			HashSet<ushort> elementType = ElementContainFromSource;
+			foreach (var e in elementType) {
+				ElementSystem.GetElement(e).OnHitNPC(player, null, projectile, target, hit, NPCelement);
+			}
+		}
+	}
+	public override void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info) {
+		HashSet<ushort> TargetElement = new();
+		if (target.TryGetModPlayer(out Element_ModPlayer modplayer)) {
+			TargetElement = modplayer.dict_Element.Keys.ToHashSet();
+		}
+		if (ElementContainFromSource.Count == 1) {
+			int Element = ElementContainFromSource.First();
+			ElementSystem.GetElement(Element).OnHitPlayer(null, target, info, TargetElement);
+		}
+		else {
+			HashSet<ushort> elementType = ElementContainFromSource;
+			foreach (var e in elementType) {
+				ElementSystem.GetElement(e).OnHitPlayer(null, target, info, TargetElement);
 			}
 		}
 	}
@@ -132,179 +173,85 @@ public class Element_NPC : GlobalNPC {
 		dict_Element.Add(type, MathF.Round(res, 2));
 	}
 	public override void SetDefaults(NPC entity) {
-		if (ElementSystem.dict_NPC_Element.ContainsKey(entity.type)) {
-			if (ElementSystem.dict_NPC_Element.Count == 1) {
-				int Element = ElementSystem.dict_NPC_Element[entity.type].First();
-				ElementSystem.GetElement(Element).NPC_SetDefault(entity, this);
-			}
-			else {
-				HashSet<ushort> elementType = ElementSystem.dict_NPC_Element[entity.type];
-				foreach (var e in elementType) {
-					ElementSystem.GetElement(e).NPC_SetDefault(entity, this);
-				}
-			}
+		foreach (Element el in ElementSystem.list_Element) {
+			el.NPC_SetDefault(entity, this);
 		}
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
-		if (target.TryGetModPlayer(out Element_ModPlayer modPlayer)) {
-
+		HashSet<ushort> TargetElement = new();
+		if (target.TryGetModPlayer(out Element_ModPlayer modplayer)) {
+			TargetElement = modplayer.dict_Element.Keys.ToHashSet();
+		}
+		if (dict_Element.Count == 1) {
+			int Element = dict_Element.Keys.First();
+			ElementSystem.GetElement(Element).OnHitPlayer(npc, target, hurtInfo, TargetElement);
+		}
+		else {
+			HashSet<ushort> elementType = dict_Element.Keys.ToHashSet();
+			foreach (var e in elementType) {
+				ElementSystem.GetElement(e).OnHitPlayer(npc, target, hurtInfo, TargetElement);
+			}
 		}
 	}
 
 }
 public class Element_ModPlayer : ModPlayer {
-	public HashSet<Element> NPC_Element = new HashSet<Element>();
-	public HashSet<ushort> Item_Element = new HashSet<ushort>();
-	public float[] ElementRes = [];
-	public HashSet<ushort> ForcingElement = new();
-	public override void ResetEffects() {
-		if (ElementRes.Length != ElementSystem.TotalCount) {
-			Array.Resize(ref ElementRes, ElementSystem.TotalCount);
+	public Dictionary<ushort, float> dict_Element = new();
+	public void AddElementAndRes(ushort elementID, float res) {
+		if (dict_Element.ContainsKey(elementID)) {
+			dict_Element[elementID] += res;
 		}
 		else {
-			Array.Fill(ElementRes, 1f);
-		}
-		ForcingElement.Clear();
-	}
-	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-		foreach (Element el in ElementSystem.list_Element) {
-			//Checking if this npc have element
-			if (!el.AppliedToNPC[npc.type]) {
-				//continue cause they don't
-				continue;
-			}
-			//Get player elemental resistance
-			float res = ElementRes[el.Type];
-			if (res >= 0) {
-				//Multiply elemental resistance
-				modifiers.SourceDamage *= res;
-			}
+			dict_Element.Add(elementID, 1 + res);
 		}
 	}
-	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		foreach (Element el in ElementSystem.list_Element) {
-			//Checking whenever or not this NPC has this Element
-			if (el.AppliedToNPC[target.type]) {
-				NPC_Element.Add(el);
-			}
-			//Checking whenever or not the item player is holding have the element or not, if not skip
-			if (!el.AppliedToItem[Player.HeldItem.type]) {
-				continue;
-			}
-			//Get elemental resistance value from NPC
-			float res = el.NPCElemResValue[target.type];
-			if (res >= 0) {
-				modifiers.SourceDamage *= res;
-			}
-			//Add this element type into the hashset
-			Item_Element.Add(el.Type);
-		}
-	}
-	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
-			if (global.Source_ItemType == 0) {
-				return;
-			}
-			foreach (Element el in ElementSystem.list_Element) {
-				//Checking whenever or not this NPC has this Element
-				if (el.AppliedToNPC[target.type]) {
-					NPC_Element.Add(el);
-				}
-				//Checking whenever or not the item player is holding have the element or not, if not skip
-				if (!el.AppliedToItem[global.Source_ItemType]) {
-					continue;
-				}
-				//Get elemental resistance value from NPC
-				float res = el.NPCElemResValue[target.type];
-				if (res >= 0) {
-					modifiers.SourceDamage *= res;
-				}
-				//Add this element type into the hashset
-				Item_Element.Add(el.Type);
-			}
-		}
-	}
-	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		foreach (Element el in ElementSystem.list_Element) {
-			//Checking whenever or not this NPC has this Element
-			if (el.AppliedToNPC[target.type]) {
-				NPC_Element.Add(el);
-			}
-			//Checking whenever or not the item player is holding have the element or not, if not skip
-			if (!el.AppliedToItem[item.type]) {
-				continue;
-			}
-			//Get elemental resistance value from NPC
-			float res = el.NPCElemResValue[target.type];
-			if (res >= 0) {
-				modifiers.SourceDamage *= res;
-			}
-			//Add this element type into the hashset
-			Item_Element.Add(el.Type);
-		}
-	}
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		foreach (Element el in NPC_Element) {
-			//Do elemental custom reaction here
-			el.OnHitNPC(target, hit, Item_Element);
-		}
-	}
-	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		base.OnHitByNPC(npc, hurtInfo);
+	public override void ResetEffects() {
+		dict_Element.Clear();
 	}
 }
 
 public abstract class Element : ModType {
 	public ushort Type { get; private set; } = 0;
-	/// <summary>
-	/// Use this to assgined how resistance the NPC are against this element, however it is recommend to use <see cref="ElementSystem.AssignedNPC(int, int, float)"/> or <see cref="ElementSystem.AssignedNPC(int, string, float)"/>
-	/// </summary>
-	public float[] NPCElemResValue = NPCID.Sets.Factory.CreateFloatSet(1f);
-	/// <summary>
-	/// Use this to assigned if wherever or not this NPC type can have this element
-	/// </summary>
-	public bool[] AppliedToNPC = NPCID.Sets.Factory.CreateBoolSet();
-	/// <summary>
-	/// Use this to assigned if wherever or not this Item type can have this element
-	/// </summary>
-	public bool[] AppliedToItem = ItemID.Sets.Factory.CreateBoolSet();
-	/// <summary>
-	/// Key : item ID<br/>
-	/// Value : value
-	/// </summary>
-	public Dictionary<int, float> ArmorValue = new();
 	public static ushort GetElementType<T>() where T : Element {
 		return ModContent.GetInstance<T>().Type;
 	}
 	protected sealed override void Register() {
 		Type = ElementSystem.Register(this);
-		SetDefault();
 	}
 	/// <summary>
-	/// This is where you set all of your value and basic stats 
+	/// Use this to set default element value to specific npc
 	/// </summary>
-	public virtual void SetDefault() {
-	}
+	/// <param name="npc"></param>
+	/// <param name="globalNPC"></param>
 	public virtual void NPC_SetDefault(NPC npc, Element_NPC globalNPC) {
 
 	}
+	/// <summary>
+	/// Use this to set default element value to specific item
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="globalItem"></param>
 	public virtual void Item_SetDefault(Item item, Element_Item globalItem) {
 
 	}
 	/// <summary>
 	/// </summary>
+	/// <param name="player">The Player</param>
+	/// <param name="item">the item maybe null, so used with caution, do a null check before doing anything with item</param>
+	/// <param name="proj">the projectile maybe null, so used with caution, do a null check before doing anything with projectile</param>
 	/// <param name="target"></param>
 	/// <param name="info"></param>
 	/// <param name="hash_elementType">List of element from item</param>
-	public virtual void OnHitNPC(NPC target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
+	public virtual void OnHitNPC(Player player, Item item, Projectile proj, NPC target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
 
 	}
 	/// <summary>
 	/// </summary>
+	/// <param name="npc">The NPC value maybe null so do a null check before doing anything related to the NPC</param>
 	/// <param name="target"></param>
 	/// <param name="info"></param>
 	/// <param name="hash_elementType">List of element from item</param>
-	public virtual void OnHitPlayer(Player target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
+	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo info, HashSet<ushort> hash_elementType) {
 
 	}
 	public override sealed void SetStaticDefaults() {

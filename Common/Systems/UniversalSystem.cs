@@ -38,7 +38,7 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using Steamworks;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -758,18 +758,16 @@ class DefaultUI : UIState {
 class UISystemMenu : UIState {
 	UIPanel panel;
 	UITextPanel<string> uitextpanel;
-	UIImageButton show_playerMod_Info;
 	UIImageButton open_skill_UI;
 	UIImageButton open_Enchantment_UI;
 	UIImageButton open_Transmutation_UI;
 	UIImageButton open_AchievmentUI;
 	bool EnchantmentHover = false;
 	bool SkillHover = false;
-	bool InfoHover = false;
 	bool Transmutation = false;
 	bool Achievement = false;
 	private Asset<Texture2D> lockIcon;
-	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 4f);
+	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 3f);
 	public override void OnInitialize() {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
@@ -783,19 +781,10 @@ class UISystemMenu : UIState {
 		uitextpanel.UISetWidthHeight(450, 350);
 		Append(uitextpanel);
 
-		show_playerMod_Info = new UIImageButton(TextureAssets.InventoryBack);
-		show_playerMod_Info.UISetWidthHeight(52, 52);
-		show_playerMod_Info.VAlign = .4f;
-		show_playerMod_Info.HAlign = SetHAlign(0);
-		show_playerMod_Info.SetVisibility(1f, 67f);
-		show_playerMod_Info.OnLeftClick += Show_playerMod_Info_OnLeftClick;
-		show_playerMod_Info.OnUpdate += Show_playerMod_Info_OnUpdate;
-		Append(show_playerMod_Info);
-
 		open_skill_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_skill_UI.UISetWidthHeight(52, 52);
 		open_skill_UI.VAlign = .4f;
-		open_skill_UI.HAlign = SetHAlign(1);
+		open_skill_UI.HAlign = SetHAlign(0);
 		open_skill_UI.SetVisibility(1f, 67f);
 		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
 		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
@@ -804,7 +793,7 @@ class UISystemMenu : UIState {
 		open_Enchantment_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Enchantment_UI.UISetWidthHeight(52, 52);
 		open_Enchantment_UI.VAlign = .4f;
-		open_Enchantment_UI.HAlign = SetHAlign(2);
+		open_Enchantment_UI.HAlign = SetHAlign(1);
 		open_Enchantment_UI.SetVisibility(1f, 67f);
 		open_Enchantment_UI.OnLeftClick += Open_Enchantment_UI_OnLeftClick;
 		open_Enchantment_UI.OnUpdate += Open_Enchantment_UI_OnUpdate;
@@ -813,7 +802,7 @@ class UISystemMenu : UIState {
 		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Transmutation_UI.UISetWidthHeight(52, 52);
 		open_Transmutation_UI.VAlign = .4f;
-		open_Transmutation_UI.HAlign = SetHAlign(3);
+		open_Transmutation_UI.HAlign = SetHAlign(2);
 		open_Transmutation_UI.SetVisibility(1f, 67f);
 		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick;
 		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate;
@@ -822,7 +811,7 @@ class UISystemMenu : UIState {
 		open_AchievmentUI = new(TextureAssets.InventoryBack);
 		open_AchievmentUI.UISetWidthHeight(52, 52);
 		open_AchievmentUI.VAlign = .4f;
-		open_AchievmentUI.HAlign = SetHAlign(4);
+		open_AchievmentUI.HAlign = SetHAlign(3);
 		open_AchievmentUI.SetVisibility(1f, 67f);
 		open_AchievmentUI.OnLeftClick += Open_AchievmentUI_OnLeftClick;
 		open_AchievmentUI.OnUpdate += Open_AchievmentUI_OnUpdate;
@@ -872,10 +861,6 @@ class UISystemMenu : UIState {
 		else if (SkillHover) {
 			Main.instance.MouseText("Skill inventory");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
-		}
-		else if (InfoHover) {
-			Main.instance.MouseText("Show player's info");
-			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.ShowPlayerInfo.Tooltip"));
 		}
 		else if (Transmutation) {
 			Main.instance.MouseText("Transmutation menu");
@@ -935,470 +920,6 @@ class UISystemMenu : UIState {
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (CanEnchantmentBeAccess()) {
 			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
-		}
-	}
-
-	private void Show_playerMod_Info_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (affectedElement.IsMouseHovering) {
-			InfoHover = true;
-		}
-		else {
-			InfoHover = false;
-		}
-	}
-	private void Show_playerMod_Info_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateInfoUI();
-	}
-}
-class Info_ArtifactImage : Roguelike_UIImage {
-	public Info_ArtifactImage(Asset<Texture2D> texture) : base(texture) {
-	}
-	public override void DrawImage(SpriteBatch spriteBatch) {
-		Artifact artifact = Artifact.GetArtifact(Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
-		CalculatedStyle style = GetInnerDimensions();
-		artifact.DrawInUI(spriteBatch, style);
-	}
-}
-public class Roguelike_Info {
-	public Roguelike_UIImageButton btn;
-	public Roguelike_UIText text;
-	public string Info = string.Empty;
-	public bool StatePressed = false;
-	public Action action;
-	public int Index = -1;
-	public Roguelike_Info(UIElement state) {
-		btn = new(ModContent.Request<Texture2D>(BossRushTexture.PinIcon));
-		btn.UISetWidthHeight(18, 18);
-		btn.OnLeftClick += Btn_OnLeftClick;
-		btn.OnUpdate += Btn_OnUpdate;
-		state.Append(btn);
-
-		text = new("");
-		text.MarginLeft = 24;
-		state.Append(text);
-	}
-
-	private void Btn_OnUpdate(UIElement affectedElement) {
-		if (StatePressed) {
-			InfoUI.InfoShowToItem += Info + "\n";
-		}
-	}
-
-	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		StatePressed = !StatePressed;
-		if (StatePressed) {
-			btn.SetVisibility(1f, 1f);
-			text.TextColor = Color.Yellow;
-		}
-		else {
-			btn.SetVisibility(1f, .4f);
-			text.TextColor = Color.White;
-		}
-	}
-	public void SetAlign(float x, float y) {
-		btn.HAlign = x;
-		text.HAlign = x;
-		btn.VAlign = y;
-		text.VAlign = y;
-	}
-	public void SetInfo(string info) {
-		Info = info;
-		text.SetText(info);
-	}
-	public void Visibility(bool hide) {
-		text.Hide = hide;
-		btn.Hide = hide;
-	}
-}
-class InfoUI : UIState {
-	public static string InfoShowToItem = string.Empty;
-	UIPanel panel;
-	Roguelike_WrapTextUIPanel textpanel;
-	Roguelike_UITextPanel generalTextPanel;
-	Dictionary<Roguelike_UIText, int> textlist;
-	UIImageButton btn_Stats;
-	UIImageButton btn_ModStats;
-	UIImageButton btn_Artifact;
-	Info_ArtifactImage Info_artifact;
-	UIImageButton btn_Perks;
-	ExitUI btn_Exit;
-	int CurrentState = 0;
-	public List<Roguelike_Info> list_info = new();
-	public override void OnInitialize() {
-		textlist = new Dictionary<Roguelike_UIText, int>();
-		panel = new UIPanel();
-		panel.HAlign = .35f;
-		panel.VAlign = .5f;
-		panel.UISetWidthHeight(100, 450);
-		Append(panel);
-
-		textpanel = new Roguelike_WrapTextUIPanel("");
-		textpanel.HAlign = .53f;
-		textpanel.VAlign = .5f;
-		textpanel.UISetWidthHeight(450, 600);
-		Append(textpanel);
-
-		generalTextPanel = new Roguelike_UITextPanel("");
-		generalTextPanel.UISetWidthHeight(10, 10);
-		generalTextPanel.Hide = true;
-		Append(generalTextPanel);
-
-		btn_Stats = new UIImageButton(TextureAssets.InventoryBack);
-		btn_Stats.HAlign = .5f;
-		btn_Stats.VAlign = .1f;
-		btn_Stats.UISetWidthHeight(52, 52);
-		btn_Stats.OnLeftClick += Btn_Stats_OnLeftClick;
-		btn_Stats.SetVisibility(1, 1);
-		panel.Append(btn_Stats);
-
-		btn_ModStats = new UIImageButton(TextureAssets.InventoryBack);
-		btn_ModStats.HAlign = .5f;
-		btn_ModStats.VAlign = MathHelper.Lerp(.1f, .9f, 1 / 4f);
-		btn_ModStats.OnLeftClick += Btn_ModStats_OnLeftClick;
-		btn_ModStats.UISetWidthHeight(52, 52);
-		panel.Append(btn_ModStats);
-
-		btn_Artifact = new UIImageButton(TextureAssets.InventoryBack);
-		btn_Artifact.HAlign = .5f;
-		btn_Artifact.VAlign = MathHelper.Lerp(.1f, .9f, 2 / 4f);
-		btn_Artifact.UISetWidthHeight(52, 52);
-		btn_Artifact.OnLeftClick += Btn_Artifact_OnLeftClick;
-		panel.Append(btn_Artifact);
-
-		Info_artifact = new Info_ArtifactImage(TextureAssets.InventoryBack);
-		Info_artifact.HAlign = .38f;
-		Info_artifact.VAlign = .22f;
-		Info_artifact.Hide = true;
-		Append(Info_artifact);
-
-		btn_Perks = new UIImageButton(TextureAssets.InventoryBack);
-		btn_Perks.HAlign = .5f;
-		btn_Perks.VAlign = MathHelper.Lerp(.1f, .9f, 3 / 4f);
-		btn_Perks.UISetWidthHeight(52, 52);
-		btn_Perks.OnLeftClick += Btn_Perks_OnLeftClick;
-		panel.Append(btn_Perks);
-
-		btn_Exit = new ExitUI(TextureAssets.InventoryBack);
-		btn_Exit.HAlign = .5f;
-		btn_Exit.VAlign = .9f;
-		btn_Exit.UISetWidthHeight(52, 52);
-		panel.Append(btn_Exit);
-	}
-
-	private void Text_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.IsMouseHovering) {
-			Roguelike_UIText text = textlist.Keys.Where(e => e.UniqueId == affectedElement.UniqueId).FirstOrDefault();
-			if (text == null || text.Hide) {
-				return;
-			}
-			generalTextPanel.Hide = false;
-			int perkType = textlist[text];
-			generalTextPanel.SetText(ModPerkLoader.GetPerk(perkType).Description);
-			generalTextPanel.UISetPosition(Main.MouseScreen);
-		}
-	}
-
-	private void Btn_Stats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		foreach (var item in textlist.Keys) {
-			item.Hide = true;
-		}
-		btn_Stats.SetVisibility(1, 1);
-		btn_ModStats.SetVisibility(.7f, .6f);
-		btn_Perks.SetVisibility(.7f, .6f);
-		btn_Artifact.SetVisibility(.7f, .6f);
-		CurrentState = 0;
-		Info_artifact.Hide = true;
-		generalTextPanel.Hide = true;
-	}
-	private void Btn_ModStats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		foreach (var item in textlist.Keys) {
-			item.Hide = true;
-		}
-		btn_ModStats.SetVisibility(1, 1);
-		btn_Stats.SetVisibility(.7f, .6f);
-		btn_Perks.SetVisibility(.7f, .6f);
-		btn_Artifact.SetVisibility(.7f, .6f);
-		CurrentState = 1;
-		Info_artifact.Hide = true;
-		generalTextPanel.Hide = true;
-	}
-	private void Btn_Artifact_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		foreach (var item in textlist.Keys) {
-			item.Hide = true;
-		}
-		btn_Artifact.SetVisibility(1, 1);
-		btn_ModStats.SetVisibility(.7f, .6f);
-		btn_Perks.SetVisibility(.7f, .6f);
-		btn_Stats.SetVisibility(.7f, .6f);
-		CurrentState = 2;
-		Info_artifact.Hide = false;
-		generalTextPanel.Hide = true;
-	}
-
-	private void Btn_Perks_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		foreach (var item in textlist.Keys) {
-			item.Hide = false;
-		}
-		btn_Perks.SetVisibility(1, 1);
-		btn_ModStats.SetVisibility(.7f, .6f);
-		btn_Stats.SetVisibility(.7f, .6f);
-		btn_Artifact.SetVisibility(.7f, .6f);
-		CurrentState = 3;
-		Info_artifact.Hide = true;
-	}
-	public override void OnActivate() {
-		foreach (var item in textlist.Keys) {
-			textpanel.RemoveChild(item);
-		}
-		textlist.Clear();
-		Player player = Main.LocalPlayer;
-		var perkplayer = player.GetModPlayer<PerkPlayer>();
-		int counter = 0;
-		foreach (var perkType in perkplayer.perks.Keys) {
-			if (ModPerkLoader.GetPerk(perkType) != null) {
-				Roguelike_UIText text = new Roguelike_UIText(ModPerkLoader.GetPerk(perkType).DisplayName + $" | current stack : [{perkplayer.perks[perkType]}]");
-				text.OnUpdate += Text_OnUpdate;
-				text.Top.Pixels += 25 * counter;
-				text.Hide = true;
-				textpanel.Append(text);
-				textlist.Add(text, perkType);
-				counter++;
-			}
-		}
-	}
-	public string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
-	public override void Update(GameTime gameTime) {
-		InfoShowToItem = string.Empty;
-		base.Update(gameTime);
-		if (panel.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (textpanel.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		var player = Main.LocalPlayer;
-		string line;
-		var statshandle = player.GetModPlayer<PlayerStatsHandle>();
-		switch (CurrentState) {
-			case 0:
-				// 0 to 17 is default stats
-				if (list_info.Count < 1) {
-					list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[0].SetInfo($"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[1].SetInfo($"{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[2].SetInfo($"{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[3].SetInfo($"{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[7].SetInfo($"{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[8].SetInfo($"{ItemIcon(ItemID.BandofRegeneration)} Health regenaration : {player.lifeRegen}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[9].SetInfo($"{ItemIcon(ItemID.ManaRegenerationBand)} Mana regenaration : {player.manaRegen}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[10].SetInfo($"{ItemIcon(ItemID.ManaFlower)} Mana reduction : {player.manaCost}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[11].SetInfo($"{ItemIcon(ItemID.ShieldStatue)} Defense effectiveness : {player.DefenseEffectiveness.Value}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[12].SetInfo($"{ItemIcon(ItemID.WormScarf)} Damage reduction: {Math.Round(player.endurance * 100, 2)}%");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[13].SetInfo($"{ItemIcon(ItemID.HermesBoots)} Movement speed : {Math.Round(player.moveSpeed, 2)}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[14].SetInfo($"{ItemIcon(ItemID.FrogLeg)} Jump boost : {player.jumpSpeedBoost}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[15].SetInfo($"{ItemIcon(ItemID.BewitchingTable)} Max minion : {player.maxMinions}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[16].SetInfo($"{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}");
-					list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-					list_info[list_info.Count - 1].action = () => list_info[17].SetInfo($"{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}");
-					for (int i = 0; i < list_info.Count; i++) {
-						float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
-						list_info[i].SetAlign(0, Y);
-					}
-				}
-				for (int i = 0; i < list_info.Count; i++) {
-					if (list_info[i].action != null) {
-						list_info[i].action.Invoke();
-					}
-				}
-				break;
-			case 1:
-				var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
-				var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
-				var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
-				var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
-				var augmentation = player.GetModPlayer<AugmentsPlayer>();
-				chestplayer.GetAmount();
-				line =
-					$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
-					$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
-					$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
-					$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-					$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
-					$"\nRange drop chance : {chestplayer.UpdateRangeChanceMutilplier}" +
-					$"\nMagic drop chance : {chestplayer.UpdateMagicChanceMutilplier}" +
-					$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
-					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
-					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
-					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}" +
-					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}";
-				textpanel.SetText(line);
-				break;
-			case 2:
-				var artifactplayer = player.GetModPlayer<ArtifactPlayer>();
-				line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
-				line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
-				textpanel.SetText(line);
-				break;
-			case 3:
-				foreach (var item in textlist.Keys) {
-					item.Hide = false;
-				}
-				if (textlist.Keys.Where(e => !e.IsMouseHovering).Count() == textlist.Keys.Count) {
-					generalTextPanel.Hide = true;
-				}
-				break;
-			default:
-				line = "";
-				textpanel.SetText(line);
-				break;
-		}
-	}
-}
-public class SpoilsUIState : UIState {
-	public int Limit_Spoils = 5;
-	public List<SpoilsUIButton> btn_List;
-	public int lootboxItem = -1;
-	public UITextPanel<string> panel;
-	public override void OnInitialize() {
-		panel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Header"));
-		panel.HAlign = .5f;
-		panel.VAlign = .3f;
-		panel.UISetWidthHeight(150, 53);
-		Append(panel);
-		Limit_Spoils = 5;
-		btn_List = new List<SpoilsUIButton>();
-	}
-	public override void OnActivate() {
-		btn_List.Clear();
-		SpoilsPlayer modplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
-		lootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.FirstOrDefault();
-		if (lootboxItem <= 0) {
-			return;
-		}
-		Player player = Main.LocalPlayer;
-		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
-		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1 && modplayer.LootBoxSpoilThatIsNotOpen.Count > 0) {
-			SpoilList.Clear();
-			SpoilList = modplayer.SpoilsGift.Select(ModSpoilSystem.GetSpoils).ToList();
-			modplayer.SpoilsGift.Clear();
-		}
-		else {
-			modplayer.SpoilsGift.Clear();
-			for (int i = SpoilList.Count - 1; i >= 0; i--) {
-				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
-					SpoilList.Remove(spoil);
-				}
-			}
-		}
-		if (SpoilList.Count < 1) {
-			SpoilList = ModSpoilSystem.GetSpoilsList();
-		}
-		//prioritize rarer spoil
-		int spoilPriortize = 1;
-		for (int i = 0; i < Limit_Spoils; i++) {
-			ModSpoil spoil = Main.rand.Next(SpoilList);
-			if (spoilPriortize > 0) {
-				spoilPriortize--;
-				foreach (var item in SpoilList) {
-					if (item.RareValue > SpoilDropRarity.Rare) {
-						spoil = item;
-					}
-				}
-			}
-			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
-			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
-			modplayer.SpoilsGift.Add(spoil.Name);
-			SpoilList.Remove(spoil);
-			btn.HAlign = Hvalue;
-			btn.VAlign = .4f;
-			btn_List.Add(btn);
-			Append(btn);
-		}
-		//SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
-		//btna.HAlign = .7f;
-		//btna.VAlign = .4f;
-		//btn_List.Add(btna);
-		//Append(btna);
-	}
-}
-public class SpoilsUIButton : UIImageButton {
-	public ModSpoil spoil;
-	int LootboxItem = 0;
-	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
-		spoil = Spoil;
-		if (Main.LocalPlayer.TryGetModPlayer(out SpoilsPlayer spoilplayer)) {
-			if (spoilplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
-				LootboxItem = spoilplayer.LootBoxSpoilThatIsNotOpen.First();
-		}
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		Player player = Main.LocalPlayer;
-		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
-		if (modplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
-			LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
-		if (spoil == null || LootboxItem == 0) {
-			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
-			for (int i = SpoilList.Count - 1; i >= 0; i--) {
-				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[LootboxItem])) {
-					SpoilList.Remove(spoil);
-				}
-			}
-			Main.rand.Next(SpoilList).OnChoose(player, LootboxItem);
-			modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
-			modplayer.SpoilsGift.Clear();
-			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-			return;
-		}
-		spoil.OnChoose(player, LootboxItem);
-		modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
-		modplayer.SpoilsGift.Clear();
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (IsMouseHovering) {
-			if (LootboxSystem.GetItemPool(LootboxItem) == null && !Main.LocalPlayer.IsDebugPlayer()) {
-				return;
-			}
-			if (spoil == null) {
-				Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Randomize"));
-			}
-			else {
-				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
-			}
-		}
-		else {
-			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-				Main.instance.MouseText("");
-			}
 		}
 	}
 }
