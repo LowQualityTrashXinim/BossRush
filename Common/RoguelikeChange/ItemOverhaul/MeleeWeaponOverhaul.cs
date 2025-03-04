@@ -596,9 +596,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private void CircleSwingAttack(Player player) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			float end = (MathHelper.TwoPi + MathHelper.Pi) * -player.direction;
-			float addition = player.direction > 0 ? MathHelper.Pi : 0;
-			Swipe(addition, end + addition, BossRushUtils.InOutExpo(percentDone), player, 1);
+			float end = (MathHelper.TwoPi * 2) * -player.direction;
+			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().ItemRotationBeforeSwitch;
+			float addition = baseAngle;
+			Swipe(addition, end + addition, BossRushUtils.InOutSine(percentDone), player, 1);
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			bool directIsnegative = direct == -1;
@@ -634,7 +635,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			Item item = player.HeldItem;
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer)
 				&& item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)
-				&& modplayer.ComboNumber == 1) {
+				&& modplayer.ComboNumber == 1
+				&& item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 				AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 			}
 			orig.Invoke(ref drawinfo);
@@ -647,15 +649,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					Vector2 size = drawdata.texture.Size() * drawdata.scale.X;
 					Vector2 origin = size * .5f;
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
-						float sizeMax = (float)Math.Min(size.X, size.Y);
-						origin = new Vector2(sizeMax, sizeMax) * .5f;
+						origin = new Vector2(size.X, size.X) * .5f;
 					}
 					drawdata.sourceRect = null;
 					drawdata.ignorePlayerRotation = true;
 					drawdata.rotation = modplayer.CustomItemRotation;
 					drawdata.position +=
 						Vector2.UnitX.RotatedBy(drawdata.rotation) *
-						(origin.Length() + meleeItem.offset + BossRushUtilsPlayer.PLAYERARMLENGTH) * -player.direction;
+						(origin.Length() + meleeItem.offset + BossRushUtilsPlayer.PLAYERARMLENGTH + 3) * -player.direction;
 					drawinfo.DrawDataCache[i] = drawdata;
 				}
 			}
@@ -669,17 +670,18 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int CountDownToResetCombo = 0;
 		public float CustomItemRotation = 0;
 		public StatModifier DelayReuse = new();
+		public float ItemRotationBeforeSwitch = 0;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
 				oldHeldItem = item.type;
-				ComboNumber = 0;
+				ComboNumber = -1;
 				CountDownToResetCombo = 0;
 			}
 			delaytimer = BossRushUtils.CountDown(delaytimer);
 			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
 			if (CountDownToResetCombo <= 0) {
-				ComboNumber = 0;
+				ComboNumber = -1;
 			}
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
 				return;
@@ -693,8 +695,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			DelayReuse = StatModifier.Default;
 		}
 		public override bool CanUseItem(Item item) {
+			PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 				ComboHandleSystem();
+				ItemRotationBeforeSwitch = Player.itemRotation;
 			}
 			//if (UniversalSystem.Check_RLOH()) {
 			//	if (item.IsAWeapon()) {
@@ -718,8 +722,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		private void ComboHandleSystem() {
-			if (++ComboNumber >= 2)
-				ComboNumber = 0;
+			ComboNumber = BossRushUtils.Safe_SwitchValue(ComboNumber, 1);
 		}
 		public override void PostUpdate() {
 			Item item = Player.HeldItem;
@@ -728,9 +731,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			if (Player.ItemAnimationJustStarted) {
 				JustHitANPC = false;
-				if (delaytimer == 0) {
-					PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
-				}
 			}
 			if (Player.ItemAnimationActive) {
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;

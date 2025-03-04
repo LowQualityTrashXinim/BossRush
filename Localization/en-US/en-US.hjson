@@ -2315,6 +2315,11 @@ Mods: {
 				DisplayName: Pulse Rifle
 				Tooltip: ""
 			}
+
+			TilePosition: {
+				DisplayName: Tile Position
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
