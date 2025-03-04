@@ -667,7 +667,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int delaytimer = 10;
 		public int oldHeldItem;
 		public int CountDownToResetCombo = 0;
-		bool InStateOfSwinging = false;
 		public float CustomItemRotation = 0;
 		public StatModifier DelayReuse = new();
 		public override void PreUpdate() {
@@ -679,8 +678,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			delaytimer = BossRushUtils.CountDown(delaytimer);
 			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
-			if (CountDownToResetCombo <= 0)
+			if (CountDownToResetCombo <= 0) {
 				ComboNumber = 0;
+			}
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
 				return;
 			}
@@ -691,24 +691,16 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 			}
 			DelayReuse = StatModifier.Default;
-			if (Player.ItemAnimationActive) {
-				InStateOfSwinging = true;
-			}
-			else {
-				if (InStateOfSwinging) {
-					InStateOfSwinging = false;
-					if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
-						ComboHandleSystem();
-					}
-				}
-			}
 		}
 		public override bool CanUseItem(Item item) {
-			if (UniversalSystem.Check_RLOH()) {
-				if (item.IsAWeapon()) {
-					return delaytimer <= 0;
-				}
+			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
+				ComboHandleSystem();
 			}
+			//if (UniversalSystem.Check_RLOH()) {
+			//	if (item.IsAWeapon()) {
+			//		return delaytimer <= 0;
+			//	}
+			//}
 			return base.CanUseItem(item);
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {

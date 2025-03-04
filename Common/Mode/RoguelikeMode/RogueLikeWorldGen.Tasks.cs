@@ -37,6 +37,7 @@ public class BiomeAreaID {
 	public const short BeeNest = 15;
 	public const short Hallow = 16;
 	public const short Ocean = 17;
+	public const short Advanced = 999;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {
@@ -55,10 +56,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 			short objvalue = (short)obj;
 			BiomeID.Add(objvalue, field[i].Name);
 		}
-
+		Biome = new();
+		TrialArea = new();
 	}
 	public override void OnModUnload() {
 		BiomeID = null;
+		TrialArea = null;
 	}
 
 	public static int GridPart_X = Main.maxTilesX / 24;
@@ -146,12 +149,14 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
+	public static List<Rectangle> TrialArea = new();
 	public override void SaveWorldData(TagCompound tag) {
 		if (Biome == null) {
 			return;
 		}
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
+		tag["TrialArea"] = TrialArea;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		var Type = tag.Get<List<short>>("BiomeType");
@@ -160,6 +165,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 			return;
 		}
 		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {

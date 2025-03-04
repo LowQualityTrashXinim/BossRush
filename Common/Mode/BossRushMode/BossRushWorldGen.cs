@@ -452,7 +452,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_CorruptionArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(10, 5, 2, 4);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, 2)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, WorldGen.genRand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
