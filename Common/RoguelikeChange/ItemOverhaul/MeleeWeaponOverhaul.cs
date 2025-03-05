@@ -656,8 +656,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					drawdata.ignorePlayerRotation = true;
 					drawdata.rotation = modplayer.CustomItemRotation;
 					if (meleeItem.SwingType == BossRushUseStyle.Swipe) {
-						drawdata.origin = origin;
-						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - MathHelper.PiOver4).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH);
+						float rotationCs = player.direction == -1 ? MathHelper.PiOver4 : MathHelper.PiOver2 + MathHelper.PiOver4;
+						drawdata.origin = drawdata.texture.Size() * .5f;
+						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH);
 					}
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
 						drawdata.position +=
@@ -702,7 +703,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			DelayReuse = StatModifier.Default;
 		}
 		public override bool CanUseItem(Item item) {
-			PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
+			if (!Player.ItemAnimationActive) {
+				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
+			}
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 				ComboHandleSystem();
 				ItemRotationBeforeSwitch = Player.itemRotation;
