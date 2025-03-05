@@ -613,6 +613,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
 			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (BossRushUtilsPlayer.PLAYERARMLENGTH + 3);
+
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {
@@ -654,9 +655,15 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					drawdata.sourceRect = null;
 					drawdata.ignorePlayerRotation = true;
 					drawdata.rotation = modplayer.CustomItemRotation;
-					drawdata.position +=
+					if (meleeItem.SwingType == BossRushUseStyle.Swipe) {
+						drawdata.origin = origin;
+						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - MathHelper.PiOver4).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH);
+					}
+					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
+						drawdata.position +=
 						Vector2.UnitX.RotatedBy(drawdata.rotation) *
 						(origin.Length() + meleeItem.offset + BossRushUtilsPlayer.PLAYERARMLENGTH + 3) * -player.direction;
+					}
 					drawinfo.DrawDataCache[i] = drawdata;
 				}
 			}

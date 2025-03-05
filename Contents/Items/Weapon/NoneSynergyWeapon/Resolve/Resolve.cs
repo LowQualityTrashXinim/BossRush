@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve {
 	internal class Resolve : SynergyModItem {
 		public override void SetDefaults() {
-			Item.BossRushSetDefault(34, 54, 17, 7f, 15, 15, ItemUseStyleID.Shoot, false);
+			Item.BossRushSetDefault(34, 54, 14, 7f, 25, 25, ItemUseStyleID.Shoot, false);
 			Item.DamageType = DamageClass.Generic;
 			Item.crit = 15;
 			Item.rare = ItemRarityID.Blue;

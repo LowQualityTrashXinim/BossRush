@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMagic(10, 10, 75, 3f, 25, 25, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
+			Item.BossRushDefaultMagic(10, 10, 75, 3f, 45, 45, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
 			Item.noUseGraphic = true;
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;

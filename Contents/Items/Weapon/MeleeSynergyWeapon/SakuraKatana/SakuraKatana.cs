@@ -1,21 +1,24 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SakuraKatana;
 internal class SakuraKatana : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushSetDefault(48, 92, 48, 6f, 20, 20, ItemUseStyleID.Swing, true);
+		Item.DamageType = DamageClass.Melee;
+		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+			meleeItem.SwingType = BossRushUseStyle.Poke;
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 		base.OnHitNPCSynergy(player, modplayer, target, hit, damageDone);
 	}
 	public override void MeleeEffects(Player player, Rectangle hitbox) {
-		Gore gore = Gore.NewGoreDirect(player.GetSource_ItemUse(Item), hitbox.TopLeft(), Vector2.Zero, GoreID.TreeLeaf_VanityTreeSakura, Main.rand.NextFloat(.75f, 1.1f));
-		gore.velocity = Main.rand.NextVector2Circular(10, 10);
 	}
 }
 public class SakuraLeaf_Projectile : SynergyModProjectile {

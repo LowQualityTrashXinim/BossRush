@@ -34,27 +34,58 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || NPC_SpecialException || !UniversalSystem.Check_RLOH()) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
-		entity.lifeMax = (int)(BossHP * GetValueMulti());
-		entity.damage = (int)(BossDMG * GetValueMulti());
-		entity.defense = (int)(BossDef * GetValueMulti(.5f));
+		if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
+			if (!NPC_SpecialException) {
+				entity.lifeMax = (int)(BossHP * GetValueMulti());
+				entity.damage = (int)(BossDMG * GetValueMulti());
+				entity.defense = (int)(BossDef * GetValueMulti(.5f));
+			}
+		}
+		else {
+			float adjustment = 1;
+			if (Main.expertMode)
+				adjustment = 1.5f;
+			else if (Main.masterMode)
+				adjustment = 2;
+
+			entity.lifeMax += (int)(entity.lifeMax / adjustment * GetValueMulti() * .1f);
+			entity.life = entity.lifeMax;
+			entity.damage += (int)(entity.damage / adjustment * GetValueMulti() * .1f);
+			entity.defense += (int)(entity.defense / adjustment * GetValueMulti(.5f) * .1f);
+		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || NPC_SpecialException || !UniversalSystem.Check_RLOH()) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
-		float adjustment = 1;
-		if (Main.expertMode)
-			adjustment = 1.5f;
-		else if (Main.masterMode)
-			adjustment = 2;
+		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye) {
+			if (!NPC_SpecialException) {
+				float adjustment = 1;
+				if (Main.expertMode)
+					adjustment = 1.5f;
+				else if (Main.masterMode)
+					adjustment = 2;
 
-		npc.lifeMax = (int)(BossHP / adjustment * GetValueMulti());
-		npc.life = npc.lifeMax;
-		npc.damage = (int)(BossDMG / adjustment * GetValueMulti());
-		npc.defense = (int)(BossDef / adjustment * GetValueMulti(.5f));
+				npc.lifeMax = (int)(BossHP / adjustment * GetValueMulti());
+				npc.life = npc.lifeMax;
+				npc.damage = (int)(BossDMG / adjustment * GetValueMulti());
+				npc.defense = (int)(BossDef / adjustment * GetValueMulti(.5f));
+			}
+		}
+		else {
+			float adjustment = 1;
+			if (Main.expertMode)
+				adjustment = 1.5f;
+			else if (Main.masterMode)
+				adjustment = 2;
+			npc.lifeMax += (int)(npc.lifeMax / adjustment * GetValueMulti() * .1f);
+			npc.life = npc.lifeMax;
+			npc.damage += (int)(npc.damage / adjustment * GetValueMulti() * .1f);
+			npc.defense += (int)(npc.defense / adjustment * GetValueMulti(.5f) * .1f);
+		}
 	}
 	public float GetValueMulti(float scale = 1) {
 		float extraMultiply = 0;

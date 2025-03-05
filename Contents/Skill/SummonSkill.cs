@@ -3,6 +3,7 @@ using BossRush.Contents.Projectiles;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Skill;
 
@@ -117,5 +118,45 @@ public class PhoenixBlazingTornado : ModSkill {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), 120, 0, player.whoAmI);
 		}
+	}
+}
+
+public class DebugCommand : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 777;
+		Skill_Duration = BossRushUtils.ToSecond(10);
+		Skill_CoolDown = BossRushUtils.ToSecond(60);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 2500);
+		foreach (NPC npc in npclist) {
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(2000, BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+		}
+	}
+}
+
+public class LucidNightmares : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 450;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		for (int i = 0; i < 3; i++) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), 53, 0, player.whoAmI);
+		}
+	}
+}
+
+public class SacrificialWormhole : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 150;
+		Skill_Duration = BossRushUtils.ToSecond(14);
+		Skill_CoolDown = BossRushUtils.ToSecond(30);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 	}
 }

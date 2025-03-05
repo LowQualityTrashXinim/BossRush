@@ -334,6 +334,7 @@ Mods: {
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 			FairFrozenMinion.DisplayName: Fair Frozen Minion
 			SpaceGuyProjectile.DisplayName: Space Guy Projectile
+			NightmaresProjectile.DisplayName: Nightmares Projectile
 		}
 
 		NPCs: {

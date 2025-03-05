@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -11,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedBoomerang);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(38, 72, 17, 5f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
+			Item.BossRushDefaultRange(38, 72, 13, 5f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
 			Item.crit = 6;
 			Item.scale = 0.5f;
 			Item.noUseGraphic = true;
@@ -69,6 +70,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 				if (Projectile.ai[0] == 0)
 					Projectile.ai[0] = Main.rand.NextBool().ToDirectionInt();
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
+				MaxLengthX = Math.Clamp(MaxLengthX, 300, 500);
 				maxProgress += (int)(MaxLengthX * .05f);
 				progression = maxProgress;
 				MouseXPosDirection = (int)Projectile.ai[0] * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);

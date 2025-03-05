@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 			Item.UseSound = SoundID.Item1;
 
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-				meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
+				meleeItem.SwingType = BossRushUseStyle.Swipe;
 		}
 		int switchProj = 0;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {

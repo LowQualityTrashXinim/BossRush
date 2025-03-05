@@ -214,6 +214,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (UniversalSystem.EnchantingState) {
 				return;
 			}
+			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
 			int index = tooltips.FindIndex(t => t.Name == "CritChance");
 			if (index != -1) {
 				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));

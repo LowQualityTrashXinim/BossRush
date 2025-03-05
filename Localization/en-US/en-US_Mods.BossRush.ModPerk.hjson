@@ -371,7 +371,7 @@ AspectOfTheUnderworld: {
 		'''
 		+ You have a aura of fire and you become immune to on fire
 		+ Enemy that have On Fire debuff will receive more critical damage
-		- While your life is above 66%, decreases life regen by 32 flat but your aura of fire is stronger
+		- While your life is above 66%, decreases life regen by 32 but your aura of fire is stronger
 		'''
 }
 

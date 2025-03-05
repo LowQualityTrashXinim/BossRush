@@ -1,13 +1,13 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.DataStructures;
-using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
@@ -31,48 +31,33 @@ public class MythrilBeamSword : SynergyModItem {
 	}
 
 }
-public class MythrilBeam : SynergyModProjectile 
-{
-
+public class MythrilBeam : SynergyModProjectile {
 	bool retargeting = false;
-
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;
 	}
-
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.SwordBeam);
-
-
 	public override void SetDefaults() {
 		Projectile.CloneDefaults(ProjectileID.SwordBeam);
 		Projectile.aiStyle = -1;
 
 	}
-
 	public override void OnSpawn(IEntitySource source) {
 		retargeting = false;
 		Projectile.FillProjectileOldPosAndRot();
 	}
-
 	public override bool PreDraw(ref Color lightColor) {
-
-
-		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.SwordBeam];
 		Main.instance.LoadProjectile(ProjectileID.SwordBeam);
-
+		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.SwordBeam];
+		Vector2 origin = texture.Size() * .5f;
 		if (!retargeting) {
-
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
 			default(BeamTrail).Draw(Projectile, Color.Yellow, texture.Size() / 2f);
-
-
 		}
 		else {
-
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
 			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed, texture.Size() / 2f);
-
 		}
 
 		return false;
@@ -95,7 +80,6 @@ public class MythrilBeam : SynergyModProjectile
 			if (!Projectile.velocity.IsLimitReached(20) && Projectile.ai[0] < 25) Projectile.velocity += localOriginalvelocity;
 		}
 	}
-
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		Projectile.ai[0]++;
 		Projectile.rotation = Projectile.velocity.ToRotation();
