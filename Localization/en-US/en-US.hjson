@@ -335,6 +335,7 @@ Mods: {
 			FairFrozenMinion.DisplayName: Fair Frozen Minion
 			SpaceGuyProjectile.DisplayName: Space Guy Projectile
 			NightmaresProjectile.DisplayName: Nightmares Projectile
+			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
 		}
 
 		NPCs: {
@@ -2849,6 +2850,11 @@ Mods: {
 			FairFrozenModbuff: {
 				DisplayName: Fair Frozen Modbuff
 				Description: Mods.BossRush.Buffs.FairFrozenModbuff.Description
+			}
+
+			LifeLoss: {
+				DisplayName: Life Loss
+				Description: Mods.BossRush.Buffs.LifeLoss.Description
 			}
 		}
 

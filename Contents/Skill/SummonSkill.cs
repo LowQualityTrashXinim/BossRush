@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 
 namespace BossRush.Contents.Skill;
 
@@ -158,5 +159,8 @@ public class SacrificialWormhole : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
+			ModContent.ProjectileType<SacrificialWormholeProjectile>(), 53, 0, player.whoAmI);
+		player.AddBuff<LifeLoss>(BossRushUtils.ToSecond(60));
 	}
 }

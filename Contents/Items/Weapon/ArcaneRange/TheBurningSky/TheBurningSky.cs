@@ -23,16 +23,18 @@ internal class BurningSky : SynergyModItem {
 		SoundEngine.PlaySound(Item.UseSound);
 		Vector2 newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 		Vector2 vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-		Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
+		int arrow = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
+		Main.projectile[arrow].extraUpdates += 1;
 		if (Main.rand.NextBool(9)) {
 			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-			Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage * 2, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
+			int proj = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage * 2, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
 		}
 		if (Main.rand.NextBool(5)) {
 			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-			Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), ProjectileID.HellfireArrow, (int)(damage * 1.2f), knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
+			int meteor = Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), ProjectileID.HellfireArrow, (int)(damage * 1.2f), knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
+			Main.projectile[meteor].extraUpdates += 1;
 		}
 	}
 	public override void AddRecipes() {
