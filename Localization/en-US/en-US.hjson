@@ -2252,8 +2252,20 @@ Mods: {
 			}
 
 			Annihiliation: {
-				DisplayName: Annihiliation
-				Tooltip: ""
+				DisplayName: The Horizon: Annihiliation
+				Tooltip:
+					'''
+					Belong to the most fearsome, recommend pampering
+					Not shooting for a while will grant you [c/8715d2:Epilogue: Ishbóshet]
+					'''
+				ExtraInfo:
+					'''
+					[c/8715d2:Epilogue: Ishbóshet]
+					300% critical strike damage
+					100% attack speed
+					Attack ignore all defense
+					Only applied to The Horizon: Annihiliation
+					'''
 			}
 
 			SkillSlotUnlock: {
@@ -2849,12 +2861,17 @@ Mods: {
 
 			FairFrozenModbuff: {
 				DisplayName: Fair Frozen Modbuff
-				Description: Mods.BossRush.Buffs.FairFrozenModbuff.Description
+				Description: ...
 			}
 
 			LifeLoss: {
 				DisplayName: Life Loss
-				Description: Mods.BossRush.Buffs.LifeLoss.Description
+				Description: Halve user maximum life
+			}
+
+			Epilogue_Ishboshet: {
+				DisplayName: Epilogue: Ishboshet
+				Description: Make them fear
 			}
 		}
 

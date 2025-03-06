@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.Systems;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -6,21 +7,68 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 internal class Annihiliation : SynergyModItem {
-	public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 33, 3f, 2, 6, ItemUseStyleID.Shoot, ModContent.ProjectileType<AnnihiliationBullet>(), 20f, true, AmmoID.Bullet);
-
+		Item.BossRushDefaultRange(138, 36, 33, 3f, 2, 6, ItemUseStyleID.Shoot, ModContent.ProjectileType<AnnihiliationBullet>(), 20f, true, AmmoID.Bullet);
+		Item.scale = .87f;
+		Item.UseSound = SoundID.Item38 with {
+			Pitch = 1f
+		};
+		Item.Set_InfoItem();
+	}
+	public override Vector2? HoldoutOffset() {
+		return new(-30, 0);
+	}
+	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+		if (!player.ItemAnimationActive) {
+			modplayer.Annihiliation_Counter++;
+			if (modplayer.Annihiliation_Counter >= 360) {
+				player.AddBuff<Epilogue_Ishboshet>(BossRushUtils.ToSecond(5));
+			}
+		}
+		else {
+			modplayer.Annihiliation_Counter = 0;
+		}
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		velocity = velocity.Vector2RotateByRandom(6) * .1f;
+		velocity = velocity * .1f;
 		type = Item.shoot;
+		position = position.PositionOFFSET(velocity, 90);
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(3), type, damage, knockback, player.whoAmI);
+		CanShootItem = false;
+	}
+	public override void AddRecipes() {
+		CreateRecipe()
+			.AddIngredient(ItemID.ChainGun)
+			.AddIngredient(ItemID.TrueNightsEdge)
+			.Register();
+	}
+}
+public class Epilogue_Ishboshet : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override bool ReApply(Player player, int time, int buffIndex) {
+		player.buffTime[buffIndex] = time;
+		return true;
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		for (int i = 0; i < 2; i++) {
+			Dust dust = Dust.NewDustDirect(player.position, player.width, player.height, Main.rand.Next(new int[] { DustID.Shadowflame, DustID.Wraith, DustID.DemonTorch }));
+			dust.noGravity = true;
+			dust.velocity = Vector2.UnitY * -Main.rand.NextFloat(10);
+			dust.scale = Main.rand.NextFloat(0.75f, 1.25f);
+		}
+		if (player.HeldItem.type == ModContent.ItemType<Annihiliation>()) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 4);
+			modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 2);
+		}
 	}
 }
 public class AnnihiliationBullet : SynergyModProjectile {
@@ -34,7 +82,7 @@ public class AnnihiliationBullet : SynergyModProjectile {
 		Projectile.friendly = true;
 		Projectile.tileCollide = true;
 		Projectile.timeLeft = BossRushUtils.ToSecond(30);
-		Projectile.extraUpdates = 10;
+		Projectile.extraUpdates = 20;
 		Projectile.penetrate = 12;
 		Projectile.usesLocalNPCImmunity = true;
 		Projectile.localNPCHitCooldown = 20;
@@ -45,10 +93,6 @@ public class AnnihiliationBullet : SynergyModProjectile {
 	public override Color? GetAlpha(Color lightColor) {
 		Color color = Color.White;
 		color.A = 0;
-		int timeleft = 300;
-		if (Projectile.timeLeft > timeleft) {
-			Projectile.timeLeft = timeleft;
-		}
 		//money symbol
 		return color * Projectile.Opacity;
 	}
@@ -65,6 +109,11 @@ public class AnnihiliationBullet : SynergyModProjectile {
 				return;
 			}
 			Projectile.velocity *= .995f;
+		}
+	}
+	public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
+		if (player.HasBuff<Epilogue_Ishboshet>()) {
+			modifiers.ScalingArmorPenetration += 1;
 		}
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
@@ -84,6 +133,7 @@ public class AnnihiliationBullet : SynergyModProjectile {
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.velocity = Vector2.Zero;
 		Projectile.ai[0] = -1;
+		Projectile.timeLeft = 120;
 		return false;
 	}
 	public override bool PreDraw(ref Color lightColor) {
@@ -99,6 +149,6 @@ public class AnnihiliationBullet : SynergyModProjectile {
 			color2.A = 0;
 			Main.EntitySpriteDraw(texture, drawPos, null, color2 * Projectile.Opacity, Projectile.oldRot[k], origin, (Projectile.scale - scaling) * .5f, SpriteEffects.None, 0);
 		}
-		return true;
+		return false;
 	}
 }

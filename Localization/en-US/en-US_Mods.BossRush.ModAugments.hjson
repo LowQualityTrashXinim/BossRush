@@ -155,7 +155,7 @@ AlchemistI: {
 
 AlchemistII: {
 	DisplayName: Alchemist II
-	Description: For each debuff/buff the enemy have, final strike damage are increase by 3% of weapon damage
+	Description: For each debuff/buff the enemy have, +3% damage
 }
 
 Light: {
@@ -175,27 +175,27 @@ Union: {
 
 StrengthenI: {
 	DisplayName: Strengthen I
-	Description: Increases damage by 25% when equiping this item
+	Description: 25% damage
 }
 
 StrengthenII: {
 	DisplayName: Strengthen II
-	Description: Increases critical strike damage by 35% when equiping this item
+	Description: 35% critical strike damage
 }
 
 StrengthenIII: {
 	DisplayName: Strengthen III
-	Description: Increases defenses by 10 when equiping this item
+	Description: 10 defenses
 }
 
 StrengthenIV: {
 	DisplayName: Strengthen IV
-	Description: Increases maximum life by 50 when equiping this item
+	Description: 50 maximum health
 }
 
 StrengthenV: {
 	DisplayName: Strengthen V
-	Description: Increases critical strike chance by 10% when equiping this item
+	Description: 10% critical strike chance
 }
 
 DarkSoul: {

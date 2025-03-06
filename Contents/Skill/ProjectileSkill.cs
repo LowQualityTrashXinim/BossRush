@@ -303,6 +303,40 @@ public class JesterArrowRain : ModSkill {
 		}
 	}
 }
+public class ChaosArrowRain : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 175;
+		Skill_Duration = BossRushUtils.ToSecond(2.5f);
+		Skill_CoolDown = BossRushUtils.ToSecond(7);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 5 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
+		Vector2 position = Main.MouseWorld;
+		position.Y -= 500;
+		position.X += Main.rand.NextFloat(-75, 75);
+		Vector2 vel = Vector2.UnitY * Main.rand.NextFloat(20, 24);
+		int type = Main.rand.Next(TerrariaArrayID.Arrow);
+		if (type == ProjectileID.ShimmerArrow) {
+			vel *= -1;
+			position.Y += 1000;
+		}
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, vel, type, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
+		for (int l = 0; l < 2; l++) {
+			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		}
+	}
+}
+
 public class SpiritBurst : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 210;
@@ -347,7 +381,6 @@ public class Icicle : ModSkill {
 			}
 			Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * (10 + Main.rand.NextFloat(-3, 3));
 			Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
-
 		}
 	}
 }

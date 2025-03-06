@@ -270,7 +270,7 @@ public class PlayerStatsHandle : ModPlayer {
 		AugmentationChance = 0;
 		ItemRangeMultiplier = 1;
 		Reset_ShootRequest();
-		ImmunityContact = 30;
+		ImmunityContact = 15;
 		if (CurrentInContact) {
 			CurrentInContact = false;
 		}
@@ -280,10 +280,25 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public bool CurrentInContact = false;
 	public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot) {
-		if (Player.Hitbox.Intersects(npc.Hitbox) && ImmunityContactCounter <= ImmunityContact) {
-			ImmunityContactCounter += 1;
-			CurrentInContact = true;
-			return false;
+		if (npc.Hitbox.Contains(Player.Hitbox)) {
+			return base.CanBeHitByNPC(npc, ref cooldownSlot);
+		}
+		if (!Player.Hitbox.Intersects(npc.Hitbox)) {
+			return base.CanBeHitByNPC(npc, ref cooldownSlot);
+		}
+		if (Player.Size.X > npc.Size.X && Player.Size.Y > npc.Size.Y) {
+			if (ImmunityContactCounter <= ImmunityContact) {
+				ImmunityContactCounter += 1;
+				CurrentInContact = true;
+				return false;
+			}
+		}
+		else {
+			if (ImmunityContactCounter <= ImmunityContact / 2) {
+				ImmunityContactCounter += 1;
+				CurrentInContact = true;
+				return false;
+			}
 		}
 		return base.CanBeHitByNPC(npc, ref cooldownSlot);
 	}

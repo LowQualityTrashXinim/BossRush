@@ -98,6 +98,11 @@ WoodenArrowRain: {
 	Description: Casts an ambush of Arrows that phases through blocks, dealing 28 damage each
 }
 
+ChaosArrowRain: {
+	DisplayName: Chaos Arrow Rain
+	Description: Rain down random arrow dealing 28 damage each
+}
+
 Increases_3xDamage: {
 	DisplayName: Power Bank
 	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute

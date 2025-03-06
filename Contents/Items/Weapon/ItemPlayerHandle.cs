@@ -22,6 +22,7 @@ using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.Systems.Element;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -134,6 +135,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public int EnergyBlade_Code1_Energy = 0;
 
 		public int StreetLamp_VampireFrogStaff_HitCounter = 0;
+		public int Annihiliation_Counter = 0;
 
 		public int SinisterBook_DemonScythe_Counter = 0;
 
@@ -142,6 +144,10 @@ namespace BossRush.Contents.Items.Weapon {
 		public override void ResetEffects() {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
+
+			if (Player.HeldItem.type != ModContent.ItemType<Annihiliation>()) {
+				Annihiliation_Counter = 0;
+			}
 
 			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;

@@ -480,7 +480,7 @@ EndlessHunger: {
 	Description:
 		'''
 		+ Increases your damage reduction by 5%
-		+ When your damage reduction is over 20% and your health is below 50
+		+ When your damage reduction is over 20% and your health is below 50%
 		Getting hit will heal you a random amount
 		(Note : The higher your damage reduction, the better the heal become)
 		'''
