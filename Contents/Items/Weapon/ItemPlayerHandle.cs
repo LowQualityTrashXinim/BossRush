@@ -253,8 +253,8 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {
-				if (!moddedplayer.Hold_Shift) {
-					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Hold shift for more infomation]") { OverrideColor = Color.Gray });
+				if (!moddedplayer.Press_Shift) {
+					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
 			if (item.accessory && LostAccessories) {
@@ -274,7 +274,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null)
-				if (moddedplayer.Hold_Shift) {
+				if (moddedplayer.Press_Shift) {
 					float width;
 					float height = -16;
 					Vector2 pos;

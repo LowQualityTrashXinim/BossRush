@@ -33,6 +33,8 @@ namespace BossRush.Common.General {
 		public bool ItemIsUsedDuringBossFight = false;
 
 		public bool Hold_Shift = false;
+		public bool Press_Shift = false;
+		public bool Pressed_Shift = false;
 		private Item starterItem = null;
 		public bool UseOnly1ItemSinceTheStartOfTheGame(int type = 0) {
 			if (starterItem == null) {
@@ -49,7 +51,18 @@ namespace BossRush.Common.General {
 			return true;
 		}
 		public override void ProcessTriggers(TriggersSet triggersSet) {
-			Hold_Shift = triggersSet.SmartSelect;
+			if (Main.playerInventory) {
+				Hold_Shift = triggersSet.SmartSelect;
+				if (triggersSet.SmartSelect) {
+					if (!Pressed_Shift) {
+						Press_Shift = !Press_Shift;
+					}
+					Pressed_Shift = true;
+				}
+				else {
+					Pressed_Shift = false;
+				}
+			}
 		}
 		public override void OnEnterWorld() {
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {

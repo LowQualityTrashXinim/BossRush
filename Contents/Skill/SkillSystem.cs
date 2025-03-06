@@ -735,6 +735,12 @@ class btn_SkillSlotSelection : UIImage {
 		}
 		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().ChangeHolder(SelectionIndex);
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		if (SelectionIndex != Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().CurrentActiveIndex) {
 			Color = new Color(255, 255, 255, 100);
@@ -763,6 +769,9 @@ class btn_SkillDeletion : UIImage {
 		}
 	}
 	public override void Update(GameTime gameTime) {
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (IsMouseHovering) {
 			Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Delete"));
 		}
