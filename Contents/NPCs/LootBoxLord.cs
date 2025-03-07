@@ -23,7 +23,7 @@ namespace BossRush.Contents.NPCs {
 			NPCID.Sets.NeedsExpertScaling[Type] = false;
 		}
 		public override void SetDefaults() {
-			NPC.lifeMax = 24000;
+			NPC.lifeMax = 54000;
 			NPC.damage = 150;
 			NPC.defense = 50;
 			NPC.width = 38;
@@ -88,7 +88,7 @@ namespace BossRush.Contents.NPCs {
 			else
 				adjustment = 2;
 
-			NPC.lifeMax = (int)(24000 / adjustment);
+			NPC.lifeMax = (int)(54000 / adjustment);
 			NPC.life = NPC.lifeMax;
 			NPC.damage = (int)(150 / adjustment);
 			NPC.defense = (int)(50 / adjustment);

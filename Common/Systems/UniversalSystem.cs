@@ -18,26 +18,20 @@ using BossRush.Contents.Skill;
 using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Common.ChallengeMode;
-using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Input;
 using Terraria.GameContent.UI.States;
 using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
-using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Contents.Transfixion.Arguments;
-using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
-using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Common.Systems;
@@ -484,9 +478,9 @@ internal class UniversalSystem : ModSystem {
 	public string WorldState = "";
 	public override void OnWorldUnload() {
 		WorldState = "Exited";
-		timeBeatenTheGame = TimeSpan.Zero;
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.DeactivateUI();
+		timeBeatenTheGame = TimeSpan.Zero;
 	}
 }
 public class TimeSerializer : TagSerializer<TimeSpan, TagCompound> {
@@ -530,7 +524,6 @@ public class UniversalModPlayer : ModPlayer {
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
-		uiSystemInstance.timeBeatenTheGame = TimeSpan.Zero;
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
 			WarnAlready = 1;
 		}

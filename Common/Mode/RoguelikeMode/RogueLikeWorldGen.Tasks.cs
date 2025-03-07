@@ -250,7 +250,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
-	public void re_GenerateDungeon() {
+	public void Re_GenerateDungeon() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 3, 4, 4);
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			ImageData template;
@@ -303,6 +303,36 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		Biome.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
 		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateJungle() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(10, 12, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Mud, WallID.MudUnsafe, BiomeAreaID.Jungle, "");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateTundra() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 8, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.IceBlock, WallID.IceUnsafe, BiomeAreaID.Tundra, "");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateDesert() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 8, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Sandstone, WallID.Sandstone, BiomeAreaID.Desert, "");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateGlowingMushroom() {
+
+	}
+	[Task]
+	public void Re_GenerateGranite() {
+
+	}
+	[Task]
+	public void Re_GenerateMarble() {
+
 	}
 	public void Generate_Trial(int X, int Y) {
 		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");

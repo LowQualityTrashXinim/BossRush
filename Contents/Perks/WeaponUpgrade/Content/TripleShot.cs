@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Skill;
 using BossRush.Common.Utils;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class TripletShot_GlobalItem : GlobalItem {
@@ -38,6 +39,8 @@ public class TripletShot : Perk {
 ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
 				ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow,
 		};
-		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
+		int weapon = Main.rand.Next(Orestaff);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), weapon);
+		LootBoxBase.AmmoForWeapon(player, weapon);
 	}
 }

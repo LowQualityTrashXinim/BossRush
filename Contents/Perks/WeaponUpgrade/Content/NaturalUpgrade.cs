@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Perks;
+﻿using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
@@ -116,6 +117,8 @@ public class NaturalUpgrade : Perk {
 		ItemID.ShadewoodBow,
 		ItemID.PearlwoodBow,
 		};
-		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
+		int weaponType = Main.rand.Next(Orestaff);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), weaponType);
+		LootBoxBase.AmmoForWeapon(player, weaponType);
 	}
 }

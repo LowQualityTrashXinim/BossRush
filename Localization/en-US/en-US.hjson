@@ -2334,6 +2334,16 @@ Mods: {
 				DisplayName: Tile Position
 				Tooltip: ""
 			}
+
+			TheUnderdog: {
+				DisplayName: The Underdog
+				Tooltip: ""
+			}
+
+			BlueMinishark: {
+				DisplayName: Blue Minishark
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

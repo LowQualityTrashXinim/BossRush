@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Common.Systems;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class HunterInstinct_GlobalItem : GlobalItem {
@@ -94,6 +95,8 @@ public class HunterInstinct : Perk {
 		ItemID.GoldAxe,
 		ItemID.PlatinumAxe
 		};
-		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
+		int weapontype = Main.rand.Next(Orestaff);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), weapontype);
+		LootBoxBase.AmmoForWeapon(player, weapontype);
 	}
 }

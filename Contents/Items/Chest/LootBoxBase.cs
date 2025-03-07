@@ -781,9 +781,19 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		/// <summary>
+		/// Use this if you only care about getting ammo for weapon
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="weapon"></param>
+		/// <param name="AmountModifier"></param>
+		public static void AmmoForWeapon(Player player, int weapon, float AmountModifier = 1) {
+			LootBoxBase.AmmoForWeapon(BossRushModSystem.ListLootboxType.FirstOrDefault(), player, weapon, AmountModifier);
+		}
+		/// <summary>
 		/// Automatically quick drop player ammo item accordingly to weapon ammo type
 		/// </summary>
-		/// /// <param name="player">The player</param>
+		/// <param name="lootbox">The id of lootbox</param>
+		/// <param name="player">The player</param>
 		/// <param name="weapon">Weapon need to be checked</param>
 		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
 		public static void AmmoForWeapon(int lootbox, Player player, int weapon, float AmountModifier = 1) {
