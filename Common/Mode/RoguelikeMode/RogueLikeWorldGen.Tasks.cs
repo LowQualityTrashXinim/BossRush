@@ -244,14 +244,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
-	public void Re_GenerateFrost() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 5, 4, 4);
+	public void Re_GenerateForest() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(9, 6, 3, 7);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Dirt, WallID.Dirt, BiomeAreaID.Forest, "");
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateDungeon() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 3, 4, 4);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(20, 6, 3, 7);
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			ImageData template;
 			IsUsingHorizontal = ++count % 2 == 0;
@@ -305,20 +305,74 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
+	public void Re_GenerateBeeHive() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 8, 2, 2);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest, "");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
 	public void Re_GenerateJungle() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(10, 12, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Mud, WallID.MudUnsafe, BiomeAreaID.Jungle, "");
+		rect = GenerationHelper.GridPositionInTheWorld24x24(3, 6, 6, 6);
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Mud;
+		ushort wallID = WallID.MudUnsafe;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					if (rect.Contains(x, y) && !Biome[BiomeAreaID.BeeNest].Where(r => r.Contains(x, y)).Any()) {
+						t.Tile_Type = tileID;
+						t.Tile_WallData = wallID;
+						GenerationHelper.Structure_PlaceTile(x, y, t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					if (rect.Contains(x, y) && !Biome[BiomeAreaID.BeeNest].Where(r => r.Contains(x, y)).Any()) {
+						t.Tile_Type = tileID;
+						t.Tile_WallData = wallID;
+						GenerationHelper.Structure_PlaceTile(x, y, t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		if (Biome.ContainsKey(BiomeAreaID.Jungle)) {
+			Biome[BiomeAreaID.Jungle].Add(rect);
+		}
+		else {
+			Biome.Add(BiomeAreaID.Jungle, new List<Rectangle> { rect });
+		}
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateTundra() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 8, 3, 3);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 4, 4, 6);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.IceBlock, WallID.IceUnsafe, BiomeAreaID.Tundra, "");
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateDesert() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 8, 3, 3);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(9, 13, 3, 5);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Sandstone, WallID.Sandstone, BiomeAreaID.Desert, "");
 		ResetTemplate_GenerationValue();
 	}
