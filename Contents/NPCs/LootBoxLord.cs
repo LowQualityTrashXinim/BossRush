@@ -244,6 +244,14 @@ namespace BossRush.Contents.NPCs {
 			NPC.velocity = Vector2.Zero;
 		}
 		private void ShootShortSword() {
+			if (Main.expertMode || Main.masterMode) {
+				Expert_ShortSwordAttack();
+			}
+			else {
+				Normal_ShortSwordAttack();
+			}
+		}
+		private void Normal_ShortSwordAttack() {
 			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1, 30)) {
 				return;
 			}
@@ -252,6 +260,20 @@ namespace BossRush.Contents.NPCs {
 				BossDamagePercentage(.75f), 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+			NPC.ai[2]++;
+		}
+		private void Expert_ShortSwordAttack() {
+			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1, 30)) {
+				return;
+			}
+			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
+			for (int i = 0; i < 2; i++) {
+				bool vecChange = i == 0;
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec * vecChange.ToDirectionInt(), ModContent.ProjectileType<ShortSwordAttackOne>(),
+					BossDamagePercentage(.75f), 2, NPC.target);
+				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
+					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
+			}
 			NPC.ai[2]++;
 		}
 		private void ShootShortSword2() {
@@ -274,7 +296,7 @@ namespace BossRush.Contents.NPCs {
 			Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
 			NPC.ai[2]++;
 		}
-		private void ShootBroadSword() {
+		private void Normal_BroadSwordAttack1() {
 			if (BossDelayAttack(30, 0, TerrariaArrayID.AllOreShortSword.Length - 1)) {
 				return;
 			}
@@ -286,6 +308,28 @@ namespace BossRush.Contents.NPCs {
 				swordProj.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)NPC.ai[2]];
 			}
 			NPC.ai[2]++;
+		}
+		private void Expert_BroadSwordAttack1() {
+			if (BossDelayAttack(30, 0, TerrariaArrayID.AllOreShortSword.Length - 1)) {
+				return;
+			}
+			for (int i = 0; i < 3; i++) {
+				Vector2 vec = Main.rand.NextVector2Circular(35, 35);
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), BossDamagePercentage(.85f), 2, NPC.target);
+				if (Main.projectile[proj].ModProjectile is SwordBroadAttackOne swordProj) {
+					swordProj.SetNPCOwner(NPC.whoAmI);
+					swordProj.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)NPC.ai[2]];
+				}
+			}
+			NPC.ai[2]++;
+		}
+		private void ShootBroadSword() {
+			if (Main.expertMode || Main.masterMode) {
+				Expert_BroadSwordAttack1();
+			}
+			else {
+				Normal_BroadSwordAttack1();
+			}
 		}
 		private void ShootBroadSword2() {
 			NPC.ai[0] = 0;
@@ -674,14 +718,10 @@ namespace BossRush.Contents.NPCs {
 				}
 				if (!AiChange) {
 					Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 15;
+					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 					Projectile.timeLeft = 150 + (int)(player.Center - Projectile.Center).Length();
 					AiChange = !AiChange;
 				}
-				else {
-					Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
-					Projectile.velocity = Projectile.velocity.LimitedVelocity(15);
-				}
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			}
 		}
 	}

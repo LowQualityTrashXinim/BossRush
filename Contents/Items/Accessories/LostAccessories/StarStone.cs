@@ -21,6 +21,9 @@ internal class StarStone : ModItem {
 }
 class StarStonePlayer : ModPlayer {
 	public bool StarStone = false;
+	public override void ResetEffects() {
+		StarStone = false;
+	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (StarStone && Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
 			Vector2 rotate = (Vector2.UnitX * 125).RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(90)));
@@ -33,6 +36,6 @@ class StarStonePlayer : ModPlayer {
 				Main.projectile[proj].tileCollide = false;
 			}
 		}
-		return base.Shoot(item,source, position, velocity, type, damage, knockback);
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 }

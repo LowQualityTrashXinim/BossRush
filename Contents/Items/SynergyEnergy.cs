@@ -34,6 +34,9 @@ namespace BossRush.Contents.Items {
 			if(item.ModItem is SynergyModItem) {
 				IsTheItemInQuestionASynergyItem = true;
 			}
+			else {
+				IsTheItemInQuestionASynergyItem = false;
+			}
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
