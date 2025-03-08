@@ -13,9 +13,6 @@ internal class RoguelikePrefix : GlobalItem {
 		return base.PrefixChance(item, pre, rand);
 	}
 	public override bool AllowPrefix(Item item, int pre) {
-		if (pre == PrefixID.Legendary || pre == PrefixID.Legendary2 || pre == PrefixID.Mythical || pre == PrefixID.Unreal) {
-			return Main.rand.NextBool(10);
-		}
 		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_PREFIX)) {
 			if (pre == PrefixID.Hard || pre == PrefixID.Guarding || pre == PrefixID.Armored ||
 				pre == PrefixID.Precise ||

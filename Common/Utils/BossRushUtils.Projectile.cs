@@ -16,6 +16,7 @@ namespace BossRush {
 			}
 			return false;
 		}
+		[Obsolete]
 		public static void SpawnHostileProjectile(Vector2 position, Vector2 velocity, int ProjectileType, int damage, float knockback) {
 			int projectile = Projectile.NewProjectile(null, position, velocity, ProjectileType, damage, knockback);
 			Main.projectile[projectile].hostile = true;
