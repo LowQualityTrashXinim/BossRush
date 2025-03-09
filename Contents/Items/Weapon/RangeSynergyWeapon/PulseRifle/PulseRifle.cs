@@ -5,14 +5,24 @@ using Terraria.DataStructures;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
+	public override void Synergy_SetStaticDefaults() {
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle);
+	}
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		Item.BossRushDefaultRange(94, 34, 34, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
 		Item.scale = .78f;
 		Item.UseSound = SoundID.Item75 with { Pitch = 1 };
+	}
+	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SniperRifle)) {
+			tooltips.Add(new(Mod, "PulseRifle_SniperRifle", $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor"));
+		}
 	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-20, 0);
@@ -20,6 +30,13 @@ internal class PulseRifle : SynergyModItem {
 	public int Counter = 0;
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = ProjectileID.PulseBolt;
+	}
+	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SniperRifle)) {
+			PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+			statplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2);
+			statplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 20);
+		}
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		Counter++;
@@ -40,6 +57,13 @@ internal class PulseRifle : SynergyModItem {
 			.AddIngredient(ItemID.PulseBow)
 			.AddIngredient(ItemID.Megashark)
 			.Register();
+	}
+}
+public class PulseRifle_ModPlayer : ModPlayer {
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.type == ProjectileID.PulseBolt && proj.Check_ItemTypeSource(ModContent.ItemType<PulseRifle>()) && SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<PulseRifle>(), ItemID.SniperRifle)) {
+			modifiers.ScalingArmorPenetration += 1;
+		}
 	}
 }
 public class PulseHomingProjectile : SynergyModProjectile {

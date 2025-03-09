@@ -332,10 +332,16 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override sealed void ModifyWeaponCrit(Player player, ref float crit) {
+			Synergy_ModifyWeaponCrit(player, ref crit);
+			if (!player.HasPerk<UntappedPotential>()) {
+				return;
+			}
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
 			crit += 4 * modplayer.SynergyBonus;
 		}
+		public virtual void Synergy_ModifyWeaponCrit(Player player, ref float crit) { }
 		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+			Synergy_ModifyWeaponDamage(player, ref damage);
 			if (!player.HasPerk<UntappedPotential>()) {
 				return;
 			}
@@ -360,6 +366,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			damage += damageIncreasement;
 		}
+		public virtual void Synergy_ModifyWeaponDamage(Player player, ref StatModifier damage) { }
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
 			base.HoldItem(player);
@@ -376,7 +383,7 @@ namespace BossRush.Contents.Items.Weapon {
 			//Very funny that hold item happen after ModifyWeaponDamage
 			//This probably will tank our mod performance, but well, it is what it is
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-			if (player.HeldItem == Item && !modplayer.SynergyBonusBlock) {
+			if (player.HeldItem == Item) {
 				HoldSynergyItem(player, modplayer);
 			}
 			SynergyUpdateInventory(player, modplayer);

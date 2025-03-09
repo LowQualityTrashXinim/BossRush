@@ -580,13 +580,15 @@ AquaScepter.Description:
 	'''
 WeatherPain.Description:
 	'''
-	Increases mana cost by 11% but enemy hit by magic projectile receive 12% more damage
-	If there are no Hurtnado active then shoot out Hurtnado with short live time ( this do not stack )
+	Increases mana cost by 11% 
+	Enemy hit by magic projectile take 12% more damage and ingore 10 defense Hurtnado
+	Have 5% to spawm a short lives Hurtnado at where your magic projectile hit
 	'''
 FlowerOfFire.Description:
 	'''
 	Increases damage by 27% when hitting a enemy on fire
-	Every 2nd shot, shoot out a fire ball
+	Every 5th shot, shoot out a fire ball
+	Consume 5 mana to increases fire ball damage
 	'''
 SkyFacture.Description:
 	'''
@@ -596,9 +598,9 @@ SkyFacture.Description:
 	'''
 CrystalSerpent.Description:
 	'''
-	Increases magic damage by 22%
-	Shooting will create crystal charge fly toward cursor
-	Hitting a enemy will create crystal charge fly toward enemy
+	Increases magic damage by 19% and increases mana cost by 15%
+	Have 10% to spawm a crystal serpant near enemy that stay for short while
+	Magical weapon will shoot crystal pulse
 	'''
 BabyBirdStaff.Description:
 	'''

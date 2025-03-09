@@ -7,6 +7,8 @@ using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.Systems;
 using BossRush.Common.RoguelikeChange;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -545,12 +547,14 @@ class WeatherPain : ModEnchantment {
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.DamageType == DamageClass.Magic) {
 			modifiers.SourceDamage += .12f;
+			modifiers.ArmorPenetration += 10;
 		}
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (player.ownedProjectileCounts[ProjectileID.WeatherPainShot] < 1 && player.ItemAnimationActive) {
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.WeatherPainShot, item.damage, item.knockBack, player.whoAmI);
-			Main.projectile[proj].timeLeft = 120;
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(20)) {
+			Item item = player.HeldItem;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.WeatherPainShot, item.damage, item.knockBack, player.whoAmI);
+			Main.projectile[projectile].timeLeft = 120;
 		}
 	}
 }
@@ -559,7 +563,10 @@ class FlowerOfFire : ModEnchantment {
 		ItemIDType = ItemID.FlowerofFire;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (++globalItem.Item_Counter1[index] >= 2) {
+		if (++globalItem.Item_Counter1[index] >= 5) {
+			if (player.CheckMana(5, true, true)) {
+				damage += 20;
+			}
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.BallofFire, damage, knockback, player.whoAmI);
 			globalItem.Item_Counter1[index] = 0;
 		}
@@ -607,28 +614,98 @@ public class CrystalSerpent : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.CrystalSerpent;
 	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi += .15f;
+	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MagicDMG, 1.22f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MagicDMG, 1.19f);
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (globalItem.Item_Counter1[index] <= 0) {
+		if (globalItem.Item_Counter1[index] <= 0 && item.DamageType == DamageClass.Magic) {
 			globalItem.Item_Counter1[index] = 42;
 			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, Main.rand.NextBool() ? ProjectileID.CrystalPulse : ProjectileID.CrystalPulse2, 30 + item.damage, item.knockBack, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.CrystalPulse, 30 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			return;
+		}
+		if (Main.rand.NextBool(10)) {
+			Item item = player.HeldItem;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 60;
-			int amount = Main.rand.Next(1, 4);
-			for (int i = 0; i < amount; i++) {
-				Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
-				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, Main.rand.NextBool() ? ProjectileID.CrystalPulse : ProjectileID.CrystalPulse2, 30 + item.damage, item.knockBack, player.whoAmI);
+		if (Main.rand.NextBool(10)) {
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+}
+public class CrystalSerpentProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CrystalSerpent);
+	public override void SetDefaults() {
+		Projectile.width = 40;
+		Projectile.height = 48;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.timeLeft = 300;
+		Projectile.penetrate = 1;
+	}
+	public override bool? CanDamage() {
+		return false;
+	}
+	int TimeLeft = 300;
+	NPC npc = null;
+	Vector2 StandingPosition = Vector2.Zero;
+	bool OneTimeTimeLeftReset = true;
+	public override void AI() {
+		if (++Projectile.ai[1] <= 1) {
+			for (int i = 0; i < 50; i++) {
+				Dust dust1 = Dust.NewDustDirect(Projectile.Center, 0, 0, Main.rand.NextBool() ? DustID.CrystalPulse : DustID.CrystalPulse2);
+				dust1.velocity = Main.rand.NextVector2CircularEdge(3, 5) * Main.rand.NextFloat(1, 3);
+				dust1.position += Main.rand.NextVector2Circular(5, 5);
+				dust1.noGravity = true;
 			}
 		}
+		if (npc == null) {
+			if (Projectile.Center.LookForHostileNPC(out NPC npc, 1000)) {
+				this.npc = npc;
+			}
+			return;
+		}
+		else {
+			if (!npc.active || npc.life <= 0) {
+				npc = null;
+				return;
+			}
+		}
+		Projectile.spriteDirection = BossRushUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X);
+		Projectile.rotation = (npc.Center - Projectile.Center).ToRotation();
+		Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 + MathHelper.PiOver2 : MathHelper.PiOver4;
+		Point point = Projectile.position.ToTileCoordinates();
+		if (!WorldGen.TileEmpty(point.X, point.Y) || !Projectile.Center.IsCloseToPosition(npc.Center, 150 + npc.Size.Length())) {
+			Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (npc.Center - Projectile.Center).Length() / 64f;
+			if (OneTimeTimeLeftReset) {
+				Projectile.timeLeft = TimeLeft;
+			}
+		}
+		else {
+			OneTimeTimeLeftReset = false;
+			if (++Projectile.ai[0] >= 45) {
+				Vector2 vel = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(vel, 30), vel * 15, ProjectileID.CrystalPulse, Projectile.damage, Projectile.knockBack, Projectile.owner);
+				Projectile.ai[0] = 0;
+			}
+			Projectile.velocity *= .9f;
+		}
+		Dust dust = Dust.NewDustDirect(Projectile.Center.IgnoreTilePositionOFFSET(
+			(Projectile.rotation + (Projectile.spriteDirection == 1 ? -MathHelper.PiOver4 : -MathHelper.PiOver2 - MathHelper.PiOver4)).ToRotationVector2(), 24), 0, 0, Main.rand.NextBool() ? DustID.CrystalPulse : DustID.CrystalPulse2);
+		dust.velocity = -Vector2.UnitY.Vector2RotateByRandom(3) * Main.rand.NextFloat(1, 3);
+		dust.position += Main.rand.NextVector2Circular(5, 5);
+		dust.noGravity = true;
 	}
 }
 /// <summary>

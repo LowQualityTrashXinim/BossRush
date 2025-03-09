@@ -337,6 +337,7 @@ Mods: {
 			NightmaresProjectile.DisplayName: Nightmares Projectile
 			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
 			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
+			CrystalSerpentProjectile.DisplayName: Crystal Serpent Projectile
 		}
 
 		NPCs: {

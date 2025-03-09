@@ -777,5 +777,6 @@ UntappedPotential: {
 		Synergy bonus value
 		Amount of weapon in player inventory
 		Note : damage is increased base on weapon's damage
+		+ Increases synergy weapon critical strike chance base on synergy bonus
 		'''
 }
