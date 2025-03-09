@@ -116,6 +116,12 @@ namespace BossRush.Common.General {
 				}
 			}
 		}
+		public override bool CanUseItem(Item item) {
+			if(Secret_MrRakan) {
+				return item.DamageType == DamageClass.Ranged || item.DamageType == ModContent.GetInstance<RangeMageHybridDamageClass>();
+			}
+			return base.CanUseItem(item);
+		}
 		public bool Secert_PapyroVer => Player.name == "Papyro" || Player.name == "WhoAmI" || Player.name == "IdentityCrisis" || Player.name == "Dysmorphia";
 		public bool Secert_PototoVer => Player.name == "Pototo" || Player.name == "eatpotato";
 		public bool Secret_MrRakan => Player.name == "MrRakan" || Player.name == "sorrow994";

@@ -23,6 +23,7 @@ using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.Systems.Element;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -335,7 +336,9 @@ namespace BossRush.Contents.Items.Weapon {
 			crit += 4 * modplayer.SynergyBonus;
 		}
 		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
-			return;
+			if (!player.HasPerk<UntappedPotential>()) {
+				return;
+			}
 			float damageIncreasement = 0;
 			float damageMultiplier = 0;
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();

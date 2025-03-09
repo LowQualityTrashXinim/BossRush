@@ -1112,4 +1112,12 @@ namespace BossRush.Contents.Perks {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 	}
+	public class UntappedPotential : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override bool SelectChoosing() {
+			return Main.LocalPlayer.inventory.Where(i => i.ModItem != null && i.ModItem is SynergyModItem).Any();
+		}
+	}
 }

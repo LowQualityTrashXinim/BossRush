@@ -91,6 +91,10 @@ namespace BossRush.Contents.Items.Toggle {
 				text.TextColor = Color.White;
 			}
 		}
+		public void Hide(bool Hide) {
+			text.Hide = Hide;
+			btn.Hide = Hide;
+		}
 		public void SetAlign(float x, float y) {
 			btn.HAlign = x;
 			text.HAlign = x;
@@ -277,6 +281,9 @@ namespace BossRush.Contents.Items.Toggle {
 			var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 			switch (CurrentState) {
 				case 0:
+					foreach (var item in list_info) {
+						item.Hide(false);
+					}
 					// 0 to 17 is default stats
 					if (list_info.Count < 1) {
 						list_info.Add(new(textpanel));
@@ -327,6 +334,9 @@ namespace BossRush.Contents.Items.Toggle {
 					}
 					break;
 				case 1:
+					foreach (var item in list_info) {
+						item.Hide(true);
+					}
 					var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 					var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 					var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
@@ -350,6 +360,9 @@ namespace BossRush.Contents.Items.Toggle {
 					textpanel.SetText(line);
 					break;
 				case 2:
+					foreach (var item in list_info) {
+						item.Hide(true);
+					}
 					var artifactplayer = player.GetModPlayer<ArtifactPlayer>();
 					line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
 					line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";

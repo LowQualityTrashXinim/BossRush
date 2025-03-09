@@ -101,6 +101,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.Transmutation_SuccessChance += .2f;
 			modplayer.DebuffTime += .1f * StackAmount(player);
+			modplayer.DebuffBuffTime -= .1f * StackAmount(player);
 		}
 	}
 }

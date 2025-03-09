@@ -283,6 +283,9 @@ public class PlayerStatsHandle : ModPlayer {
 		if (npc.Hitbox.Contains(Player.Hitbox)) {
 			return base.CanBeHitByNPC(npc, ref cooldownSlot);
 		}
+		if (Player.Hitbox.Contains(npc.Hitbox)) {
+			return base.CanBeHitByNPC(npc, ref cooldownSlot);
+		}
 		if (!Player.Hitbox.Intersects(npc.Hitbox)) {
 			return base.CanBeHitByNPC(npc, ref cooldownSlot);
 		}

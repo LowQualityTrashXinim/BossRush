@@ -764,6 +764,18 @@ AncientKnowledge: {
 	Description:
 		'''
 		+ Increases debuff duration on inflicting enemy by 10%
+		+ Decreases your debuff duration by 10%
 		+ Increases transmutation success by 20% ( not stackable )
+		'''
+}
+
+UntappedPotential: {
+	DisplayName: Untapped Potential
+	Description:
+		'''
+		+ Increases damage of synergy weapon base on 
+		Synergy bonus value
+		Amount of weapon in player inventory
+		Note : damage is increased base on weapon's damage
 		'''
 }

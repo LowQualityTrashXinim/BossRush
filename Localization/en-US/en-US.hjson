@@ -336,6 +336,7 @@ Mods: {
 			SpaceGuyProjectile.DisplayName: Space Guy Projectile
 			NightmaresProjectile.DisplayName: Nightmares Projectile
 			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
+			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
 		}
 
 		NPCs: {
@@ -2327,7 +2328,12 @@ Mods: {
 
 			PulseRifle: {
 				DisplayName: Pulse Rifle
-				Tooltip: ""
+				Tooltip:
+					'''
+					"From the far future, i think"
+					Every 30th shot, shoot out a arch of 4 pulse bolts
+					Have 1 in 5 chance to shoot out a homing pulse dealing 125% of weapon damage
+					'''
 			}
 
 			TilePosition: {
