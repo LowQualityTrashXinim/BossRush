@@ -11,6 +11,9 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 using BossRush.Common.RoguelikeChange;
+using Terraria.ModLoader.IO;
+using BossRush.Common.Systems.ArtifactSystem;
+using System.IO;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -114,6 +117,7 @@ public class PlayerStatsHandle : ModPlayer {
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
 	}
+	public ulong HitByCounter = 0;
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		if (UpdateThorn.ApplyTo(1) > 0) {
 			NPC.HitInfo newhitinfo = new();
@@ -122,6 +126,10 @@ public class PlayerStatsHandle : ModPlayer {
 			newhitinfo.DamageType = DamageClass.Default;
 			Player.StrikeNPCDirect(npc, newhitinfo);
 		}
+		HitByCounter++;
+	}
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		HitByCounter++;
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SourceDamage.CombineWith(DirectItemDamage);
@@ -451,6 +459,43 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			default:
 				break;
+		}
+	}
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+		ModPacket packet = Mod.GetPacket();
+		packet.Write((byte)BossRush.MessageType.PlayerStatsHandle);
+		packet.Write((byte)Player.whoAmI);
+		packet.Write(DPStracker);
+		packet.Write(HitByCounter);
+		packet.Send(toWho, fromWho);
+	}
+
+	public void ReceivePlayerSync(BinaryReader reader) {
+		DPStracker = reader.ReadUInt64();
+		HitByCounter = reader.ReadUInt64();
+	}
+
+	public override void CopyClientState(ModPlayer targetCopy) {
+		PlayerStatsHandle clone = (PlayerStatsHandle)targetCopy;
+		clone.DPStracker = DPStracker;
+		clone.HitByCounter = HitByCounter;
+	}
+
+	public override void SendClientChanges(ModPlayer clientPlayer) {
+		PlayerStatsHandle clone = (PlayerStatsHandle)clientPlayer;
+		if (DPStracker != clone.DPStracker
+			|| HitByCounter != clone.HitByCounter) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["DPSTracker"] = DPStracker;
+		tag["HitByCounter"] = HitByCounter;
+	}
+	public override void LoadData(TagCompound tag) {
+		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
+			this.DPStracker = DPStracker;
+		}
+		if (tag.TryGet("HitByCounter", out ulong HitByCounter)) {
+			this.HitByCounter = HitByCounter;
 		}
 	}
 	public int EliteKillCount = 0;

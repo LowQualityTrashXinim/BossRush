@@ -21,6 +21,14 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 			}
 		}
 
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)BossRush.MessageType.Artifact);
+			packet.Write((byte)Player.whoAmI);
+			packet.Write(ActiveArtifact);
+			packet.Send(toWho, fromWho);
+		}
+
 		public override void SaveData(TagCompound tag) {
 			tag["ActiveArtifact"] = ActiveArtifact;
 		}
