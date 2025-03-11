@@ -58,6 +58,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
+		return;
 		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
@@ -101,7 +102,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (EliteBoss) {
 			extraMultiply += 2;
 		}
-		return (1 + ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count * .5f + extraMultiply) * scale;
+		int counter = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count;
+		return (1 + counter * .5f + extraMultiply) * scale;
 	}
 	public override void ResetEffects(NPC npc) {
 		StatDefense = new();

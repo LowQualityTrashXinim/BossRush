@@ -2362,6 +2362,11 @@ Mods: {
 				DisplayName: Relentless Abomination
 				Tooltip: ""
 			}
+
+			NPCProgressionStatsResetter: {
+				DisplayName: N P C Progression Stats Resetter
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

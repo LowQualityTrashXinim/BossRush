@@ -602,6 +602,12 @@ CrystalSerpent.Description:
 	Have 10% to spawm a crystal serpant near enemy that stay for short while
 	Magical weapon will shoot crystal pulse
 	'''
+FlowerOfFrost.Description:
+	'''
+	Increases damage by 27% when hitting enemy with frost burn
+	Every 5th shot, shoot out a frost ball
+	Consume 5 mana to increases frost ball damage
+	'''
 BabyBirdStaff.Description:
 	'''
 	Spawn elite baby bird to aid you during fight
