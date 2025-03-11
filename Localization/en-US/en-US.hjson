@@ -338,6 +338,12 @@ Mods: {
 			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
 			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
 			CrystalSerpentProjectile.DisplayName: Crystal Serpent Projectile
+			RA_AntlionClaw.DisplayName: R A_ Antlion Claw
+			RA_BatBat.DisplayName: R A_ Bat Bat
+			RA_BeeKeeper.DisplayName: R A_ Bee Keeper
+			RA_BoneSword.DisplayName: R A_ Bone Sword
+			RA_PurpleClubberfish.DisplayName: R A_ Purple Clubberfish
+			RA_ZombieArm.DisplayName: R A_ Zombie Arm
 		}
 
 		NPCs: {
@@ -2351,6 +2357,11 @@ Mods: {
 				DisplayName: Blue Minishark
 				Tooltip: ""
 			}
+
+			RelentlessAbomination: {
+				DisplayName: Relentless Abomination
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2889,6 +2900,11 @@ Mods: {
 			Epilogue_Ishboshet: {
 				DisplayName: Epilogue: Ishboshet
 				Description: Make them fear
+			}
+
+			RA_Rotting: {
+				DisplayName: R A_ Rotting
+				Description: Mods.BossRush.Buffs.RA_Rotting.Description
 			}
 		}
 

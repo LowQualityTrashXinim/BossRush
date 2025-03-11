@@ -647,7 +647,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
 				if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
 					drawdata = drawinfo.DrawDataCache[i];
-					Vector2 size = drawdata.texture.Size() * drawdata.scale.X;
+					float scale = drawdata.scale.X;
+					Vector2 size = drawdata.texture.Size() * scale;
 					Vector2 origin = size * .5f;
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
 						origin = new Vector2(size.X, size.X) * .5f;
@@ -657,8 +658,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					drawdata.rotation = modplayer.CustomItemRotation;
 					if (meleeItem.SwingType == BossRushUseStyle.Swipe) {
 						float rotationCs = player.direction == -1 ? MathHelper.PiOver4 : MathHelper.PiOver2 + MathHelper.PiOver4;
+						float rotationAdjustment = (size.ToRotation() - MathHelper.PiOver4) * -player.direction;
 						drawdata.origin = drawdata.texture.Size() * .5f;
-						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH);
+						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs - rotationAdjustment).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH * scale);
 					}
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
 						drawdata.position +=

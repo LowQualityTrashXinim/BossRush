@@ -12,10 +12,10 @@ StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
 		'''
-		You have 20% to 70% to
-		+ Have your output damage increases when hitting NPC from 15% to 100%
-		+ Damage dealt onto you may be reduce from 15% to dealing 1 damage
-		You have 10% to 90% to dodge a attack which give you 44 to 88 i-frame
+		Your chance range from 20% to 70%
+		+ Your damage increases from 15% to 100% when strike NPC
+		+ Damage dealt onto you may be reduced from 15% to 100%
+		You have 10% to 90% to dodge
 		'''
 }
 
@@ -24,10 +24,10 @@ UncertainStrike: {
 	Description:
 		'''
 		Your strike have
-		+ 33% to increases damage up to 55% or decreases down to 15%
-		+ 15% to ignore 20 defenses
-		+ 5% for damage to be multiply by 2
-		+ 1% to heal player
+		+ 33% chance to vary your damage from -15% to 55%
+		+ 15% chance to ignore 20 defenses
+		+ 5% chance to multiply damage by 2.0x
+		+ 1% chance to heal player
 		'''
 }
 

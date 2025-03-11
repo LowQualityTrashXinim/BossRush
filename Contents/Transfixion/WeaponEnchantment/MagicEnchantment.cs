@@ -7,8 +7,6 @@ using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.Systems;
 using BossRush.Common.RoguelikeChange;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -659,7 +657,6 @@ public class CrystalSerpentProjectile : ModProjectile {
 	}
 	int TimeLeft = 300;
 	NPC npc = null;
-	Vector2 StandingPosition = Vector2.Zero;
 	bool OneTimeTimeLeftReset = true;
 	public override void AI() {
 		if (++Projectile.ai[1] <= 1) {
@@ -706,6 +703,30 @@ public class CrystalSerpentProjectile : ModProjectile {
 		dust.velocity = -Vector2.UnitY.Vector2RotateByRandom(3) * Main.rand.NextFloat(1, 3);
 		dust.position += Main.rand.NextVector2Circular(5, 5);
 		dust.noGravity = true;
+	}
+}
+public class FlowerOfFrost : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FlowerofFrost;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] >= 5) {
+			if (player.CheckMana(5, true, true)) {
+				damage += 20;
+			}
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
+			globalItem.Item_Counter1[index] = 0;
+		}
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
+			modifiers.SourceDamage += .27f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
+			modifiers.SourceDamage += .27f;
+		}
 	}
 }
 /// <summary>

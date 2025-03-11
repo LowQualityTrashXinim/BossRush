@@ -30,8 +30,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				Asset<Texture2D> texture = TextureAssets.Item[entity.type];
 				if (texture != null) {
 					if (texture.State == AssetState.Loaded) {
-						entity.width = (int)(texture.Value.Width * .95f);
-						entity.height = (int)(texture.Value.Height * .95f);
+						entity.width = (int)(texture.Value.Width);
+						entity.height = (int)(texture.Value.Height);
 					}
 				}
 			}

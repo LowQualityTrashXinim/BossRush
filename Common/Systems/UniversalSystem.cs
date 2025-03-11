@@ -553,7 +553,8 @@ class DefaultUI : UIState {
 
 	private UIImage itemUseTexture;
 	private UITextBox totalDMG;
-
+	private UITextBox totalHitTaken;
+	private UITextBox dmgTaken;
 	public void TurnOnEndOfDemoMessage() {
 		Player player = Main.LocalPlayer;
 		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
@@ -569,7 +570,8 @@ class DefaultUI : UIState {
 			itemUseTexture.VAlign = .2f;
 			EndOfDemoPanel.Append(itemUseTexture);
 		}
-		ulong dps = player.GetModPlayer<PlayerStatsHandle>().DPStracker;
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		ulong dps = modplayer.DPStracker;
 		totalDMG = new("Total damage dealt : 0");
 		string damage = dps.ToString();
 		totalDMG.UISetWidthHeight(0, 20);
@@ -579,6 +581,26 @@ class DefaultUI : UIState {
 		totalDMG.SetTextMaxLength(999);
 		totalDMG.SetText($"Total damage dealt : {damage}");
 		EndOfDemoPanel.Append(totalDMG);
+
+		totalHitTaken = new("Total hit taken : 0");
+		string taken = modplayer.HitTakenCounter.ToString();
+		totalHitTaken.UISetWidthHeight(0, 20);
+		totalHitTaken.HAlign = 0f;
+		totalHitTaken.VAlign = .4f;
+		totalHitTaken.ShowInputTicker = false;
+		totalHitTaken.SetTextMaxLength(999);
+		totalHitTaken.SetText($"Total hit taken : {taken}");
+		EndOfDemoPanel.Append(totalHitTaken);
+
+		dmgTaken = new("Damage taken : 0");
+		string dmgT = modplayer.DmgTaken.ToString();
+		dmgTaken.UISetWidthHeight(0, 20);
+		dmgTaken.HAlign = 0f;
+		dmgTaken.VAlign = .5f;
+		dmgTaken.ShowInputTicker = false;
+		dmgTaken.SetTextMaxLength(999);
+		dmgTaken.SetText($"Damage taken : {dmgT}");
+		EndOfDemoPanel.Append(dmgTaken);
 
 		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
 		EndOfDemoPanelClose.HAlign = 1f;
