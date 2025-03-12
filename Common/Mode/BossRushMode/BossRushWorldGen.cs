@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
 using System.Diagnostics.Metrics;
+using System.Diagnostics;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -548,8 +549,20 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
+			Stopwatch watch = new();
+			watch.Start();
+			StructureHelper.API.Generator.GenerateStructure("Assets/SlimeArena", rect.TopLeft().ToPoint16(), Mod);
+			Mod.Logger.Info($"Structure Helper world generation time : {watch.ToString()}");
+			watch.Reset();
+			watch.Start();
+			StructureHelper.API.Legacy.LegacyGenerator.GenerateStructure("Assets/SlimeArena", rect.TopLeft().ToPoint16(), Mod);
+			Mod.Logger.Info($"Old Structure Helper world generation time : {watch.ToString()}");
+			watch.Reset();
+			watch.Start();
 			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
-			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+			Mod.Logger.Info($"Specialized custom world generation time : {watch.ToString()}");
+			watch.Reset();
+			//Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_FleshArena() {

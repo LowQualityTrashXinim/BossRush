@@ -18,7 +18,12 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
 			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
-
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonerPreEoC);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
 			itempool.DropItemMelee.Add(ItemID.Code1);
 			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
 

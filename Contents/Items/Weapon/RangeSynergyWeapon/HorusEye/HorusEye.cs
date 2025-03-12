@@ -15,7 +15,7 @@ internal class HorusEye : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PrincessWeapon);
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(45, 120, 23, 7f, 12, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
+		Item.BossRushDefaultRange(45, 120, 23, 7f, 26, 26, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
 		Item.crit = 12;
 		Item.reuseDelay = 8;
 		Item.rare = ItemRarityID.Orange;

@@ -1,11 +1,8 @@
-﻿using BossRush.Contents.Items.Chest;
-using BossRush.Texture;
+﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -13,13 +10,15 @@ namespace BossRush.Contents.Items.RelicItem;
 internal class WeaponTicket : ModItem {
 	public override string Texture => BossRushTexture.EMPTYCARD;
 	public override void Load() {
-		info = new();
+		if (info == null) {
+			info = new();
+		}
 	}
 	public override void Unload() {
 		info = null;
 	}
 	public override void SetDefaults() {
-		Item.width = Item.height = 32;
+		Item.BossRushDefaultToConsume(32, 32);
 	}
 	HashSet<int> RequestItem = new HashSet<int>();
 	List<ColorInfo> info = new List<ColorInfo>();
@@ -30,6 +29,15 @@ internal class WeaponTicket : ModItem {
 			info[index].OffSet(index * 10);
 		}
 		return $"[c/{info[index].MultiColor(5).Hex3()}:{c}]";
+	}
+	public bool Add_Item(int itemID) {
+		if (RequestItem.Contains(itemID)) {
+			return false;
+		}
+		return RequestItem.Add(itemID);
+	}
+	public void Add_HashSet(HashSet<int> pool) {
+		RequestItem.UnionWith(pool);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		if (RequestItem.Count > 0) {
@@ -73,35 +81,13 @@ internal class WeaponTicket : ModItem {
 			tooltips[indexName].Text = newitemNameEffect;
 		}
 	}
-	public override void UpdateInventory(Player player) {
-		if (RequestItem.Count < 1) {
-			int randomAmount = Main.rand.Next(10, 30);
-			for (int i = 0; i < randomAmount; i++) {
-				if (!RequestItem.Add(Main.rand.NextFromHashSet(BossRushModSystem.List_Weapon).type)) {
-					i--;
-				}
-			}
-			return;
-		}
-		ChestLootDropPlayer chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
-		for (int i = 0; i < RequestItem.Count; i++) {
-			Item item = ContentSamples.ItemsByType[RequestItem.ElementAt(i)];
-			if (item.DamageType == DamageClass.Melee) {
-				chestplayer.Request_AddMelee.Add(item.type);
-			}
-			else if (item.DamageType == DamageClass.Ranged) {
-				chestplayer.Request_AddRange.Add(item.type);
-			}
-			else if (item.DamageType == DamageClass.Magic) {
-				chestplayer.Request_AddMagic.Add(item.type);
-			}
-			else if (item.DamageType == DamageClass.Summon) {
-				chestplayer.Request_AddSummon.Add(item.type);
-			}
-			else {
-				chestplayer.Request_AddMisc.Add(item.type);
+	public override bool? UseItem(Player player) {
+		if (player.ItemAnimationJustStarted) {
+			if (RequestItem != null && RequestItem.Count > 0) {
+				player.QuickSpawnItem(player.GetSource_OpenItem(Type), Main.rand.NextFromHashSet(RequestItem));
 			}
 		}
+		return true;
 	}
 	public override void SaveData(TagCompound tag) {
 		if (RequestItem.Count > 0) {

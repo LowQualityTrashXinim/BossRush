@@ -12,11 +12,6 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
-			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
-			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
-			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
-			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
-			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
 
 			itempool.DropItemMelee.Add(ItemID.Code1);
 			itempool.DropItemMelee.Add(ItemID.BloodLustCluster);
@@ -26,6 +21,7 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
 			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.SummonerPreEoC);
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
 
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeEvilBoss);

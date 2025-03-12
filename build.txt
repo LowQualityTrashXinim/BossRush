@@ -1,3 +1,4 @@
 displayName = Roguelike Terraria ( The Demo )
 author = Xinim
 version = 0.5.0
+weakReferences  = StructureHelper@3.0

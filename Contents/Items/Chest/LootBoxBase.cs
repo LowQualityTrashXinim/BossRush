@@ -161,8 +161,29 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			AbsoluteRightClick(player);
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX) && Main.rand.NextBool(1500)) {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
+				if (Main.rand.NextBool(5)) {
+					Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
+					WeaponTicket ticket = item.ModItem as WeaponTicket;
+					LootBoxItemPool pool = LootboxSystem.GetItemPool(Type);
+					int amount = (int)modplayer.DropModifier.ApplyTo(Main.rand.Next(4, 11));
+					HashSet<int> p = new(pool.AllItemPool());
+					if (p.Count <= amount) {
+						ticket.Add_HashSet(p);
+					}
+					else {
+						for (int i = 0; i < amount; i++) {
+							int type = Main.rand.NextFromHashSet(p);
+							p.Remove(type);
+							if (!ticket.Add_Item(type)) {
+								i--;
+							}
+						}
+					}
+				}
+				if (Main.rand.NextBool(1500)) {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+				}
 			}
 		}
 		/// <summary>
@@ -543,13 +564,11 @@ namespace BossRush.Contents.Items.Chest {
 			DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
 			DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
 			DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
-			if (NPC.downedSlimeKing) {
-				DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
-				DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
-				DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
-				DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-				DropItemMisc.AddRange(TerrariaArrayID.Special);
-			}
+			DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
+			DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
+			DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
+			DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
+			DropItemMisc.AddRange(TerrariaArrayID.Special);
 			if (NPC.downedBoss1) {
 				DropItemMelee.Add(ItemID.Code1);
 				DropItemMagic.Add(ItemID.ZapinatorGray);
@@ -976,7 +995,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	public class LootboxSystem : ModSystem {
-		private static List<LootBoxItemPool> LootBoxDropPool = new List<LootBoxItemPool>();
+		protected static List<LootBoxItemPool> LootBoxDropPool { get; private set; } = new List<LootBoxItemPool>();
 		/// <summary>
 		/// Direct modify maybe unstable, unsure how this will work <br/>
 		/// To safely modifying loot pool of said item, please refer to <see cref="ReplaceItemPool(LootBoxItemPool)"/>

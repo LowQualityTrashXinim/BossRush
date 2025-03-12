@@ -2283,7 +2283,7 @@ Mods: {
 
 			WeaponTicket: {
 				DisplayName: Weapon Ticket
-				Tooltip: The following weapon are added into lootbox pool
+				Tooltip: Use the item to have a chance to gain 1 of the following item
 			}
 
 			OuterGodTheNihilismItem: {

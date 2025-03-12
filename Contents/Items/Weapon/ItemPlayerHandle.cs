@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
@@ -221,7 +220,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (UniversalSystem.EnchantingState) {
 				return;
 			}
-			tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
+			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
 			int index = tooltips.FindIndex(t => t.Name == "CritChance");
 			if (index != -1) {
 				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
