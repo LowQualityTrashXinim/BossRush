@@ -576,7 +576,7 @@ AquaScepter.Description:
 	'''
 	Decreases mana cost by 9%
 	Hitting enemy have 1 in 3 chance to shoot out water stream near the enemy
-	Enemy that is hit by water stream with regen your mana by 10
+	Enemy that is hit by water stream will regen your mana by 10
 	'''
 WeatherPain.Description:
 	'''

@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -186,6 +187,11 @@ namespace BossRush.Contents.Perks {
 		public override void PostUpdate() {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).Update(Player);
+			}
+		}
+		public override void PostUpdateRunSpeeds() {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).PostUpdateRun(Player);
 			}
 		}
 		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -452,6 +458,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void OnUseItem(Player player, Item item) { }
 		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 		public virtual void Update(Player player) { }
+		public virtual void PostUpdateRun(Player player) { }
 		public virtual void UpdateEquip(Player player) { }
 		public virtual void ResetEffect(Player player) { }
 		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }

@@ -162,7 +162,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			AbsoluteRightClick(player);
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
-				if (Main.rand.NextBool(5)) {
+				if (Main.rand.NextBool()) {
 					Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
 					WeaponTicket ticket = item.ModItem as WeaponTicket;
 					LootBoxItemPool pool = LootboxSystem.GetItemPool(Type);

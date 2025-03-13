@@ -55,7 +55,7 @@ RareArmorPiece: {
 
 SuppliesPackage: {
 	DisplayName: Mixed Mythic
-	Description: Contains {0} weapon(s) of randomized progression, 1 armor piece of varying progression, {1} relic(s) and {1} skillbox(es).
+	Description: Contains {0} weapon(s), 1 armor piece, 1 accessory, {1} relic(s) and {1} skillbox(es).
 }
 
 FoodSpoil: {

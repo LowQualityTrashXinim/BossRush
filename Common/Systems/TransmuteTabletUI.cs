@@ -322,7 +322,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			slotitem2 = item2;
 		}
 		int Option = 0;
-		int rareval1 = slotitem.rare;
+		int rareval1 = ContentSamples.ItemsByType[slotitem.type].rare;
 
 		//Slot item are never null so no need to check for them
 		if (rareval1 < ItemRarityID.Purple - 2) {
@@ -384,7 +384,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			}
 		}
 		else {//Equivalent exchange
-			int rareval2 = slotitem2.rare;
+			int rareval2 = ContentSamples.ItemsByType[slotitem2.type].rare;
 			int Option2 = 0;
 			if (rareval2 < ItemRarityID.Purple - 2) {
 				if (slotitem2.IsAWeapon()) {

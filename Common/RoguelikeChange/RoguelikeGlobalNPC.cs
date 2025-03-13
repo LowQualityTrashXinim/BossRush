@@ -58,7 +58,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		return;
 		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}

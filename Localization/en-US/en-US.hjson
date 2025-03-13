@@ -2249,11 +2249,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BaseSoulBoundItem: {
-				DisplayName: Base Soul Bound Item
-				Tooltip: ""
-			}
-
 			GuardianAngelItem: {
 				DisplayName: Guardian Angel Item
 				Tooltip: ""
@@ -2283,7 +2278,11 @@ Mods: {
 
 			WeaponTicket: {
 				DisplayName: Weapon Ticket
-				Tooltip: Use the item to have a chance to gain 1 of the following item
+				Tooltip:
+					'''
+					Use the item to have a chance to gain 1 of the following item
+					Alt click to select a item to increases it's chance of dropping
+					'''
 			}
 
 			OuterGodTheNihilismItem: {
@@ -2364,7 +2363,7 @@ Mods: {
 			}
 
 			NPCProgressionStatsResetter: {
-				DisplayName: N P C Progression Stats Resetter
+				DisplayName: NPC Progression Stats Resetter
 				Tooltip: ""
 			}
 		}

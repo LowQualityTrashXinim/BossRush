@@ -80,14 +80,32 @@ internal class WeaponTicket : ModItem {
 			}
 			tooltips[indexName].Text = newitemNameEffect;
 		}
+		if (index != -1) {
+			tooltips.Add(new(Mod, "Selected_Item", $"Selected item : [{ItemIcon(RequestItem.ElementAt(index))}]"));
+		}
 	}
+	public override bool AltFunctionUse(Player player) => true;
+	int index = -1;
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			if (RequestItem != null && RequestItem.Count > 0) {
-				player.QuickSpawnItem(player.GetSource_OpenItem(Type), Main.rand.NextFromHashSet(RequestItem));
+				if (player.altFunctionUse == 2) {
+					index = BossRushUtils.Safe_SwitchValue(index, RequestItem.Count - 1);
+					return false;
+				}
+				else {
+					if (index != -1) {
+						if (Main.rand.NextBool()) {
+							player.QuickSpawnItem(player.GetSource_OpenItem(Type), RequestItem.ElementAt(index));
+							return true;
+						}
+					}
+					player.QuickSpawnItem(player.GetSource_OpenItem(Type), Main.rand.NextFromHashSet(RequestItem));
+					return true;
+				}
 			}
 		}
-		return true;
+		return base.UseItem(player);
 	}
 	public override void SaveData(TagCompound tag) {
 		if (RequestItem.Count > 0) {

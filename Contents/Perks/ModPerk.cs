@@ -297,11 +297,15 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 2;
 		}
-		public override void ResetEffect(Player player) {
-			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount(player);
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1 + .15f * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, Additive: 1 + .2f * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: (int)Math.Round(player.velocity.Length()) * StackAmount(player));
 		}
-		public override void Update(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1.15f);
+		public override void PostUpdateRun(Player player) {
+			player.runAcceleration += .5f;
+			player.runSlowdown += .25f;
 		}
 	}
 	public class CelestialRage : Perk {
@@ -463,6 +467,15 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
+		public override void OnChoose(Player player) {
+			if (StackAmount(player) <= 0) {
+				player.QuickSpawnItem(player.GetSource_FromThis("Perk"), ModContent.ItemType<SynergyEnergy>());
+			}
+			base.OnChoose(player);
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().ChestLoot.WeaponAmountAddition += StackAmount(player);
+		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
 				damage.Flat += 10 * StackAmount(player);
@@ -592,16 +605,24 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void Update(Player player) {
-			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount(player);
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 5 * StackAmount(player));
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .04f * StackLimit) {
+			if (Main.rand.NextFloat() <= .04f * StackAmount(player)) {
+				modifiers.FinalDamage *= 2.5f;
+				modifiers.ScalingArmorPenetration += 0.9f;
+			}
+			else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .15f * StackAmount(player)) {
 				modifiers.FinalDamage *= 2.5f;
 				modifiers.ScalingArmorPenetration += 0.9f;
 			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .04f * StackLimit) {
+			if (Main.rand.NextFloat() <= .04f * StackAmount(player)) {
+				modifiers.FinalDamage *= 2.5f;
+				modifiers.ScalingArmorPenetration += 0.9f;
+			}
+			else if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit && Main.rand.NextFloat() <= .15f * StackAmount(player)) {
 				modifiers.FinalDamage *= 2.5f;
 				modifiers.ScalingArmorPenetration += 0.9f;
 			}
@@ -834,9 +855,35 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, Additive: 1 + (player.maxMinions + player.maxTurrets) * .05f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .01f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .01f);
+			modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, Additive: 1.1f);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: 1);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: 1);
+		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (item.DamageType != DamageClass.Ranged) {
+				return;
+			}
+			int amount = (player.maxMinions + player.maxTurrets) / 2;
+			for (int i = 0; i < amount; i++) {
+				Vector2 pos = position + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 400), Main.rand.NextFloat(300, 400));
+				for (int l = 0; l < 20; l++) {
+					Dust dust = Dust.NewDustDirect(pos, 0, 0, DustID.SpectreStaff);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2Circular(5, 5);
+					dust.scale = Main.rand.NextFloat(.9f, 2.25f);
+				}
+				Projectile proj = Projectile.NewProjectileDirect(source, pos,
+					Vector2.One.Vector2RotateByRandom(180), ProjectileID.SpectreWrath, damage, knockback, player.whoAmI);
+				proj.timeLeft = 1800;
+				proj.extraUpdates = 6;
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (proj.minion || proj.DamageType == DamageClass.Summon) {
+				if (Main.rand.Next(1, 101) <= player.GetTotalCritChance<RangedDamageClass>()) {
+					modifiers.SetCrit();
+				}
+			}
 		}
 	}
 	public class OathOfSword : Perk {
