@@ -23,6 +23,8 @@ using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.Systems.Element;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using BossRush.Contents.Perks;
+using Terraria.Enums;
+using Terraria.GameContent.UI;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -238,6 +240,8 @@ namespace BossRush.Contents.Items.Weapon {
 					tooltips[index].Text = tooltips[index].Text + $" | Base : {Math.Round(item.knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
 				}
 			}
+
+			tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 
 			if (item.ModItem == null) {
 				return;

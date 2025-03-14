@@ -299,7 +299,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1 + .15f * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1 + .25f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, Additive: 1 + .2f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: (int)Math.Round(player.velocity.Length()) * StackAmount(player));
 		}

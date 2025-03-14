@@ -501,8 +501,6 @@ public class RogueLikeWorldGenSystem : ModSystem {
 public class GenPassData {
 	public TileData tileData { get; private set; }
 	public ushort Count { get; private set; }
-	public ushort CountX { get; private set; }
-	public ushort CountY { get; private set; }
 	public GenPassData() {
 
 	}
@@ -514,15 +512,8 @@ public class GenPassData {
 		this.Count = count;
 		this.tileData = data;
 	}
-	public void Rect_Set(TileData data, ushort countX, ushort countY) {
-		this.CountX = countX;
-		this.CountY = countY;
-		this.tileData = data;
-	}
 	public void Clear() {
 		this.Count = 0;
-		this.CountX = 0;
-		this.CountY = 0;
 		this.tileData = new();
 	}
 }

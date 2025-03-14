@@ -549,7 +549,13 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
+			//Stopwatch watch = new();
+			//watch.Start();
 			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
+			//watch.Stop();
+			//string result = $"Generation time : {watch.Elapsed.ToString()}";
+			//Mod.Logger.Info(result);
+			//watch.Reset();
 			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]

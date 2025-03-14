@@ -234,19 +234,19 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void GenerateSlimeZone() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime, "SlimeShrine");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void GenerateFleshZone() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm, "FleshShrine");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateForest() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(9, 6, 3, 7);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Dirt, WallID.Dirt, BiomeAreaID.Forest, "");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Dirt, WallID.Dirt, BiomeAreaID.Forest);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
@@ -307,11 +307,20 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateBeeHive() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 8, 2, 2);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest, "");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest);
 		ResetTemplate_GenerationValue();
+	}
+	public static void PlaceTile(Rectangle rect, ushort tileID, ushort wallID, int x, int y, ref TileData t) {
+		if (rect.Contains(x, y) && !Biome[BiomeAreaID.BeeNest].Where(r => r.Contains(x, y)).Any()) {
+			t.Tile_Type = tileID;
+			t.Tile_WallData = wallID;
+			GenerationHelper.Structure_PlaceTile(x, y, ref t);
+		}
 	}
 	[Task]
 	public void Re_GenerateJungle() {
+		Stopwatch watch = new();
+		watch.Start();
 		rect = GenerationHelper.GridPositionInTheWorld24x24(3, 6, 6, 6);
 		string TemplatePath = "Template/WG_Template";
 		ushort tileID = TileID.Mud;
@@ -327,22 +336,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				re.Width = 64;
 				re.Height = 32;
 				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
-					if (rect.Contains(x, y) && !Biome[BiomeAreaID.BeeNest].Where(r => r.Contains(x, y)).Any()) {
-						t.Tile_Type = tileID;
-						t.Tile_WallData = wallID;
-						GenerationHelper.Structure_PlaceTile(x, y, t);
-					}
+					PlaceTile(rect, tileID, wallID, x, y, ref t);
 				}, Main.rand.Next(styles));
 			}
 			else {
 				re.Width = 32;
 				re.Height = 64;
 				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
-					if (rect.Contains(x, y) && !Biome[BiomeAreaID.BeeNest].Where(r => r.Contains(x, y)).Any()) {
-						t.Tile_Type = tileID;
-						t.Tile_WallData = wallID;
-						GenerationHelper.Structure_PlaceTile(x, y, t);
-					}
+					PlaceTile(rect, tileID, wallID, x, y, ref t);
 				}, Main.rand.Next(styles));
 			}
 			if (counter.X < rect.Width) {
@@ -363,17 +364,19 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Biome.Add(BiomeAreaID.Jungle, new List<Rectangle> { rect });
 		}
 		ResetTemplate_GenerationValue();
+		watch.Stop();
+		Console.WriteLine(watch.ToString());
 	}
 	[Task]
 	public void Re_GenerateTundra() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 4, 4, 6);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.IceBlock, WallID.IceUnsafe, BiomeAreaID.Tundra, "");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.IceBlock, WallID.IceUnsafe, BiomeAreaID.Tundra);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateDesert() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(9, 13, 3, 5);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Sandstone, WallID.Sandstone, BiomeAreaID.Desert, "");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Sandstone, WallID.Sandstone, BiomeAreaID.Desert);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
@@ -507,7 +510,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// <param name="TemplatePath"></param>
 	/// <param name="BiomeID"></param>
 	/// <param name="ShrineType"></param>
-	public void File_GenerateBiomeTemplate(string TemplatePath, ushort TileID, ushort WallID, short BiomeID, string ShrineType = "") {
+	public void File_GenerateBiomeTemplate(string TemplatePath, ushort TileID, ushort WallID, short BiomeID) {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
 				counter.X += 32;
@@ -522,8 +525,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					if (rect.Contains(x, y)) {
 						t.Tile_Type = TileID;
 						t.Tile_WallData = WallID;
-						GenerationHelper.Structure_PlaceTile(x, y, t);
-						EmptySpaceRecorder.Add(new(x, y));
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
 					}
 				}, Main.rand.Next(styles));
 			}
@@ -534,8 +536,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					if (rect.Contains(x, y)) {
 						t.Tile_Type = TileID;
 						t.Tile_WallData = WallID;
-						GenerationHelper.Structure_PlaceTile(x, y, t);
-						EmptySpaceRecorder.Add(new(x, y));
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
 					}
 				}, Main.rand.Next(styles));
 			}
@@ -549,10 +550,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				count = 1;
 				additionaloffset = -1;
 			}
-		}
-		if (EmptySpaceRecorder.Count > 0 && !string.IsNullOrEmpty(ShrineType)) {
-			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
-			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
 		}
 		if (Biome.ContainsKey(BiomeID)) {
 			Biome[BiomeID].Add(rect);
