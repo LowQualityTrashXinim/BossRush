@@ -315,6 +315,12 @@ namespace BossRush.Contents.Perks {
 		public override void OnChoose(Player player) {
 			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
 		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2f);
+			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 5);
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 1.1f);
+		}
 	}
 	public class BlessingOfSolar : Perk {
 		public override void SetDefaults() {

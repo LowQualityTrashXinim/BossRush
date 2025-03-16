@@ -41,8 +41,7 @@ namespace BossRush.Contents.Projectiles {
 			}
 			if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25)) {
 				Projectile.timeLeft = 150;
-				float playerRemainHpPercentage = 1 - player.statLife / (float)player.statLifeMax2;
-				int healing = (int)(player.statLifeMax2 * .25f * playerRemainHpPercentage) + 5;
+				int healing = (player.statLifeMax2 % 100) + 5;
 				player.Heal(healing);
 				player.AddBuff(ModContent.BuffType<LifeForce>(), BossRushUtils.ToSecond(2));
 				Projectile.Kill();

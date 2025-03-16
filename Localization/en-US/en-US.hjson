@@ -344,6 +344,8 @@ Mods: {
 			RA_BoneSword.DisplayName: R A_ Bone Sword
 			RA_PurpleClubberfish.DisplayName: R A_ Purple Clubberfish
 			RA_ZombieArm.DisplayName: R A_ Zombie Arm
+			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
+			SpearProjectile.DisplayName: Spear Projectile
 		}
 
 		NPCs: {

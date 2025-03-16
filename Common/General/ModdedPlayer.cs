@@ -25,6 +25,9 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using Steamworks;
 
 namespace BossRush.Common.General {
+	/// <summary>
+	/// This class hold random general information, not recommend to look into this class
+	/// </summary>
 	class ModdedPlayer : ModPlayer {
 		public int EnchantingEnable = 0;
 		public int SkillEnable = 0;

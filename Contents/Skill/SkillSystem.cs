@@ -176,6 +176,20 @@ public class SkillHandlePlayer : ModPlayer {
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
 	}
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>
+	/// Return true when successfully increases skill slot
+	/// Return false when skill slot can't no longer be increased
+	/// </returns>
+	public bool IncreasesSkillSlot() {
+		if(AvailableSkillActiveSlot <= SkillHolder1.Length){
+			AvailableSkillActiveSlot++;
+			return true;
+		}
+		return false;
+	}
 	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
 		if (skillType < 0 && skillType >= SkillModSystem.TotalCount) {
 			return false;

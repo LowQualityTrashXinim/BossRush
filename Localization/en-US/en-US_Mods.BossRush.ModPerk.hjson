@@ -176,7 +176,13 @@ SpeedArmor: {
 
 CelestialRage: {
 	DisplayName: Celestial Rage
-	Description: + A gift from celestial being
+	Description:
+		'''
+		+ A gift from celestial being
+		Multiply damage by 1.1x
+		+5 critical strike chance
+		+100% critical strike damage
+		'''
 }
 
 BlessingOfSolar: {

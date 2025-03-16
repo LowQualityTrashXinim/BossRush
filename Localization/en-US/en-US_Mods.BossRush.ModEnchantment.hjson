@@ -523,7 +523,7 @@ BookOfSkulls.Description:
 ThunderStaff.Description:
 	'''
 	Reduce mana cost by 12%
-	On hitting NPC with item or a projectile, spawn a thunder staff bolt from random position
+	Striking NPC will spawn a thunder staff bolt near NPC
 	( trigger every 0.2 second )
 	'''
 ZapinatorGray.Description:
@@ -537,7 +537,7 @@ ZapinatorGray.Description:
 	'''
 SpaceGun.Description:
 	'''
-	Every time weapon shoot 3 time, shoot out green lazer for 3 time
+	Every 3rd shot, shoot out green lazer for next 3 shot
 	If space armor is fully on, this weapon will inherit space gun effect
 	'''
 BeeGun.Description:
@@ -550,13 +550,13 @@ BeeGun.Description:
 Vilethorn.Description:
 	'''
 	Reduce mana cost by 5%
-	Create vilethorn from the enemy when a projectile hit
+	Create vilethorn from the enemy on strike
 	( Can be trigger every 1s )
 	'''
 CrimsonRod.Description:
 	'''
 	Reduce mana cost by 8%
-	Create blood rain that rain down at cursor position
+	Create blood rain that rain down above cursor
 	( Can be trigger every 0.12s )
 	'''
 MagicMissile.Description:
@@ -650,6 +650,23 @@ Trimarang.Description:
 	Shoots out 3 Trimarangs when weapon is used
 	( Note : Trimarang stats of this enchantment is unchangeable )
 	'''
+Umbrella.Description:
+	'''
+	Grant immunity to fall damage and grant user slow fall
+	During falling, increases damage by 15%
+	While held, grant 5% damage reduction
+	'''
+TragicUmbrella.Description:
+	'''
+	Grant immunity to fall damage and grant user slow fall
+	While your hp below 20% maximum life, increases damage reduction by 20%
+	If your life is above 90% maximum life, increases damage by 10%
+	'''
+CandyCaneSword.Description:
+	'''
+	Increases damage by 5%
+	Hitting enemy with melee weapon may have chance to drop apple candy
+	'''
 LeatherWhip.Description: 10% increased whip speed and range, Increase Summon Damage by 1
 Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damage by 2, grants jungle's fury on-hit
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
@@ -658,6 +675,7 @@ HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 
 SandGun.Description:
 	'''
 	Increases your critical strike chance by 10
+	There are 35% chance to shoot out additional sand projectile
 	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)
 	'''
 TheMeatball.Description:
@@ -666,7 +684,12 @@ TheMeatball.Description:
 	Melee attacks inflict ichor
 	Shoot out deadly MeatBall every 1s on attack
 	'''
-BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
+BallOHurt.Description:
+	'''
+	+20% melee damage and +5% critcal strike chance
+	True melee attacks inflict cursed flames debuff
+	Shoot out Ball of Hurt every 1s on attack
+	'''
 SwordFish.Description:
 	'''
 	Your attack ignore 5 point of defenses
@@ -714,4 +737,9 @@ DeathSickle.Description:
 	Increases critical strike damage by 50%
 	Have very small chance to instant kill non-boss enemy
 	Every 15 hit toward NPC will spawn a death scythe that home into nearest NPC
+	'''
+Spear.Desciption:
+	'''
+	Increases melee armor penetration by 10
+	Striking enemy have 5% chance to rain down bunch of spear from the sky
 	'''

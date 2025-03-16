@@ -13,6 +13,8 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Common.General;
+using BossRush.Contents.Perks;
+using Terraria.GameContent.UI;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using System.Collections.ObjectModel;
@@ -22,9 +24,7 @@ using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.Systems.Element;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using BossRush.Contents.Perks;
-using Terraria.Enums;
-using Terraria.GameContent.UI;
+using System.Reflection;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -183,6 +183,10 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 	}
+	/// <summary>
+	/// This class hold mainly tooltip information<br/>
+	/// However this doesn't handle overhaul information
+	/// </summary>
 	public class GlobalItemHandle : GlobalItem {
 		public const byte None = 0;
 		public override bool InstancePerEntity => true;
@@ -191,30 +195,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
-		/// <summary>
-		/// Key : Element type
-		/// Value : Element res value
-		/// </summary>
-		public Dictionary<int, float> dict_Element = new();
-		/// <summary>
-		/// Use this to both set and modify element value
-		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="ElementType"></param>
-		/// <param name="ResValue"></param>
-		public static void Set_ElementalValue(ref Item item, int ElementType, float ResValue) {
-			if (item.TryGetGlobalItem(out GlobalItemHandle global)) {
-				if (ElementSystem.GetElement(ElementType) == null) {
-					return;
-				}
-				if (!global.dict_Element.ContainsKey(ElementType)) {
-					global.dict_Element.Add(ElementType, ResValue);
-				}
-				else {
-					global.dict_Element[ElementType] = ResValue;
-				}
-			}
-		}
 		public override void SetDefaults(Item entity) {
 		}
 		public float CriticalDamage = 0;
@@ -223,25 +203,24 @@ namespace BossRush.Contents.Items.Weapon {
 				return;
 			}
 			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
-			int index = tooltips.FindIndex(t => t.Name == "CritChance");
-			if (index != -1) {
-				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
-				tooltips.Insert(index + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
-			}
-			if (item.damage > 0) {
-				index = tooltips.FindIndex(t => t.Name == "Damage");
-				if (index != -1) {
-					tooltips[index].Text = tooltips[index].Text + $" | base : {item.damage}";
+			if (item.IsAWeapon(true)) {
+				for (int i = 0; i < tooltips.Count; i++) {
+					TooltipLine line = tooltips[i];
+					if (line.Name == "CritChance") {
+						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
+						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
+					}
+					else if (line.Name == "Damage") {
+						line.Text = line.Text + $" | base : {item.OriginalDamage}";
+					}
+					else if (line.Name == "Knockback") {
+						line.Text = line.Text + $" | Base : {Math.Round(ContentSamples.ItemsByType[item.type].knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
+					}
 				}
 			}
-			if (item.knockBack > 0) {
-				index = tooltips.FindIndex(t => t.Name == "Knockback");
-				if (index != -1) {
-					tooltips[index].Text = tooltips[index].Text + $" | Base : {Math.Round(item.knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
-				}
+			if (ModContent.GetInstance<UniversalSystem>().user2ndInterface.CurrentState == ModContent.GetInstance<UniversalSystem>().transmutationUI) {
+				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 			}
-
-			tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 
 			if (item.ModItem == null) {
 				return;
@@ -541,7 +520,7 @@ namespace BossRush.Contents.Items.Weapon {
 
 		}
 	}
-	public class ItemHandleSystem : ModSystem {
+	public sealed class ItemHandleSystem : ModSystem {
 		public override void Load() {
 			On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
 			On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;

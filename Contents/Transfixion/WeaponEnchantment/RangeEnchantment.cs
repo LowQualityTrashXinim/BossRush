@@ -751,7 +751,14 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			globalItem.Item_Counter1[index]--;
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10);
 		}
-
+		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Main.rand.NextFloat() <= .35f) {
+				if (!velocity.IsLimitReached(7)) {
+					velocity = velocity.SafeNormalize(Vector2.Zero) * 7;
+				}
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SandProjectile>(), damage / 2, 0, player.whoAmI);
+			}
+		}
 		public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
 				for (int i = 0; i < 15; i++) {

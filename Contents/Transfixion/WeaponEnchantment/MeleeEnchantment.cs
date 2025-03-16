@@ -12,6 +12,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 using BossRush.Common.RoguelikeChange;
+using System.Reflection;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -1382,23 +1383,61 @@ public class BloodButcherer : ModEnchantment {
 		return 0;
 	}
 }
-
 public class BallOHurt : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BallOHurt;
 	}
-
-	public override void Update(Player player) {
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.GetDamage(DamageClass.Melee) += 0.2f;
 		player.GetCritChance(DamageClass.Melee) += 5;
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<BallOfHurtProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
+				globalItem.Item_Counter1[index] = 60;
+			}
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(6));
 	}
+}
+public class BallOfHurtProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.BallOHurt);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.tileCollide = true;
+		Projectile.friendly = true;
+		Projectile.penetrate = -1;
+		Projectile.timeLeft = 300;
+	}
+	public override bool OnTileCollide(Vector2 oldVelocity) {
+		if (Projectile.velocity.X != oldVelocity.X) {
+			Projectile.velocity.X = -oldVelocity.X * 0.85f;
+		}
+		if (Projectile.velocity.Y != oldVelocity.Y) {
+			Projectile.velocity.Y = -oldVelocity.Y * 0.85f;
+		}
+		return false;
+	}
+	public override void AI() {
+		Projectile.rotation = Projectile.direction * MathHelper.ToRadians(Projectile.timeLeft * -10 - Projectile.velocity.Length());
+		if (++Projectile.ai[0] <= 10) {
+			return;
+		}
+		if (!Projectile.wet) {
+			if (Projectile.velocity.Y <= 20)
+				Projectile.velocity.Y += .5f;
+		}
+		else {
+			if (Projectile.velocity.Y >= -10)
+				Projectile.velocity.Y -= .5f;
+		}
 
-
+	}
 }
 public class TheMeatball : ModEnchantment {
 	public override void SetDefaults() {
@@ -1526,36 +1565,27 @@ public class SwordFish : ModEnchantment {
 		}
 	}
 }
-
 public class PalladiumSword : PalladiumEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.PalladiumSword;
 	}
-
 }
 
 public class PalladiumPike : PalladiumEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.PalladiumPike;
 	}
-
 }
 
 public class OrichalcumSword : OrichalcumEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.OrichalcumSword;
 	}
-
 }
 public class OrichalcumHalberd : OrichalcumEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.OrichalcumHalberd;
 	}
-
 }
 
 public class TitaniumSword : TitaniumEnchantment {
@@ -1575,19 +1605,17 @@ public class TitaniumTrident : TitaniumEnchantment {
 }
 
 public class DeathSickle : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DeathSickle;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.5f);
 	}
-
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (!target.boss && Main.rand.NextBool(100)) {
 			target.StrikeInstantKill();
+			return;
 		}
-
 		globalItem.Item_Counter1[index]++;
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
@@ -1602,6 +1630,92 @@ public class DeathSickle : ModEnchantment {
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
 			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
+		}
+	}
+}
+public class Umbrella : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Umbrella;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.slowFall = true;
+		player.noFallDmg = true;
+		player.endurance += .05f;
+		if (player.velocity.Y != 0) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.15f);
+		}
+	}
+}
+public class TragicEmbrella : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TragicUmbrella;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.slowFall = true;
+		player.noFallDmg = true;
+		if (player.statLife <= player.statLifeMax2 * .2f) {
+			player.endurance += .2f;
+		}
+		else if (player.statLife >= player.statLifeMax2 * .9f) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.1f);
+		}
+	}
+}
+public class CandyCaneSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CandyCaneSword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.05f);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(8) && hit.DamageType == DamageClass.Melee) {
+			Item.NewItem(player.GetSource_OnHit(target), target.Hitbox, ItemID.CandyApple);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(16) && hit.DamageType == DamageClass.Melee) {
+			Item.NewItem(player.GetSource_OnHit(target), target.Hitbox, ItemID.CandyApple);
+		}
+	}
+}
+public class Spear : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Spear;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetArmorPenetration(DamageClass.Melee) += 10;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		for (int i = 0; i < 3; i++) {
+			Vector2 pos = target.Center.Add(Main.rand.Next(-40, 40), Main.rand.Next(450, 500));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 6;
+			Projectile.NewProjectile(player.GetSource_OnHit(target), pos, vel, ModContent.ProjectileType<SpearProjectile>(), (int)(hit.Damage * .8f), 2f, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		for (int i = 0; i < 3; i++) {
+			Vector2 pos = target.Center.Add(Main.rand.Next(-40, 40), Main.rand.Next(450, 500));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 6;
+			Projectile.NewProjectile(player.GetSource_OnHit(target), pos, vel, ModContent.ProjectileType<SpearProjectile>(), (int)(hit.Damage * .8f), 2f, player.whoAmI);
+		}
+	}
+}
+public class SpearProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.Spear);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 900;
+		Projectile.penetrate = 2;
+	}
+	public override bool? CanDamage() {
+		return Projectile.penetrate <= 1;
+	}
+	public override void AI() {
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+		if (Projectile.velocity.Y < 14) {
+			Projectile.velocity.Y += .5f;
 		}
 	}
 }
