@@ -687,6 +687,15 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
 		On_Player.GetItemGrabRange += On_Player_GetItemGrabRange;
+		On_NPC.HitModifiers.GetDamage += HitModifiers_GetDamage;
+	}
+	private int HitModifiers_GetDamage(On_NPC.HitModifiers.orig_GetDamage orig, ref NPC.HitModifiers self, float baseDamage, bool crit, bool damageVariation, float luck) {
+		int fixedDamage = 0;
+		if (self.FinalDamage.Flat > 0) {
+			fixedDamage = (int)self.FinalDamage.Flat;
+		}
+		int damage = orig(ref self, baseDamage, crit, damageVariation, luck) + fixedDamage;
+		return damage;
 	}
 
 	private int On_Player_GetItemGrabRange(On_Player.orig_GetItemGrabRange orig, Player self, Item item) {

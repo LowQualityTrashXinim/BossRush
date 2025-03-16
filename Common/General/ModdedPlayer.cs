@@ -96,6 +96,11 @@ namespace BossRush.Common.General {
 				ItemIsUsedDuringBossFight = true;
 			}
 		}
+		public override void UpdateEquips() {
+			if (Secret_MrRakan) {
+				Player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 3;
+			}
+		}
 		private void CheckHowManyHit() {
 			HowManyBossIsAlive = 0;
 			bool FoundEater = false;
@@ -120,7 +125,7 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override bool CanUseItem(Item item) {
-			if(Secret_MrRakan) {
+			if (Secret_MrRakan) {
 				return item.DamageType == DamageClass.Ranged || item.DamageType == ModContent.GetInstance<RangeMageHybridDamageClass>();
 			}
 			return base.CanUseItem(item);

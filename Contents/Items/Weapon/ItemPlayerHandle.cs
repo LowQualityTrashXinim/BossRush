@@ -520,7 +520,7 @@ namespace BossRush.Contents.Items.Weapon {
 
 		}
 	}
-	public sealed class ItemHandleSystem : ModSystem {
+	class ItemHandleSystem : ModSystem {
 		public override void Load() {
 			On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
 			On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;

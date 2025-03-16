@@ -11,6 +11,7 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Contents.Items;
 
 namespace BossRush.Common.General {
 	class GlobalNPCMod : GlobalNPC {
@@ -119,6 +120,8 @@ namespace BossRush.Common.General {
 			else if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
+				noHit.OnSuccess(ItemDropRule.ByCondition(new NoHitAndIsRakan(), ModContent.ItemType<WeaponBluePrint>())).OnFailedConditions(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WeaponBluePrint>(),100));
+
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowLootBox>()));
