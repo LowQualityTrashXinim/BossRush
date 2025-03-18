@@ -146,6 +146,16 @@ internal static partial class GenerationHelper {
 	public static Rectangle GridPositionInTheWorld24x24(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, RogueLikeWorldGen.GridPart_X * dragX, RogueLikeWorldGen.GridPart_Y * dragY);
 	/// <summary>
+	/// Use this for easy place tile in the world in 24x24 grid like
+	/// </summary>
+	/// <param name="x">The starting X position</param>
+	/// <param name="y">The Starting Y position</param>
+	/// <param name="dragX">Select multiple grid on X axis</param>
+	/// <param name="dragY">Select multiple grid on Y axis</param>
+	/// <returns></returns>
+	public static Rectangle GridPositionInTheWorld24x24(Rectangle rect)
+		=> new Rectangle(RogueLikeWorldGen.GridPart_X * rect.X, RogueLikeWorldGen.GridPart_Y * rect.Y, rect.Width, rect.Height);
+	/// <summary>
 	/// Use this for easy place tile in the world in 48x48 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
@@ -155,9 +165,6 @@ internal static partial class GenerationHelper {
 	/// <returns></returns>
 	public static Rectangle GridPositionInTheWorld48x48(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X / 2 * x, RogueLikeWorldGen.GridPart_Y / 2 * y, RogueLikeWorldGen.GridPart_X / 2 * dragX, RogueLikeWorldGen.GridPart_Y / 2 * dragY);
-	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {
-		return MathHelper.Lerp(minY, maxY, currentY);
-	}
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}

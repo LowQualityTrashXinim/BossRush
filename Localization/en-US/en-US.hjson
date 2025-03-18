@@ -346,6 +346,7 @@ Mods: {
 			RA_ZombieArm.DisplayName: R A_ Zombie Arm
 			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
 			SpearProjectile.DisplayName: Spear Projectile
+			RisingStarProjectile.DisplayName: Rising Star Projectile
 		}
 
 		NPCs: {
@@ -2368,6 +2369,16 @@ Mods: {
 				DisplayName: NPC Progression Stats Resetter
 				Tooltip: ""
 			}
+
+			RisingStar: {
+				DisplayName: Rising Star
+				Tooltip: ""
+			}
+
+			WeaponBluePrint: {
+				DisplayName: Weapon Blue Print
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2912,6 +2923,11 @@ Mods: {
 				DisplayName: R A_ Rotting
 				Description: Mods.BossRush.Buffs.RA_Rotting.Description
 			}
+
+			RisingStarBurning_Debuff: {
+				DisplayName: Rising Star Burning_ Debuff
+				Description: Mods.BossRush.Buffs.RisingStarBurning_Debuff.Description
+			}
 		}
 
 		Configs: {
@@ -3132,6 +3148,11 @@ Mods: {
 
 				LegacySpoils: {
 					Label: Legacy Spoils
+					Tooltip: ""
+				}
+
+				TemplateTest: {
+					Label: Template Test
 					Tooltip: ""
 				}
 			}

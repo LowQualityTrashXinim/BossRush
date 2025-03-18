@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Contents.Items.Chest;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,13 +95,18 @@ internal class WeaponTicket : ModItem {
 					return false;
 				}
 				else {
+					int type;
 					if (index != -1) {
 						if (Main.rand.NextBool()) {
-							player.QuickSpawnItem(player.GetSource_OpenItem(Type), RequestItem.ElementAt(index));
+							type = RequestItem.ElementAt(index);
+							player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+							LootBoxBase.AmmoForWeapon(player, type);
 							return true;
 						}
 					}
-					player.QuickSpawnItem(player.GetSource_OpenItem(Type), Main.rand.NextFromHashSet(RequestItem));
+					type = Main.rand.NextFromHashSet(RequestItem);
+					player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+					LootBoxBase.AmmoForWeapon(player, type);
 					return true;
 				}
 			}

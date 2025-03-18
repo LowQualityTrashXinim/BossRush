@@ -902,10 +902,8 @@ namespace BossRush.Contents.Perks {
 				|| player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
 				&& player.HeldItem.DamageType == DamageClass.Melee) {
 				modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, 2f, 1.11f);
-				modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, Multiplicative: .45f);
 			}
 			else {
-
 				modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, .45f);
 				modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, .45f);
 				modplayer.AddStatsToPlayer(PlayerStats.SummonDMG, .45f);

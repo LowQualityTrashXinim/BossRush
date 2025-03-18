@@ -4,21 +4,15 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
+namespace BossRush.Contents.Items.Accessories.LostAccessories {
 	internal class BouncyRelic : SynergyModItem {
 		public override void SetDefaults() {
-			Item.DefaultToAccessory(30, 30);
+			Item.Set_LostAccessory(30, 30);
 			Item.value = 1000000;
 		}
 		public override void UpdateEquip(Player player) {
 			player.endurance += .15f;
 			player.GetModPlayer<PlayerRelic>().Bouncy = true;
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.KingSlimeTrophy)
-				.AddIngredient(ItemID.SlimeGun)
-				.Register();
 		}
 	}
 	public class PlayerRelic : ModPlayer {

@@ -107,8 +107,6 @@ public class PlayerStatsHandle : ModPlayer {
 	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
 	/// </summary>
 	public float AugmentationChance = 0;
-	public int ImmunityContact = 60;
-	public int ImmunityContactCounter = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
@@ -280,40 +278,6 @@ public class PlayerStatsHandle : ModPlayer {
 		AugmentationChance = 0;
 		ItemRangeMultiplier = 1;
 		Reset_ShootRequest();
-		ImmunityContact = 15;
-		if (CurrentInContact) {
-			CurrentInContact = false;
-		}
-		else {
-			ImmunityContactCounter = BossRushUtils.CountDown(ImmunityContactCounter);
-		}
-	}
-	public bool CurrentInContact = false;
-	public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot) {
-		if (npc.Hitbox.Contains(Player.Hitbox)) {
-			return base.CanBeHitByNPC(npc, ref cooldownSlot);
-		}
-		if (Player.Hitbox.Contains(npc.Hitbox)) {
-			return base.CanBeHitByNPC(npc, ref cooldownSlot);
-		}
-		if (!Player.Hitbox.Intersects(npc.Hitbox)) {
-			return base.CanBeHitByNPC(npc, ref cooldownSlot);
-		}
-		if (Player.Size.X > npc.Size.X && Player.Size.Y > npc.Size.Y) {
-			if (ImmunityContactCounter <= ImmunityContact) {
-				ImmunityContactCounter += 1;
-				CurrentInContact = true;
-				return false;
-			}
-		}
-		else {
-			if (ImmunityContactCounter <= ImmunityContact / 2) {
-				ImmunityContactCounter += 1;
-				CurrentInContact = true;
-				return false;
-			}
-		}
-		return base.CanBeHitByNPC(npc, ref cooldownSlot);
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

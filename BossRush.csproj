@@ -5,6 +5,7 @@
     <AssemblyName>BossRush</AssemblyName>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Common\Graphics\Shaders\Compiler\**" />
@@ -34,7 +35,6 @@
     <None Remove="Contents\Transfixion\Artifacts\TokenOfGreedArtifact.png" />
     <None Remove="Contents\Transfixion\Artifacts\TokenofPrideArtifact.png" />
     <None Remove="Contents\Transfixion\Artifacts\VampirismCrystalArtifact.png" />
-    <None Remove="Contents\Items\Accessories\SynergyAccessories\BouncyRelic.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
     <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
     <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\MythrilBeamSword\MythrilBeamSword.png" />

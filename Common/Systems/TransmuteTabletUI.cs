@@ -90,9 +90,6 @@ public class TransmutationUIState : UIState {
 			return;
 		}
 		float offsetchance = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
-		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<Dirt>())) {
-			offsetchance = .05f;
-		}
 		bool AnyRelic = slot1.item.ModItem is Relic || slot2.item.ModItem is Relic;
 		if (slot1.item.ModItem is Relic re1 && slot2.item.ModItem is Relic re2) {
 			txtbox.SetText("Chance to upgrade relic : " + RelicTemplateLoader.RelicValueToNumber(TransmutationUIConfirmButton.GetRelicChance(re1, re2, offsetchance) * 100) + "%");

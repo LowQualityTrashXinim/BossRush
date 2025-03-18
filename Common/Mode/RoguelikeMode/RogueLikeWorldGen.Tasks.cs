@@ -233,12 +233,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void GenerateSlimeZone() {
+		return;
 		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void GenerateFleshZone() {
+		return;
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
 		ResetTemplate_GenerationValue();
@@ -265,7 +267,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				counter.X += 32;
 				additionaloffset = 0;
 			}
-			bool ChanceOfSpawningShrine = Rand.NextBool(300) && !SpawnedShrine;
 			template.EnumeratePixels((a, b, color) => {
 				a += rect.X + counter.X;
 				b += rect.Y + counter.Y;
@@ -279,17 +280,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (color.R == 255 && color.B == 0 && color.G == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
 				}
-				else if (ChanceOfSpawningShrine) {
-					EmptySpaceRecorder.Add(new(a, b));
-				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeon);
 			});
-			if (ChanceOfSpawningShrine) {
-				if (EmptySpaceRecorder.Count > 1) {
-					ChanceOfSpawningShrine = false;
-					SpawnedShrine = true;
-				}
-			}
 			if (counter.X < rect.Width) {
 				counter.X += template.Width;
 			}

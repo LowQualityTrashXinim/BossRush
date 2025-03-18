@@ -5,12 +5,10 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.BuffAndDebuff;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
+namespace BossRush.Contents.Items.Accessories.LostAccessories {
 	class FuryEmblem : SynergyModItem {
 		public override void SetDefaults() {
-			Item.accessory = true;
-			Item.height = 40;
-			Item.width = 40;
+			Item.Set_LostAccessory(40, 40);
 			Item.rare = ItemRarityID.Lime;
 			Item.value = 10000000;
 		}

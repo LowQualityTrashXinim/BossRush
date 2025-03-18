@@ -1,15 +1,13 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper {
-	public class MashedOfCopper : SynergyModItem {
+namespace BossRush.Contents.Items.Accessories.LostAccessories.MashedOfCopper {
+	public class MashedOfCopper : ModItem {
 		public override void SetDefaults() {
-			Item.DefaultToAccessory(27, 27);
+			Item.Set_LostAccessory(27, 27);
 			Item.value = Item.sellPrice(silver: 100);
 			Item.rare = ItemRarityID.Blue;
 		}
@@ -18,17 +16,6 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper 
 			player.statDefense += 6;
 			player.GetModPlayer<RoguelikeArmorPlayer>().SafeAddArmorSet("CopperArmor");
 			player.GetModPlayer<MashedOfCopperPlayer>().MashedOfCopper = true;
-		}
-
-		public override void AddRecipes() {
-			var recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.CopperGreaves, 1);
-			recipe.AddIngredient(ItemID.CopperChainmail, 1);
-			recipe.AddIngredient(ItemID.CopperHelmet, 1);
-			recipe.AddIngredient(ItemID.CopperBow, 1);
-			recipe.AddIngredient(ItemID.CopperShortsword, 1);
-			recipe.AddIngredient(ItemID.CopperBroadsword, 1);
-			recipe.Register();
 		}
 	}
 	public class MashedOfCopperPlayer : ModPlayer {

@@ -418,7 +418,6 @@ OathOfSword: {
 	Description:
 		'''
 		+ Increases your melee damage by 100% and melee damage are multiply by 1.1x
-		- Melee attack speed are multiply by 0.45x
 		- Using any other weapon that is not melee will decreases their damage by 65%
 		'''
 }

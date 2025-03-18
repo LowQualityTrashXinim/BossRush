@@ -369,6 +369,9 @@ namespace BossRush.Contents.Items.Toggle {
 					textpanel.SetText(line);
 					break;
 				case 3:
+					foreach (var item in list_info) {
+						item.Hide(true);
+					}
 					foreach (var item in textlist.Keys) {
 						item.Hide = false;
 					}
