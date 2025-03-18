@@ -2,11 +2,10 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories {
-	class FuryEmblem : SynergyModItem {
+	class FuryEmblem : ModItem {
 		public override void SetDefaults() {
 			Item.Set_LostAccessory(40, 40);
 			Item.rare = ItemRarityID.Lime;
@@ -18,12 +17,6 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 5);
 			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, 1.25f);
 			player.GetModPlayer<FuryPlayer>().Furious = true;
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-		   .AddIngredient(ItemID.AvengerEmblem, 1)
-		   .AddIngredient(ItemID.Vitamins, 1)
-		   .Register();
 		}
 	}
 	class FuryPlayer : ModPlayer {

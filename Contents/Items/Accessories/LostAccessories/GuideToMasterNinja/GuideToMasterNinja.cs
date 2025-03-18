@@ -1,5 +1,4 @@
 ﻿using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;

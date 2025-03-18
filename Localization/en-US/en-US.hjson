@@ -3155,6 +3155,11 @@ Mods: {
 					Label: Template Test
 					Tooltip: ""
 				}
+
+				UnfairMode: {
+					Label: Unfair Mode
+					Tooltip: ""
+				}
 			}
 		}
 

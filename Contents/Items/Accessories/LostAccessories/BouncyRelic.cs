@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories {
-	internal class BouncyRelic : SynergyModItem {
+	internal class BouncyRelic : ModItem {
 		public override void SetDefaults() {
 			Item.Set_LostAccessory(30, 30);
 			Item.value = 1000000;
@@ -37,8 +37,6 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 				return false;
 			}
 			return true;
-		}
-		public override void PostAI(Projectile projectile) {
 		}
 	}
 }
