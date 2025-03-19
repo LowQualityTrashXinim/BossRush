@@ -1,6 +1,8 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using System.IO;
 using Terraria.ID;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Systems;
@@ -10,19 +12,15 @@ using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.BossRushItem;
-using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Contents.Projectiles;
+using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items.Weapon;
 using BossRush.Common.WorldGenOverhaul;
-using Terraria.GameInput;
+using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.BossRushItem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
-using BossRush.Contents.Items.Toggle;
-using System;
-using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
-using Steamworks;
 
 namespace BossRush.Common.General {
 	/// <summary>
@@ -38,6 +36,14 @@ namespace BossRush.Common.General {
 		public bool Hold_Shift = false;
 		public bool Press_Shift = false;
 		public bool Pressed_Shift = false;
+		public bool Shift_Option() {
+			if (ModContent.GetInstance<RogueLikeConfig>().HoldShift) {
+				return Hold_Shift;
+			}
+			else {
+				return Press_Shift;
+			}
+		}
 		private Item starterItem = null;
 		public bool UseOnly1ItemSinceTheStartOfTheGame(int type = 0) {
 			if (starterItem == null) {

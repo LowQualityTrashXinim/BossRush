@@ -12,6 +12,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle);
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle);
 	}
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
@@ -22,6 +24,12 @@ internal class PulseRifle : SynergyModItem {
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SniperRifle)) {
 			tooltips.Add(new(Mod, "PulseRifle_SniperRifle", $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor"));
+		}
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile)) {
+			tooltips.Add(new(Mod, "PulseRifle_MagicMissile", $"[i:{ItemID.MagicMissile}] Have 1 in 10 chance to shoot additional magic missle"));
+		}
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+			tooltips.Add(new(Mod, "PulseRifle_ClockworkAssaultRifle", $"[i:{ItemID.ClockworkAssaultRifle}] Shoot burst arch and missle more common"));
 		}
 	}
 	public override Vector2? HoldoutOffset() {
@@ -40,15 +48,19 @@ internal class PulseRifle : SynergyModItem {
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		Counter++;
-		if (Counter >= 30) {
+		if (Counter >= 30 || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle) && Counter >= 10) {
 			for (int i = 0; i < 4; i++) {
 				int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2DistributeEvenlyPlus(4, 40, i), type, damage, knockback, player.whoAmI);
 				Main.projectile[proj].penetrate = 1;
 			}
 			Counter = 0;
 		}
-		if (Main.rand.NextBool(5)) {
+		if (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ModContent.ProjectileType<PulseHomingProjectile>(), (int)(damage * 1.25f), knockback, player.whoAmI);
+		}
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) || Main.rand.NextBool(5) && SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ProjectileID.MagicMissile, (int)(damage), knockback, player.whoAmI);
+			Main.projectile[proj].penetrate = 1;
 		}
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
 	}

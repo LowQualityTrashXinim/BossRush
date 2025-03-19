@@ -11,13 +11,14 @@ namespace BossRush.Contents.Items.Weapon;
 class RisingStar : ModItem {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PhoenixBlaster);
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 30, 3, 18, 18, ItemUseStyleID.Shoot, ProjectileID.Bullet, 2, true, AmmoID.Bullet);
+		Item.BossRushDefaultRange(32, 32, 30, 3, 18, 18, ItemUseStyleID.Shoot, ProjectileID.Bullet, 1, true, AmmoID.Bullet);
 	}
 	public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = ModContent.ProjectileType<RisingStarProjectile>();
 	}
 	public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		return base.Shoot(player, source, position, velocity, type, damage, knockback);
+		Projectile.NewProjectile(source, position, velocity * .5f, type, damage, knockback, player.whoAmI);
+		return false;
 	}
 	public override void AddRecipes() {
 		CreateRecipe()
@@ -49,8 +50,8 @@ class RisingStarProjectile : ModProjectile {
 		modifiers.SetMaxDamage(int.MaxValue);
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		Projectile.DrawTrail(lightColor, .01f);
-		return base.PreDraw(ref lightColor);
+		Projectile.DrawTrailWithoutAlpha(new Color(255, 50, 50), .01f);
+		return false;
 	}
 }
 class RisingStarBurning_Debuff : ModBuff {
@@ -59,9 +60,9 @@ class RisingStarBurning_Debuff : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.lifeRegen -= Math.Min((npc.lifeMax / 100), 1);
+		npc.lifeRegen -= Math.Max((npc.lifeMax / 100), 1);
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.lifeRegen -= Math.Min((player.statLifeMax2 / 100), 1);
+		player.lifeRegen -= Math.Max((player.statLifeMax2 / 100), 1);
 	}
 }

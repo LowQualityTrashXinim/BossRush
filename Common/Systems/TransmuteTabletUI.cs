@@ -158,7 +158,7 @@ public class ExitUI : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		if (IsMouseHovering) {
-			Main.instance.MouseText("Exit ?");
+			Main.instance.MouseText("Exit");
 		}
 	}
 }

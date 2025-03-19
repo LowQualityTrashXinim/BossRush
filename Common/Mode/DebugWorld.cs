@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Common.Mode;
 public partial class DebugWorld : ModSystem {
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (ModContent.GetInstance<RogueLikeConfig>().WorldGenTest) {
+		if (ModContent.GetInstance<RogueLikeConfig>().TemplateTest) {
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}

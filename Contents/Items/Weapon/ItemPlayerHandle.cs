@@ -22,9 +22,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
-using BossRush.Common.Systems.Element;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using System.Reflection;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -221,7 +219,6 @@ namespace BossRush.Contents.Items.Weapon {
 			if (ModContent.GetInstance<UniversalSystem>().user2ndInterface.CurrentState == ModContent.GetInstance<UniversalSystem>().transmutationUI) {
 				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
 			}
-
 			if (item.ModItem == null) {
 				return;
 			}
@@ -236,7 +233,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {
-				if (!moddedplayer.Press_Shift) {
+				if (!moddedplayer.Shift_Option()) {
 					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
@@ -257,36 +254,25 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null)
-				if (moddedplayer.Press_Shift) {
+				if (moddedplayer.Shift_Option()) {
 					float width;
 					float height = -16;
 					Vector2 pos;
-
 					string value = $"Mods.BossRush.Items.{item.ModItem.Name}.ExtraInfo";
 					string ExtraInfo = Language.GetTextValue(value);
-
 					DynamicSpriteFont font = FontAssets.MouseText.Value;
-
 					if (Main.MouseScreen.X < Main.screenWidth / 2) {
 						string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
 						width = ChatManager.GetStringSize(font, widest, Vector2.One).X;
-
 						pos = new Vector2(x, y) + new Vector2(width + 30, 0);
 					}
 					else {
 						width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
-
 						pos = new Vector2(x, y) - new Vector2(width + 30, 0);
 					}
-
 					width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
-
 					height += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
-
-
 					Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
-
-
 					Utils.DrawBorderString(Main.spriteBatch, ExtraInfo, pos, Color.White);
 					pos.Y += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
 				}

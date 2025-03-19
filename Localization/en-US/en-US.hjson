@@ -2352,7 +2352,11 @@ Mods: {
 
 			TheUnderdog: {
 				DisplayName: The Underdog
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Comeback is always good"
+					+10 critical strike chance and 25% attack speed when below 50% hp
+					'''
 			}
 
 			BlueMinishark: {
@@ -2362,7 +2366,7 @@ Mods: {
 
 			RelentlessAbomination: {
 				DisplayName: Relentless Abomination
-				Tooltip: ""
+				Tooltip: '''"Sword made from horror"'''
 			}
 
 			NPCProgressionStatsResetter: {
@@ -2377,6 +2381,11 @@ Mods: {
 
 			WeaponBluePrint: {
 				DisplayName: Weapon Blue Print
+				Tooltip: ""
+			}
+
+			TheBurningSky: {
+				DisplayName: The Burning Sky
 				Tooltip: ""
 			}
 		}
@@ -2920,29 +2929,27 @@ Mods: {
 			}
 
 			RA_Rotting: {
-				DisplayName: R A_ Rotting
+				DisplayName: Rotting
 				Description: Mods.BossRush.Buffs.RA_Rotting.Description
 			}
 
 			RisingStarBurning_Debuff: {
-				DisplayName: Rising Star Burning_ Debuff
-				Description: Mods.BossRush.Buffs.RisingStarBurning_Debuff.Description
+				DisplayName: Rising Star Burning
+				Description: So hot that it's burn your soul
 			}
 		}
 
 		Configs: {
 			RogueLikeConfig: {
-				DisplayName: Boss Rush Mod Config
+				DisplayName: Roguelike Mod Config
 
 				BossRushMode: {
 					Label: Boss Rush Mode
 					Tooltip:
 						'''
-						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD, THIS WILL MESS WITH YOUR WORLD GEN
-						The mod boss rush mode
-						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
-						What this mode do :
-						-World gen change so you could easily build arena and chest gone
+						Player are given custom starting loot
+						Boss Rush mode world setting are enable
+						Offer custom boss arena World generation
 						'''
 				}
 
@@ -2967,7 +2974,7 @@ Mods: {
 				}
 
 				RoguelikeOverhaul: {
-					Label: "[BETA] Roguelike Overhaul"
+					Label: "[W.I.P] Roguelike Overhaul"
 					Tooltip:
 						'''
 						Enable this to activate vanilla terraria overhaul
@@ -2978,13 +2985,13 @@ Mods: {
 				}
 
 				Nightmare: {
-					Label: Nightmare (W.I.P)
+					Label: Nightmare [W.I.P]
 					Tooltip:
 						'''
 						"So you think the game is too easy ?"
-						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
-						Highly not recommend for inexperience player
-						- Enemy are much more brutal, and is immune to lava and trap
+						Note : Highly not recommend for inexperience player
+						Will enable ForTheWorthy seeds regardless of world type
+						- Enemy are much more brutal and is immune to lava and trap
 						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
 						- Boss can sometime become elite
@@ -3007,12 +3014,12 @@ Mods: {
 
 				HardEnableFeature: {
 					Label: Hard Enable Feature
-					Tooltip: This will enable feature that you should not be able to access regardless of config, this do not guarentee balance
+					Tooltip: This will enable feature that you should not be able to access because of world setting
 				}
 
 				ForceBossDropRegadless: {
 					Label: Force Boss Drop Regardless
-					Tooltip: Make boss drop outside of challenge mode
+					Tooltip: Make boss drop loot outside of world setting
 				}
 
 				WorldGenTest: {
@@ -3022,7 +3029,7 @@ Mods: {
 
 				AutoHardCore: {
 					Label: Auto Hard Core
-					Tooltip: ""
+					Tooltip: Will change your character difficulty to hardcore on world enter
 				}
 
 				AutoRandomizeCharacter: {
@@ -3037,6 +3044,7 @@ Mods: {
 					GameModeHeader: Gamemodes
 					LegacyHeader: Legacy
 					DebugHeader: Debug
+					GameHeader: Game option
 				}
 
 				LegacyLootBoxDrop: {
@@ -3082,7 +3090,7 @@ Mods: {
 						'''
 						Enable to gain access to weapon enchantment system
 						Disable to revoke access to weapon enchantment system
-						Instead weapon enchantment have 20% to appear
+						and you have 20% to get weapon enchantment
 						'''
 				}
 
@@ -3127,7 +3135,8 @@ Mods: {
 					Tooltip:
 						'''
 						"Blessing and curses"
-						On starting, you will receive 1 randomize curse and 15 taboos
+						You will be cursed right at the start
+						1 Major curses and 15 taboo curses
 						'''
 				}
 
@@ -3159,6 +3168,15 @@ Mods: {
 				UnfairMode: {
 					Label: Unfair Mode
 					Tooltip: ""
+				}
+
+				HoldShift: {
+					Label: Hold shift
+					Tooltip:
+						'''
+						Enable to make information tooltip need you to hold shift to show
+						Disable to make information tooltip toggle on shift pressed
+						'''
 				}
 			}
 		}

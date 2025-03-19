@@ -283,6 +283,8 @@ internal class UniversalSystem : ModSystem {
 			orig(self);
 		}
 	}
+	public override void PreUpdateTime() {
+	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
 		user2ndInterface?.Update(gameTime);
@@ -624,6 +626,7 @@ class DefaultUI : UIState {
 		staticticUI.HAlign = .3f;
 		staticticUI.VAlign = .02f;
 		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
+		staticticUI.SetVisibility(.7f, 1f);
 		Append(staticticUI);
 		colorChanging1 = new(new() { Color.DarkBlue, Color.LightCyan });
 		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue }, .5f);
@@ -744,7 +747,7 @@ class DefaultUI : UIState {
 				$"{time.Hours}" +
 				$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
 				$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
-				$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
+				$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "0" + time.Milliseconds)}";
 			timer.SetText(ToTimer);
 		}
 		else {
@@ -752,7 +755,7 @@ class DefaultUI : UIState {
 			$"{system.timeBeatenTheGame.Hours}" +
 			$":{(system.timeBeatenTheGame.Minutes >= 10 ? system.timeBeatenTheGame.Minutes : "0" + system.timeBeatenTheGame.Minutes)}" +
 			$":{(system.timeBeatenTheGame.Seconds >= 10 ? system.timeBeatenTheGame.Seconds : "0" + time.Seconds)}" +
-			$":{(system.timeBeatenTheGame.Milliseconds >= 100 ? (system.timeBeatenTheGame.Milliseconds >= 10 ? "0" + system.timeBeatenTheGame.Milliseconds : system.timeBeatenTheGame.Milliseconds) : "00" + system.timeBeatenTheGame.Milliseconds)}";
+			$":{(system.timeBeatenTheGame.Milliseconds >= 100 ? (system.timeBeatenTheGame.Milliseconds >= 10 ? system.timeBeatenTheGame.Milliseconds : system.timeBeatenTheGame.Milliseconds) : "0" + system.timeBeatenTheGame.Milliseconds)}";
 			timer.SetText(ToTimer);
 		}
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {

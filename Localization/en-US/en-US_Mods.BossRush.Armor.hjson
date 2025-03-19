@@ -219,9 +219,9 @@ TinArmor: {
 }
 
 CopperArmor: {
-	Head: 2% chance to inflict electrified on hit
-	Body: 3% chance to inflict electrified on hit
-	Leg: 1% chance to inflict electrified on hit
+	Head: 2% chance to inflict Electrified on hit
+	Body: 3% chance to inflict Electrified on hit
+	Leg: 1% chance to inflict Electrified on hit
 	SetBonus:
 		'''
 		25% increased movement speed
@@ -299,9 +299,9 @@ GoldArmor: {
 		Attacking enemy with midas debuff will deal additional damage based on their defense
 		While enemy have midas debuff, you will take 1 damage and heal 5 life ( debuff is removed after )
 		'''
-	Head: 5% chance to inflict midas on hit
-	Body: 5% chance to inflict midas on hit
-	Leg: 5% chance to inflict midas on hit
+	Head: 5% chance to inflict Midas on hit
+	Body: 5% chance to inflict Midas on hit
+	Leg: 5% chance to inflict Midas on hit
 }
 
 PlatinumArmor: {

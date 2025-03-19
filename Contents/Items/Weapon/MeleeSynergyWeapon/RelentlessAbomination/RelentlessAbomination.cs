@@ -102,6 +102,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbominatio
 			Projectile.usesIDStaticNPCImmunity = true;
 			Projectile.idStaticNPCHitCooldown = 30;
 		}
+		Vector2 offset = Vector2.Zero;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			if (Projectile.timeLeft == 300) {
 				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -118,7 +119,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbominatio
 					return;
 				}
 				else {
-					Projectile.Center = npc.Center.IgnoreTilePositionOFFSET(Projectile.rotation.ToRotationVector2(), -Projectile.ai[1]);
+					Projectile.Center = npc.Center;
 				}
 			}
 		}
@@ -128,6 +129,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbominatio
 				this.npc = npc;
 				Projectile.ai[1] = (npc.Center - Projectile.Center).Length();
 				Projectile.knockBack = 0;
+				offset = npc.Center - Projectile.Center;
 			}
 			Projectile.damage = (int)(Projectile.damage * .99f);
 		}

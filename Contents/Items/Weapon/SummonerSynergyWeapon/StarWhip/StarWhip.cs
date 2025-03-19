@@ -20,7 +20,7 @@ using BossRush.Common.Graphics.TrailStructs;
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {
 	public override void SetDefaults() {
-		Item.DefaultToWhip(ModContent.ProjectileType<StarWhipProj>(), 100, 1, 15, 30);
+		Item.DefaultToWhip(ModContent.ProjectileType<StarWhipProj>(), 100, 1, 9f, 30);
 		Item.UseSound = SoundID.Item116;
 	}
 
@@ -43,13 +43,13 @@ public class StarWhip : SynergyModItem {
 		Vector2 pos = (player.Center + new Vector2(500, 0)).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi), player.Center);
 
 
-		if (!WorldGen.TileEmpty(pos.ToTileCoordinates().X,pos.ToTileCoordinates().Y)) 
+		if (!WorldGen.TileEmpty(pos.ToTileCoordinates().X, pos.ToTileCoordinates().Y))
 			return;
-					
-		if(Main.myPlayer == player.whoAmI)
+
+		if (Main.myPlayer == player.whoAmI)
 			NPC.NewNPC(player.GetSource_FromThis(), (int)pos.X, (int)pos.Y, ModContent.NPCType<FallenStarPower>());
 
-		
+
 	}
 
 	public override Color? GetAlpha(Color lightColor) {
@@ -70,7 +70,7 @@ public class StarWhipProj : ModProjectile {
 		empoweredHit = false;
 		empowered = false;
 		tracker = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<StarWhipTipTracker>(), 0, 0, Projectile.owner);
-		if (Main.player[Projectile.owner].HasBuff(ModContent.BuffType<StarWhipBuff>())) 
+		if (Main.player[Projectile.owner].HasBuff(ModContent.BuffType<StarWhipBuff>()))
 			empowered = true;
 	}
 	public override void SetStaticDefaults() {
@@ -98,30 +98,28 @@ public class StarWhipProj : ModProjectile {
 		BossRushUtils.DrawPrettyStarSparkle(Projectile.Opacity, SpriteEffects.None, list.ElementAt(list.Count - 2) - Main.screenPosition, Color.Yellow, Color.White, 0.1f, 0f, 0.1f, 0f, 0.25f, Projectile.rotation, new Vector2(4f, 4f), new Vector2(3f));
 		default(StarTrail).Draw(Main.projectile[tracker].oldPos, Main.projectile[tracker].oldRot, Projectile.Size * 0.5f);
 
-		if(empowered)
+		if (empowered)
 			default(StarTrailEmpowered).Draw(Main.projectile[tracker].oldPos, Main.projectile[tracker].oldRot, Projectile.Size * 0.5f);
 
 		return false;
 	}
 
 	public override void OnKill(int timeLeft) {
-		if(empowered)
+		if (empowered)
 			Main.player[Projectile.owner].ClearBuff(ModContent.BuffType<StarWhipBuff>());
 	}
 
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (empowered && !empoweredHit && target.type != ModContent.NPCType<FallenStarPower>()) 
-		{
+		if (empowered && !empoweredHit && target.type != ModContent.NPCType<FallenStarPower>()) {
 			empoweredHit = true;
-			Projectile.NewProjectileDirect(Projectile.GetSource_OnHit(target), target.Center - new Vector2(0,500), Vector2.UnitY * 5, ModContent.ProjectileType<StarWhipStarProj>(), Projectile.damage, 0, Projectile.owner, 4);
+			Projectile.NewProjectileDirect(Projectile.GetSource_OnHit(target), target.Center - new Vector2(0, 500), Vector2.UnitY * 5, ModContent.ProjectileType<StarWhipStarProj>(), Projectile.damage, 0, Projectile.owner, 4);
 		}
 	}
 
 }
 
 // mainly used for smoother trails using the TrailingMode 3 
-public class StarWhipTipTracker : ModProjectile 
-{
+public class StarWhipTipTracker : ModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.AbigailMinion);
 
 	public override void SetStaticDefaults() {
@@ -134,8 +132,7 @@ public class StarWhipTipTracker : ModProjectile
 }
 
 
-public class FallenStarPower : ModNPC 
-{
+public class FallenStarPower : ModNPC {
 
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.StarCannonStar);
 
@@ -148,7 +145,7 @@ public class FallenStarPower : ModNPC
 		NPC.width = NPC.height = 25;
 		NPC.dontTakeDamageFromHostiles = true;
 		NPC.DeathSound = SoundID.Item4;
-		
+		NPC.noTileCollide = true;
 	}
 
 	public override void OnSpawn(IEntitySource source) {
@@ -165,11 +162,11 @@ public class FallenStarPower : ModNPC
 	public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers) {
 		modifiers.HideCombatText();
 		Main.player[projectile.owner].AddBuff(ModContent.BuffType<StarWhipBuff>(), BossRushUtils.ToSecond(5));
-		
+
 	}
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-		
+
 		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.StarCannonStar];
 
 
@@ -179,7 +176,7 @@ public class FallenStarPower : ModNPC
 		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos + new Vector2(MathF.Sin(NPC.ai[0]), 0), null, Color.White, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
 
 
-		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos, null, new Color(255,255,255,0), 0, texture.Size() / 2f, 0.8f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos, null, new Color(255, 255, 255, 0), 0, texture.Size() / 2f, 0.8f, SpriteEffects.None);
 
 		BossRushUtils.DrawPrettyStarSparkle(NPC.Opacity, SpriteEffects.None, NPC.Center - Main.screenPosition, Color.Yellow, Color.White, 0.25f, 0f, 0.5f, 0f, 1f, NPC.rotation, new Vector2(1f, 1f), new Vector2(15f));
 
@@ -192,20 +189,21 @@ public class FallenStarPower : ModNPC
 		NPC.ai[1]++;
 
 		if (NPC.ai[1] >= BossRushUtils.ToSecond(10))
-			NPC.EncourageDespawn(2);		
+			NPC.EncourageDespawn(2);
+		NPC.TargetClosest();
+		Player player = Main.player[NPC.target];
+		NPC.NPCMoveToPosition(player.Center, 2f, 400);
 	}
 }
 
-public class StarWhipBuff : ModBuff 
-{
+public class StarWhipBuff : ModBuff {
 
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 
 
 }
 
-public class StarWhipGlobalNPC : GlobalNPC 
-{
+public class StarWhipGlobalNPC : GlobalNPC {
 
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 
@@ -213,8 +211,7 @@ public class StarWhipGlobalNPC : GlobalNPC
 			return;
 
 		var damageMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
-		if (npc.HasBuff<StarWhipDebuff>()) 
-		{
+		if (npc.HasBuff<StarWhipDebuff>()) {
 
 			modifiers.FlatBonusDamage += StarWhipDebuff.TagDamage * damageMultiplier;
 
@@ -224,8 +221,7 @@ public class StarWhipGlobalNPC : GlobalNPC
 
 }
 
-public class StarWhipDebuff : ModBuff 
-{
+public class StarWhipDebuff : ModBuff {
 
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 
@@ -237,8 +233,7 @@ public class StarWhipDebuff : ModBuff
 
 }
 
-public class StarWhipStarProj : ModProjectile 
-{
+public class StarWhipStarProj : ModProjectile {
 
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.StarCannonStar);
 
@@ -258,15 +253,14 @@ public class StarWhipStarProj : ModProjectile
 	}
 	public override void OnSpawn(IEntitySource source) {
 		spawnPos = Projectile.Center;
-		SoundEngine.PlaySound(SoundID.Item125,Projectile.Center);
-		for(int i = 0; i < 35; i++) 
-		{
+		SoundEngine.PlaySound(SoundID.Item125, Projectile.Center);
+		for (int i = 0; i < 35; i++) {
 
 			var dust = Dust.NewDustPerfect(Projectile.position, DustID.YellowStarDust, Main.rand.NextVector2CircularEdge(30, 30));
 			dust.noGravity = true;
 
 		}
-		
+
 	}
 	public override Color? GetAlpha(Color lightColor) {
 		return Color.White;
@@ -292,11 +286,10 @@ public class StarWhipStarProj : ModProjectile
 
 		Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(dirToTargetPos, MathHelper.ToRadians(3)).ToRotationVector2() * Projectile.velocity.Length();
 
-		
-			
 
-		if (Projectile.ai[0] > 0 && Projectile.ai[1] == 30) 
-		{
+
+
+		if (Projectile.ai[0] > 0 && Projectile.ai[1] == 30) {
 
 			Projectile.ai[0]--;
 			Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), spawnPos, (Vector2.UnitY * 5).RotatedByRandom(MathHelper.ToRadians(15)), ModContent.ProjectileType<StarWhipStarProj>(), Projectile.damage, 0, Projectile.owner, Projectile.ai[0]);

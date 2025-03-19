@@ -12,16 +12,17 @@ using BossRush.Common.RoguelikeChange.ItemOverhaul;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 50, 50, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
+		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 28, 28, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
 		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		MeleeOverhaulPlayer meleeplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 		for (int i = 0; i < 6; i++) {
 			Vector2 rotate = velocity.Vector2DistributeEvenly(5, 120 * player.direction, meleeplayer.ComboNumber % 2 == 0 ? i : 5 - i) * .5f;
-			Projectile.NewProjectile(source, position.PositionOFFSET(rotate, 36f), rotate, type, damage, knockback, player.whoAmI, ai1: i);
+			Projectile.NewProjectile(source, position.PositionOFFSET(rotate, 62), rotate, type, damage, knockback, player.whoAmI, ai1: i);
 		}
-		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 62), velocity, type, damage, knockback, player.whoAmI);
+		CanShootItem = false;
 	}
 	public override void AddRecipes() {
 		CreateRecipe()

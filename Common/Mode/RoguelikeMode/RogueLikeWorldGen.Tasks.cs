@@ -240,7 +240,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void GenerateFleshZone() {
-		return;
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
 		ResetTemplate_GenerationValue();
