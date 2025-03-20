@@ -166,7 +166,7 @@ namespace BossRush.Contents.Items.Chest {
 					Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
 					WeaponTicket ticket = item.ModItem as WeaponTicket;
 					LootBoxItemPool pool = LootboxSystem.GetItemPool(Type);
-					int amount = (int)modplayer.DropModifier.ApplyTo(Main.rand.Next(4, 11));
+					int amount = Main.rand.Next(4, 9);
 					HashSet<int> p = new(pool.AllItemPool());
 					if (p.Count <= amount) {
 						ticket.Add_HashSet(p);

@@ -33,13 +33,14 @@ public class TokenOfSlothPlayer : ModPlayer {
 			for (int i = 0; i < SlothMeter; i++) {
 				Vector2 pos = Player.Center +
 						Vector2.One.Vector2DistributeEvenly(SlothMeter, 360, i)
-						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<TrinketPlayer>().counterToFullPi)) * 30;
+						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<TrinketPlayer>().counterToFullPi)) * 30 - Vector2.One;
 				int dust = Dust.NewDust(pos, 0, 0, DustID.GemTopaz);
 				Main.dust[dust].velocity = Vector2.Zero;
 				Main.dust[dust].noGravity = true;
-				Main.dust[dust].fadeIn = 0;
+				Main.dust[dust].Dust_BelongTo(Player);
+				Main.dust[dust].Dust_GetDust().FollowEntity = true;
 			}
-			if (!Player.ItemAnimationActive && Player.HeldItem.IsAWeapon()) {
+			if (!Player.ItemAnimationActive) {
 				if (++Counter_Sloth >= ThreeSecond) {
 					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 2);
 					Counter_Sloth = 0;

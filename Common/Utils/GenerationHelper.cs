@@ -146,7 +146,7 @@ internal static partial class GenerationHelper {
 	public static Rectangle GridPositionInTheWorld24x24(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, RogueLikeWorldGen.GridPart_X * dragX, RogueLikeWorldGen.GridPart_Y * dragY);
 	/// <summary>
-	/// Use this for easy place tile in the world in 24x24 grid like
+	/// Use this for easy place structure in the world in 24x24 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
 	/// <param name="y">The Starting Y position</param>
@@ -181,12 +181,14 @@ internal static partial class GenerationHelper {
 		}
 		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
 
+		var collection = CollectionsMarshal.AsSpan(datalist);
+		int counter;
 		switch (style) {
 			case GenerateStyle.None:
-				var collection = CollectionsMarshal.AsSpan(datalist);
 				for (int i = 0; i < collection.Length; i++) {
 					TileData tiledata = collection[i].tileData;
-					for (int l = 0; l < collection[i].Count; l++) {
+					counter = collection[i].Count;
+					for (int l = 0; l < counter; l++) {
 						if (offsetY >= rect.Height) {
 							offsetY = 0;
 							offsetX++;
@@ -198,10 +200,10 @@ internal static partial class GenerationHelper {
 				}
 				break;
 			case GenerateStyle.FlipHorizon:
-				for (int i = 0; i < datalist.Count; i++) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
+				for (int i = 0; i < collection.Length; i++) {
+					TileData tiledata = collection[i].tileData;
+					counter = collection[i].Count;
+					for (int l = counter; l > 0; l--) {
 						if (offsetY >= rect.Height) {
 							offsetY = 0;
 							offsetX++;
@@ -214,9 +216,9 @@ internal static partial class GenerationHelper {
 				break;
 			case GenerateStyle.FlipVertical:
 				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = 0; l < gdata.Count; l++) {
+					TileData tiledata = collection[i].tileData;
+					counter = collection[i].Count;
+					for (int l = 0; l < counter; l++) {
 						if (offsetY >= rect.Height) {
 							offsetY = 0;
 							offsetX++;
@@ -229,9 +231,9 @@ internal static partial class GenerationHelper {
 				break;
 			case GenerateStyle.FlipBoth:
 				for (int i = datalist.Count - 1; i >= 0; i--) {
-					GenPassData gdata = datalist[i];
-					TileData tiledata = gdata.tileData;
-					for (int l = gdata.Count; l > 0; l--) {
+					TileData tiledata = collection[i].tileData;
+					counter = collection[i].Count;
+					for (int l = counter; l > 0; l--) {
 						if (offsetY >= rect.Height) {
 							offsetY = 0;
 							offsetX++;

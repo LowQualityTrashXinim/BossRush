@@ -498,7 +498,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 	}
 }
-public class GenPassData {
+public struct GenPassData {
 	public TileData tileData { get; private set; }
 	public ushort Count { get; private set; }
 	public GenPassData() {

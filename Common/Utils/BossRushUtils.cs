@@ -2,17 +2,27 @@
 using Terraria;
 using System.Linq;
 using Terraria.ID;
-using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static void Dust_BelongTo(this Dust dust, Entity entity) {
+			if (dust.active) {
+				RoguelikeGlobalDust.Dust[dust.dustIndex].entityToFollow = entity;
+			}
+		}
+		public static Roguelike_Dust Dust_GetDust(this Dust dust) {
+			if (!dust.active) {
+				return null;
+			}
+			return RoguelikeGlobalDust.Dust[dust.dustIndex];
+		}
 		public static bool IsAnyVanillaBossAlive() {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC npc = Main.npc[i];
@@ -56,12 +66,12 @@ namespace BossRush {
 		/// <param name="newline"></param>
 		public static void AddTooltip(ref List<TooltipLine> tooltipsLines, TooltipLine newline) {
 			int index = tooltipsLines.FindIndex(l => l.Name == "Tooltip0");
-			if(index != -1) {
+			if (index != -1) {
 				tooltipsLines.Insert(index, newline);
 			}
 			else {
 				index = tooltipsLines.FindIndex(l => l.Name == "JourneyResearch");
-				if(index != -1 && index > 0) {
+				if (index != -1 && index > 0) {
 					tooltipsLines.Insert(index, newline);
 				}
 				else {

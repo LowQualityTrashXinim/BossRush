@@ -21,6 +21,7 @@ using BossRush.Contents.Items.BossRushItem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
+using BossRush.Common.Utils;
 
 namespace BossRush.Common.General {
 	/// <summary>

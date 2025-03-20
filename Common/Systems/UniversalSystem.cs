@@ -283,8 +283,6 @@ internal class UniversalSystem : ModSystem {
 			orig(self);
 		}
 	}
-	public override void PreUpdateTime() {
-	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
 		user2ndInterface?.Update(gameTime);

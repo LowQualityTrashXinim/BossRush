@@ -35,6 +35,16 @@ namespace BossRush {
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="player"></param>
+		/// <returns>
+		/// Return true if player is helding the item in hand<br/>
+		/// Return false when player is not helding the item in hand
+		/// </returns>
+		public static bool IsHeldingModItem<T>(this Player player) where T : ModItem => player.HeldItem.type == ModContent.ItemType<T>();
 		public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
 					stats is PlayerStats.Defense
 					|| stats is PlayerStats.MaxMinion
@@ -76,6 +86,11 @@ namespace BossRush {
 			Array.Copy(player.armor, 3, item, 0, 9);
 			return item.Select(i => i.type).Contains(itemType);
 		}
+		/// <summary>
+		/// Highly unstable, not recommend to uses unless you know what you are doing
+		/// </summary>
+		/// <param name="mod"></param>
+		/// <param name="player"></param>
 		public static void Reflesh_GlobalItem(this Mod mod, Player player) {
 			foreach (Item item in player.inventory) {
 				if (item.type == ItemID.None) {
@@ -104,6 +119,11 @@ namespace BossRush {
 				}
 			}
 		}
+		/// <summary>
+		/// Mana heal effect added by mod, guaranteed to work
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="amount"></param>
 		public static void ManaHeal(this Player player, int amount) {
 			if (player.statMana >= player.statManaMax2) {
 				if (player.statMana + amount >= player.statManaMax2) {
@@ -115,6 +135,11 @@ namespace BossRush {
 				player.ManaEffect(amount);
 			}
 		}
+		/// <summary>
+		/// First strike check
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
 		public static bool CheckFirstStrike(this NPC npc) {
 			if (npc.TryGetGlobalNPC(out RoguelikeGlobalNPC roguelike)) {
 				return roguelike.HitCount <= 0;
