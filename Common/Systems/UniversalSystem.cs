@@ -102,7 +102,6 @@ internal class UniversalSystem : ModSystem {
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";
 	public const string LEGACY_WORLDGEN = "worldgen";
-	public const string LEGACY_SPOIL = "spoil";
 	/// <summary>
 	/// Check legacy option whenever or not if it enable or not
 	/// </summary>
@@ -116,8 +115,6 @@ internal class UniversalSystem : ModSystem {
 			return config.LegacyLootBoxDrop;
 		if (option == LEGACY_WORLDGEN)
 			return config.LegacyBossRushWorldGen;
-		if (option == LEGACY_SPOIL)
-			return config.LegacySpoils;
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
@@ -348,7 +345,8 @@ internal class UniversalSystem : ModSystem {
 			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
 	}
-	public void ActivateStructureSaverUI() {
+    public static bool CanEnchantmentBeAccess() => LuckDepartment(CHECK_WWEAPONENCHANT) && !Check_TotalRNG();
+    public void ActivateStructureSaverUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(structUI);
 	}
@@ -806,19 +804,11 @@ class UISystemMenu : UIState {
 		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
 		Append(open_skill_UI);
 
-		open_Enchantment_UI = new UIImageButton(TextureAssets.InventoryBack);
-		open_Enchantment_UI.UISetWidthHeight(52, 52);
-		open_Enchantment_UI.VAlign = .4f;
-		open_Enchantment_UI.HAlign = SetHAlign(1);
-		open_Enchantment_UI.SetVisibility(1f, 67f);
-		open_Enchantment_UI.OnLeftClick += Open_Enchantment_UI_OnLeftClick;
-		open_Enchantment_UI.OnUpdate += Open_Enchantment_UI_OnUpdate;
-		Append(open_Enchantment_UI);
 
 		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Transmutation_UI.UISetWidthHeight(52, 52);
 		open_Transmutation_UI.VAlign = .4f;
-		open_Transmutation_UI.HAlign = SetHAlign(2);
+		open_Transmutation_UI.HAlign = SetHAlign(1);
 		open_Transmutation_UI.SetVisibility(1f, 67f);
 		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick;
 		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate;
@@ -827,7 +817,7 @@ class UISystemMenu : UIState {
 		open_AchievmentUI = new(TextureAssets.InventoryBack);
 		open_AchievmentUI.UISetWidthHeight(52, 52);
 		open_AchievmentUI.VAlign = .4f;
-		open_AchievmentUI.HAlign = SetHAlign(3);
+		open_AchievmentUI.HAlign = SetHAlign(2);
 		open_AchievmentUI.SetVisibility(1f, 67f);
 		open_AchievmentUI.OnLeftClick += Open_AchievmentUI_OnLeftClick;
 		open_AchievmentUI.OnUpdate += Open_AchievmentUI_OnUpdate;
@@ -847,34 +837,12 @@ class UISystemMenu : UIState {
 			Achievement = false;
 		}
 	}
-
-	private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
-	}
-
-	private bool CanEnchantmentBeAccess() =>
-		UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
-		&& !UniversalSystem.Check_TotalRNG();
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		if (!CanEnchantmentBeAccess()) {
-			Vector2 pos = open_Enchantment_UI.GetDimensions().Position();
-			Vector2 origin = -lockIcon.Size() * .1f;
-			Main.EntitySpriteDraw(lockIcon.Value, pos, null, Color.White, 0, origin, 1, SpriteEffects.None);
-		}
-	}
-	public override void Update(GameTime gameTime) {
+    private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+        ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
+    }
+    public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		if (EnchantmentHover) {
-			Main.instance.MouseText("Enchantment Menu");
-			if (CanEnchantmentBeAccess()) {
-				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
-			}
-			else {
-				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.BlockWeaponEnchantment.Tooltip"));
-			}
-		}
-		else if (SkillHover) {
+		if (SkillHover) {
 			Main.instance.MouseText("Skill inventory");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
 		}
@@ -919,23 +887,6 @@ class UISystemMenu : UIState {
 		}
 		else {
 			SkillHover = false;
-		}
-	}
-
-	private void Open_Enchantment_UI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (affectedElement.IsMouseHovering) {
-			EnchantmentHover = true;
-		}
-		else {
-			EnchantmentHover = false;
-		}
-	}
-	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (CanEnchantmentBeAccess()) {
-			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}
 }

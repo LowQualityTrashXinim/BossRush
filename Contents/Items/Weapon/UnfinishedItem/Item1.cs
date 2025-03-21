@@ -13,14 +13,14 @@ class Item1 : SynergyModItem {
 	 * "Genshin ahh weapon"
 	 * Shoot out star bolt that chase down enemy
 	 * Hitting enemy with item trigger "name 1" for 5s ( 12s cool down )
-	 * During "name 1" your mana regeneration rate is increases
+	 * During "name 1" your attack speed is increases by 20%
 	 * And each strike toward enemy increases star bolt damage toward that enemy by 5% ( capped at 100% )
 	 */
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.Starfury)
 			.AddIngredient(ItemID.MagicMissile)
-			.AddIngredient(ItemID.BabyBirdStaff)
+			.AddIngredient(ItemID.ThunderSpear)
 			.Register();
 	}
 }

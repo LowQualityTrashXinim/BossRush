@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
-	internal class ZapSnapper : SynergyModItem {
+	public class ZapSnapper : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain);
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff);

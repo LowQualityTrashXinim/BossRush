@@ -9,7 +9,6 @@ internal class Item4 : SynergyModItem{
 			.AddIngredient(ItemID.EnchantedSword)
 			.AddIngredient(ItemID.Starfury)
 			.AddIngredient(ItemID.IceBlade)
-			.AddIngredient(ItemID.NightsEdge)
 			.Register();
 	}
 }

@@ -29,11 +29,6 @@ public class GamblerSoulPlayer : ModPlayer {
 			AlreadyGotGivenItem++;
 		}
 	}
-	public override bool CanUseItem(Item item) {
-		if (GamblerSoul)
-			return item.type != ModContent.ItemType<EnchantmentTablet>();
-		return base.CanUseItem(item);
-	}
 	public override void UpdateEquips() {
 		if (GamblerSoul)
 			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);

@@ -43,7 +43,7 @@ public static class SpoilDropRarity {
 	public readonly static int SuperRare = ItemRarityID.Purple;
 	public readonly static int SSR = ItemRarityID.Red;
 	public static bool ChanceWrapper(float chance) {
-		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS) || !UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL) && !Main.LocalPlayer.IsDebugPlayer()) {
+		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS) && !Main.LocalPlayer.IsDebugPlayer()) {
 			return false;
 		}
 		if (Main.LocalPlayer.IsDebugPlayer()) {

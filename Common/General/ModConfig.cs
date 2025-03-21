@@ -34,9 +34,6 @@ namespace BossRush.Common.General {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool DreamlikeWorld { get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool UnfairMode { get; set; }
 		[Header($"LuckDepartmentHeader")]
 		[DefaultValue(true)]
 		public bool RareSpoils { get; set; }

@@ -48,7 +48,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 				.Register();
 		}
 	}
-	class ZenishProjectile : SynergyModProjectile {
+	public class ZenishProjectile : SynergyModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;

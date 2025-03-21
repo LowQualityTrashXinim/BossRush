@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
-	internal class YinYangShockWave : ModProjectile {
+	public class YinYangShockWave : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;

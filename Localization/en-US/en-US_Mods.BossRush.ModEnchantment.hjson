@@ -738,7 +738,7 @@ DeathSickle.Description:
 	Have very small chance to instant kill non-boss enemy
 	Every 15 hit toward NPC will spawn a death scythe that home into nearest NPC
 	'''
-Spear.Desciption:
+Spear.Description:
 	'''
 	Increases melee armor penetration by 10
 	Striking enemy have 5% chance to rain down bunch of spear from the sky

@@ -107,7 +107,7 @@ csharp_style_prefer_readonly_struct = true:suggestion
 csharp_style_prefer_readonly_struct_member = true:suggestion
 
 # Code-block preferences
-csharp_prefer_braces = false:suggestion
+csharp_prefer_braces = true:silent
 csharp_prefer_simple_using_statement = true:suggestion
 csharp_style_namespace_declarations = file_scoped:silent
 csharp_style_prefer_method_group_conversion = true:suggestion
@@ -229,6 +229,7 @@ dotnet_naming_style.begins_with_i.word_separator =
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
 csharp_prefer_system_threading_lock = true:suggestion
 dotnet_diagnostic.CA1805.severity = none
+dotnet_diagnostic.CA1309.severity = none
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -271,3 +272,5 @@ dotnet_diagnostic.IDE0058.severity = none
 dotnet_diagnostic.CA1051.severity = none
 dotnet_diagnostic.CA1021.severity = none
 dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1305.severity = none
+dotnet_diagnostic.CA1854.severity = none

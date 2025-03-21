@@ -965,22 +965,22 @@ public struct TileData : ICloneable {
 	public override string ToString() {
 		StringBuilder sb = new StringBuilder();
 		if (Tile_Type < TileID.Count && !Tile_Air) {
-			sb.Append("T").Append(Tile_Type);
-			sb.Append("X").Append(Tile_FrameX);
-			sb.Append("Y").Append(Tile_FrameY);
+			sb.Append('T').Append(Tile_Type);
+			sb.Append('X').Append(Tile_FrameX);
+			sb.Append('Y').Append(Tile_FrameY);
 		}
 		else {
-			sb.Append("N");
+			sb.Append('N');
 		}
 		if (Tile_WallData < WallID.Count) {
-			sb.Append("W").Append(Tile_WallData);
+			sb.Append('W').Append(Tile_WallData);
 		}
 		if (Tile_LiquidData < LiquidID.Count && Tile_Liquid > 0) {
-			sb.Append("L").Append(Tile_Liquid);
-			sb.Append("D").Append(Tile_LiquidData);
+			sb.Append('L').Append(Tile_Liquid);
+			sb.Append('D').Append(Tile_LiquidData);
 		}
 		if (Tile_HasActuator) {
-			sb.Append("A");
+			sb.Append('A');
 		}
 		if (Tile_Echo) {
 			sb.Append('E');
