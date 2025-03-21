@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using Humanizer;
 using System;
 using System.Collections.Generic;

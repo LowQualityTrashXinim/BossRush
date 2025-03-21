@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ID;

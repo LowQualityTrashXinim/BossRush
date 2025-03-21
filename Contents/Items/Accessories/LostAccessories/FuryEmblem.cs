@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories {
 	class FuryEmblem : ModItem {

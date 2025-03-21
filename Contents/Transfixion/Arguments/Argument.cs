@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 internal class AugmentsLoader : ModSystem {

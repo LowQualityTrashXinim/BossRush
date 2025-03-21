@@ -33,6 +33,7 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {

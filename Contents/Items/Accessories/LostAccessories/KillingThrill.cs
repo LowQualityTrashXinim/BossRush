@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using System;

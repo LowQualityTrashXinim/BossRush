@@ -3,9 +3,9 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class StarStone : ModItem {

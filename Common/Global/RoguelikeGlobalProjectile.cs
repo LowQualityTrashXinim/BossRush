@@ -2,19 +2,16 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
-using System.Collections.Generic;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
-using BossRush.Contents.Items.RelicItem;
-using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
-using BossRush.Common.Systems;
-using SteelSeries.GameSense;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 
-namespace BossRush.Common.RoguelikeChange;
+namespace BossRush.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 
@@ -70,7 +67,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		else {
 			projectile.velocity *= .001f;
 		}
-		Player player = Main.player[projectile.owner];
+		var player = Main.player[projectile.owner];
 		if (projectile.hostile) {
 			VelocityMultiplier = 1f + player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition;
 			player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition = 0;
@@ -84,12 +81,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	}
 	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Source_CustomContextInfo == "Skill_IceAge") {
-			Player player = Main.player[projectile.owner];
+			var player = Main.player[projectile.owner];
 			target.AddBuff(BuffID.Frozen, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
-			target.Center.LookForHostileNPC(out List<NPC> npclist, 75);
-			NPC.HitInfo hitweaker = hit;
+			target.Center.LookForHostileNPC(out var npclist, 75);
+			var hitweaker = hit;
 			hitweaker.Damage = (int)(hit.Damage * .54f);
-			foreach (NPC npc in npclist) {
+			foreach (var npc in npclist) {
 				if (npc.whoAmI == target.whoAmI) {
 					continue;
 				}
@@ -98,7 +95,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
-		Player player = Main.player[projectile.owner];
+		var player = Main.player[projectile.owner];
 		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0
 			|| player.heldProj == projectile.owner

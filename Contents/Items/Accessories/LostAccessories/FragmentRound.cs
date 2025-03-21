@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;

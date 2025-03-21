@@ -12,7 +12,6 @@ using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
-using BossRush.Common.General;
 using BossRush.Contents.Perks;
 using Terraria.GameContent.UI;
 using System.Collections.Generic;
@@ -23,6 +22,7 @@ using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>

@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush {
 	public static partial class BossRushUtils {

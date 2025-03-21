@@ -1,4 +1,4 @@
-using BossRush.Common.General;
+using BossRush.Common.Global;
 using BossRush.Common.Mode.HellishEndeavour;
 using BossRush.Common.Mode.Nightmare;
 using BossRush.Common.Systems.ArtifactSystem;

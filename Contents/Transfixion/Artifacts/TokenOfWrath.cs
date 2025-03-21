@@ -2,12 +2,12 @@
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Perks;
 using System;
 using Humanizer;
 using BossRush.Common.Systems.Achievement;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfWrathArtifact : Artifact {

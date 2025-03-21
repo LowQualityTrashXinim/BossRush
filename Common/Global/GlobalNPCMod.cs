@@ -12,8 +12,9 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items;
+using BossRush.Common.General;
 
-namespace BossRush.Common.General {
+namespace BossRush.Common.Global {
 	class GlobalNPCMod : GlobalNPC {
 		public override void OnSpawn(NPC npc, IEntitySource source) {
 			if (!npc.boss && Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1 && npc.type != NPCID.Creeper) {
@@ -34,9 +35,9 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			LeadingConditionRule ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
-			LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
-			LeadingConditionRule dontHit = new LeadingConditionRule(new DontHitBoss());
+			var ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
+			var noHit = new LeadingConditionRule(new GitGudMode());
+			var dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			LeadingConditionRule legacyLootboxCheck = new(new CheckLegacyLootboxBoss());
 			if (npc.type == NPCID.KingSlime) {
@@ -111,7 +112,7 @@ namespace BossRush.Common.General {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceLootBox>()));
 				//Enraged boss drop
-				LeadingConditionRule hateyoulol = new LeadingConditionRule(new DeerclopHateYou());
+				var hateyoulol = new LeadingConditionRule(new DeerclopHateYou());
 				hateyoulol.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DeerclopTreasureChest>()));
 				npcLoot.Add(hateyoulol);
 				//Expert mode drop
@@ -151,7 +152,7 @@ namespace BossRush.Common.General {
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MechLootBox>()));
 			}
 			else if (npc.type == NPCID.Spazmatism || npc.type == NPCID.Retinazer) {
-				LeadingConditionRule leadingConditionRule = new LeadingConditionRule(new Conditions.MissingTwin());
+				var leadingConditionRule = new LeadingConditionRule(new Conditions.MissingTwin());
 				//NoHit Mode drop
 				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new GitGudMode(), ModContent.ItemType<MechLootBox>(), 1, 2, 2));
 				//Normal mode drop
@@ -197,7 +198,7 @@ namespace BossRush.Common.General {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
-				LeadingConditionRule rule = new LeadingConditionRule(new DukeIsEnrage());
+				var rule = new LeadingConditionRule(new DukeIsEnrage());
 				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DukeLootBox>()));
 				npcLoot.Add(rule);
 				//Expert mode drop
@@ -233,7 +234,7 @@ namespace BossRush.Common.General {
 		}
 		public override void OnKill(NPC npc) {
 			if (npc.boss) {
-				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+				var system = ModContent.GetInstance<UniversalSystem>();
 				system.ListOfBossKilled.Add(npc.type);
 			}
 		}

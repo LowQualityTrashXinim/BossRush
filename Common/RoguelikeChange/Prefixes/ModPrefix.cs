@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.Prefixes;
 

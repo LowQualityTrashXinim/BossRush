@@ -1,5 +1,4 @@
-﻿using BossRush.Common.RoguelikeChange;
-using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Texture;
 using Humanizer;
 using Microsoft.Xna.Framework;

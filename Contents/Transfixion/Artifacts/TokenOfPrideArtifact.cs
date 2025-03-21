@@ -4,12 +4,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Perks;
-using BossRush.Common.Systems;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {

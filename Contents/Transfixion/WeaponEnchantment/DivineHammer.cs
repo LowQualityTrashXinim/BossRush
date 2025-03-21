@@ -1,15 +1,15 @@
-﻿using BossRush.Common.Systems;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 internal class DivineHammer : ModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultToConsume(32, 32);
-		Item.rare = ItemRarityID.Red;
+		Item.width = Item.height = 32;
 		Item.useTime = Item.useAnimation = 15;
+		Item.rare = ItemRarityID.Red;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.UseSound = SoundID.Item37;
 	}

@@ -1,4 +1,4 @@
-﻿using BossRush.Common.RoguelikeChange;
+﻿using BossRush.Common.Global;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;

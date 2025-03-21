@@ -10,11 +10,10 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Common.RoguelikeChange;
 using Terraria.ModLoader.IO;
 using System.IO;
 
-namespace BossRush.Common.Systems;
+namespace BossRush.Common.Global;
 public class PlayerStatsHandle : ModPlayer {
 	public float GetAuraRadius(int radius) => AuraModifier.ApplyTo(radius);
 	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
@@ -135,7 +134,7 @@ public class PlayerStatsHandle : ModPlayer {
 		modifiers.SourceDamage.CombineWith(DirectItemDamage);
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		Item item = Player.HeldItem;
+		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 			modifiers.CritDamage += globalitem.CriticalDamage;
 		}
@@ -203,7 +202,7 @@ public class PlayerStatsHandle : ModPlayer {
 			}
 		}
 		synchronize_Counter = BossRushUtils.Safe_SwitchValue(synchronize_Counter, int.MaxValue);
-		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
+		var modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
@@ -291,13 +290,13 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		foreach (ConditionApproved chance in Chance_SecondLife.Values) {
+		foreach (var chance in Chance_SecondLife.Values) {
 			if (Main.rand.NextFloat() <= chance.ChanceValue) {
 				chance.ApprovedConditionPass();
 				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 			}
 		}
-		foreach (ConditionApproved chance in SecondLife.Values) {
+		foreach (var chance in SecondLife.Values) {
 			if (chance.Condition) {
 				chance.ApprovedConditionPass();
 				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
@@ -428,7 +427,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-		ModPacket packet = Mod.GetPacket();
+		var packet = Mod.GetPacket();
 		packet.Write((byte)BossRush.MessageType.PlayerStatsHandle);
 		packet.Write((byte)Player.whoAmI);
 		packet.Write(DPStracker);
@@ -444,14 +443,14 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 
 	public override void CopyClientState(ModPlayer targetCopy) {
-		PlayerStatsHandle clone = (PlayerStatsHandle)targetCopy;
+		var clone = (PlayerStatsHandle)targetCopy;
 		clone.DPStracker = DPStracker;
 		clone.HitTakenCounter = HitTakenCounter;
 		clone.DmgTaken = DmgTaken;
 	}
 
 	public override void SendClientChanges(ModPlayer clientPlayer) {
-		PlayerStatsHandle clone = (PlayerStatsHandle)clientPlayer;
+		var clone = (PlayerStatsHandle)clientPlayer;
 		if (DPStracker != clone.DPStracker
 			|| HitTakenCounter != clone.HitTakenCounter
 			|| DmgTaken != clone.DmgTaken) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
@@ -502,7 +501,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
-		StatModifier StatMod = new StatModifier();
+		var StatMod = new StatModifier();
 		StatMod += Additive - 1;
 		StatMod *= Multiplicative;
 		StatMod.Flat = Flat;
@@ -561,7 +560,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public Dictionary<string, ConditionApproved> SecondLife = new();
 	public static void SetSecondLifeCondition(Player player, string context, bool condition) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.SecondLife.ContainsKey(context)) {
 			modplayer.SecondLife[context].ChangeCondition(condition);
 		}
@@ -570,7 +569,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public static bool GetSecondLife(Player player, string context) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.SecondLife.ContainsKey(context)) {
 			if (modplayer.SecondLife[context].Approved) {
 				modplayer.SecondLife[context].DeApproved();
@@ -581,7 +580,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public Dictionary<string, ConditionApproved> Chance_SecondLife = new();
 	public static void Set_Chance_SecondLifeCondition(Player player, string context, float chance) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
 			modplayer.Chance_SecondLife[context].SetChanceValue(chance);
 		}
@@ -590,7 +589,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public static bool Get_Chance_SecondLife(Player player, string context) {
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
 			if (modplayer.Chance_SecondLife[context].Approved) {
 				modplayer.Chance_SecondLife[context].DeApproved();
@@ -706,9 +705,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (owner < 0 || owner > 255) {
 			return orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
 		}
-		Player player = Main.player[owner];
+		var player = Main.player[owner];
 		origDirect = orig;
-		Projectile projectile = orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
+		var projectile = orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
 		Extra_SpecialMechanic(player, projectile);
 		origDirect = null;
 		return projectile;
@@ -718,10 +717,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (Owner < 0 || Owner > 255) {
 			return orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
 		}
-		Player player = Main.player[Owner];
+		var player = Main.player[Owner];
 		origOld = orig;
 		int proj = orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-		Projectile projectile = Main.projectile[proj];
+		var projectile = Main.projectile[proj];
 		Extra_SpecialMechanic(player, projectile);
 		origOld = null;
 		return proj;
@@ -732,10 +731,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (Owner < 0 || Owner > 255) {
 			return orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
 		}
-		Player player = Main.player[Owner];
+		var player = Main.player[Owner];
 		origNew = orig;
 		int proj = orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-		Projectile projectile = Main.projectile[proj];
+		var projectile = Main.projectile[proj];
 		Extra_SpecialMechanic(player, projectile);
 		origNew = null;
 		return proj;
@@ -760,7 +759,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (Scatter) {
 			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
 		}
-		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+		var handle = player.GetModPlayer<PlayerStatsHandle>();
 		int shootExtra = handle.request_ShootExtra;
 		int shootSpread = handle.request_ShootSpreadExtra;
 		float angleSpread = handle.request_AngleSpread;
@@ -771,7 +770,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		}
 		if (shootExtra > 0) {
 			for (int i = 0; i < shootExtra; i++) {
-				Projectile proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile);
 				if (proj == null) {
 					break;
 				}
@@ -783,7 +782,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		}
 		if (shootSpread > 1) {
 			for (int i = 0; i < shootSpread; i++) {
-				Projectile proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile);
 				if (proj == null) {
 					break;
 				}
@@ -804,7 +803,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
-		ChaosModeSystem system = ModContent.GetInstance<ChaosModeSystem>();
+		var system = ModContent.GetInstance<ChaosModeSystem>();
 		if (system.ChaosMode) {
 			if (system.Dict_Chained_Buff.ContainsKey(type)) {
 				self.AddBuff(system.Dict_Chained_Buff[type], timeToAdd);
@@ -825,7 +824,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
-		Player player = Main.player[self.lastInteraction];
+		var player = Main.player[self.lastInteraction];
 		if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, type, (int)modplayer.DebuffTime.ApplyTo(time), quiet);
 		}

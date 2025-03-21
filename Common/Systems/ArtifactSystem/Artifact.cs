@@ -1,4 +1,4 @@
-﻿using BossRush.Common.General;
+﻿using BossRush.Common.Global;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

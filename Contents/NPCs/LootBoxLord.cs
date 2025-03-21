@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Contents.Items;
 using Terraria.GameContent;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {

@@ -3,8 +3,8 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using System;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Projectiles {
 	internal class LifeOrb : ModProjectile {

@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.Audio;
 using BossRush.Common.General;
-using BossRush.Common.RoguelikeChange;
 using Terraria.DataStructures;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Mode.Nightmare {
 	internal class NightmareNPC : GlobalNPC {

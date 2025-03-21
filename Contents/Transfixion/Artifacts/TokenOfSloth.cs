@@ -4,13 +4,12 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.Accessories.TrinketAccessories;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems.Achievement;
 using System.Collections.Generic;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {

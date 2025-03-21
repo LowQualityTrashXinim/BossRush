@@ -8,9 +8,8 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Common.General;
 using BossRush.Contents.Transfixion.Artifacts;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush {
 	partial class BossRush {

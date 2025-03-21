@@ -2,7 +2,7 @@
 using BossRush.Texture;
 using Terraria.ModLoader;
 using System;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 public class Trinket_of_Swift_Health : BaseTrinket {

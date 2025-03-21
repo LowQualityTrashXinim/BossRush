@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System;
 using BossRush.Common.General;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
 public class Shield_GlobalItem : GlobalItem {

@@ -7,9 +7,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Common.Systems;
 using BossRush.Contents.Transfixion.Artifacts;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 

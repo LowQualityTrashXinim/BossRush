@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.General {
 	public class DenyYouFromLoot : IItemDropRuleCondition {

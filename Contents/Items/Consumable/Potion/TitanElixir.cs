@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Texture;
 using Terraria;

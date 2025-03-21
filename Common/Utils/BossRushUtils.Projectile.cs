@@ -1,4 +1,4 @@
-﻿using BossRush.Common.RoguelikeChange;
+﻿using BossRush.Common.Global;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -5,12 +5,11 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using System;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {

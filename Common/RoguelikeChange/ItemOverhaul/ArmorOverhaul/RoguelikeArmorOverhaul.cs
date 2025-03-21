@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {

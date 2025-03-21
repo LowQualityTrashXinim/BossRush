@@ -20,6 +20,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Toggle {
 	class UserInfoTablet : ModItem {

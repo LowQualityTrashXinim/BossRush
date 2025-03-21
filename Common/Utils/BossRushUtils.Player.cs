@@ -8,8 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
-using BossRush.Common.Systems;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Global;
 
 namespace BossRush {
 	public static partial class BossRushUtils {

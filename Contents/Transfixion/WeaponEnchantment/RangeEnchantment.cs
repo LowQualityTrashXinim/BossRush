@@ -6,12 +6,11 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.Systems;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 	public class Musket : ModEnchantment {

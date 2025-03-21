@@ -5,8 +5,8 @@ using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using BossRush.Common.Systems;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon {
 	public class FairFrozen : ModItem {

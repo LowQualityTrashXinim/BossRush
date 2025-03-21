@@ -4,15 +4,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
-using BossRush.Common.RoguelikeChange;
 using System.Reflection;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {

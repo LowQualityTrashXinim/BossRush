@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.General;
 
-namespace BossRush.Common.RoguelikeChange;
+namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 	public int HeatRay_Decay = 0;
@@ -155,7 +155,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			}
 		}
 		if (BelongToWho >= 0 && BelongToWho < Main.maxNPCs) {
-			NPC parent = Main.npc[BelongToWho];
+			var parent = Main.npc[BelongToWho];
 			if (parent != null) {
 				if (!parent.active || parent.life <= 0) {
 					npc.StrikeInstantKill();
@@ -258,7 +258,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
 			playerIndex = npc.FindClosestPlayer();
 		}
-		Player player = Main.player[playerIndex];
+		var player = Main.player[playerIndex];
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
 		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
 		if (EliteBoss) {

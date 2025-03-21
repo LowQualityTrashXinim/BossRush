@@ -1,4 +1,5 @@
-﻿using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+﻿using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 using BossRush.Common.Systems;
 using Terraria;

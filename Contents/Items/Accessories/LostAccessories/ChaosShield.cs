@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using System;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ChaosShield : ModItem {

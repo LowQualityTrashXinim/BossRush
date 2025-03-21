@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.Global;
+using BossRush.Texture;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;

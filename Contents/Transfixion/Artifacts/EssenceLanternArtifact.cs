@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class EssenceLanternArtifact : Artifact {

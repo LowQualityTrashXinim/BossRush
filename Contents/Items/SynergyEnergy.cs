@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items {
 	internal class SynergyEnergy : ModItem {

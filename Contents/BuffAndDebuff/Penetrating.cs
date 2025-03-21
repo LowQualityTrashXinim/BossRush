@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.BuffAndDebuff;
 internal class Penetrating : ModBuff {

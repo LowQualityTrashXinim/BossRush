@@ -6,7 +6,7 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.RoguelikeChange;
+namespace BossRush.Common.Global;
 class RoguelikeGlobalDust : ModSystem {
 	public override void Load() {
 		On_Main.DrawDust += On_Main_DrawDust;
@@ -78,8 +78,8 @@ class RoguelikeGlobalDust : ModSystem {
 				dust[i].Clear();
 				continue;
 			}
-			Dust dustEntity = dust[i].Dust;
-			Roguelike_Dust modDust = dust[i];
+			var dustEntity = dust[i].Dust;
+			var modDust = dust[i];
 			if (modDust.FollowEntity) {
 				if (modDust.entityToFollow != null) {
 					if (modDust.entityToFollow is Player player) {

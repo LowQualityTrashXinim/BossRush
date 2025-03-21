@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Skill;
 /// <summary>

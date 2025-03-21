@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Common.Global;
+using Terraria;
 
 namespace BossRush.Common.Systems.CursesSystem;
 

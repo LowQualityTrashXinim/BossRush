@@ -22,8 +22,10 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using BossRush.Common.Utils;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.General;
 
-namespace BossRush.Common.General {
+namespace BossRush.Common.Global {
 	/// <summary>
 	/// This class hold random general information, not recommend to look into this class
 	/// </summary>
@@ -93,7 +95,7 @@ namespace BossRush.Common.General {
 		}
 		public override void PreUpdate() {
 			if (starterItem == null) {
-				Item item = Player.HeldItem;
+				var item = Player.HeldItem;
 				if (item.IsAWeapon()) {
 					starterItem = item;
 				}
@@ -112,7 +114,7 @@ namespace BossRush.Common.General {
 			HowManyBossIsAlive = 0;
 			bool FoundEater = false;
 			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC npc = Main.npc[i];
+				var npc = Main.npc[i];
 				if ((npc.boss || (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) && !FoundEater) && npc.active) {
 					HowManyBossIsAlive++;
 					FoundEater = true;
@@ -146,15 +148,18 @@ namespace BossRush.Common.General {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
-				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					LifeCrystal += 5;
-					ManaCrystal += 4;
-					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
-					}
-					else {
-						yield return new Item(ModContent.ItemType<BuilderLootBox>());
-					}
+                if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+                    LifeCrystal += 5;
+                    ManaCrystal += 4;
+                    if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+                        yield return new Item(ModContent.ItemType<ExoticTeleporter>());
+                    }
+                    else {
+                        yield return new Item(ModContent.ItemType<BuilderLootBox>());
+                    }
+                    if (UniversalSystem.CanEnchantmentBeAccess()) {
+                        yield return new Item(ModContent.ItemType<DivineHammer>());
+                    }
 					if (UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
 						yield return new Item(ModContent.ItemType<SkillLootBox>(), 3);
 						yield return new Item(ModContent.ItemType<WorldEssence>());
@@ -303,7 +308,7 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
+			var packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.GodUltimateChallenge);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(EnchantingEnable);
@@ -339,14 +344,14 @@ namespace BossRush.Common.General {
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			ModdedPlayer clone = (ModdedPlayer)targetCopy;
+			var clone = (ModdedPlayer)targetCopy;
 			clone.EnchantingEnable = EnchantingEnable;
 			clone.SkillEnable = SkillEnable;
 			clone.AllowForAchievement = AllowForAchievement;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			ModdedPlayer clone = (ModdedPlayer)clientPlayer;
+			var clone = (ModdedPlayer)clientPlayer;
 			if (EnchantingEnable != clone.EnchantingEnable
 				|| SkillEnable != clone.SkillEnable
 				|| AllowForAchievement != clone.AllowForAchievement) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
@@ -380,7 +385,7 @@ public class SimpleExtraJump : ExtraJump {
 	}
 
 	private static void SpawnCloudPoof(Player player, Vector2 position) {
-		Gore gore = Gore.NewGoreDirect(player.GetSource_FromThis(), position, -player.velocity, Main.rand.Next(11, 14));
+		var gore = Gore.NewGoreDirect(player.GetSource_FromThis(), position, -player.velocity, Main.rand.Next(11, 14));
 		gore.velocity.X = gore.velocity.X * 0.1f - player.velocity.X * 0.1f;
 		gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
 	}
@@ -392,7 +397,7 @@ public class SimpleExtraJump : ExtraJump {
 		if (player.gravDir == -1f)
 			offsetY = 6;
 
-		Vector2 spawnPos = new Vector2(player.position.X, player.position.Y + offsetY);
+		var spawnPos = new Vector2(player.position.X, player.position.Y + offsetY);
 
 		for (int i = 0; i < 2; i++) {
 			SpawnBlizzardDust(player, spawnPos, 0.1f, i == 0 ? -0.07f : -0.13f);
@@ -400,7 +405,7 @@ public class SimpleExtraJump : ExtraJump {
 	}
 
 	private static void SpawnBlizzardDust(Player player, Vector2 spawnPos, float dustVelocityMultiplier, float playerVelocityMultiplier) {
-		Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.White);
+		var dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.White);
 		dust.fadeIn = 1.5f;
 		dust.velocity *= dustVelocityMultiplier;
 		dust.velocity += player.velocity * playerVelocityMultiplier;

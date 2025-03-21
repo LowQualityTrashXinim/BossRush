@@ -5,8 +5,8 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria.ModLoader;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.RelentlessAbomination {
 	class RelentlessAbomination : SynergyModItem {

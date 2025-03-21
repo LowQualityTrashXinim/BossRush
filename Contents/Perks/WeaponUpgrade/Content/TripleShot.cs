@@ -2,10 +2,10 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using BossRush.Contents.Skill;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Chest;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class TripletShot_GlobalItem : GlobalItem {

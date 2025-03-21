@@ -152,7 +152,11 @@ ProjectileDuplication: {
 
 ScatterShot: {
 	DisplayName: Scatter Shot
-	Description: + When a projectile die, it will shoot out a weaker version of itself
+	Description:
+		'''
+		+ When a projectile die, it will shoot out a weaker version of itself
+		Note : There are projectiles which are blocked to work with this perk
+		'''
 }
 
 BloodStrike: {
@@ -169,7 +173,7 @@ SpeedArmor: {
 	DisplayName: Speed Armor
 	Description:
 		'''
-		+ The faster you are, the more defenses increases
+		+ The faster you are, the more defenses is increases
 		+ Increases your movement ability
 		'''
 }

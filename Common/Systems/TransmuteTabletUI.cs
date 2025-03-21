@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Transfixion.SoulBound;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {

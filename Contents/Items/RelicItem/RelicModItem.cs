@@ -6,9 +6,9 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {

@@ -2,7 +2,6 @@
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
@@ -10,6 +9,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 using System;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class GamblerSoulArtifact : Artifact {

@@ -1,7 +1,7 @@
-﻿using BossRush.Common.Systems;
-using Terraria;
+﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.BuffAndDebuff.PlayerDebuff {
 	class LifeLoss : ModBuff {

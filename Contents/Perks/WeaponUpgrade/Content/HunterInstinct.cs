@@ -4,8 +4,8 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
-using BossRush.Common.Systems;
 using BossRush.Contents.Items.Chest;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class HunterInstinct_GlobalItem : GlobalItem {

@@ -3,9 +3,9 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class PlatinumArmor : ModArmorSet {

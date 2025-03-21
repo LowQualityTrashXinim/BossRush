@@ -10,6 +10,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Mode.HellishEndeavour;
 internal class HellishEndeavorSystem : ModSystem {

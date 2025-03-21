@@ -6,8 +6,8 @@ using Terraria;
 using System;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems.Achievement;
-using BossRush.Common.Systems;
 using System.Linq;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
