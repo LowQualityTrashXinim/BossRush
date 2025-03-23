@@ -2937,6 +2937,16 @@ Mods: {
 				DisplayName: Rising Star Burning
 				Description: So hot that it's burn your soul
 			}
+
+			Slimey_Debuff: {
+				DisplayName: Slimey_ Debuff
+				Description: Mods.BossRush.Buffs.Slimey_Debuff.Description
+			}
+
+			Slimy_Debuff: {
+				DisplayName: Slimy_ Debuff
+				Description: Mods.BossRush.Buffs.Slimy_Debuff.Description
+			}
 		}
 
 		Configs: {

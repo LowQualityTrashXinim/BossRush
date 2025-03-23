@@ -107,6 +107,7 @@ public class Roguelike_Dust : ICloneable {
 	public float gfxOffY = 0;
 	public Vector2 orgPosition = Vector2.Zero;
 	public Vector2 OTEdistance = Vector2.Zero;
+	public Action AI = null;
 	public void Clear() {
 		WhoAmI = -1;
 		entityToFollow = null;
@@ -115,6 +116,7 @@ public class Roguelike_Dust : ICloneable {
 		gfxOffY = 0;
 		FollowEntity = false;
 		Dust = null;
+		AI = null;
 	}
 	public object Clone() {
 		return MemberwiseClone();

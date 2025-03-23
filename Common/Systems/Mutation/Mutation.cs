@@ -43,9 +43,6 @@ public class GrimTouch : ModBuff {
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}
-	public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {
-		return false;
-	}
 }
 public class ProjectileResistance : ModMutation {
 	public override void SetDefaults(NPC npc) {
@@ -95,5 +92,51 @@ public class Tanky : ModMutation {
 		npc.lifeMax *= 3;
 		npc.life = npc.lifeMax;
 		npc.defense *= 3;
+	}
+}
+public class Masochsit : ModMutation {
+	public override void SetDefaults(NPC npc) {
+		NewGamePlus = true;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .5f;
+		npc.defense *= 2;
+	}
+	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		npc.Heal(hit.Damage * 2);
+	}
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		npc.Heal(hit.Damage * 2);
+	}
+}
+public class Slimy : ModMutation {
+	public override bool MutationCondition(NPC npc, Player player) {
+		return false;
+	}
+	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
+		if (Main.rand.NextBool(10)) {
+			target.AddBuff<Slimy_Debuff>(BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
+		}
+	}
+	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		if (modifiers.DamageType == DamageClass.Melee && modifiers.DamageType == DamageClass.Ranged) {
+			modifiers.SourceDamage -= .2f;
+		}
+	}
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (modifiers.DamageType == DamageClass.Melee && modifiers.DamageType == DamageClass.Ranged) {
+			modifiers.SourceDamage -= .2f;
+		}
+	}
+}
+public class Slimy_Debuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle stathandle = player.GetModPlayer<PlayerStatsHandle>();
+		stathandle.AddStatsToPlayer(PlayerStats.AttackSpeed, .75f);
+		stathandle.AddStatsToPlayer(PlayerStats.CritDamage, .55f);
+		stathandle.AddStatsToPlayer(PlayerStats.RegenHP, .55f);
+		stathandle.AddStatsToPlayer(PlayerStats.Defense, Base: 2);
 	}
 }

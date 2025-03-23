@@ -548,10 +548,31 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_SlimeArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(4, 10, 150, 100));
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, Main.rand.Next(1, 3))
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+				}
+				else if (color.B == 255 && color.R == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+			});
 			//Stopwatch watch = new();
 			//watch.Start();
-			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
+			//GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
 			//watch.Stop();
 			//string result = $"Generation time : {watch.Elapsed.ToString()}";
 			//Mod.Logger.Info(result);

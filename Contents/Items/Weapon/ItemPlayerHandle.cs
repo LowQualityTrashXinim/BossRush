@@ -209,7 +209,7 @@ namespace BossRush.Contents.Items.Weapon {
 						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 					}
 					else if (line.Name == "Damage") {
-						line.Text = line.Text + $" | base : {item.OriginalDamage}";
+						line.Text = line.Text + $" | Base : {item.OriginalDamage}";
 					}
 					else if (line.Name == "Knockback") {
 						line.Text = line.Text + $" | Base : {Math.Round(ContentSamples.ItemsByType[item.type].knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";

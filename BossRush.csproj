@@ -22,6 +22,10 @@
     <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Assets\Structures\SlimeArena1.txt" />
+    <AdditionalFiles Remove="Assets\Structures\SlimeArena2.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
     <None Remove="Assets\Images\Trials\TrialRoomTemplate1.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />

@@ -611,9 +611,8 @@ internal static partial class GenerationHelper {
 			}
 			string finalWrapper = $"{td}>{structureData}";
 			using FileStream file = File.Create(Path.Combine(path, name));
-			using StreamWriter m = new(file);
-			m.Write(finalWrapper);
-			m.Dispose();
+			Span<byte> info = new UTF8Encoding(true).GetBytes(finalWrapper);
+			file.Write(info);
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());

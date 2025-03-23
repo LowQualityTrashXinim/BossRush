@@ -42,6 +42,11 @@ public static class SpoilDropRarity {
 	public readonly static int Rare = ItemRarityID.Yellow;
 	public readonly static int SuperRare = ItemRarityID.Purple;
 	public readonly static int SSR = ItemRarityID.Red;
+	/// <summary>
+	/// Use this to make sure chance applying effect for spoil work
+	/// </summary>
+	/// <param name="chance"></param>
+	/// <returns></returns>
 	public static bool ChanceWrapper(float chance) {
 		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS) && !Main.LocalPlayer.IsDebugPlayer()) {
 			return false;
@@ -49,7 +54,7 @@ public static class SpoilDropRarity {
 		if (Main.LocalPlayer.IsDebugPlayer()) {
 			return true;
 		}
-		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().HasPerk<BlessingOfPerk>()) {
+		if (Main.LocalPlayer.HasPerk<BlessingOfPerk>()) {
 			chance *= 1.5f;
 		}
 		return Main.rand.NextFloat() <= chance;

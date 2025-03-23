@@ -23,6 +23,15 @@ namespace BossRush {
 			}
 			return RoguelikeGlobalDust.Dust[dust.dustIndex];
 		}
+		public static void SetAIToDust(this Dust dust, Action action) {
+			if (!dust.active) {
+				return;
+			}
+			if(action == null) {
+				return;
+			}
+			RoguelikeGlobalDust.Dust[dust.dustIndex].AI = action;
+		}
 		public static bool IsAnyVanillaBossAlive() {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC npc = Main.npc[i];

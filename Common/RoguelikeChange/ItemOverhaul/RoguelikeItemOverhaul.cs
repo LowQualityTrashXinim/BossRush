@@ -117,6 +117,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					break;
 				case ItemID.EnchantedSword:
 					item.scale += .5f;
+					item.shootsEveryUse = true;
+					break;
+				case ItemID.InfluxWaver:
+					item.useTime = item.useAnimation = 30;
+					item.shootsEveryUse = true;
 					break;
 			}
 		}
