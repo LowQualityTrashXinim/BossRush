@@ -21,6 +21,11 @@ public partial class DebugWorld : ModSystem {
 }
 public partial class DebugWorld : ITaskCollection {
 	[Task]
+	public void SettingUpPlayerSpawn() {
+		Main.spawnTileX = 100;
+		Main.spawnTileY = 100;
+	}
+	[Task]
 	public void GenerateHorizonTemplate() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 1, 64, 32));
 		int X = 0;

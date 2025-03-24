@@ -62,13 +62,28 @@ public class FragmentGrenadeProjectile : SynergyModProjectile {
 		}
 	}
 	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-		for (int l = 0; l < 53; l++) {
+		for (int l = 0; l < 103; l++) {
+			if (l % 4 == 0) {
+				int smoke = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
+				Main.dust[smoke].noGravity = true;
+				Main.dust[smoke].velocity = Main.rand.NextVector2Circular(10, 10);
+				Main.dust[smoke].fadeIn = 10;
+			}
+			if (l % 2 == 0) {
+				int smoke = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
+				Main.dust[smoke].noGravity = true;
+				Main.dust[smoke].velocity = Main.rand.NextVector2Circular(3, 3);
+				Main.dust[smoke].fadeIn = 10;
+				int fire = Dust.NewDust(Projectile.Center, 0, 0, DustID.Torch, Scale: Main.rand.NextFloat(2, 4));
+				Main.dust[fire].noGravity = true;
+				Main.dust[fire].velocity = Main.rand.NextVector2Circular(5, 5);
+			}
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(2, 3));
 			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(10, 10);
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(6, 6);
 			int dus1t = Dust.NewDust(Projectile.Center, 0, 0, DustID.Torch, Scale: Main.rand.NextFloat(2, 4));
 			Main.dust[dus1t].noGravity = true;
-			Main.dust[dus1t].velocity = Main.rand.NextVector2Circular(15, 15);
+			Main.dust[dus1t].velocity = Main.rand.NextVector2CircularEdge(6, 6) * Main.rand.NextFloat(.8f, 1.2f);
 		}
 		Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
 		if (npclist.Count > 0) {
