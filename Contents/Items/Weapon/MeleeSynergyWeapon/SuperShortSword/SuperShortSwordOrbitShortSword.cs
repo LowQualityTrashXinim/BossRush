@@ -92,8 +92,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 					}
 					Projectile.velocity -= Projectile.velocity * .085f;
 					Projectile.velocity += dis.SafeNormalize(Vector2.Zero) * length;
-					Projectile.velocity = Projectile.velocity.LimitedVelocity(40);
 					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+					Projectile.Center += player.velocity;
 				}
 			}
 		}
@@ -128,7 +128,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
 			}
 			timeLeft = BossRushUtils.CountDown(timeLeft);
-			if(timeLeft == 0) {
+			if (timeLeft == 0) {
 				if (IsInAtk2) {
 					player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_ProjectileInReadyPosition++;
 					IsInAtk2 = false;

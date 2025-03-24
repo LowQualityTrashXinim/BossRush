@@ -286,6 +286,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
+		public string Set_TooltipName(int ItemID) => $"{Name}_{ContentSamples.ItemsByType[ItemID].Name}";
 		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
 			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });

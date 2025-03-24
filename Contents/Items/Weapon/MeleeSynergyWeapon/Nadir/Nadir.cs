@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 	internal class Nadir : SynergyModItem {
@@ -28,6 +29,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			position = position.PositionOFFSET(velocity, 30);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+			SoundEngine.PlaySound(SoundID.Item1, player.Center);
 			if (counter >= TerrariaArrayID.AllOreBroadSword.Length) {
 				counter = 0;
 			}

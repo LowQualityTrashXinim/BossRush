@@ -22,10 +22,21 @@ public partial class DebugWorld : ModSystem {
 public partial class DebugWorld : ITaskCollection {
 	[Task]
 	public void GenerateHorizonTemplate() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 1, 64, 32));
+		int X = 0;
 		for (int i = 0; i < 9; i++) {
-			Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 1, 64, 32));
-			re.X += re.Width * i + 10 * i;
-			GenerationHelper.PlaceStructure("Template/WG_Template" + "Horizontal" + i, re);
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Template" + "Horizontal" + i, new(re.X + X, re.Y, re.Width, re.Height));
+		}
+	}
+
+	[Task]
+	public void GenerateVerticalTemplate() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 2, 32, 64));
+		int X = 0;
+		for (int i = 0; i < 9; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
 	}
 }

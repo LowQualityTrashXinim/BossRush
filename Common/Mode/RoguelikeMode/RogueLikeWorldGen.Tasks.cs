@@ -233,7 +233,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void GenerateSlimeZone() {
-		return;
 		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
 		ResetTemplate_GenerationValue();

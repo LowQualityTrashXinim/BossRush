@@ -135,6 +135,11 @@ internal static partial class GenerationHelper {
 		}
 		return r.NextFromHashSet(getallPosition);
 	}
+	public static Rectangle Clone_AddX(Rectangle re, int X) {
+		Rectangle rect = new(re.X, re.Y, re.Width, re.Height);
+		rect.X += X;
+		return rect;
+	}
 	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
 	/// </summary>
@@ -609,7 +614,7 @@ internal static partial class GenerationHelper {
 			if (distance != 0) {
 				structureData += $"{dict_TileData[new(outSideLoop)]}{distance}";
 			}
-			string finalWrapper = $"{td}>{structureData}";
+			string finalWrapper = $"2{td}>{structureData}";
 			using FileStream file = File.Create(Path.Combine(path, name));
 			Span<byte> info = new UTF8Encoding(true).GetBytes(finalWrapper);
 			file.Write(info);

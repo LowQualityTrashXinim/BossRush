@@ -347,6 +347,7 @@ Mods: {
 			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
 			SpearProjectile.DisplayName: Spear Projectile
 			RisingStarProjectile.DisplayName: Rising Star Projectile
+			Bowmarang_WoodYoyo_Projectile.DisplayName: Bowmarang_ Wood Yoyo_ Projectile
 		}
 
 		NPCs: {
