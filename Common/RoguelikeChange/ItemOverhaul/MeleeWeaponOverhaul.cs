@@ -564,11 +564,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!player.ItemAnimationActive) {
 			}
 		}
-		private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
+		private static void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			Poke2(player, modPlayer, percentDone);
 		}
-		private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone) {
+		private static void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone) {
 			float rotation = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation();
 			Vector2 poke = Vector2.SmoothStep(modPlayer.PlayerToMouseDirection * 30f, modPlayer.PlayerToMouseDirection, percentDone).RotatedBy(rotation);
 			player.itemRotation = modPlayer.PlayerToMouseDirection.ToRotation();
@@ -576,7 +576,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
 		}
-		private void WideSwingAttack(Player player, int direct) {
+		private static void WideSwingAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InOutExpo(percentDone);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
@@ -585,7 +585,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void SwipeAttack(Player player, int direct) {
+		private static void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InExpo(percentDone, 11f);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
@@ -594,14 +594,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void CircleSwingAttack(Player player) {
+		private static void CircleSwingAttack(Player player) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			float end = (MathHelper.TwoPi * 2) * -player.direction;
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().ItemRotationBeforeSwitch;
 			float addition = baseAngle;
 			Swipe(addition, end + addition, BossRushUtils.InOutSine(percentDone), player, 1);
 		}
-		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
+		private static void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			bool directIsnegative = direct == -1;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
@@ -642,7 +642,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			orig.Invoke(ref drawinfo);
 		}
-		private void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
+		private static void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
 			DrawData drawdata;
 			for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
 				if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
@@ -660,7 +660,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						float rotationCs = player.direction == -1 ? MathHelper.PiOver4 : MathHelper.PiOver2 + MathHelper.PiOver4;
 						float rotationAdjustment = (size.ToRotation() - MathHelper.PiOver4) * -player.direction;
 						drawdata.origin = drawdata.texture.Size() * .5f;
-						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs - rotationAdjustment).ToRotationVector2(), origin.X + BossRushUtilsPlayer.PLAYERARMLENGTH * scale);
+						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs - rotationAdjustment).ToRotationVector2(), origin.X + 13);
 					}
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
 						drawdata.position +=

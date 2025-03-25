@@ -348,6 +348,8 @@ Mods: {
 			SpearProjectile.DisplayName: Spear Projectile
 			RisingStarProjectile.DisplayName: Rising Star Projectile
 			Bowmarang_WoodYoyo_Projectile.DisplayName: Bowmarang_ Wood Yoyo_ Projectile
+			SakuraLeaf_Projectile_1.DisplayName: Sakura Leaf_ Projectile_1
+			SakuraLeaf_Projectile_2.DisplayName: Sakura Leaf_ Projectile_2
 		}
 
 		NPCs: {
