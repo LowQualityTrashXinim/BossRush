@@ -1,7 +1,9 @@
 ﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -59,6 +61,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Projectile.velocity.Y += .5f;
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+			SoundEngine.PlaySound(SoundID.Item62 with { Pitch = .5f });
 			float randomrotation = Main.rand.NextFloat(90);
 			Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 			for (int i = 0; i < 4; i++) {

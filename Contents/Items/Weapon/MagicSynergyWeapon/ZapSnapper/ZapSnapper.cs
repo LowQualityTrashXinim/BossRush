@@ -1,7 +1,9 @@
 ﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -23,7 +25,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain))
 				tooltips.Add(new TooltipLine(Mod, "ZapSnapper_WeatherPain", $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot"));
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff))
-				tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You occasionally shoot out thunder bolt"));
+				tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt"));
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 30);
@@ -37,8 +39,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3))
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
 			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain) && Main.rand.NextBool(3)) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
+				float[] variant = new float[] { };
+				Array.Resize(ref variant, SoundID.Thunder.Variants.Length);
+				variant[0] = 1f;
+				SoundEngine.PlaySound(SoundID.Thunder with { Pitch = -1, MaxInstances = 5, VariantsWeights = variant.AsSpan() }, player.Center);
 			}
 			CanShootItem = false;
 		}

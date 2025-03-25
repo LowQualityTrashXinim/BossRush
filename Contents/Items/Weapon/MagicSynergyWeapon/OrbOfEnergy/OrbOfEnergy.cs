@@ -1,5 +1,4 @@
-﻿using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
-using BossRush.Texture;
+﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -15,6 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy {
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(1, 1, 100, 10, 5, 5, ItemUseStyleID.HoldUp, ModContent.ProjectileType<OrbOfEnergyBolt>(), 5, 20, true);
+			Item.UseSound = SoundID.Item94 with { Pitch = 1 };
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BookofSkulls))
