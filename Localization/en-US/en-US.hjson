@@ -2243,23 +2243,23 @@ Mods: {
 			SakuraKatana: {
 				DisplayName: Sakura Katana
 				Tooltip:
-				'''
-				Your swing are followed with sakura leaf
-				Striking a enemy grant "Sakura art" for 7s, each strike have 1s cool down
-				Striking enemy 30 times grant you "Spring of Cherry blossom" aura
-				'''
-				ExtraInfo: 
-				'''
-				Sakura art:
-				Create a sakura flower at enemy position
-				+5% damage and 2% critical strike chance
-				you can stack up to 5 times
+					'''
+					Your swing are followed with sakura leaf
+					Striking a enemy grant [c/ee82ee:Sakura art] for 7s, each strike have 1s cool down
+					Striking enemy 30 times grant you [c/ff0080:Spring of blossom] aura
+					'''
+				ExtraInfo:
+					'''
+					[c/ee82ee:Sakura art] :
+					Create a sakura flower at enemy position
+					+5% damage and 2% critical strike chance
+					you can stack up to 5 times
 
-				Spring of Cherry blossom
-				Aura last for 30s with 20s cool down, while inside the aura, player are strengthen with following
-				+30% damage, +10 critical strike chance, +50% critical strike damage, +10 defenses, +5 life regeneration
-				You spawn sakura leaf which deal 65% of weapon damage
-				'''
+					[c/ff0080:Spring of blossom] :
+					Aura last for 30s with 20s cool down, while inside the aura, player are strengthen with following
+					+30% damage, +10 critical strike chance, +50% critical strike damage, +10 defenses, +5 life regeneration, +5 energy regeneration
+					You spawn sakura leaf which deal 65% of weapon damage
+					'''
 			}
 
 			SpoilGetter: {

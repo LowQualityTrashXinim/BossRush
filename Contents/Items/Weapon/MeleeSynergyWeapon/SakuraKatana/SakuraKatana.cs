@@ -32,6 +32,18 @@ internal class SakuraKatana : SynergyModItem {
 		crit += 2 * sakuraArtCount;
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
+		float randomrotation = Main.rand.NextFloat(90);
+		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+		for (int i = 0; i < 4; i++) {
+			Vector2 Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation)) * Main.rand.NextFloat(5, 7);
+			for (int l = 0; l < 4; l++) {
+				float multiplier = Main.rand.NextFloat();
+				float scale = MathHelper.Lerp(1.1f, .1f, multiplier);
+				int dust = Dust.NewDust(target.Center + randomPosOffset, 0, 0, DustID.Enchanted_Pink, 0, 0, 0, Color.White, scale);
+				Main.dust[dust].velocity = Toward * multiplier;
+				Main.dust[dust].noGravity = true;
+			}
+		}
 		if (delayBetweenHit > 0) {
 			return;
 		}
@@ -57,7 +69,8 @@ internal class SakuraKatana : SynergyModItem {
 			int flip = player.GetModPlayer<MeleeOverhaulPlayer>().ComboNumber == 0 ? 1 : -1;
 			int amount = Main.rand.Next(3, 6);
 			for (int i = 0; i < amount; i++) {
-				Vector2 vel = Vector2.UnitX * Main.rand.NextFloat(5, 10) * player.direction;
+				Vector2 limited = player.velocity.LimitedVelocity(10);
+				Vector2 vel = Vector2.UnitX * Main.rand.NextFloat(5, 10) * player.direction + limited;
 				Vector2 pos = Main.rand.NextVector2FromRectangle(player.Hitbox);
 				Projectile proj = Projectile.NewProjectileDirect(Item.GetSource_FromThis(), pos.Add(0, Item.height * flip), vel, ModContent.ProjectileType<SakuraLeaf_Projectile_1>(), (int)(Item.damage * .35f), Item.knockBack, player.whoAmI);
 				proj.penetrate = 1;
@@ -108,6 +121,30 @@ public class SakuraKatana_ModPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
+		if (CherryBlossomAura_Duration <= 0) {
+			return;
+		}
+		int damage = (int)(Player.HeldItem.damage * .65f);
+		if (CherryBlossomAura_Duration % 60 == 0) {
+			float Rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
+			Vector2 pos = CherryBlossomAura_Position + Main.rand.NextVector2Circular(500, 500);
+			for (int i = 0; i < 5; i++) {
+				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i).RotatedBy(Rotation);
+				Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), pos, vel * .2f, ModContent.ProjectileType<SakuraLeaf_Projectile_2>(), damage, 0, Player.whoAmI);
+				proj.frame = 1;
+				proj.penetrate = 1;
+			}
+		}
+		if (CherryBlossomAura_Duration % 20 == 0) {
+			int amount = Main.rand.Next(3, 6);
+			for (int i = 0; i < amount; i++) {
+				Vector2 vel = Vector2.UnitX * Main.rand.NextFloat(5, 10) * Main.rand.NextBool().ToDirectionInt();
+				Vector2 pos = CherryBlossomAura_Position + Main.rand.NextVector2Circular(500, 500);
+				Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), pos, vel, ModContent.ProjectileType<SakuraLeaf_Projectile_1>(), (int)damage, 0, Player.whoAmI);
+				proj.penetrate = 1;
+				proj.ai[0] = Main.rand.NextBool().ToDirectionInt();
+			}
+		}
 		if (CherryBlossomAura_Position.IsCloseToPosition(Player.Center, 600f)) {
 			PlayerStatsHandle statplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			statplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.3f);
@@ -115,6 +152,7 @@ public class SakuraKatana_ModPlayer : ModPlayer {
 			statplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1.5f);
 			statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 10);
 			statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
+			statplayer.EnergyRegen.Base += 5;
 		}
 	}
 }
@@ -127,7 +165,7 @@ public class SakuraLeaf_Projectile : SynergyModProjectile {
 		Projectile.tileCollide = false;
 		Projectile.penetrate = 3;
 		Projectile.usesIDStaticNPCImmunity = true;
-		Projectile.idStaticNPCHitCooldown = 30;
+		Projectile.idStaticNPCHitCooldown = 50;
 	}
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		SakuraAI();
