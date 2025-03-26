@@ -2409,6 +2409,11 @@ Mods: {
 				DisplayName: The Burning Sky
 				Tooltip: ""
 			}
+
+			ReInitializeUI: {
+				DisplayName: ReInitialize UI
+				Tooltip: Debug item, do not uses it unless you are the one working on this
+			}
 		}
 
 		Buffs: {

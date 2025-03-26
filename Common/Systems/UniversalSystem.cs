@@ -34,6 +34,7 @@ using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Common.Global;
+using Terraria.Achievements;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -346,8 +347,8 @@ internal class UniversalSystem : ModSystem {
 			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
 	}
-    public static bool CanEnchantmentBeAccess() => LuckDepartment(CHECK_WWEAPONENCHANT) && !Check_TotalRNG();
-    public void ActivateStructureSaverUI() {
+	public static bool CanEnchantmentBeAccess() => LuckDepartment(CHECK_WWEAPONENCHANT) && !Check_TotalRNG();
+	public void ActivateStructureSaverUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(structUI);
 	}
@@ -838,10 +839,10 @@ class UISystemMenu : UIState {
 			Achievement = false;
 		}
 	}
-    private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-        ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
-    }
-    public override void Update(GameTime gameTime) {
+	private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
+	}
+	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (SkillHover) {
 			Main.instance.MouseText("Skill inventory");
@@ -1043,31 +1044,52 @@ public class AchievementUI : UIState {
 	Roguelike_WrapTextUIPanel conditiontextpanel;
 	List<AchievementButton> btn_Achievement;
 	ExitUI exitbtn;
+	UIText achievementName;
 	private int RowOffSet = 0;
 	public static string ActiveAchievement = "";
+	public int State = 0;
+	UIPanel main;
+	UIImageButton buttonLeft;
+	UIImageButton buttonRight;
+	UIPanel footerPanel;
 	public override void OnInitialize() {
-		mainPanel = new UIPanel();
-		mainPanel.HAlign = .35f;
-		mainPanel.VAlign = .5f;
-		mainPanel.UISetWidthHeight(100, 600);
-		Append(mainPanel);
-
-		textpanel = new Roguelike_WrapTextUIPanel("");
-		textpanel.HAlign = .53f;
-		textpanel.VAlign = .5f;
-		textpanel.UISetWidthHeight(450, 600);
-		textpanel.offSetDraw.Y += 75;
-		Append(textpanel);
+		main = new();
+		main.HAlign = .5f;
+		main.VAlign = .5f;
+		main.UISetWidthHeight(700, 700);
+		main.MarginBottom = 100;
+		Append(main);
 
 		headerPanel = new UIPanel();
-		headerPanel.UISetWidthHeight(450, 72);
-		textpanel.Append(headerPanel);
+		headerPanel.UISetWidthHeight(600, 72);
+		headerPanel.HAlign = 1;
+		main.Append(headerPanel);
+
+		textpanel = new Roguelike_WrapTextUIPanel("");
+		textpanel.HAlign = 1;
+		textpanel.UISetWidthHeight(600, 400);
+		textpanel.MarginTop = headerPanel.Height.Pixels;
+		main.Append(textpanel);
+
+		mainPanel = new UIPanel();
+		mainPanel.HAlign = 0;
+		mainPanel.VAlign = 0;
+		mainPanel.Width.Set(80, 0);
+		mainPanel.Height.Set(0, .9f);
+		mainPanel.MarginRight = 100;
+		main.Append(mainPanel);
+
 
 		exitbtn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
 		exitbtn.UISetWidthHeight(52, 52);
 		exitbtn.HAlign = 1f;
 		exitbtn.VAlign = .5f;
 		headerPanel.Append(exitbtn);
+
+		achievementName = new("");
+		achievementName.HAlign = 0;
+		achievementName.VAlign = .5f;
+		headerPanel.Append(achievementName);
 
 		btn_Achievement = new();
 		for (int i = 0; i < Row; i++) {
@@ -1080,16 +1102,38 @@ public class AchievementUI : UIState {
 			btn.HAlign = .5f;
 			btn.VAlign = MathHelper.Lerp(0f, 1f, i / (Row - 1f));
 			btn.UISetWidthHeight(52, 52);
+			btn.OnLeftClick += Btn_OnLeftClick;
 			btn_Achievement.Add(btn);
 			mainPanel.Append(btn);
 		}
 
 		conditiontextpanel = new Roguelike_WrapTextUIPanel("", .77f);
-		conditiontextpanel.HAlign = .1f;
-		conditiontextpanel.VAlign = 1f;
-		conditiontextpanel.UISetWidthHeight(450, 100);
-		textpanel.Append(conditiontextpanel);
+		conditiontextpanel.HAlign = 1f;
+		conditiontextpanel.UISetWidthHeight(600, 135);
+		conditiontextpanel.MarginTop = textpanel.Height.Pixels + headerPanel.Height.Pixels;
+		main.Append(conditiontextpanel);
+
+		footerPanel = new();
+		footerPanel.VAlign = 1;
+		footerPanel.Width.Percent = 1;
+		footerPanel.Height.Pixels = 72f;
+		main.Append(footerPanel);
+
+		buttonLeft = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		buttonLeft.HAlign = 0;
+		buttonLeft.VAlign = 1f;
+		footerPanel.Append(buttonLeft);
+
+		buttonRight = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		buttonRight.HAlign = 1f;
+		buttonRight.VAlign = 1f;
+		footerPanel.Append(buttonRight);
 	}
+
+	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		State = 1;
+	}
+
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
 		RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
@@ -1114,6 +1158,7 @@ public class AchievementUI : UIState {
 		if (achievement == null) {
 			return;
 		}
+		achievementName.SetText(achievement.DisplayName);
 		string text = $"Description : {achievement.Description}";
 		if (achievement.AdditionalConditionTipAfterAchieve && achievement.Achieved) {
 			conditiontextpanel.SetText("Condition: " + achievement.ConditionTipAfterAchieve);

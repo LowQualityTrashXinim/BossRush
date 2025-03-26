@@ -101,7 +101,7 @@ public class AugmentsWeapon : GlobalItem {
 					}
 				}
 				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + augmentChance && !passException) {
-					continue;
+					break;
 				}
 				if (weapon.AugmentsSlots[currentEmptySlot] == 0) {
 					if (decayable) {
