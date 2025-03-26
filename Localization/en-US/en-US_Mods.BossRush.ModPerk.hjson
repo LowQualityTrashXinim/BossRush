@@ -99,9 +99,9 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of transmutation success by 5%
-		+ Increases the chance of accessory augmentated by 5%
-		+ Increases the chance of weapon enchanted by 5%
+		+ Increases the chance of transmutation success by 10%
+		+ Increases the chance of accessory augmentated by 10%
+		+ Increases the chance of weapon enchanted by 10%
 		'''
 }
 

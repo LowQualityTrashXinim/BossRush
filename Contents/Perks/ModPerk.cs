@@ -184,9 +184,9 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
-			handle.AugmentationChance += .05f * StackAmount(player);
-			handle.RandomizeChanceEnchantment += .05f * StackAmount(player);
-			handle.Transmutation_SuccessChance += .05f * StackAmount(player);
+			handle.AugmentationChance += .1f * StackAmount(player);
+			handle.RandomizeChanceEnchantment += .1f * StackAmount(player);
+			handle.Transmutation_SuccessChance += .1f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {

@@ -166,6 +166,7 @@ public class SakuraLeaf_Projectile : SynergyModProjectile {
 		Projectile.penetrate = 3;
 		Projectile.usesIDStaticNPCImmunity = true;
 		Projectile.idStaticNPCHitCooldown = 50;
+		Projectile.ContinuouslyUpdateDamageStats = true;
 	}
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		SakuraAI();
