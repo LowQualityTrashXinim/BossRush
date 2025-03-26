@@ -279,7 +279,7 @@ namespace BossRush {
 		ShieldHealth,
 		ShieldEffectiveness,
 		AttackSpeed,
-		AuraRadius,
+		LifeSteal,
 		HealEffectiveness,
 		MysteriousPotionEffectiveness,
 		EnergyCap,
@@ -310,6 +310,13 @@ namespace BossRush {
 			if (dict_drawCircleContext.ContainsKey(name)) {
 				dict_drawCircleContext[name].Activate = true;
 				dict_drawCircleContext[name].Position = player.Center;
+			}
+
+		}
+		public static void ActivateContext(Vector2 position, string name) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].Activate = true;
+				dict_drawCircleContext[name].Position = position;
 			}
 
 		}

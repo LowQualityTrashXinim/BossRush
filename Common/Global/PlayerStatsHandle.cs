@@ -14,11 +14,13 @@ using Terraria.ModLoader.IO;
 using System.IO;
 
 namespace BossRush.Common.Global;
+/// <summary>
+/// Offer powerful stats modify tool<br/>
+/// Direct stats increases is much more efficient than using <see cref="PlayerStatsHandle.AddStatsToPlayer(BossRush.PlayerStats, StatModifier)"/> or any of the relate<br/>
+/// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
+/// </summary>
 public class PlayerStatsHandle : ModPlayer {
-	public float GetAuraRadius(int radius) => AuraModifier.ApplyTo(radius);
 	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
-
-	public StatModifier AuraModifier = new StatModifier();
 	public StatModifier UpdateMovement = new StatModifier();
 	public StatModifier UpdateJumpBoost = new StatModifier();
 	public StatModifier UpdateHPMax = new StatModifier();
@@ -27,7 +29,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier UpdateManaRegen = new StatModifier();
 	public StatModifier UpdateDefenseBase = new StatModifier();
 	public StatModifier UpdateThorn = new StatModifier();
-	public StatModifier UpdateCritDamage = new StatModifier();
 	public StatModifier UpdateDefEff = new StatModifier();
 	public StatModifier UpdateMinion = new StatModifier();
 	public StatModifier UpdateSentry = new StatModifier();
@@ -46,7 +47,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier SynergyDamage = new StatModifier();
 	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
-	public StatModifier NonCriticalDamage = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier SkillCoolDown = new();
 	public StatModifier DirectItemDamage = new();
@@ -133,6 +133,16 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SourceDamage.CombineWith(DirectItemDamage);
 	}
+	public StatModifier UpdateCritDamage = new StatModifier();
+	public StatModifier Melee_CritDamage = StatModifier.Default;
+	public StatModifier Range_CritDamage = StatModifier.Default;
+	public StatModifier Magic_CritDamage = StatModifier.Default;
+	public StatModifier Summon_CritDamage = StatModifier.Default;
+	public StatModifier NonCriticalDamage = new StatModifier();
+	public StatModifier Melee_NonCritDmg = StatModifier.Default;
+	public StatModifier Range_NonCritDmg = StatModifier.Default;
+	public StatModifier Magic_NonCritDmg = StatModifier.Default;
+	public StatModifier Summon_NonCritDmg = StatModifier.Default;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
@@ -140,6 +150,22 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(NonCriticalDamage);
+		if (modifiers.DamageType == DamageClass.Melee) {
+			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Melee_CritDamage);
+			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Melee_NonCritDmg);
+		}
+		else if (modifiers.DamageType == DamageClass.Ranged) {
+			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Range_CritDamage);
+			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Range_NonCritDmg);
+		}
+		else if (modifiers.DamageType == DamageClass.Magic) {
+			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Magic_CritDamage);
+			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Magic_NonCritDmg);
+		}
+		else if (modifiers.DamageType == DamageClass.Summon) {
+			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Summon_CritDamage);
+			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Summon_NonCritDmg);
+		}
 		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= 0) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
@@ -191,6 +217,11 @@ public class PlayerStatsHandle : ModPlayer {
 		TemporaryLife_CounterLimit += counterlimit;
 	}
 	public float CurrentMinionAmount = 0;
+	public StatModifier EnergyRegen = StatModifier.Default - 1;
+	public StatModifier EnergyRegenCount = StatModifier.Default;
+	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
+	public int EnergyRegen_Count = 0;
+	public int EnergyRegen_CountLimit = 60;
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
@@ -228,6 +259,17 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
 
+		UpdateCritDamage = StatModifier.Default;
+		Melee_CritDamage = StatModifier.Default;
+		Range_CritDamage = StatModifier.Default;
+		Magic_CritDamage = StatModifier.Default;
+		Summon_CritDamage = StatModifier.Default;
+
+		NonCriticalDamage = StatModifier.Default;
+		Melee_NonCritDmg = StatModifier.Default;
+		Range_NonCritDmg = StatModifier.Default;
+		Magic_NonCritDmg = StatModifier.Default;
+		Summon_NonCritDmg = StatModifier.Default;
 
 		UpdateFullHPDamage = StatModifier.Default;
 		UpdateMinion = StatModifier.Default;
@@ -239,17 +281,14 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateHPRegen = StatModifier.Default;
 		UpdateManaRegen = StatModifier.Default;
 		UpdateDefenseBase = StatModifier.Default;
-		UpdateCritDamage = StatModifier.Default;
 		UpdateDefEff = StatModifier.Default;
 		UpdateThorn = StatModifier.Default - 1;
-		AuraModifier = StatModifier.Default;
 		DebuffTime = StatModifier.Default;
 		BuffTime = StatModifier.Default;
 		DebuffBuffTime = StatModifier.Default;
 		ShieldEffectiveness = StatModifier.Default;
 		ShieldHealth = StatModifier.Default;
 		AttackSpeed = StatModifier.Default;
-		AuraModifier = StatModifier.Default;
 		HealEffectiveness = StatModifier.Default;
 		EnergyCap = StatModifier.Default;
 		RechargeEnergyCap = StatModifier.Default;
@@ -258,11 +297,13 @@ public class PlayerStatsHandle : ModPlayer {
 		DebuffDamage = StatModifier.Default;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
-		NonCriticalDamage = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
+		EnergyRegen = StatModifier.Default;
+		EnergyRegenCount = StatModifier.Default;
+		EnergyRegenCountLimit = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -277,6 +318,12 @@ public class PlayerStatsHandle : ModPlayer {
 		AugmentationChance = 0;
 		ItemRangeMultiplier = 1;
 		Reset_ShootRequest();
+		EnergyRegen_Count = (int)Math.Ceiling(EnergyRegenCount.ApplyTo(EnergyRegen_Count));
+		if (++EnergyRegen_Count >= EnergyRegen_CountLimit) {
+			EnergyRegen_Count = 0;
+			modplayer.Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
+		}
+		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
@@ -374,9 +421,6 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.MaxSentry:
 				UpdateSentry = UpdateSentry.CombineWith(StatMod);
 				break;
-			case PlayerStats.AuraRadius:
-				AuraModifier = AuraModifier.CombineWith(StatMod);
-				break;
 			case PlayerStats.ShieldHealth:
 				ShieldHealth = ShieldHealth.CombineWith(StatMod);
 				break;
@@ -421,6 +465,9 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.DebuffDurationInflict:
 				DebuffTime = DebuffTime.CombineWith(StatMod);
+				break;
+			case PlayerStats.LifeSteal:
+				LifeSteal = LifeSteal.CombineWith(StatMod - 1);
 				break;
 			default:
 				break;

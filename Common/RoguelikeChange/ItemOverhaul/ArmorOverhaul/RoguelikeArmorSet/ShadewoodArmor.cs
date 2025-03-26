@@ -45,12 +45,11 @@ public class ShadewoodArmorPlayer : PlayerArmorHandle {
 	}
 	private void OnHitNPC_ShadewoodArmor() {
 		if (ShadewoodArmorCD <= 0) {
-			float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
 			for (int i = 0; i < 75; i++) {
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.GemRuby);
+				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
+				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
 			}
-			Player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+			Player.Center.LookForHostileNPC(out List<NPC> npclist, 300);
 			foreach (var npc in npclist) {
 				Player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)Player.GetDamage(DamageClass.Generic).ApplyTo(30), 1));
 				npc.AddBuff(BuffID.Ichor, 300);

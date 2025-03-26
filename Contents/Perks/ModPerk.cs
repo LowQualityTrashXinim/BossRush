@@ -209,8 +209,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 2;
 		}
 		public override void OnHitByAnything(Player player) {
-			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(250) * 2;
-			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+			player.Center.LookForHostileNPC(out List<NPC> npclist, 500);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
 				npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount(player), direction, false, 10));
@@ -218,11 +217,11 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < 150; i++) {
 				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
 				Main.dust[smokedust].noGravity = true;
-				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(500 / 12f, 500 / 12f);
 				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 				int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(500 / 12f, 500 / 12f);
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 			}
 			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(5 + StackAmount(player)));
@@ -722,12 +721,10 @@ namespace BossRush.Contents.Perks {
 			player.buffImmune[BuffID.OnFire] = true;
 		}
 		public override void Update(Player player) {
-			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
 			DataStorer.ActivateContext(player, "Perk_RingOfFire");
-			DataStorer.ModifyContextDistance("Perk_RingOfFire", (int)radius);
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 300);
 			for (int i = 0; i < 4; i++) {
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(300, 300), 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);

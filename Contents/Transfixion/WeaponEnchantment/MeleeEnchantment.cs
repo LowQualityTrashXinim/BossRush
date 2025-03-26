@@ -652,8 +652,7 @@ public class ZombieArm : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(500);
-		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 500);
 		foreach (NPC target in npclist) {
 			player.StrikeNPCDirect(target, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
 				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
@@ -774,8 +773,7 @@ public class Volcano : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(125);
-		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 125);
 		foreach (NPC npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
 				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
@@ -783,11 +781,11 @@ public class Volcano : ModEnchantment {
 		for (int i = 0; i < 35; i++) {
 			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
 			Main.dust[smokedust].noGravity = true;
-			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 		}
 		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(4);
@@ -797,8 +795,7 @@ public class Volcano : ModEnchantment {
 		if (globalItem.Item_Counter2[index] > 0) {
 			return;
 		}
-		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(125);
-		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, 125);
 		foreach (NPC npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f),
 				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
@@ -806,11 +803,11 @@ public class Volcano : ModEnchantment {
 		for (int i = 0; i < 35; i++) {
 			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
 			Main.dust[smokedust].noGravity = true;
-			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(125 / 12f, 125 / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 		}
 		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(1);

@@ -1,7 +1,9 @@
-﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+﻿using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -9,17 +11,37 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SakuraKatana;
 internal class SakuraKatana : SynergyModItem {
+	public override void Synergy_SetStaticDefaults() {
+		DataStorer.AddContext("Synergy_Sakura", new(600, Vector2.Zero, false, Color.Pink));
+	}
 	public override void SetDefaults() {
 		Item.BossRushSetDefault(48, 92, 48, 6f, 20, 20, ItemUseStyleID.Swing, true);
 		Item.DamageType = DamageClass.Melee;
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
 			meleeItem.SwingType = BossRushUseStyle.Poke;
 		Item.UseSound = SoundID.Item1;
+		Item.Set_InfoItem();
 	}
 	int delayBetweenHit = 0;
+	public override void Synergy_ModifyWeaponDamage(Player player, ref StatModifier damage) {
+		int sakuraArtCount = player.GetModPlayer<SakuraKatana_ModPlayer>().SakuraArt;
+		damage += .05f * sakuraArtCount;
+	}
+	public override void Synergy_ModifyWeaponCrit(Player player, ref float crit) {
+		int sakuraArtCount = player.GetModPlayer<SakuraKatana_ModPlayer>().SakuraArt;
+		crit += 2 * sakuraArtCount;
+	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (delayBetweenHit > 0) {
 			return;
+		}
+		SakuraKatana_ModPlayer sakuraplayer = player.GetModPlayer<SakuraKatana_ModPlayer>();
+		sakuraplayer.Add_SakuraArt();
+		int strikecount = ++sakuraplayer.StrikeCount;
+		if (strikecount > 30) {
+			sakuraplayer.CherryBlossomAura_CoolDown = BossRushUtils.ToSecond(20);
+			sakuraplayer.CherryBlossomAura_Duration = BossRushUtils.ToSecond(30);
+			sakuraplayer.CherryBlossomAura_Position = player.Center;
 		}
 		float Rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
 		Vector2 pos = target.Center + Main.rand.NextVector2Circular(target.width, target.height);
@@ -27,12 +49,10 @@ internal class SakuraKatana : SynergyModItem {
 			Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i).RotatedBy(Rotation);
 			Projectile proj = Projectile.NewProjectileDirect(Item.GetSource_OnHit(target), pos, vel * .1f, ModContent.ProjectileType<SakuraLeaf_Projectile_2>(), Item.damage, Item.knockBack, player.whoAmI);
 			proj.frame = 1;
-			proj.ai[1] = i * -10f;
 		}
-		delayBetweenHit = 60;
+		player.GetModPlayer<SakuraKatana_ModPlayer>().DelayHit = 60;
 	}
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-		delayBetweenHit = BossRushUtils.CountDown(delayBetweenHit);
 		if (player.ItemAnimationJustStarted) {
 			int flip = player.GetModPlayer<MeleeOverhaulPlayer>().ComboNumber == 0 ? 1 : -1;
 			int amount = Main.rand.Next(3, 6);
@@ -50,6 +70,52 @@ internal class SakuraKatana : SynergyModItem {
 			.AddIngredient(ItemID.Katana)
 			.AddIngredient(ItemID.AbigailsFlower)
 			.Register();
+	}
+}
+public class SakuraKatana_ModPlayer : ModPlayer {
+	public int SakuraArt = 0;
+	public int SakuraArt_CountDown = 0;
+	public int StrikeCount = 0;
+	public int DelayHit = 0;
+	public Vector2 CherryBlossomAura_Position = Vector2.Zero;
+	public int CherryBlossomAura_Duration = 0;
+	public int CherryBlossomAura_CoolDown = 0;
+	public void Add_SakuraArt() {
+		SakuraArt = Math.Clamp(SakuraArt + 1, 0, 5);
+	}
+	public override void ResetEffects() {
+		if (!Player.IsHeldingModItem<SakuraKatana>()) {
+			return;
+		}
+		DelayHit = BossRushUtils.CountDown(DelayHit);
+		if (CherryBlossomAura_Duration > 0) {
+			CherryBlossomAura_Position += (Player.Center - CherryBlossomAura_Position).SafeNormalize(Vector2.Zero) * (Player.Center - CherryBlossomAura_Position).Length() / 64f;
+			CherryBlossomAura_Duration = BossRushUtils.CountDown(CherryBlossomAura_Duration);
+			DataStorer.ActivateContext(CherryBlossomAura_Position, "Synergy_Sakura");
+		}
+		else {
+			CherryBlossomAura_CoolDown = BossRushUtils.CountDown(CherryBlossomAura_CoolDown);
+		}
+		if (CherryBlossomAura_CoolDown > 0 || CherryBlossomAura_Duration > 0) {
+			StrikeCount = 0;
+		}
+		if (SakuraArt <= 0) {
+			return;
+		}
+		if (--SakuraArt_CountDown <= 0) {
+			SakuraArt = BossRushUtils.CountDown(SakuraArt);
+			SakuraArt_CountDown = BossRushUtils.ToSecond(7);
+		}
+	}
+	public override void UpdateEquips() {
+		if (CherryBlossomAura_Position.IsCloseToPosition(Player.Center, 600f)) {
+			PlayerStatsHandle statplayer = Player.GetModPlayer<PlayerStatsHandle>();
+			statplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.3f);
+			statplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 10);
+			statplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1.5f);
+			statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 10);
+			statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
+		}
 	}
 }
 public class SakuraLeaf_Projectile : SynergyModProjectile {
@@ -101,9 +167,6 @@ public class SakuraLeaf_Projectile_2 : SakuraLeaf_Projectile {
 		Projectile.ProjectileAlphaDecay(30);
 		if (Projectile.velocity != Vector2.Zero) {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-		}
-		if (++Projectile.ai[1] <= 10) {
-			return;
 		}
 		Projectile.velocity += Projectile.velocity * .025f;
 		Projectile.velocity = Projectile.velocity.LimitedVelocity(2);

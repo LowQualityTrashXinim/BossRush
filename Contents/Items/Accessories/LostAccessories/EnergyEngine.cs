@@ -15,6 +15,7 @@ internal class EnergyEngine : ModItem {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: -100);
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyRecharge, 1.11f);
+		modplayer.EnergyCap.Base += 1;
 	}
 }
 public class EnergyEngine_ModPlayer : ModPlayer {
@@ -22,8 +23,6 @@ public class EnergyEngine_ModPlayer : ModPlayer {
 	public override void ResetEffects() {
 		LostAcc1 = false;
 	}
-	int delay = 0;
-	const int maxdelay = 60;
 	public override void UpdateEquips() {
 		if (LostAcc1) {
 			SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
@@ -31,10 +30,6 @@ public class EnergyEngine_ModPlayer : ModPlayer {
 				PlayerStatsHandle statplayer = Player.GetModPlayer<PlayerStatsHandle>();
 				statplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.22f);
 				statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 12);
-			}
-			if (++delay >= 60) {
-				delay = 0;
-				modplayer.Modify_EnergyAmount(1);
 			}
 		}
 	}
