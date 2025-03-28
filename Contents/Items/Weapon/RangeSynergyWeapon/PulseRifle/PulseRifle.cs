@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using BossRush.Common.Global;
+using System;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
@@ -111,7 +112,7 @@ public class PulseHomingProjectile : SynergyModProjectile {
 				return;
 			}
 			Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (npc.Center - Projectile.Center).Length() / 6400f;
-			Projectile.velocity = Projectile.velocity.LimitedVelocity((npc.Center - Projectile.Center).Length() / 128f);
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(Math.Clamp((npc.Center - Projectile.Center).Length() / 128f, .75f, int.MaxValue));
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {

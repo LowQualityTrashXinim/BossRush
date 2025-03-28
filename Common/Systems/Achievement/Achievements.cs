@@ -15,36 +15,54 @@ using Terraria.UI;
 namespace BossRush.Common.Systems.Achievement;
 
 public class TheBeginningOfEndless : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Tutorial;
+	}
 	public override bool Condition() {
 		return RoguelikeData.Lootbox_AmountOpen > 0;
 	}
 }
 
 public class TheFirstOfMany : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod();
 	}
 }
 
 public class BountifulHarvest : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
-		return RoguelikeData.Lootbox_AmountOpen > 100;
+		return RoguelikeData.Lootbox_AmountOpen >= 100;
 	}
 }
 
 public class OceanOfFortune : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Hard;
+	}
 	public override bool Condition() {
-		return RoguelikeData.Lootbox_AmountOpen > 1000;
+		return RoguelikeData.Lootbox_AmountOpen >= 1000;
 	}
 }
 
 public class SkillCheck : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count > 0;
 	}
 }
 
 public class TokenOfGreed : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TokenOfGreedArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>() && UniversalSystem.NotNormalMode();
@@ -52,6 +70,9 @@ public class TokenOfGreed : ModAchievement {
 }
 
 public class TokenOfPride : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override void Draw(UIElement element, SpriteBatch spriteBatch) {
 		Artifact.GetArtifact(Artifact.ArtifactType<TokenOfPrideArtifact>()).DrawInUI(spriteBatch, element.GetDimensions());
 	}
@@ -60,27 +81,42 @@ public class TokenOfPride : ModAchievement {
 	}
 }
 public class TokenOfWrath : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class TokenOfSloth : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfSlothArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class TokenOfGluttony : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class BootOfSpeedManipulation : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<BootsOfSpeedManipulationArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<BootsOfSpeedManipulationArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class VampirismCrystal : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool SpecialDraw => true;
 	public override void Draw(UIElement element, SpriteBatch spriteBatch) {
 		Artifact.GetArtifact(Artifact.ArtifactType<VampirismCrystalArtifact>()).DrawInUI(spriteBatch, element.GetDimensions());
@@ -90,38 +126,59 @@ public class VampirismCrystal : ModAchievement {
 	}
 }
 public class HeartOfEarth : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<HeartOfEarthArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class GamblerSoul : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>();
 	}
 }
 public class ManaOverloader : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<ManaOverloaderArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class EssenceLantern : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<EssenceLanternArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class AlchemistKnowledge : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class LordOfLootBox : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Hard;
+	}
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 	public override bool Condition() {
 		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(ModContent.NPCType<LootBoxLord>());
 	}
 }
 public class WeaponChallenge1 : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Challenge;
+	}
 	public override bool Condition() {
 		Player player = Main.LocalPlayer;
 		if (player.TryGetModPlayer(out ModdedPlayer modplayer)) {
@@ -133,16 +190,25 @@ public class WeaponChallenge1 : ModAchievement {
 	}
 }
 public class NightmareOvercome : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Hard;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld();
 	}
 }
 public class TrueNightmare : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Challenge;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld() && Main.masterMode && Main.getGoodWorld;
 	}
 }
 public class GodOfChallenge : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Challenge;
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
 			&& HellishEndeavorSystem.Hellish()
@@ -150,14 +216,20 @@ public class GodOfChallenge : ModAchievement {
 	}
 }
 public class Elite : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Easy;
+	}
 	public override bool Condition() {
-		if(Main.CurrentPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		if (Main.CurrentPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			return modplayer.EliteKillCount > 0;
 		}
 		return false;
 	}
 }
 public class SpeedRunner : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Hard;
+	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
 			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 20 && UniversalSystem.DidPlayerBeatTheMod();
@@ -167,6 +239,9 @@ public class SpeedRunner : ModAchievement {
 }
 
 public class BossRushRunner : ModAchievement {
+	public override void SetStaticDefault() {
+		tag = AchievementTag.Hard;
+	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
 			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 5 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);

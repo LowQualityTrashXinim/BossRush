@@ -305,6 +305,9 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public void ReplaceSkillFromSkillHolderToInv(int whoAmIskill, int whoAmIInv) {
+		if (whoAmIskill >= AvailableSkillActiveSlot) {
+			return;
+		}
 		if (whoAmIskill < 0 || whoAmIskill > 9) {
 			return;
 		}

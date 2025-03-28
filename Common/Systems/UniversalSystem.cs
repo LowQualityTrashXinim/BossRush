@@ -1037,48 +1037,58 @@ public class btn_Teleport : UIImageButton {
 		}
 	}
 }
+
 public class AchievementUI : UIState {
 	private const int Row = 10;
-	UIPanel mainPanel, headerPanel;
-	Roguelike_WrapTextUIPanel textpanel;
-	Roguelike_WrapTextUIPanel conditiontextpanel;
-	List<AchievementButton> btn_Achievement;
+	UIPanel achievementSelectingPanel, headerPanel;
+	Roguelike_WrapTextUIPanel textpanel_main;
+	Roguelike_WrapTextUIPanel textpanel_bottom;
+	public List<AchievementButton> btn_Achievement;
+	public List<UITextPanel<string>> txt_Achievement;
 	ExitUI exitbtn;
 	UIText achievementName;
 	private int RowOffSet = 0;
 	public static string ActiveAchievement = "";
 	public int State = 0;
+	public int CurrentSelectedIndex = -1;
 	UIPanel main;
-	UIImageButton buttonLeft;
-	UIImageButton buttonRight;
+	Roguelike_UIImageButton buttonLeft;
+	Roguelike_UIImageButton buttonRight;
 	UIPanel footerPanel;
+	List<UIImage> pagnitation = new();
+	UIPanel tagTutorial;
+	UIPanel tagEasy;
+	UIPanel tagHard;
+	UIPanel tagExpert;
+	UIPanel tagMastery;
+	UIPanel tagChallenge;
+	UIPanel tagMisc;
 	public override void OnInitialize() {
 		main = new();
 		main.HAlign = .5f;
 		main.VAlign = .5f;
 		main.UISetWidthHeight(700, 700);
-		main.MarginBottom = 100;
 		Append(main);
 
 		headerPanel = new UIPanel();
-		headerPanel.UISetWidthHeight(600, 72);
-		headerPanel.HAlign = 1;
-		main.Append(headerPanel);
+		headerPanel.UISetWidthHeight(700, 72);
+		headerPanel.HAlign = .5f;
+		headerPanel.VAlign = .5f;
+		headerPanel.MarginBottom = main.Height.Pixels + 80;
+		Append(headerPanel);
 
-		textpanel = new Roguelike_WrapTextUIPanel("");
-		textpanel.HAlign = 1;
-		textpanel.UISetWidthHeight(600, 400);
-		textpanel.MarginTop = headerPanel.Height.Pixels;
-		main.Append(textpanel);
+		textpanel_main = new Roguelike_WrapTextUIPanel("");
+		textpanel_main.HAlign = 1;
+		textpanel_main.UISetWidthHeight(325, 600);
+		main.Append(textpanel_main);
 
-		mainPanel = new UIPanel();
-		mainPanel.HAlign = 0;
-		mainPanel.VAlign = 0;
-		mainPanel.Width.Set(80, 0);
-		mainPanel.Height.Set(0, .9f);
-		mainPanel.MarginRight = 100;
-		main.Append(mainPanel);
-
+		achievementSelectingPanel = new UIPanel();
+		achievementSelectingPanel.HAlign = 0;
+		achievementSelectingPanel.VAlign = 0;
+		achievementSelectingPanel.Width.Set(325, 0);
+		achievementSelectingPanel.Height.Set(600, 0);
+		achievementSelectingPanel.MarginRight = 100;
+		main.Append(achievementSelectingPanel);
 
 		exitbtn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
 		exitbtn.UISetWidthHeight(52, 52);
@@ -1086,12 +1096,8 @@ public class AchievementUI : UIState {
 		exitbtn.VAlign = .5f;
 		headerPanel.Append(exitbtn);
 
-		achievementName = new("");
-		achievementName.HAlign = 0;
-		achievementName.VAlign = .5f;
-		headerPanel.Append(achievementName);
-
 		btn_Achievement = new();
+		txt_Achievement = new();
 		for (int i = 0; i < Row; i++) {
 			ModAchievement achievement = AchievementSystem.SafeGetAchievement(i);
 			string text = "";
@@ -1099,19 +1105,26 @@ public class AchievementUI : UIState {
 				text = achievement.Name;
 			}
 			AchievementButton btn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), text);
-			btn.HAlign = .5f;
 			btn.VAlign = MathHelper.Lerp(0f, 1f, i / (Row - 1f));
 			btn.UISetWidthHeight(52, 52);
-			btn.OnLeftClick += Btn_OnLeftClick;
 			btn_Achievement.Add(btn);
-			mainPanel.Append(btn);
+			achievementSelectingPanel.Append(btn);
+
+			UITextPanel<string> txt_panel = new(achievement.DisplayName);
+			txt_panel.MarginLeft = 60;
+			txt_panel.Width.Precent = .8f;
+			txt_panel.TextHAlign = .5f;
+			txt_panel.TextScale = .8f;
+			txt_panel.VAlign = btn.VAlign;
+			txt_Achievement.Add(txt_panel);
+			achievementSelectingPanel.Append(txt_panel);
 		}
 
-		conditiontextpanel = new Roguelike_WrapTextUIPanel("", .77f);
-		conditiontextpanel.HAlign = 1f;
-		conditiontextpanel.UISetWidthHeight(600, 135);
-		conditiontextpanel.MarginTop = textpanel.Height.Pixels + headerPanel.Height.Pixels;
-		main.Append(conditiontextpanel);
+		textpanel_bottom = new Roguelike_WrapTextUIPanel("", .77f);
+		textpanel_bottom.HAlign = 1f;
+		textpanel_bottom.UISetWidthHeight(325, 135);
+		textpanel_bottom.VAlign = 1f;
+		textpanel_main.Append(textpanel_bottom);
 
 		footerPanel = new();
 		footerPanel.VAlign = 1;
@@ -1122,49 +1135,59 @@ public class AchievementUI : UIState {
 		buttonLeft = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
 		buttonLeft.HAlign = 0;
 		buttonLeft.VAlign = 1f;
+		buttonLeft.postTex = ModContent.Request<Texture2D>(BossRushTexture.Arrow_Left);
+		buttonLeft.OnLeftClick += ButtonLeft_OnLeftClick;
 		footerPanel.Append(buttonLeft);
 
 		buttonRight = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
 		buttonRight.HAlign = 1f;
 		buttonRight.VAlign = 1f;
+		buttonRight.postTex = ModContent.Request<Texture2D>(BossRushTexture.Arrow_Right);
+		buttonRight.OnLeftClick += ButtonRight_OnLeftClick;
 		footerPanel.Append(buttonRight);
+
+		pagnitation = new();
+
 	}
 
-	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		State = 1;
+	private void ButtonLeft_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+	}
+
+	private void ButtonRight_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 	}
 
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
-		RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
-		RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
+		//RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
+		//RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
 
-		for (int i = 0; i < AchievementSystem.Achievements.Count; i++) {
-			if (i >= btn_Achievement.Count) {
-				break;
-			}
-			btn_Achievement[i].SetAchievement("");
-			if (i + RowOffSet >= AchievementSystem.Achievements.Count) {
-				continue;
-			}
-			btn_Achievement[i].SetAchievement(AchievementSystem.Achievements[i + RowOffSet].Name);
-		}
+		//for (int i = 0; i < AchievementSystem.Achievements.Count; i++) {
+		//	if (i >= btn_Achievement.Count) {
+		//		break;
+		//	}
+		//	btn_Achievement[i].SetAchievement("");
+		//	if (i + RowOffSet >= AchievementSystem.Achievements.Count) {
+		//		continue;
+		//	}
+		//	btn_Achievement[i].SetAchievement(AchievementSystem.Achievements[i + RowOffSet].Name);
+		//}
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (ActiveAchievement == "") {
 			return;
 		}
+		//Main.NewText(CurrentSelectedIndex);
 		ModAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
 		if (achievement == null) {
 			return;
 		}
-		achievementName.SetText(achievement.DisplayName);
+		//achievementName.SetText(achievement.DisplayName);
 		string text = $"Description : {achievement.Description}";
 		if (achievement.AdditionalConditionTipAfterAchieve && achievement.Achieved) {
-			conditiontextpanel.SetText("Condition: " + achievement.ConditionTipAfterAchieve);
+			textpanel_bottom.SetText("Condition: " + achievement.ConditionTipAfterAchieve);
 		}
 		else {
-			conditiontextpanel.SetText("Condition: " + achievement.ConditionTip);
+			textpanel_bottom.SetText("Condition: " + achievement.ConditionTip);
 		}
 		text += "\nStatus : ";
 		if (achievement.Achieved) {
@@ -1173,7 +1196,7 @@ public class AchievementUI : UIState {
 		else {
 			text += "Unfinished";
 		}
-		textpanel.SetText(text);
+		textpanel_main.SetText(text);
 	}
 }
 public class AchievementButton : UIImageButton {
@@ -1181,25 +1204,28 @@ public class AchievementButton : UIImageButton {
 	private ModAchievement achievement;
 	Texture2D texture;
 	Asset<Texture2D> Lock;
+	Asset<Texture2D> achieved;
 	public void SetAchievement(string name) {
 		achievementname = name;
 		achievement = AchievementSystem.GetAchievement(achievementname);
-		this.SetVisibility(.5f, .5f);
 	}
 	public AchievementButton(Asset<Texture2D> texture, string achievementName) : base(texture) {
 		this.texture = texture.Value;
 		SetAchievement(achievementName);
+		achieved = ModContent.Request<Texture2D>(BossRushTexture.CommonTextureStringPattern + "UI/complete");
 		Lock = ModContent.Request<Texture2D>(BossRushTexture.Lock);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		AchievementUI.ActiveAchievement = achievementname;
+		UniversalSystem uni = ModContent.GetInstance<UniversalSystem>();
+		uni.achievementUI.State = 1;
+		uni.achievementUI.CurrentSelectedIndex = uni.achievementUI.btn_Achievement.Select(el => el.UniqueId).ToList().IndexOf(UniqueId);
+		Main.NewText(uni.achievementUI.CurrentSelectedIndex);
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (achievement != null) {
-			if (achievement.Achieved) {
-				this.SetVisibility(1f, 1f);
-			}
+			this.SetVisibility(1f, 1f);
 		}
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
@@ -1227,11 +1253,17 @@ public class AchievementButton : UIImageButton {
 					Vector2 drawpos2 = this.GetDimensions().Position() + texture.Size() * .5f;
 					spriteBatch.Draw(locktex, drawpos2, null, new Color(255, 255, 255) * .45f, 0, origin2, .9f, SpriteEffects.None, 0);
 				}
+				else {
+					Texture2D achievetex = achieved.Value;
+					Vector2 origin2 = achievetex.Size() * .5f;
+					Vector2 drawpos2 = this.GetDimensions().Position() + texture.Size() * .5f;
+					spriteBatch.Draw(achievetex, drawpos2.Add(0, 3.5f), null, Color.White, 0, origin2, .9f, SpriteEffects.None, 0);
+				}
 				return;
 			}
 		}
 		else {
-			texturestring = BossRushTexture.ACCESSORIESSLOT;
+			texturestring = BossRushTexture.MissingTexture_Default;
 		}
 		Texture2D skilltexture = ModContent.Request<Texture2D>(texturestring).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
@@ -1243,6 +1275,11 @@ public class AchievementButton : UIImageButton {
 				Texture2D locktex = Lock.Value;
 				origin = locktex.Size() * .5f;
 				spriteBatch.Draw(locktex, drawpos, null, new Color(255, 255, 255) * .45f, 0, origin, .9f, SpriteEffects.None, 0);
+			}
+			else {
+				Texture2D achievetex = achieved.Value;
+				origin = achievetex.Size() * .5f;
+				spriteBatch.Draw(achievetex, drawpos.Add(0, 3.5f), null, Color.White, 0, origin, .9f, SpriteEffects.None, 0);
 			}
 		}
 	}

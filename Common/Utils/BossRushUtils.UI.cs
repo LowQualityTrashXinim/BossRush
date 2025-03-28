@@ -273,7 +273,17 @@ namespace BossRush {
 	}
 	public class Roguelike_UIImage : UIImage {
 		public bool Hide = false;
+		/// <summary>
+		/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
+		/// The drawing will be handle automatically
+		/// </summary>
+		public Asset<Texture2D> postTex = null;
+		public Texture2D innerTex = null;
+		public void SetPostTex(Asset<Texture2D> tex) {
+			postTex = tex;
+		}
 		public Roguelike_UIImage(Asset<Texture2D> texture) : base(texture) {
+			innerTex = texture.Value;
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
@@ -286,10 +296,26 @@ namespace BossRush {
 			}
 			base.Draw(spriteBatch);
 			DrawImage(spriteBatch);
+			if (postTex != null) {
+				Vector2 origin = postTex.Size() * .5f;
+				Vector2 origin2 = innerTex.Size() * .5f;
+				Vector2 drawpos = this.GetDimensions().Position() + postTex.Size() + origin2;
+				spriteBatch.Draw(postTex.Value, drawpos, null, new Color(255, 255, 255), 0, origin + origin2, 1f, SpriteEffects.None, 0);
+			}
 		}
 	}
 	public class Roguelike_UIImageButton : UIImageButton {
+		/// <summary>
+		/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
+		/// The drawing will be handle automatically
+		/// </summary>
+		public Asset<Texture2D> postTex = null;
+		public Texture2D innerTex = null;
+		public void SetPostTex(Asset<Texture2D> tex) {
+			postTex = tex;
+		}
 		public Roguelike_UIImageButton(Asset<Texture2D> texture) : base(texture) {
+			innerTex = texture.Value;
 		}
 		public bool Hide = false;
 		public override void Update(GameTime gameTime) {
@@ -303,6 +329,12 @@ namespace BossRush {
 			}
 			base.Draw(spriteBatch);
 			DrawImage(spriteBatch);
+			if (postTex != null) {
+				Vector2 origin = postTex.Size() * .5f;
+				Vector2 origin2 = innerTex.Size() * .5f;
+				Vector2 drawpos = this.GetDimensions().Position() + origin2;
+				spriteBatch.Draw(postTex.Value, drawpos, null, new Color(255, 255, 255), 0, origin, 1f, SpriteEffects.None, 0);
+			}
 		}
 	}
 	/// <summary>

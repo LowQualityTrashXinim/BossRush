@@ -12,13 +12,23 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Common.Systems.Achievement;
+public enum AchievementTag : byte {
+	None,
+	Tutorial,
+	Easy,
+	Hard,
+	Expert,
+	Mastery,
+	Challenge,
+	Misc
+}
 /// <summary>
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
 public abstract class ModAchievement {
+	public AchievementTag tag = AchievementTag.None;
 	public bool Achieved { get; set; }
 	public bool AdditionalConditionTipAfterAchieve = false;
 	public virtual string Texture => BossRushTexture.ACCESSORIESSLOT;

@@ -90,266 +90,246 @@ Mods: {
 		}
 
 		Projectiles: {
-			SuperFlareP.DisplayName: Super Flare
-			ExplodeProjectile.DisplayName: Explosion
-			SharpBoomerangP.DisplayName: Sharp Boomerang
-			RectangleBullet.DisplayName: Rectangle Bullet
-			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
-			CustomPaintProj.DisplayName: Paint
-			WoodBowP.DisplayName: Wood Bow
-			ShadewoodBowP.DisplayName: Shadewood Bow
-			RichMahoganyBowP.DisplayName: Rich Mahogany Bow
-			PalmWoodBowP.DisplayName: Palm Wood Bow
-			EbonwoodBowP.DisplayName: Ebonwood Bow
-			BorealWoodBowP.DisplayName: Boreal Wood Bow
-			MoonStarProjectileTrail.DisplayName: Moon Star Projectile Trail
-			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile
-			MoonStarProjectile.DisplayName: Moon Star Projectile
-			TopazGemP.DisplayName: Topaz Gem
-			TopazBolt.DisplayName: Topaz Bolt
-			SmallEmerald.DisplayName: Small Emerald
-			SapphireGemP.DisplayName: Sapphire Gem
-			SapphireBolt.DisplayName: Sapphire Bolt
-			RubyGemP.DisplayName: Ruby Gem
-			RubyBolt.DisplayName: Ruby Bolt
-			EmeraldGemP.DisplayName: Emerald Gem
-			EmeraldBolt.DisplayName: Emerald Bolt
-			DiamondGemP.DisplayName: Diamond Gem
-			DiamondBolt.DisplayName: Diamond Bolt
-			AmethystGemP.DisplayName: Amethyst Gem
-			AmethystBolt.DisplayName: Amethyst Bolt
-			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver
-			KnifeRevolverP.DisplayName: Knife Revolver
-			IceStormSnowBallCannonMinion.DisplayName: Snow Ball Cannon
-			IceStormFrostFlowerMinion.DisplayName: Frost Flower
-			smallerHeart.DisplayName: Heart
-			HeartP.DisplayName: Heart
-			TungstenBowP.DisplayName: Tungsten Bow
-			TinBowP.DisplayName: Tin Bow
-			SilverBowP.DisplayName: Silver Bow
-			PlatinumBowP.DisplayName: Platinum Bow
-			LeadBowP.DisplayName: Lead Bow
-			IronBowP.DisplayName: Iron Bow
-			GoldBowP.DisplayName: Gold Bow
-			CopperBowP.DisplayName: Copper Bow
-			SparkFlare.DisplayName: Spark Flare
-			BowmarangP.DisplayName: Bowmarang
-			BloodBullet.DisplayName: Blood Bullet
-			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
-			YinYangShockWave.DisplayName: Yin Yang Shock Wave
-			YinYangP.DisplayName: Yin Yang
-			YinLight.DisplayName: Yin Light
-			YangDark.DisplayName: Yang Dark
-			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
-			SuperShortSwordP.DisplayName: Super Short Sword
-			SuperShortSwordOrbitShortSword.DisplayName: Short Sword
-			ShadowTrickP2.DisplayName: Shadow Trick
-			ShadowTrickP.DisplayName: Shadow Trick
-			ShadowSpike.DisplayName: Shadow Spike
-			FrostDaggerFishP.DisplayName: Frost Dagger Fish
-			KatanaSlash.DisplayName: Katana Slash
-			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
-			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
-			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword
-			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword
-			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword
-			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword
-			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword
-			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword
-			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword
-			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword
-			CactusBall.DisplayName: Cactus Ball
-			BurningPassionP.DisplayName: Burning Passion
-			TopazSwotaffP.DisplayName: Topaz Swotaff
-			SinisterBolt.DisplayName: Sinister Bolt
-			SapphireSwotaffP.DisplayName: Sapphire Swotaff
-			SmallerRubyBolt.DisplayName: Smaller Ruby Bolt
-			GiantRubyBolt.DisplayName: Giant Ruby Bolt
-			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
-			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
-			EmeraldSwotaffP.DisplayName: Emerald Swotaff
-			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
-			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
-			AmethystSwotaffP.DisplayName: Amethyst Swotaff
-			GhostHitBox2.DisplayName: Ghost Hit Box
-			GhostHitBox.DisplayName: Ghost Hit Box
-			ArenaMakerProj.DisplayName: Arena Maker Proj
-			ThrowingKnifeCustom.DisplayName: Throwing Knife
-			ShurikenCustom.DisplayName: Shuriken
-			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
+			ItemProjectile.DisplayName: Item Projectile
+			GemCollectible.DisplayName: Gem Collectible
+			SentientBlood.DisplayName: Sentient Blood
+			EoCServant.DisplayName: Eo C Servant
 			PhantasmalEye.DisplayName: Phantasmal Eye
-			EoCServant.DisplayName: EoC Servant
-			GhostSlime.DisplayName: Ghost Slime
-			GooP.DisplayName: Goo
+			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
+			ChaosExplosion.DisplayName: Chaos Explosion
+			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
+			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
+			ShurikenCustom.DisplayName: Shuriken Custom
+			ThrowingKnifeCustom.DisplayName: Throwing Knife Custom
+			MagicalBolt.DisplayName: Magical Bolt
+			MagicBullet.DisplayName: Magic Bullet
+			MoCCopperOre.DisplayName: Mo C Copper Ore
+			MoCShortSwordP.DisplayName: Mo C Short Sword P
+			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
+			ArenaMakerProj.DisplayName: Arena Maker Proj
+			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
 			TowerDestructionProjectile.DisplayName: Tower Destruction Projectile
-			MusketGunProjectile.DisplayName: Musket Gun Projectile
-			LivingEnchantedSwordProjectile.DisplayName: Living Enchanted Sword Projectile
-			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
-			SandInYourFace.DisplayName: Sand In Your Face
-			DiamondSwotaffP.DisplayName: Diamond Swotaff P
-			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
-			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
-			EmeraldGemProjectile.DisplayName: Emerald Gem Projectile
-			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
-			SapphireSwotaffGemProjectile.DisplayName: Sapphire Swotaff Gem Projectile
-			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
-			RubySwotaffProjectile.DisplayName: Ruby Swotaff Projectile
-			RubySwotaffGemProjectile.DisplayName: Ruby Swotaff Gem Projectile
-			TopazGemProjectile.DisplayName: Topaz Gem Projectile
-			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
-			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
-			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
-			ShortSwordProjectile.DisplayName: Short Sword Projectile
-			SwordBroadProjectile.DisplayName: Sword Broad Projectile
-			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
-			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
-			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Platinum Short Sword Projectile
-			AmberTippedSpearProj.DisplayName: Amber Tipped Spear Proj
-			AcornProjectile.DisplayName: Acorn Projectile
-			SandProjectile.DisplayName: Sand Projectile
-			AcornRainCloud.DisplayName: Acorn Rain Cloud
-			CorruptionTrail.DisplayName: Corruption Trail
-			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
-			ResolveProjectile.DisplayName: Resolve Projectile
-			ServantProjectile.DisplayName: Servant Projectile
-			ServantSmallerProjectile.DisplayName: Servant Smaller Projectile
-			ResolveBroadSword.DisplayName: Resolve Broad Sword
-			ZenishProjectile.DisplayName: Zenish Projectile
-			GhostBroadsword.DisplayName: Ghost Broadsword
-			GhostShortsword.DisplayName: Ghost Shortsword
-			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
-			TinOreProjectile.DisplayName: Tin Ore Projectile
-			TinBarProjectile.DisplayName: Tin Bar Projectile
-			MothProj.DisplayName: Moth Proj
-			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
-			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
-			AmberTippedProjectile.DisplayName: Amber Tipped Projectile
+			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
+			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
+			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
+			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
+			PlasmaExplosion.DisplayName: Plasma Explosion
+			AmethystBolt.DisplayName: Amethyst Bolt
+			AmethystGemP.DisplayName: Amethyst Gem P
+			DiamondBolt.DisplayName: Diamond Bolt
+			DiamondGemP.DisplayName: Diamond Gem P
+			EmeraldBolt.DisplayName: Emerald Bolt
+			EmeraldGemP.DisplayName: Emerald Gem P
+			RubyBolt.DisplayName: Ruby Bolt
+			RubyGemP.DisplayName: Ruby Gem P
+			SapphireBolt.DisplayName: Sapphire Bolt
+			SapphireGemP.DisplayName: Sapphire Gem P
+			SmallEmerald.DisplayName: Small Emerald
+			TopazBolt.DisplayName: Topaz Bolt
+			TopazGemP.DisplayName: Topaz Gem P
+			MoonStarProjectile.DisplayName: Moon Star Projectile
+			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile Smaller
+			FairFrozenMinion.DisplayName: Fair Frozen Minion
 			AmberBoneProjectile.DisplayName: Amber Bone Projectile
 			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
 			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
-			LifeOrb.DisplayName: Life Orb
-			BloodWater.DisplayName: Blood Water
-			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
-			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
-			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
-			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
-			NegativeLifeProjectile.DisplayName: Negative Life Projectile
-			GuardianProjectile.DisplayName: Guardian Projectile
-			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
-			ShortSwordAttackOne.DisplayName: Short Sword Attack One
-			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
-			SwordBroadAttackOne.DisplayName: Sword Broad Attack One
-			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
-			WoodBowAttackOne.DisplayName: Wood Bow Attack One
-			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
-			GemStaffAttackOne.DisplayName: Gem Staff Attack One
-			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
-			ShadowMagicMissle.DisplayName: Shadow Magic Missle
-			pearlSwordProj.DisplayName: Pearl Sword
-			LightningStrike.DisplayName: Lightning Strike
+			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
 			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
+			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
 			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
-			HeavenBolt.DisplayName: Heaven Bolt
-			MagicboltProjectile.DisplayName: Magicbolt Projectile
-			OreBowAttackOne.DisplayName: Ore Bow Attack One
-			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
-			LeafProjectile.DisplayName: Leaf Projectile
-			Coconut.DisplayName: Coconut
-			WoodSwordProjectile.DisplayName: Wood Sword Projectile
-			HostileMinishark.DisplayName: Hostile Minishark
-			HostileMusket.DisplayName: Hostile Musket
-			HorusEye_Projectile.DisplayName: Horus Eye Projectile
-			AdventureSpirit.DisplayName: Adventure Spirit
-			SwordProjectile.DisplayName: Sword Projectile
-			SwordProjectile2.DisplayName: Sword Projectile2
-			ManaReleaseOrb.DisplayName: Mana Release Orb
-			CoconutProjectile.DisplayName: Coconut Projectile
-			SpiritProjectile.DisplayName: Spirit Projectile
-			SwordProjectile3.DisplayName: Sword Projectile3
-			EssenceProjectile.DisplayName: Essence Projectile
-			MoCCopperOre.DisplayName: Copper Ore
-			MoCShortSwordP.DisplayName: Short Sword P
-			WindSlashProjectile.DisplayName: Wind Slash Projectile
-			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
-			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
-			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
-			GlassProjectile.DisplayName: Glass Projectile
-			MagicalBolt.DisplayName: Magical Bolt
-			MagicBullet.DisplayName: Magic Bullet
-			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
-			MindWaveProjectile.DisplayName: Mind Wave Projectile
-			FlamingFireSpark.DisplayName: Flaming Fire Spark
-			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
-			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
-			SwordProjectileSpear.DisplayName: Sword Projectile Spear
-			ElectricChainBolt.DisplayName: Electric Chain Bolt
-			SoulWoodSword.DisplayName: Soul Wood Sword
-			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
-			PowerPlantProjectile.DisplayName: Power Plant Projectile
-			TransferStationProjectile.DisplayName: Transfer Station Projectile
-			ChaosExplosion.DisplayName: Chaos Explosion
-			AngelicBolt.DisplayName: Angelic Bolt
-			AngelicSmgThrow.DisplayName: Angelic Smg Throw
-			AngelicSmgHeld.DisplayName: Angelic Smg Held
-			SlashProjectile.DisplayName: Slash Projectile
-			GhostYoyo.DisplayName: Ghost Yoyo
+			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
+			ShadowMagicMissle.DisplayName: Shadow Magic Missle
+			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
+			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
+			SinisterBolt.DisplayName: Sinister Bolt
+			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
+			AmethystSwotaffP.DisplayName: Amethyst Swotaff P
+			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
+			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
+			DiamondSwotaffP.DisplayName: Diamond Swotaff P
+			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
+			EmeraldSwotaffP.DisplayName: Emerald Swotaff P
+			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
+			RubySwotaffGemProjectile.DisplayName: Ruby Swotaff Gem Projectile
+			RubySwotaffProjectile.DisplayName: Ruby Swotaff Projectile
+			SapphireSwotaffGemProjectile.DisplayName: Sapphire Swotaff Gem Projectile
+			SapphireSwotaffP.DisplayName: Sapphire Swotaff P
+			TopazGemProjectile.DisplayName: Topaz Gem Projectile
+			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
 			WyvernWrathMainProjectile.DisplayName: Wyvern Wrath Main Projectile
 			WyvernWrathMiniProjectile.DisplayName: Wyvern Wrath Mini Projectile
+			LightningStrike.DisplayName: Lightning Strike
+			BurningPassionP.DisplayName: Burning Passion P
+			CactusBall.DisplayName: Cactus Ball
+			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword P
+			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword P
+			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword P
+			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword P
+			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword P
+			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword P
+			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword P
+			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword P
+			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
+			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
+			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
+			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
+			KatanaSlash.DisplayName: Katana Slash
+			FlamingFireSpark.DisplayName: Flaming Fire Spark
+			FrostDaggerFishP.DisplayName: Frost Dagger Fish P
 			MythrilBeam.DisplayName: Mythril Beam
-			WinterFlameProjectile.DisplayName: Winter Flame Projectile
-			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
-			StarWhipProj.DisplayName: Star Whip Proj
-			StarWhipStarProj.DisplayName: Star Whip Star Proj
-			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
-			DirtProjectile.DisplayName: Dirt Projectile
-			TitaniumShuriken.DisplayName: Titanium Shuriken
-			DeathSickleGhost.DisplayName: Death Sickle Ghost
-			DeathSickleClone.DisplayName: Death Sickle Clone
-			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
-			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
-			WindShot.DisplayName: Wind Shot
-			ItemProjectile.DisplayName: Item Projectile
-			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
-			PlasmaExplosion.DisplayName: Plasma Explosion
-			SwordFishProjectile.DisplayName: Sword Fish Projectile
-			TomahawkProjectile.DisplayName: Tomahawk Projectile
-			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
-			EvilShot.DisplayName: Evil Shot
-			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
-			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
-			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
-			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
-			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
-			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
-			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
-			AnnihiliationBullet.DisplayName: Annihiliation Bullet
-			HitScanBullet.DisplayName: Hit Scan Bullet
-			VoidParticle.DisplayName: Void Particle
-			VoidTrail.DisplayName: Void Trail
-			GemCollectible.DisplayName: Gem Collectible
-			SunflowerProjectile.DisplayName: Sunflower Projectile
-			SnowBlockProjectile.DisplayName: Snow Block Projectile
-			BlazingTornado.DisplayName: Blazing Tornado
-			SentientBlood.DisplayName: Sentient Blood
-			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
-			FairFrozenMinion.DisplayName: Fair Frozen Minion
-			SpaceGuyProjectile.DisplayName: Space Guy Projectile
-			NightmaresProjectile.DisplayName: Nightmares Projectile
-			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
-			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
-			CrystalSerpentProjectile.DisplayName: Crystal Serpent Projectile
+			ZenishProjectile.DisplayName: Zenish Projectile
 			RA_AntlionClaw.DisplayName: R A_ Antlion Claw
 			RA_BatBat.DisplayName: R A_ Bat Bat
 			RA_BeeKeeper.DisplayName: R A_ Bee Keeper
 			RA_BoneSword.DisplayName: R A_ Bone Sword
 			RA_PurpleClubberfish.DisplayName: R A_ Purple Clubberfish
 			RA_ZombieArm.DisplayName: R A_ Zombie Arm
-			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
-			SpearProjectile.DisplayName: Spear Projectile
-			RisingStarProjectile.DisplayName: Rising Star Projectile
-			Bowmarang_WoodYoyo_Projectile.DisplayName: Bowmarang_ Wood Yoyo_ Projectile
+			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
 			SakuraLeaf_Projectile_1.DisplayName: Sakura Leaf_ Projectile_1
 			SakuraLeaf_Projectile_2.DisplayName: Sakura Leaf_ Projectile_2
+			ShadowSpike.DisplayName: Shadow Spike
+			ShadowTrickP.DisplayName: Shadow Trick P
+			ShadowTrickP2.DisplayName: Shadow Trick P2
+			SuperShortSwordOrbitShortSword.DisplayName: Super Short Sword Orbit Short Sword
+			SuperShortSwordP.DisplayName: Super Short Sword P
+			YangDark.DisplayName: Yang Dark
+			YinLight.DisplayName: Yin Light
+			YinYangP.DisplayName: Yin Yang P
+			YinYangShockWave.DisplayName: Yin Yang Shock Wave
+			GhostBroadsword.DisplayName: Ghost Broadsword
+			GhostShortsword.DisplayName: Ghost Shortsword
+			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
+			ResolveProjectile.DisplayName: Resolve Projectile
+			AnnihiliationBullet.DisplayName: Annihiliation Bullet
+			BloodBullet.DisplayName: Blood Bullet
+			BloodWater.DisplayName: Blood Water
+			Bowmarang_WoodYoyo_Projectile.DisplayName: Bowmarang_ Wood Yoyo_ Projectile
+			BowmarangP.DisplayName: Bowmarang P
+			SparkFlare.DisplayName: Spark Flare
+			CopperBowP.DisplayName: Copper Bow P
+			GoldBowP.DisplayName: Gold Bow P
+			IronBowP.DisplayName: Iron Bow P
+			LeadBowP.DisplayName: Lead Bow P
+			PlatinumBowP.DisplayName: Platinum Bow P
+			SilverBowP.DisplayName: Silver Bow P
+			TinBowP.DisplayName: Tin Bow P
+			TungstenBowP.DisplayName: Tungsten Bow P
+			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
+			HeartP.DisplayName: Heart P
+			smallerHeart.DisplayName: smaller Heart
+			AngelicBolt.DisplayName: Angelic Bolt
+			AngelicSmgHeld.DisplayName: Angelic Smg Held
+			AngelicSmgThrow.DisplayName: Angelic Smg Throw
+			HorusEye_Projectile.DisplayName: Horus Eye_ Projectile
+			IceStormFrostFlowerMinion.DisplayName: Ice Storm Frost Flower Minion
+			IceStormSnowBallCannonMinion.DisplayName: Ice Storm Snow Ball Cannon Minion
+			KnifeRevolverP.DisplayName: Knife Revolver P
+			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver Spear Projectile
+			BorealWoodBowP.DisplayName: Boreal Wood Bow P
+			EbonwoodBowP.DisplayName: Ebonwood Bow P
+			PalmWoodBowP.DisplayName: Palm Wood Bow P
+			RichMahoganyBowP.DisplayName: Rich Mahogany Bow P
+			ShadewoodBowP.DisplayName: Shadewood Bow P
+			WoodBowP.DisplayName: Wood Bow P
+			CustomPaintProj.DisplayName: Custom Paint Proj
+			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
+			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
+			RectangleBullet.DisplayName: Rectangle Bullet
+			SharpBoomerangP.DisplayName: Sharp Boomerang P
+			ExplodeProjectile.DisplayName: Explode Projectile
+			SuperFlareP.DisplayName: Super Flare P
+			EvilShot.DisplayName: Evil Shot
+			WinterFlameProjectile.DisplayName: Winter Flame Projectile
+			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
+			RisingStarProjectile.DisplayName: Rising Star Projectile
+			MothProj.DisplayName: Moth Proj
+			StarWhipProj.DisplayName: Star Whip Proj
+			StarWhipStarProj.DisplayName: Star Whip Star Proj
+			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			GhostSlime.DisplayName: Ghost Slime
+			GooP.DisplayName: Goo P
+			GemStaffAttackOne.DisplayName: Gem Staff Attack One
+			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
+			GuardianProjectile.DisplayName: Guardian Projectile
+			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
+			HostileMinishark.DisplayName: Hostile Minishark
+			HostileMusket.DisplayName: Hostile Musket
+			OreBowAttackOne.DisplayName: Ore Bow Attack One
+			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
+			ShortSwordAttackOne.DisplayName: Short Sword Attack One
+			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
+			SwordBroadAttackOne.DisplayName: Sword Broad Attack One
+			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
+			WoodBowAttackOne.DisplayName: Wood Bow Attack One
+			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
+			AcornProjectile.DisplayName: Acorn Projectile
+			AcornRainCloud.DisplayName: Acorn Rain Cloud
+			AdventureSpirit.DisplayName: Adventure Spirit
+			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
+			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
+			BlazingTornado.DisplayName: Blazing Tornado
+			CoconutProjectile.DisplayName: Coconut Projectile
+			CorruptionTrail.DisplayName: Corruption Trail
+			DeathSickleClone.DisplayName: Death Sickle Clone
+			DeathSickleGhost.DisplayName: Death Sickle Ghost
+			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
+			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
+			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
+			DirtProjectile.DisplayName: Dirt Projectile
+			ElectricChainBolt.DisplayName: Electric Chain Bolt
+			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
+			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
+			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
+			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
+			GhostHitBox.DisplayName: Ghost Hit Box
+			GhostHitBox2.DisplayName: Ghost Hit Box2
+			GhostYoyo.DisplayName: Ghost Yoyo
+			GlassProjectile.DisplayName: Glass Projectile
+			HitScanBullet.DisplayName: Hit Scan Bullet
+			LeafProjectile.DisplayName: Leaf Projectile
+			LifeOrb.DisplayName: Life Orb
+			MagicboltProjectile.DisplayName: Magicbolt Projectile
+			MusketGunProjectile.DisplayName: Musket Gun Projectile
+			NegativeLifeProjectile.DisplayName: Negative Life Projectile
+			NightmaresProjectile.DisplayName: Nightmares Projectile
+			pearlSwordProj.DisplayName: pearl Sword Proj
+			PowerPlantProjectile.DisplayName: Power Plant Projectile
+			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
+			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
+			SandProjectile.DisplayName: Sand Projectile
+			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
+			ShortSwordProjectile.DisplayName: Short Sword Projectile
+			SlashProjectile.DisplayName: Slash Projectile
+			SnowBlockProjectile.DisplayName: Snow Block Projectile
+			SoulWoodSword.DisplayName: Soul Wood Sword
+			SpaceGuyProjectile.DisplayName: Space Guy Projectile
+			SpiritProjectile.DisplayName: Spirit Projectile
+			SunflowerProjectile.DisplayName: Sunflower Projectile
+			SwordProjectile.DisplayName: Sword Projectile
+			SwordProjectile2.DisplayName: Sword Projectile2
+			SwordProjectile3.DisplayName: Sword Projectile3
+			SwordProjectileSpear.DisplayName: Sword Projectile Spear
+			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
+			TinBarProjectile.DisplayName: Tin Bar Projectile
+			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
+			TinOreProjectile.DisplayName: Tin Ore Projectile
+			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
+			TitaniumShuriken.DisplayName: Titanium Shuriken
+			TomahawkProjectile.DisplayName: Tomahawk Projectile
+			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
+			TransferStationProjectile.DisplayName: Transfer Station Projectile
+			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
+			WindShot.DisplayName: Wind Shot
+			WindSlashProjectile.DisplayName: Wind Slash Projectile
+			EssenceProjectile.DisplayName: Essence Projectile
+			ManaReleaseOrb.DisplayName: Mana Release Orb
+			VoidParticle.DisplayName: Void Particle
+			VoidTrail.DisplayName: Void Trail
+			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
+			CrystalSerpentProjectile.DisplayName: Crystal Serpent Projectile
+			SpearProjectile.DisplayName: Spear Projectile
+			SwordFishProjectile.DisplayName: Sword Fish Projectile
+			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 		}
 
 		NPCs: {
@@ -898,7 +878,7 @@ Mods: {
 					Increases critical strike chance by 5%
 					Increases melee attack speed by 10%
 					Increases jump height and jump speed by 15%
-					Summons a shuriken every time an enemy gets hit 20 times, dealing static damage
+					Throw out a shuriken every 20th strike
 					Summons a ring of shurikens and knives
 					[c/e6ac39:Parts I and II abridged into a beloved series]
 					'''
@@ -909,9 +889,8 @@ Mods: {
 				Tooltip:
 					'''
 					"Your rage is what turns tides in battle"
-					Increase 5% damage and crits
-					Increase HP by 25%
-					Grant a buff upon getting hit that increase 50% damage and crits
+					Increase 5% damage, 5% critical strike chance and 25% maximum health
+					Grant a buff upon getting hit that increase 50% damage and critical strike chance
 					But shatter your defense and cut your life regen
 					The buff will reset its life time when you got hit again
 					'''
@@ -922,7 +901,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Truly slime-sentional"
-					Increases player Jump speed
+					Increases player jump height
 					Increases movement speed by 10%
 					Increases defense by 5
 					You shoot out slime spikes when enemy is in range
@@ -1082,9 +1061,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Side effects include becoming an explosive hazard"
-					Increases mana cost by 50% but also increases damage effective by 50%
+					Multiply magic damage by 1.5x
 					Massively increases mana regen
-					Increases max mana by 100
+					Increases maximum mana by 100
+					Increases mana cost by 50%
 					Decreases range, summon, melee damage by 10%
 					'''
 			}
@@ -1094,10 +1074,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Let your body be a shield for the weak"
-					Increases defenses by 45
-					Increases damage reduction by 45%
+					Increases defenses by 45 and damage reduction by 45%
 					Increases max life by 400
-					Decreases all classes's damage by 0.25
+					Decreases damage by 25%
 					Multiply Your movement, jumpspeed by 0.75
 					Gain a extra life while the buff active
 					You have knockback immunity !
@@ -1270,11 +1249,6 @@ Mods: {
 					{$CommonItemTooltip.RightClickToOpen}
 					Open this bundle to get almost all pre wall of flesh boss spawners
 					'''
-			}
-
-			AmberTippedJavelin: {
-				DisplayName: Amber Tipped Javelin
-				Tooltip: ""
 			}
 
 			WallOfFleshSpawner: {
@@ -1450,26 +1424,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			AuraDamageCard: {
-				DisplayName: Aura Damage Card
-				Tooltip: ""
-			}
-
-			ChaoticElementalCard: {
-				DisplayName: Chaotic Elemental Card
-				Tooltip: ""
-			}
-
-			HealingCard: {
-				DisplayName: Healing Card
-				Tooltip: ""
-			}
-
-			WeakHealingCard: {
-				DisplayName: Weak Healing Card
-				Tooltip: ""
-			}
-
 			StructureMaker: {
 				DisplayName: Structure Maker
 				Tooltip: ""
@@ -1566,11 +1520,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			GamblerPerk: {
-				DisplayName: Gambler Perk
-				Tooltip: ""
-			}
-
 			MashedOfCopper: {
 				DisplayName: Mashed Of Copper
 				Tooltip:
@@ -1585,11 +1534,6 @@ Mods: {
 
 			LunaticTablet: {
 				DisplayName: Lunatic Tablet
-				Tooltip: ""
-			}
-
-			PerkDebugShower: {
-				DisplayName: Perk Debug Shower
 				Tooltip: ""
 			}
 
@@ -1958,41 +1902,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BeeNestTp: {
-				DisplayName: Bee Nest Tp
-				Tooltip: ""
-			}
-
-			CorruptionTp: {
-				DisplayName: Corruption Tp
-				Tooltip: ""
-			}
-
-			CrimsonTp: {
-				DisplayName: Crimson Tp
-				Tooltip: ""
-			}
-
-			DungeonTp: {
-				DisplayName: Dungeon Tp
-				Tooltip: ""
-			}
-
-			FleshRealmTp: {
-				DisplayName: Flesh Realm Tp
-				Tooltip: ""
-			}
-
-			SlimeAreaTp: {
-				DisplayName: Slime Area Tp
-				Tooltip: ""
-			}
-
-			TundraTp: {
-				DisplayName: Tundra Tp
-				Tooltip: ""
-			}
-
 			ExoticTeleporter: {
 				DisplayName: Exotic Teleporter
 				Tooltip: ""
@@ -2101,11 +2010,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			AlterItem: {
-				DisplayName: Alter Item
-				Tooltip: ""
-			}
-
 			AltarItem: {
 				DisplayName: Altar Item
 				Tooltip: ""
@@ -2121,11 +2025,6 @@ Mods: {
 				Tooltip: Bring down heaven wrath with this smg
 			}
 
-			WindSlashPerk: {
-				DisplayName: Wind Slash Perk
-				Tooltip: ""
-			}
-
 			GlitchWorldEssence: {
 				DisplayName: World Blessing?
 				Tooltip: Grant a perk
@@ -2135,8 +2034,19 @@ Mods: {
 				DisplayName: Divine Hammer
 				Tooltip:
 					'''
-					Enable ability to modify world's rule which enforce on weapon and override them with something new
+					Enable ability to modify world's rule which enforce on weapon
+					enchant them with something new
 					Can also be used to increases weapon's stats
+					'''
+				ExtraInfo:
+					'''
+					[Weapon Enchantment]
+					Customize your weapon with the ancient craft of chaos and amalgams. 
+					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
+					in order to gain their uniquely personalized attributes.
+
+					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
+					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
 					'''
 			}
 
@@ -2413,6 +2323,11 @@ Mods: {
 			ReInitializeUI: {
 				DisplayName: ReInitialize UI
 				Tooltip: Debug item, do not uses it unless you are the one working on this
+			}
+
+			PerkDebugShower: {
+				DisplayName: Perk Debug Shower
+				Tooltip: ""
 			}
 		}
 
@@ -2989,16 +2904,6 @@ Mods: {
 						'''
 				}
 
-				SynergyMode: {
-					Label: Synergy Mode [IN PROGRESS OF REMOVING]
-					Tooltip:
-						'''
-						Enables Synergy Items, Artifacts, and a lot more.
-						This config adds optional content which can be ignored if necessary. 
-						Warning: This config might not be compatible or balanced with other content mods.
-						'''
-				}
-
 				SynergyFeverMode: {
 					Label: Synergy Fever Mode
 					Tooltip:
@@ -3191,18 +3096,8 @@ Mods: {
 						'''
 				}
 
-				LegacySpoils: {
-					Label: Legacy Spoils
-					Tooltip: ""
-				}
-
 				TemplateTest: {
 					Label: Template Test
-					Tooltip: ""
-				}
-
-				UnfairMode: {
-					Label: Unfair Mode
 					Tooltip: ""
 				}
 

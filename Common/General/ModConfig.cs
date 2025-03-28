@@ -61,7 +61,6 @@ namespace BossRush.Common.General {
 		[DefaultValue(false)]
 		public bool LegacyLootBoxDrop { get; set; }
 		public bool LegacyBossRushWorldGen { get; set; }
-		public bool LegacySpoils { get; set; }
 
 		[Header($"DebugHeader")]
 		[DefaultValue(false)]

@@ -12,6 +12,7 @@ internal class DivineHammer : ModItem {
 		Item.rare = ItemRarityID.Red;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.UseSound = SoundID.Item37;
+		Item.Set_InfoItem();
 	}
 	public override bool? UseItem(Player player) {
 		if (!UniversalSystem.CanEnchantmentBeAccess()) {

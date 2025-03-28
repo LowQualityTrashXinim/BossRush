@@ -22,7 +22,7 @@ public struct WyvernTrailMain {
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 
-		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
+		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise).Value);
 		shader.setupTextures();
 
 		shader.apply();
@@ -51,7 +51,7 @@ public struct WyvernTrailMini {
 		//miscShaderData.UseShaderSpecificData(new Microsoft.Xna.Framework.Vector4(60, 1, 0, 0));
 		//miscShaderData.Apply();
 
-		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
+		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise).Value);
 		shader.setupTextures();
 		shader.apply();
 
