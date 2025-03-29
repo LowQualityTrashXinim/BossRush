@@ -2329,6 +2329,25 @@ Mods: {
 				DisplayName: Perk Debug Shower
 				Tooltip: ""
 			}
+
+			TundraBow: {
+				DisplayName: Tundra Bow
+				Tooltip:
+					'''
+					Your shot are accompany with a snowbal dealing 35% of weapon damage
+					Every 5th shot shoot a arch of snowball
+					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
+					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
+					'''
+				ExtraInfo:
+					'''
+					[c/75ffff:Hypothermia] :
+					Reduce enemy defenses by 10%
+					Reduce enemy velocity by 20%
+					-3 life per second
+					Increases taken damage from snowball by 20%
+					'''
+			}
 		}
 
 		Buffs: {
@@ -2887,6 +2906,11 @@ Mods: {
 			Slimy_Debuff: {
 				DisplayName: Slimy_ Debuff
 				Description: Mods.BossRush.Buffs.Slimy_Debuff.Description
+			}
+
+			TundraHypothermia: {
+				DisplayName: Tundra Hypothermia
+				Description: Mods.BossRush.Buffs.TundraHypothermia.Description
 			}
 		}
 

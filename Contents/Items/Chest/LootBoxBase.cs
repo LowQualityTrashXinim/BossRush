@@ -54,7 +54,7 @@ namespace BossRush.Contents.Items.Chest {
 			PostModifyTooltips(ref tooltips);
 		}
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
-		private int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
+		private static int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
 			if (influence != -1) {
 				if (Main.rand.NextFloat() <= chance) {
 					return influence;
@@ -68,7 +68,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return rng;
 		}
-		protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
+		protected static int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
 			ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
 			meleeChance = (int)(modPlayer.UpdateMeleeChanceMutilplier * meleeChance);
 			rangeChance = (int)(modPlayer.UpdateRangeChanceMutilplier * rangeChance);
@@ -728,8 +728,8 @@ namespace BossRush.Contents.Items.Chest {
 			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
-				rng = item.RNGManage(player);
-				rng = item.ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				rng = RNGManage(player);
+				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
 				switch (rng) {
 					case 0:
 						continue;

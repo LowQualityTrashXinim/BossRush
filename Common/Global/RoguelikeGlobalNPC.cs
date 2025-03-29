@@ -23,11 +23,17 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
 	public bool EliteBoss = false;
+	/// <summary>
+	/// Use this for always update velocity
+	/// </summary>
 	public float VelocityMultiplier = 1;
+	/// <summary>
+	/// Use this for permanent effect
+	/// </summary>
+	public float static_velocityMultiplier = 1;
 	public bool IsAGhostEnemy = false;
 	public int BelongToWho = -1;
 	public bool CanDenyYouFromLoot = false;
-	public float static_velocityMultiplier = 1;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>

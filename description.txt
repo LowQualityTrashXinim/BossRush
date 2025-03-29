@@ -5,7 +5,7 @@ Roguelike Terraria is a challenging mod that offers an entirely new experience b
 • Contruct thousands of possible builds using brand new interactive systems affecting both the player and their weapons.
 • Customize your experience via various configurations.
 
-Special thx to :
+Special thanh to :
 DanielTheDragon helping with sprite work
 sucss helping me with coding and code that is very much out of my reach
 MysteriousCharacter for helping with sprite work
@@ -23,4 +23,4 @@ pilchardheck for helping with sprite work
 
 If you spot any bug, gameplay issue or have any question, please consider reporting it in our Discord server which is https://discord.gg/YqN5z5WVaS
 
-Note: Multiplayer is currently not in the works, so it may not work as expect.
+Note: Multiplayer is currently not in the works, so it will not work as expect.
