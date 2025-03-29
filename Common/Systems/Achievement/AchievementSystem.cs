@@ -28,7 +28,8 @@ public enum AchievementTag : byte {
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
 public abstract class ModAchievement {
-	public AchievementTag tag = AchievementTag.None;
+	public AchievementTag CategoryTag = AchievementTag.None;
+	public AchievementTag DifficultyTag = AchievementTag.None;
 	public bool Achieved { get; set; }
 	public bool AdditionalConditionTipAfterAchieve = false;
 	public virtual string Texture => BossRushTexture.ACCESSORIESSLOT;

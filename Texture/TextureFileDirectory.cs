@@ -22,6 +22,9 @@
 		public const string Perlinnoise= "BossRush/Texture/roguelikePerlinNoise";
 		public const string Arrow_Left = CommonTextureStringPattern + "UI/LeftArrow";
 		public const string Arrow_Right = CommonTextureStringPattern + "UI/RightArrow";
+
+		public const string Page_StateSelected = CommonTextureStringPattern + "UI/page_selected";
+		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 		public static string Get_StructureHelperTex(string text) => $"BossRush/Texture/StructureHelper_{text}";

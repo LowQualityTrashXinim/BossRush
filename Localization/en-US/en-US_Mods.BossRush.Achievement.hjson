@@ -143,5 +143,11 @@ Elite: {
 SpeedRunner: {
 	DisplayName: Speed Runner
 	Description: You are certified a speed runner
-	ConditionTip: Beat the mod using a character that have play time under 30 minute
+	ConditionTip: Beat the mod under 30 minutes
+}
+
+BossRushRunner: {
+	DisplayName: Boss Hunter
+	Description: You are certified a boss hunter
+	ConditionTip: Beat the mod while in boss rush mode under 5 minutes
 }
