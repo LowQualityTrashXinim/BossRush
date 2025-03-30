@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.Chest;
 
-namespace BossRush.Contents.Items.aDebugItem;
+namespace BossRush.Contents.Items.aDebugItem.UIdebug;
 internal class SpoilGetter : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {

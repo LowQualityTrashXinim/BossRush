@@ -12,6 +12,8 @@ using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 using Terraria.ModLoader.IO;
 using System.IO;
+using System.Linq;
+using Terraria.ID;
 
 namespace BossRush.Common.Global;
 /// <summary>
@@ -111,6 +113,23 @@ public class PlayerStatsHandle : ModPlayer {
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
+		}
+	}
+	public void AddItemDps(int ItemType, int damageDealt) {
+		if (ItemUsesToAttack.ContainsKey(ItemType)) {
+			ItemUsesToAttack[ItemType] += damageDealt;
+		}
+		else {
+			ItemUsesToAttack.Add(ItemType, damageDealt);
+		}
+	}
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		AddItemDps(item.type, hit.Damage);
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		int ItemTypeSource = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType;
+		if (ItemTypeSource > 0) {
+			AddItemDps(ItemTypeSource, hit.Damage);
 		}
 	}
 	public int HitTakenCounter = 0;
@@ -473,6 +492,7 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	public Dictionary<int, int> ItemUsesToAttack = new();
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 		var packet = Mod.GetPacket();
 		packet.Write((byte)BossRush.MessageType.PlayerStatsHandle);
@@ -480,6 +500,13 @@ public class PlayerStatsHandle : ModPlayer {
 		packet.Write(DPStracker);
 		packet.Write(HitTakenCounter);
 		packet.Write(DmgTaken);
+		packet.Write(ItemUsesToAttack.Keys.Count);
+		foreach (var item in ItemUsesToAttack.Keys) {
+			packet.Write(item);
+		}
+		foreach (var item in ItemUsesToAttack.Values) {
+			packet.Write(item);
+		}
 		packet.Send(toWho, fromWho);
 	}
 
@@ -487,6 +514,16 @@ public class PlayerStatsHandle : ModPlayer {
 		DPStracker = reader.ReadUInt64();
 		HitTakenCounter = reader.ReadInt32();
 		DmgTaken = reader.ReadUInt64();
+		int count = reader.ReadInt32();
+		List<int> weapon = new();
+		for (int i = 0; i < count; i++) {
+			weapon.Add(reader.ReadInt32());
+		}
+		List<int> weapondps = new();
+		for (int i = 0; i < count; i++) {
+			weapondps.Add(reader.ReadInt32());
+		}
+		ItemUsesToAttack = weapon.Zip(weapondps, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 	}
 
 	public override void CopyClientState(ModPlayer targetCopy) {
@@ -494,18 +531,22 @@ public class PlayerStatsHandle : ModPlayer {
 		clone.DPStracker = DPStracker;
 		clone.HitTakenCounter = HitTakenCounter;
 		clone.DmgTaken = DmgTaken;
+		clone.ItemUsesToAttack = ItemUsesToAttack;
 	}
 
 	public override void SendClientChanges(ModPlayer clientPlayer) {
 		var clone = (PlayerStatsHandle)clientPlayer;
 		if (DPStracker != clone.DPStracker
 			|| HitTakenCounter != clone.HitTakenCounter
-			|| DmgTaken != clone.DmgTaken) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+			|| DmgTaken != clone.DmgTaken
+			|| ItemUsesToAttack != clone.ItemUsesToAttack) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;
 		tag["DmgTaken"] = DmgTaken;
+		tag["WeaponUsesList"] = ItemUsesToAttack.Keys.ToList();
+		tag["DpsFromWeaponUses"] = ItemUsesToAttack.Values.ToList();
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
@@ -516,6 +557,17 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		if (tag.TryGet("DmgTaken", out ulong DmgTaken)) {
 			this.DmgTaken = DmgTaken;
+		}
+		var WeaponUses = tag.Get<List<int>>("WeaponUsesList");
+		var WeaponsDpss = tag.Get<List<int>>("DpsFromWeaponUses");
+		ItemUsesToAttack = WeaponUses.Zip(WeaponsDpss, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		//Attempt to remove item that is either unloaded or don't exist
+		int count = ItemUsesToAttack.Count;
+		for (int i = count - 1; i >= 0; i--) {
+			int type = ItemUsesToAttack.Keys.ElementAt(i);
+			if (ContentSamples.ItemsByType.ContainsKey(type)) {
+				ItemUsesToAttack.Remove(type);
+			}
 		}
 	}
 	public int EliteKillCount = 0;

@@ -46,7 +46,7 @@ namespace BossRush.Common.Mode.BossRushMode {
 			}
 			return true;
 		}
-		private void SkeletronAIHand(NPC npc) {
+		private static void SkeletronAIHand(NPC npc) {
 			npc.spriteDirection = -(int)npc.ai[0];
 			if (!Main.npc[(int)npc.ai[1]].active || Main.npc[(int)npc.ai[1]].aiStyle != 11) {
 				npc.ai[2] += 10f;
@@ -265,7 +265,7 @@ namespace BossRush.Common.Mode.BossRushMode {
 
 			return;
 		}
-		private void SkeletronAI(NPC npc) {
+		private static void SkeletronAI(NPC npc) {
 			float halfWidth = npc.width * .5f, halfHeight = npc.height * .5f;
 			npc.reflectsProjectiles = false;
 			npc.defense = npc.defDefense;
@@ -332,6 +332,10 @@ namespace BossRush.Common.Mode.BossRushMode {
 							float num156 = Main.player[npc.target].position.X + Main.player[npc.target].width * 0.5f - center3.X + Main.rand.Next(-20, 21);
 							float num157 = Main.player[npc.target].position.Y + Main.player[npc.target].height * 0.5f - center3.Y + Main.rand.Next(-20, 21);
 							float num158 = (float)Math.Sqrt(num156 * num156 + num157 * num157);
+							//Avoid divide by 0 bug
+							if(num158 == 0) {
+								num158 = 1;
+							}
 							num158 = num155 / num158;
 							num156 *= num158;
 							num157 *= num158;
@@ -545,14 +549,14 @@ namespace BossRush.Common.Mode.BossRushMode {
 				}
 			}
 		}
-		public int GetAttackDamage_ForProjectiles(NPC npc, float normalDamage, float expertDamage) {
+		public static int GetAttackDamage_ForProjectiles(NPC npc, float normalDamage, float expertDamage) {
 			float amount = Main.expertMode ? 1 : 0;
 			if (Main.GameModeInfo.IsJourneyMode)
 				amount = MathHelper.Clamp(npc.strengthMultiplier - 1f, 0f, 1f);
 
 			return (int)MathHelper.Lerp(normalDamage, expertDamage, amount);
 		}
-		public int GetAttackDamage_LerpBetweenFinalValues(NPC npc, float normalDamage, float expertDamage) {
+		public static int GetAttackDamage_LerpBetweenFinalValues(NPC npc, float normalDamage, float expertDamage) {
 			float amount = Main.expertMode ? 1 : 0;
 			if (Main.GameModeInfo.IsJourneyMode)
 				amount = MathHelper.Clamp(npc.strengthMultiplier - 1f, 0f, 1f);

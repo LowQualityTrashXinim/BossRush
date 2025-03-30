@@ -5,7 +5,7 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Weapon;
 
-namespace BossRush.Contents.Items.aDebugItem;
+namespace BossRush.Contents.Items.aDebugItem.UIdebug;
 internal class PerkDebugItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -15,9 +15,9 @@ internal class PerkDebugItem : ModItem {
 	}
 	public override bool AltFunctionUse(Player player) => true;
 	public override bool? UseItem(Player player) {
-		PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
+		var modplayer = player.GetModPlayer<PerkPlayer>();
 		if (player.altFunctionUse != 2) {
-			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.ActivatePerkUI(PerkUIState.DebugState);
 		}
 		else if (player.IsDebugPlayer()) {

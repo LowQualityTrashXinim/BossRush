@@ -3,7 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.Items.aDebugItem;
+namespace BossRush.Contents.Items.aDebugItem.UIdebug;
 class ReInitializeUI : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {

@@ -23,7 +23,6 @@ using Terraria.GameContent.UI.States;
 using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using BossRush.Contents.Items.aDebugItem;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
@@ -35,6 +34,7 @@ using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Common.Global;
 using Terraria.Achievements;
+using BossRush.Contents.Items.aDebugItem.UIdebug;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -555,60 +555,8 @@ class DefaultUI : UIState {
 	private UITextBox totalDMG;
 	private UITextBox totalHitTaken;
 	private UITextBox dmgTaken;
-	public void TurnOnEndOfDemoMessage() {
-		Player player = Main.LocalPlayer;
-		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
-		EndOfDemoPanel.Height.Set(500, 0);
-		EndOfDemoPanel.HAlign = .5f;
-		EndOfDemoPanel.VAlign = .5f;
-		Append(EndOfDemoPanel);
-		if (player.HeldItem.type != 0) {
-			itemUseTexture = new(TextureAssets.Item[player.HeldItem.type]);
-			itemUseTexture.Width.Set(64, 0);
-			itemUseTexture.Height.Set(64, 0);
-			itemUseTexture.HAlign = 0;
-			itemUseTexture.VAlign = .2f;
-			EndOfDemoPanel.Append(itemUseTexture);
-		}
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		ulong dps = modplayer.DPStracker;
-		totalDMG = new("Total damage dealt : 0");
-		string damage = dps.ToString();
-		totalDMG.UISetWidthHeight(0, 20);
-		totalDMG.HAlign = 0f;
-		totalDMG.VAlign = .3f;
-		totalDMG.ShowInputTicker = false;
-		totalDMG.SetTextMaxLength(999);
-		totalDMG.SetText($"Total damage dealt : {damage}");
-		EndOfDemoPanel.Append(totalDMG);
-
-		totalHitTaken = new("Total hit taken : 0");
-		string taken = modplayer.HitTakenCounter.ToString();
-		totalHitTaken.UISetWidthHeight(0, 20);
-		totalHitTaken.HAlign = 0f;
-		totalHitTaken.VAlign = .4f;
-		totalHitTaken.ShowInputTicker = false;
-		totalHitTaken.SetTextMaxLength(999);
-		totalHitTaken.SetText($"Total hit taken : {taken}");
-		EndOfDemoPanel.Append(totalHitTaken);
-
-		dmgTaken = new("Damage taken : 0");
-		string dmgT = modplayer.DmgTaken.ToString();
-		dmgTaken.UISetWidthHeight(0, 20);
-		dmgTaken.HAlign = 0f;
-		dmgTaken.VAlign = .5f;
-		dmgTaken.ShowInputTicker = false;
-		dmgTaken.SetTextMaxLength(999);
-		dmgTaken.SetText($"Damage taken : {dmgT}");
-		EndOfDemoPanel.Append(dmgTaken);
-
-		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
-		EndOfDemoPanelClose.HAlign = 1f;
-		EndOfDemoPanelClose.VAlign = 1f;
-		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
-		EndOfDemoPanel.Append(EndOfDemoPanelClose);
-	}
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		endofdemo_Main.Remove();
 		EndOfDemoPanel.Remove();
 		EndOfDemoPanelClose.Remove();
 	}
@@ -673,7 +621,6 @@ class DefaultUI : UIState {
 		Elements.Remove(popUpWarning);
 		Elements.Remove(popUpWarningClose);
 	}
-
 	private void CreateEnergyBar() {
 		energyCostBar = new Roguelike_ProgressUIBar(null, Color.DarkRed, Color.DarkRed, "", .8f);
 		energyCostBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
@@ -694,13 +641,11 @@ class DefaultUI : UIState {
 		energyBar.OnUpdate += EnergyBar_OnUpdate;
 		Append(energyBar);
 	}
-
 	private void EnergyCostBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyCostBar.BarProgress = modPlayer.SimulateSkillCost() / (float)modPlayer.EnergyCap;
 		energyCostBar.SetColorA(colorchanging3.MultiColor(5));
 	}
-
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
@@ -708,7 +653,6 @@ class DefaultUI : UIState {
 		energyBar.SetColorA(colorChanging1.MultiColor(5));
 		energyBar.SetColorB(colorChanging2.MultiColor(5));
 	}
-
 	private void CreateCoolDownBar() {
 		energyCoolDownBar = new Roguelike_ProgressUIBar(null, Color.Red, Color.Yellow, "0/0", .8f);
 		energyCoolDownBar.VAlign = .02f;
@@ -720,7 +664,6 @@ class DefaultUI : UIState {
 		energyCoolDownBar.Hide = true;
 		Append(energyCoolDownBar);
 	}
-
 	private void EnergyCoolDownBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		// Setting the text per tick to update and show our resource values.
@@ -770,19 +713,137 @@ class DefaultUI : UIState {
 		}
 		base.Update(gameTime);
 	}
+	int itemlimit = 10;
+	UIPanel weaponPanel_Main;
+	UIPanel endofdemo_Main;
+	Roguelike_UIImageButton buttonLeft;
+	Roguelike_UIImageButton buttonRight;
+	List<WeaponDPSimage> weapon;
+	Dictionary<int, int> dict_itemDps;
+	public void TurnOnEndOfDemoMessage() {
+		Player player = Main.LocalPlayer;
+		dict_itemDps = new();
+		weapon = new();
+		endofdemo_Main = new();
+		endofdemo_Main.Height.Set(400, 0);
+		endofdemo_Main.Width.Set(800, 0);
+		endofdemo_Main.HAlign = .5f;
+		endofdemo_Main.VAlign = .5f;
+		Append(endofdemo_Main);
+
+		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
+		EndOfDemoPanel.Width.Set(700, 0);
+		EndOfDemoPanel.Height.Set(EndOfDemoPanel.TextSize.Y * 2 + 40, 0);
+		EndOfDemoPanel.HAlign = .5f;
+		endofdemo_Main.Append(EndOfDemoPanel);
+
+		weaponPanel_Main = new();
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		dict_itemDps = modplayer.ItemUsesToAttack;
+		int min = Math.Min(itemlimit, dict_itemDps.Count);
+		if (min <= 1) {
+			min = 2;
+		}
+		for (int i = 0; i < dict_itemDps.Count; i++) {
+			if (i > itemlimit) {
+				break;
+			}
+			int key = dict_itemDps.Keys.ElementAt(i);
+			WeaponDPSimage img = new(key, dict_itemDps[key]);
+			img.Width.Set(64, 0);
+			img.Height.Set(64, 0);
+			img.HAlign = MathHelper.Lerp(0, 1, i / (float)(min - 1f));
+			img.VAlign = .5f;
+			weaponPanel_Main.Append(img);
+			weapon.Add(img);
+		}
+		weaponPanel_Main.Width.Percent = .9f;
+		weaponPanel_Main.HAlign = .5f;
+		weaponPanel_Main.Height.Pixels = 72;
+		weaponPanel_Main.MarginTop = EndOfDemoPanel.Height.Pixels + 10;
+		endofdemo_Main.Append(weaponPanel_Main);
+
+		ulong dps = modplayer.DPStracker;
+		totalDMG = new("Total damage dealt in a run : 0");
+		string damage = dps.ToString();
+		totalDMG.HAlign = .5f;
+		totalDMG.MarginTop = weaponPanel_Main.MarginTop + weaponPanel_Main.Height.Pixels + 30;
+		totalDMG.UISetWidthHeight(0, 20);
+		totalDMG.Width.Percent = 1;
+		totalDMG.ShowInputTicker = false;
+		totalDMG.SetTextMaxLength(999);
+		totalDMG.SetText($"Total damage dealt : {damage}");
+		endofdemo_Main.Append(totalDMG);
+
+		totalHitTaken = new("Total hits taken : 0");
+		string taken = modplayer.HitTakenCounter.ToString();
+		totalHitTaken.HAlign = .5f;
+		totalHitTaken.MarginTop = totalDMG.MarginTop + totalDMG.Height.Pixels + 30;
+		totalHitTaken.UISetWidthHeight(0, 20);
+		totalHitTaken.Width.Percent = 1;
+		totalHitTaken.ShowInputTicker = false;
+		totalHitTaken.SetTextMaxLength(999);
+		totalHitTaken.SetText($"Total hits taken : {taken}");
+		endofdemo_Main.Append(totalHitTaken);
+
+		dmgTaken = new("Damage taken : 0");
+		string dmgT = modplayer.DmgTaken.ToString();
+		dmgTaken.HAlign = .5f;
+		dmgTaken.MarginTop = totalHitTaken.MarginTop + totalHitTaken.Height.Pixels + 30;
+		dmgTaken.UISetWidthHeight(0, 20);
+		dmgTaken.Width.Percent = 1;
+		dmgTaken.ShowInputTicker = false;
+		dmgTaken.SetTextMaxLength(999);
+		dmgTaken.SetText($"Damage taken : {dmgT}");
+		endofdemo_Main.Append(dmgTaken);
+
+		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
+		EndOfDemoPanelClose.HAlign = 1f;
+		EndOfDemoPanelClose.VAlign = 1f;
+		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
+		endofdemo_Main.Append(EndOfDemoPanelClose);
+	}
+}
+public class WeaponDPSimage : UIImageButton {
+	int dps = 0;
+	int itemtype = 0;
+	public void SetWeaponDps(int itemtype, int dps) {
+		this.itemtype = itemtype;
+		this.dps = dps;
+	}
+	public WeaponDPSimage(int itemtype, int dps) : base(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)) {
+		this.itemtype = itemtype;
+		this.dps = dps;
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (this.IsMouseHovering) {
+			Main.instance.MouseText("damage dealt : " + dps);
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		if (itemtype <= 0) {
+			return;
+		}
+		Texture2D originaltexture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
+		Texture2D texture = TextureAssets.Item[itemtype].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawpos = this.GetDimensions().Position() + originaltexture.Size() * .5f;
+		float scale = ScaleCalculation(originaltexture.Size(), texture.Size());
+		spriteBatch.Draw(texture, drawpos, null, new Color(255, 255, 255), 0, origin, scale, SpriteEffects.None, 0);
+	}
+	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
 class UISystemMenu : UIState {
 	UIPanel panel;
 	UITextPanel<string> uitextpanel;
 	UIImageButton open_skill_UI;
-	UIImageButton open_Enchantment_UI;
 	UIImageButton open_Transmutation_UI;
 	UIImageButton open_AchievmentUI;
-	bool EnchantmentHover = false;
 	bool SkillHover = false;
 	bool Transmutation = false;
 	bool Achievement = false;
-	private Asset<Texture2D> lockIcon;
 	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 3f);
 	public override void OnInitialize() {
 		panel = new UIPanel();
@@ -824,8 +885,6 @@ class UISystemMenu : UIState {
 		open_AchievmentUI.OnLeftClick += Open_AchievmentUI_OnLeftClick;
 		open_AchievmentUI.OnUpdate += Open_AchievmentUI_OnUpdate;
 		Append(open_AchievmentUI);
-
-		lockIcon = ModContent.Request<Texture2D>("BossRush/Texture/UI/lock");
 	}
 
 	private void Open_AchievmentUI_OnUpdate(UIElement affectedElement) {

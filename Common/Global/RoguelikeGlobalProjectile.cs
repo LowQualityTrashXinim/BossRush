@@ -47,6 +47,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				if (possibly.minion) {
 					IsFromMinion = true;
 				}
+				//Attempt to get item source from that minion
+				if(possibly.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+					if(global.Source_ItemType != 0) {
+						Source_ItemType = global.Source_ItemType;
+					}
+				}
 			}
 		}
 		Source_CustomContextInfo = source.Context;

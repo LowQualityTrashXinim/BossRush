@@ -7,8 +7,8 @@ using BossRush.Contents.Perks;
 using Terraria.DataStructures;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Contents.Items.aDebugItem.UIdebug;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {

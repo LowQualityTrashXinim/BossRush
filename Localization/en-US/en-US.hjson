@@ -2348,6 +2348,11 @@ Mods: {
 					Increases taken damage from snowball by 20%
 					'''
 			}
+
+			TurnOnEndUI: {
+				DisplayName: Turn On End UI
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
