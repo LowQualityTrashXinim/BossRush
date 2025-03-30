@@ -55,12 +55,12 @@ public class DeathSickleGhost : ModProjectile {
 			gts = new();
 			gts.oldPos = [Projectile.Center, preDashPosition];
 			gts.oldRot = [Projectile.rotation + MathHelper.PiOver4, Projectile.velocity.ToRotation()];
-			gts.image1 = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
+			gts.image1 = ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise);
 			gts.Color = Color.Purple;
 			gts.offset = Vector2.Zero;
 			gts.shaderType = "TrailEffect";
 			gts.shaderData = new Vector4(0, 0, 0, 0);
-			gts.image2 = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
+			gts.image2 = ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise);
 
 			default(GenericTrail).Draw(gts, stripWidth, stripColor);
 			for (float i = 0; i < Projectile.oldPos.Length; i++)

@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Artifacts;
+﻿using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems {
 	public class MysteriousPotionBuff : ModBuff {

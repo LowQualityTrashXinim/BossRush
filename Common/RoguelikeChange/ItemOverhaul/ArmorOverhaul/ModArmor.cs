@@ -47,6 +47,12 @@ public class ArmorLoader : ModSystem {
 	}
 	public static ModArmorSet Default => _armor["None"];
 	public static ModArmorSet GetModArmor(string name) => _armor.ContainsKey(name) ? _armor[name] : _armor.ContainsKey("None") ? _armor["None"] : null;
+	/// <summary>
+	/// The <paramref name="name"/> param use the same as name of the <see cref="ModArmorSet"/> class name<br/>
+	/// Raw writing it is recommended
+	/// </summary>
+	/// <param name="name"></param>
+	/// <param name="modplayer"></param>
 	public static void SetModPlayer(string name, ModPlayer modplayer) => GetModArmor(name).modplayer = modplayer;
 }
 public abstract class PlayerArmorHandle : ModPlayer {
@@ -96,7 +102,7 @@ public abstract class PlayerArmorHandle : ModPlayer {
 	public virtual void Armor_ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) { }
 	public override sealed void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		if (modplayer.ArmorSetCheck(this)) {
-			ModifyHitByProjectile(proj, ref modifiers);
+			Armor_ModifyHitByProjectile(proj, ref modifiers);
 		}
 	}
 	public virtual void Armor_ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) { }
@@ -156,13 +162,29 @@ public abstract class ModArmorPiece : ModType {
 	public const string Type_Body = "Body";
 	public const string Type_Leg = "Leg";
 	public int PieceID = ItemID.None;
+	
+	/// <summary>
+	/// Uses to add defenses to armor piece, do note that you can also substract the defenese
+	/// </summary>
 	public int Add_Defense = 0;
 	/// <summary>
 	/// <b>False</b> to avoid tooltip of this to be added<br/>
 	/// <b>True</b> to add localization of this armor piece into armor tooltip
 	/// </summary>
 	public bool AddTooltip = false;
+	/// <summary>
+	/// Allow you to completely override original tooltip
+	/// </summary>
 	public bool OverrideTooltip = false;
+	/// <summary>
+	/// Make a attempt to delete vanity tooltip if has any
+	/// </summary>
+	public bool DeleteVanityTooltip = false;
+	/// <summary>
+	/// Uses this to add always update effect such as damage increases
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="item"></param>
 	public virtual void UpdateEquip(Player player, Item item) { }
 	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{ArmorName}.{TypeEquipment}");
 	protected override void Register() {
@@ -176,7 +198,8 @@ public abstract class ModArmorPiece : ModType {
 	public string TypeEquipment = "";
 	/// <summary>
 	/// This is require if you want localization to work properly<br/>
-	/// What name you set for <see cref="ModArmorSet"/> should be set here
+	/// What name you set for <see cref="ModArmorSet"/> should be set here<br/>
+	/// Set this to the exact same string as <see cref="ArmorLoader.SetModPlayer(string, ModPlayer)"/>
 	/// </summary>
 	public string ArmorName = "";
 	public virtual void SetDefault() { }
@@ -201,8 +224,8 @@ public abstract class ModArmorSet : ModType {
 	public override string ToString() => $"{headID}:{bodyID}:{legID}";
 	public bool ContainAnyOfArmorPiece(int type) => type == headID || type == bodyID || type == legID;
 	protected sealed override void Register() {
-		ArmorLoader.Register(this);
 		SetDefault();
+		ArmorLoader.Register(this);
 	}
 	public virtual void SetDefault() { }
 	public override sealed void SetStaticDefaults() {

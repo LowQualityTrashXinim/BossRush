@@ -65,7 +65,7 @@ namespace BossRush.Contents.Projectiles {
 		public override void SetDefaults() {
 			Projectile.width = 30;
 			Projectile.height = 30;
-			Projectile.timeLeft = 70;
+			Projectile.timeLeft = 90;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;

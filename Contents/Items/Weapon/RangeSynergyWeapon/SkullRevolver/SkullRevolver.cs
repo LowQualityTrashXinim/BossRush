@@ -3,6 +3,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver {
 	internal class SkullRevolver : SynergyModItem {
@@ -21,6 +22,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver {
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+			SoundEngine.PlaySound(Item.UseSound);
 			counter++;
 			if (counter == 2) {
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.BookOfSkullsSkull, damage, knockback, player.whoAmI);

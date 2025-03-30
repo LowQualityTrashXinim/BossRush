@@ -1,16 +1,20 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using System;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ChaosShield : ModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
+	public override void SetStaticDefaults() {
+		Item.Set_ShieldStats(500, 3);
+	}
 	public override void SetDefaults() {
 		Item.Set_LostAccessory(32, 32);
+		Item.Set_ShieldStats(500, 3);
 	}
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: 5);
@@ -54,8 +58,8 @@ public class ChaosShieldPlayer : ModPlayer {
 			Vector2 vel = Main.rand.NextVector2CircularEdge(10, 10);
 			int min = Math.Min(10, Damage);
 			int max = Math.Max(10, Damage);
-			int damageraw = Main.rand.Next(min -1, max);
-			if(damageraw <= 0) {
+			int damageraw = Main.rand.Next(min - 1, max);
+			if (damageraw <= 0) {
 				damageraw = 1;
 			}
 			Projectile.NewProjectile(Player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damageraw, Main.rand.NextFloat(2, 5), Player.whoAmI);

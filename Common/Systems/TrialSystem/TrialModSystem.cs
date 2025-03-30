@@ -6,6 +6,8 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
+using BossRush.Contents.Perks;
+using BossRush.Common.Utils;
 
 namespace BossRush.Common.Systems.TrialSystem;
 
@@ -41,29 +43,38 @@ internal class TrialModSystem : ModSystem {
 
 		//Main.spriteBatch.End();
 	}
-	public static void SetTrial(int TrialID) {
+	/// <summary>
+	/// Use this to activate a trial
+	/// </summary>
+	/// <param name="TrialID"></param>
+	/// <param name="activatePosition"></param>
+	public static void SetTrial(int TrialID, Vector2 activatePosition) {
 		Trial = GetTrial(Math.Clamp(TrialID, 0, TotalCount));
+		Trial_StartPos = activatePosition;
 	}
 	public override void PostUpdateInvasions() {
+		//Ensure trial will only start if trial data is not null
 		if (Trial == null) {
 			return;
 		}
+		//Check the trial type
 		if (Trial.IsABattleTrial) {
+			//Start trial 
 			BattleTrialUpdate();
 		}
 	}
 	private void SpawnTrialNPC(int npcType, Rectangle spawnRect) {
 		NPC newnpc = null;
-		if (Trial.UsesCustomSpawn(CurrentWave, npcType, Trial_NPCPool[npcType], spawnRect, out Vector2 pos)) {
+		if (Trial.UsesCustomSpawn(CurrentWave, npcType, npcType, spawnRect, out Vector2 pos)) {
 			newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), pos, npcType);
 		}
 		else {
 			int failsafe = 0;
 			while (failsafe <= 999) {
 				Point position = new Point(
-					Main.rand.Next(spawnRect.Left, spawnRect.Right + 1) / 16,
-					Main.rand.Next(spawnRect.Top, spawnRect.Bottom + 1) / 16);
-				if (WorldGen.TileEmpty(position.X / 16, position.Y / 16)) {
+					Main.rand.Next(spawnRect.Left, spawnRect.Right + 1),
+					Main.rand.Next(spawnRect.Top, spawnRect.Bottom + 1));
+				if (WorldGen.TileEmpty(position.X, position.Y)) {
 					int pass = 0;
 					for (int offsetX = -1; offsetX <= 1; offsetX++) {
 						for (int offsetY = -1; offsetY <= 1; offsetY++) {
@@ -74,45 +85,44 @@ internal class TrialModSystem : ModSystem {
 						}
 					}
 					if (pass >= 8) {
-						newnpc = NPC.NewNPCDirect(NPC.GetSource_None(), position.ToVector2() * 16, npcType);
+						newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), position.ToWorldCoordinates(), npcType);
 						break;
 					}
 					failsafe++;
 				}
 			}
 			if (newnpc == null) {
-				newnpc = NPC.NewNPCDirect(NPC.GetSource_None(), Main.rand.NextVector2FromRectangle(spawnRect), npcType);
+				Vector2 attemptToCorrectPosition = Main.rand.NextVector2FromRectangle(spawnRect).ToWorldCoordinates();
+				newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), attemptToCorrectPosition, npcType);
 			}
 		}
 		newnpc.GetGlobalNPC<TrialGlobalNPC>().SpawnedByTrial = true;
 		Trial_NPC.Add(newnpc);
-		Trial_NPCPool[npcType] = Math.Clamp(Trial_NPCPool[npcType] - 1, 0, Main.maxNPCs);
-		Trial_TotalRemainingNPCs = Trial_NPCPool.Values.Sum();
 	}
 	public static ModTrial Trial = null;
 	public static List<NPC> Trial_NPC = new List<NPC>();
 	public static int CurrentWave = 0;
 	public static int NextWave = 0;
-	private int Trial_NPCStarterSpawnlimit = 0;
-	private int Trial_NPCActiveLimit = 0;
 	private int Trial_TotalRemainingNPCs = 0;
-	private int Trial_DelaySpawning = 0;
-	private int Trial_SpawnTimer = 0;
+	private static Vector2 Trial_StartPos = Vector2.Zero;
 
-	private Dictionary<int, int> Trial_NPCPool = new Dictionary<int, int>();
+	private List<int> Trial_NPCPool = new();
 	private void ResetTrial() {
 		Trial_NPC.Clear();
 		Trial = null;
 		NextWave = 0;
 		CurrentWave = 0;
 		Trial_TotalRemainingNPCs = 0;
-		Trial_NPCActiveLimit = 0;
-		Trial_NPCStarterSpawnlimit = 0;
-		Trial_DelaySpawning = 0;
-		Trial_SpawnTimer = 0;
+		foreach (var item in emptyTile) {
+			GenerationHelper.FastRemoveTile(item.X, item.Y);
+		}
+		emptyTile.Clear();
 	}
 	private void TrialNPCManage() {
+		//Check if list Trial NPC is null or not, but wtf why we are doing this ?
 		if (Trial_NPC == null) {
+			//idk what the hell we was thinking here
+			Trial_NPC = new();
 			foreach (NPC npc in Main.ActiveNPCs) {
 				if (npc.TryGetGlobalNPC(out TrialGlobalNPC globalNPC)) {
 					if (globalNPC.SpawnedByTrial) {
@@ -123,38 +133,38 @@ internal class TrialModSystem : ModSystem {
 			return;
 		}
 		else {
+			//Do a reverse iteration so that we can remove element safely
 			for (int i = Trial_NPC.Count - 1; i >= 0; i--) {
 				NPC npc = Trial_NPC[i];
+				//Check if the NPC in the question is still active or not
 				if (npc.active && npc.life > 0) {
+					//Since the NPC is still alive and active, we move on
 					continue;
 				}
+				//Since the NPC is dead, we remove them
 				Trial_NPC.RemoveAt(i);
-				if (Trial_NPC.Count > Math.Max(Trial_NPCActiveLimit, 1) && Trial_SpawnTimer <= Trial_DelaySpawning) {
-					Trial_SpawnTimer++;
-					break;
-				}
-				Trial_SpawnTimer = 0;
-				if (Trial_NPC.Count <= Math.Min(Trial_NPCActiveLimit, Trial_TotalRemainingNPCs) && !(Trial_NPC.Count == Trial_TotalRemainingNPCs && Trial_TotalRemainingNPCs == 0)) {
-					Rectangle spawnRect = Trial_ArenaSize;
-					int npcType = Main.rand.Next(Trial_NPCPool.Keys.ToArray());
-
-					SpawnTrialNPC(npcType, spawnRect);
-				}
 			}
 		}
+		//Checking if the Trial NPC is empty, if it is not, do nothing
 		if (Trial_NPC.Count < 1) {
+			//Since the trial NPC is empty, we are moving to new wave if possible
 			NextWave++;
+			//If new wave is not possible, that mean we have reached the end of the wave
 			if (NextWave > Trial.WaveAmount()) {
+				//Spawn reward for player
 				Trial.TrialReward(Main.LocalPlayer.GetSource_Misc("trial_reward"), Main.LocalPlayer);
+				//Reset the trial
 				ResetTrial();
 			}
 			else {
-				Trial.TrialNPCSpawnData(out int start, out int activelimit, out int delay);
-				Trial_ArenaSize = Trial.TrialSize(Main.LocalPlayer.Center);
-				Trial_NPCStarterSpawnlimit = start;
-				Trial_NPCActiveLimit = activelimit;
-				Trial_DelaySpawning = delay;
-				Trial_NPCPool = Trial.NPCpool();
+				//Resize the trial and then restart trial NPC pool
+				//This is here as a fail safe in case something stupid happen
+				if (Trial_StartPos == Vector2.Zero) {
+					Trial_StartPos = Main.LocalPlayer.Center;
+				}
+				Trial_ArenaSize = Trial.TrialSize(Trial_StartPos);
+				Trial_NPCPool.Clear();
+				Trial_NPCPool = Trial.NPCpool(NextWave);
 			}
 		}
 	}
@@ -162,56 +172,101 @@ internal class TrialModSystem : ModSystem {
 		if (CurrentWave != NextWave) {
 			CurrentWave = Math.Min(CurrentWave + 1, NextWave);
 			Rectangle spawnRect = Trial_ArenaSize;
-			int npcCounter = 0;
-			do {
-				foreach (var npcType in Trial_NPCPool.Keys) {
-					if (Trial_NPCPool[npcType] > 0) {
-						SpawnTrialNPC(npcType, spawnRect);
-						npcCounter++;
-					}
-					if (npcCounter >= Trial_NPCStarterSpawnlimit) {
-						break;
-					}
+			foreach (var npcType in Trial_NPCPool) {
+				if (npcType > 0) {
+					SpawnTrialNPC(npcType, spawnRect);
 				}
-			} while (npcCounter < Math.Max(Trial_NPCStarterSpawnlimit, 1));
+			}
 		}
 	}
 	private Rectangle Trial_ArenaSize = new();
+	private List<Point> emptyTile = new();
 	private void BattleTrialUpdate() {
-		//Show border, temporary solution, not optimal at all cause we are relying on dust to draw border
-		for (int i = 0; i < 300; i++) {
-			Dust dust = Dust.NewDustDirect(Main.rand.NextVector2RectangleEdge(Trial_ArenaSize), 0, 0, DustID.WhiteTorch, Scale: 2);
-			dust.noGravity = true;
-			dust.velocity = Vector2.Zero;
-		}
+		//Manage trial NPC
+		//This won't actually do anything until Start trial method is run
+		//However this method is still required to be run before StartTrial method as it initialize wave
 		TrialNPCManage();
+		//Start trial
 		StartTrial();
+		if (Trial == null) {
+			return;
+		}
+		if (NextWave > Trial.WaveAmount()) {
+			return;
+		}
+		//This is extra code to detect whenever a empty tile is spot during the border of the trial area
+		if (emptyTile.Count < 1) {
+			Point newpos;
+			for (int i = 0; i < Trial_ArenaSize.Width; i++) {
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
+					emptyTile.Add(newpos + new Point(i, 0));
+				}
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y + Trial_ArenaSize.Height - 1);
+				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
+					emptyTile.Add(newpos + new Point(i, 0));
+				}
+			}
+			for (int i = 0; i < Trial_ArenaSize.Height; i++) {
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
+					emptyTile.Add(newpos + new Point(0, i));
+				}
+				newpos = new(Trial_ArenaSize.X + Trial_ArenaSize.Width - 1, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
+					emptyTile.Add(newpos + new Point(0, i));
+				}
+			}
+			foreach (var item in emptyTile) {
+				GenerationHelper.FastPlaceTile(item.X, item.Y, TileID.StoneSlab);
+			}
+		}
 	}
 }
 public abstract class ModTrial : ModType {
 	public string TrialRoom = null;
 	public bool IsABattleTrial = true;
+	public string FilePath = string.Empty;
 	public int Type { get; private set; }
+	public static int GetTrialType<T>() where T : ModTrial {
+		return ModContent.GetInstance<T>().Type;
+	}
 	protected sealed override void Register() {
 		SetStaticDefaults();
 		Type = TrialModSystem.Register(this);
 	}
 	public virtual int WaveAmount() => 0;
 	/// <summary>
-	/// Keys : NPC type
-	/// Values : Amount of npc
+	/// Keys : NPC type<br/>
+	/// Values : Amount of npc<br/>
+	/// <br/>
+	/// Use this to set amount of specific NPC can be spawned
 	/// </summary>
 	/// <returns></returns>
-	public virtual Dictionary<int, int> NPCpool() => new();
+	public virtual List<int> NPCpool(int currentWave) => new();
+	//Set this trial size so that it can spawn correctly
+	/// <summary>
+	/// Override this so that NPC can spawn correctly<br/>
+	/// It is highly recommended that you send back a rectangle in Tile coord
+	/// </summary>
+	/// <param name="TrialStartPosition"></param>
+	/// <returns></returns>
 	public virtual Rectangle TrialSize(Vector2 TrialStartPosition) => new Rectangle((int)TrialStartPosition.X, (int)TrialStartPosition.Y, 0, 0);
+	/// <summary>
+	/// This will enable developer to customized how their NPC can be spawned
+	/// </summary>
+	/// <param name="currentWave">The current wave of the trial</param>
+	/// <param name="currentNPCtype">The current selected NPC type</param>
+	/// <param name="currentNPCamount">The current amount of specified NPC</param>
+	/// <param name="size">The size of the trial room ( included trial room position )</param>
+	/// <param name="pos">Position of <paramref name="currentNPCtype"/> which will be spawned</param>
+	/// <returns>
+	/// <b>True</b> to force the system to use custom spawn<br/>
+	/// <b>False</b> to use system default
+	/// </returns>
 	public virtual bool UsesCustomSpawn(int currentWave, int currentNPCtype, int currentNPCamount, Rectangle size, out Vector2 pos) {
 		pos = Vector2.Zero;
 		return false;
-	}
-	public virtual void TrialNPCSpawnData(out int StartingSpawnAmount, out int ActiveLimit, out int delaySpawn) {
-		StartingSpawnAmount = 10;
-		ActiveLimit = 12;
-		delaySpawn = 0;
 	}
 
 	public virtual void TrialReward(IEntitySource source, Player player) { }

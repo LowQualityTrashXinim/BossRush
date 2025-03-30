@@ -24,10 +24,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 			Item.UseSound = SoundID.Item1;
 
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-				meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
+				meleeItem.SwingType = BossRushUseStyle.Poke;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type,ItemID.BatScepter)) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {
 				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BatScepter", $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat"));
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {

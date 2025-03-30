@@ -1,0 +1,42 @@
+GuardianAngel: {
+	DisplayName: Guardian Angel
+	Description:
+		'''
+		[+] Have {0}% chance to be revived
+		[-] Decreases your defenses by {1}%
+		'''
+}
+
+SharpshooterGuidance: {
+	DisplayName: Sharpshooter Guidance
+	Description:
+		'''
+		[+] Increases critical strike chance by {0}%
+		[-] Decreases damage by {1}%
+		'''
+}
+
+DryadSoul: {
+	DisplayName: Dryad's Soul
+	Description:
+		'''
+		[+] Increases regeration by {0}% and flat {1}%
+		[+] Increases defenses by {1}
+		[-] Decreases maximum energy by {2}%
+		'''
+}
+
+OuterGodTheNihilism: {
+	DisplayName: Outer God : The Nihilism
+	Description:
+		'''
+		Have {0}% to dodge a attack and counter attack nearest NPC by {1}% of your weapon damage
+		Taking damage will still activate the counter attack but deal less damage 
+		During i-frame, you released void particles that deal {2} fixed damage
+		Your attack have {3}% company with void trail
+
+		You take extra {4}% more damage, 
+		after getting hit you will be vulnerable for {5}s
+		Using your weapon have {6}% chance to attract special strong wraith
+		'''
+}

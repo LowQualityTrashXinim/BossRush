@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 internal class Drawback : ModBuff{

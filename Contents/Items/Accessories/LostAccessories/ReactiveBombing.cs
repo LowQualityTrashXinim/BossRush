@@ -4,8 +4,8 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ReactiveBombing : ModItem {

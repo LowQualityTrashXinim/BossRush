@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using System.IO;
 using Terraria.ID;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.LostAccessories;
@@ -9,7 +8,8 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Common.General;
+using BossRush.Contents.Transfixion.Artifacts;
+using BossRush.Common.Global;
 
 namespace BossRush {
 	partial class BossRush {
@@ -22,7 +22,8 @@ namespace BossRush {
 			Perk,
 			Skill,
 			Artifact,
-			SpoilsThatYetToChoose
+			SpoilsThatYetToChoose,
+			PlayerStatsHandle
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI) {
 			MessageType msgType = (MessageType)reader.ReadByte();
@@ -89,6 +90,13 @@ namespace BossRush {
 					spoilplayer.ReceivePlayerSync(reader);
 					if (Main.netMode == NetmodeID.Server) {
 						spoilplayer.SyncPlayer(-1, whoAmI, false);
+					}
+					break;
+				case MessageType.PlayerStatsHandle:
+					PlayerStatsHandle statplayer = Main.player[playernumber].GetModPlayer<PlayerStatsHandle>();
+					statplayer.ReceivePlayerSync(reader);
+					if (Main.netMode == NetmodeID.Server) {
+						statplayer.SyncPlayer(-1, whoAmI, false);
 					}
 					break;
 			}

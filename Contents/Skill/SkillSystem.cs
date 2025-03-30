@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Skill;
 /// <summary>
@@ -57,8 +58,10 @@ public abstract class ModSkill : ModType {
 	public int Type { get; private set; }
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
-	protected sealed override void Register() {
+	public ModSkill() {
 		SetDefault();
+	}
+	protected sealed override void Register() {
 		Type = SkillModSystem.Register(this);
 	}
 	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
@@ -99,7 +102,7 @@ public abstract class ModSkill : ModType {
 	}
 }
 public class SkillModSystem : ModSystem {
-	public static List<ModSkill> _skill { get; private set; } = new();
+	private static List<ModSkill> _skill = new();
 	public static Dictionary<byte, List<ModSkill>> dict_skill { get; private set; } = new();
 	public static int TotalCount => _skill.Count;
 	public static int Register(ModSkill skill) {
@@ -111,6 +114,7 @@ public class SkillModSystem : ModSystem {
 		else {
 			dict_skill.Add(skill.Skill_Type, new() { skill });
 		}
+		//BossRush.Instance.Logger.Info($"Added skill :{_skill[_skill.Count - 1].Name}");
 		return _skill.Count - 1;
 	}
 	public static ModSkill GetSkill(int type) {
@@ -121,8 +125,6 @@ public class SkillModSystem : ModSystem {
 	public static ModKeybind SkillActivation { get; private set; }
 
 	public override void Load() {
-		_skill = new();
-		dict_skill = new();
 		SkillActivation = KeybindLoader.RegisterKeybind(Mod, "Skill activation", Keys.F);
 	}
 	public override void Unload() {
@@ -174,6 +176,20 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>
+	/// Return true when successfully increases skill slot
+	/// Return false when skill slot can't no longer be increased
+	/// </returns>
+	public bool IncreasesSkillSlot() {
+		if(AvailableSkillActiveSlot <= SkillHolder1.Length){
+			AvailableSkillActiveSlot++;
+			return true;
+		}
+		return false;
 	}
 	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
 		if (skillType < 0 && skillType >= SkillModSystem.TotalCount) {
@@ -260,7 +276,7 @@ public class SkillHandlePlayer : ModPlayer {
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
-		if(whoAmIskill >= AvailableSkillActiveSlot) {
+		if (whoAmIskill >= AvailableSkillActiveSlot) {
 			return;
 		}
 		if (whoAmIskill < 0 || whoAmIskill > 9) {
@@ -289,6 +305,9 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public void ReplaceSkillFromSkillHolderToInv(int whoAmIskill, int whoAmIInv) {
+		if (whoAmIskill >= AvailableSkillActiveSlot) {
+			return;
+		}
 		if (whoAmIskill < 0 || whoAmIskill > 9) {
 			return;
 		}
@@ -734,6 +753,12 @@ class btn_SkillSlotSelection : UIImage {
 		}
 		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().ChangeHolder(SelectionIndex);
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		if (SelectionIndex != Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().CurrentActiveIndex) {
 			Color = new Color(255, 255, 255, 100);
@@ -762,6 +787,9 @@ class btn_SkillDeletion : UIImage {
 		}
 	}
 	public override void Update(GameTime gameTime) {
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (IsMouseHovering) {
 			Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Delete"));
 		}
@@ -876,8 +904,8 @@ class btn_SkillSlotHolder : UIImageButton {
 			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
 			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
 		}
-		if(uitype == SkillUI.UItype_SKILL) {
-			if(whoAmI >= Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot) {
+		if (uitype == SkillUI.UItype_SKILL) {
+			if (whoAmI >= Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot) {
 				Vector2 origin2 = locktexture.Value.Size() * .5f;
 				float scaling2 = ScaleCalculation(Texture.Size(), locktexture.Value.Size());
 				spriteBatch.Draw(locktexture.Value, drawpos, null, new Color(255, 255, 255), 0, origin2, scaling2, SpriteEffects.None, 0);

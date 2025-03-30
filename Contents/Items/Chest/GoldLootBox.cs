@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Chest {
 	class GoldLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
-			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
-			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
-			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
-			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
-			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
 
 			itempool.DropItemMelee.Add(ItemID.Code1);
 			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
@@ -20,6 +15,7 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
 			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.SummonerPreEoC);
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
 
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeEvilBoss);
@@ -35,6 +31,17 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicSkele);
 			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonSkele);
 			LootboxSystem.AddItemPool(itempool);
+		}
+		public override void ModifyLootAdd(Player player) {
+			LootBoxItemPool itempool = LootboxSystem.GetItemPool(Type);
+			if (NPC.downedQueenBee) {
+				itempool.DropItemMelee.Add(ItemID.BeeKeeper);
+				itempool.DropItemRange.Add(ItemID.BeesKnees);
+				itempool.DropItemRange.Add(ItemID.Blowgun);
+				itempool.DropItemMagic.Add(ItemID.BeeGun);
+				itempool.DropItemSummon.Add(ItemID.HornetStaff);
+				itempool.DropItemMisc.Add(ItemID.Beenade);
+			}
 		}
 		public override void SetDefaults() {
 			Item.width = 54;

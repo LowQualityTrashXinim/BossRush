@@ -24,16 +24,6 @@ public class WeaponSpoil : ModSpoil {
 		return Description.FormatWith(chestplayer.weaponAmount);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
-			chestplayer.GetAmount();
-			for (int i = 0; i < chestplayer.weaponAmount; i++) {
-				int weaponType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]);
-				player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]));
-				LootBoxBase.AmmoForWeapon(itemsource, player, weaponType);
-			}
-			return;
-		}
 		LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
 	}
 }
@@ -52,14 +42,8 @@ public class AccessorySpoil : ModSpoil {
 	}
 	public override void OnChoose(Player player, int itemsource) {
 		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
-		bool checkLegacy = !UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL);
 		for (int i = 0; i < amount; i++) {
-			if (checkLegacy) {
-				player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.AccRarityDB[0]));
-			}
-			else {
-				LootBoxBase.GetAccessories(itemsource, player);
-			}
+			LootBoxBase.GetAccessories(itemsource, player);
 		}
 	}
 }
@@ -69,12 +53,6 @@ public class ArmorSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
-			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.HeadArmorRarityDB[0]));
-			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.BodyArmorRarityDB[0]));
-			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.LegsArmorRarityDB[0]));
-			return;
-		}
 		LootBoxBase.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player);
 	}
 }

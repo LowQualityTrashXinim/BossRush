@@ -12,12 +12,11 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime {
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
 		public override void SetDefaults() {
-			Item.damage = 20;
+			Item.damage = 15;
 			Item.mana = 10;
 			Item.width = 32;
 			Item.height = 32;
-			Item.useTime = 36;
-			Item.useAnimation = 36;
+			Item.useTime = Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.value = Item.sellPrice(gold: 30);
 			Item.rare = ItemRarityID.Cyan;

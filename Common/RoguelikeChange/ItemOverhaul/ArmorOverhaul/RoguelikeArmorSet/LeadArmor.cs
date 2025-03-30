@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class LeadArmor : ModArmorSet {
@@ -15,19 +16,37 @@ public class LeadHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadHelmet;
 		Add_Defense = 2;
+		ArmorName = "LeadArmor";
+		TypeEquipment = Type_Head;
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.DebuffDurationInflict, 1 + .1f);
 	}
 }
 public class LeadChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadChainmail;
 		Add_Defense = 3;
+		ArmorName = "LeadArmor";
+		TypeEquipment = Type_Body;
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.DebuffDurationInflict, 1 + .1f);
 	}
 }
 
 public class LeadGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.LeadGreaves;
-		Add_Defense = 2;
+		Add_Defense = 2; 
+		ArmorName = "LeadArmor";
+		TypeEquipment = Type_Leg;
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.DebuffDurationInflict, 1 + .1f);
 	}
 }
 public class LeadArmorPlayer : PlayerArmorHandle {

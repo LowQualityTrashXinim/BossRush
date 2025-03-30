@@ -2,7 +2,7 @@
 using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class DivinityStone : ModItem {

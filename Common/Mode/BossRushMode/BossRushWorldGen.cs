@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
+using System.Diagnostics.Metrics;
+using System.Diagnostics;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -261,6 +263,39 @@ namespace BossRush.Common.ChallengeMode {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),
 				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.GraniteBlock); });
 			WorldGen._genRand = new UnifiedRandom(WorldGen._genRandSeed);
+			Main.spawnTileX = Main.maxTilesX / 2;
+			Main.spawnTileY = Main.maxTilesY / 2;
+		}
+		[Task]
+		public void SpawnTemplate() {
+			Rectangle rect = new Rectangle(100, 100, 32, 64);
+			for (int i = 1; i < 9; i++) {
+				rect.X = 100 * i;
+				ImageData template = ImageStructureLoader.Get_Tempate("WG_TemplateVertical" + i);
+				template.EnumeratePixels((a, b, color) => {
+					a += rect.X;
+					b += rect.Y;
+					GenerationHelper.FastRemoveTile(a, b);
+					if (color.R == 255 && color.B == 0 && color.G == 0) {
+						GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+					}
+					GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				});
+			}
+			rect.Y *= 2;
+			for (int i = 1; i < 9; i++) {
+				rect.X = 100 * i;
+				ImageData template = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal" + i);
+				template.EnumeratePixels((a, b, color) => {
+					a += rect.X;
+					b += rect.Y;
+					GenerationHelper.FastRemoveTile(a, b);
+					if (color.R == 255 && color.B == 0 && color.G == 0) {
+						GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+					}
+					GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				});
+			}
 		}
 		[Task]
 		public void Create_Arena() {
@@ -418,7 +453,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_CorruptionArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(10, 5, 2, 4);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, 2)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, WorldGen.genRand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -513,8 +548,35 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_SlimeArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(4, 10, 150, 100));
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, Main.rand.Next(1, 3))
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+				}
+				else if (color.B == 255 && color.R == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+			});
+			//Stopwatch watch = new();
+			//watch.Start();
+			//GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
+			//watch.Stop();
+			//string result = $"Generation time : {watch.Elapsed.ToString()}";
+			//Mod.Logger.Info(result);
+			//watch.Reset();
 			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]

@@ -6,21 +6,14 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System;
 using BossRush.Common.General;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
 public class Shield_GlobalItem : GlobalItem {
 	public int ShieldPoint = 0;
 	public float ShieldRes = 0;
 	public override bool InstancePerEntity => true;
-	public static bool IsAShield(int type) =>
-			type == ItemID.SquireShield ||
-			type == ItemID.EoCShield ||
-			type == ItemID.CobaltShield ||
-			type == ItemID.ObsidianShield ||
-			type == ItemID.PaladinsShield ||
-			type == ItemID.AnkhShield ||
-			type == ItemID.FrozenShield ||
-			type == ItemID.HeroShield;
+	public static bool IsAShield(int type) => BossRushModSystem.Shield.Contains(type);
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return IsAShield(entity.type);
 	}
@@ -63,7 +56,7 @@ public class Shield_GlobalItem : GlobalItem {
 				break;
 		}
 	}
-	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
+	public override void UpdateEquip(Item item, Player player) {
 		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
@@ -121,7 +114,7 @@ public class Shield_ModPlayer : ModPlayer {
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			int damageDone = (int)(damagevalue / modplayer.ShieldEffectiveness.ApplyTo(1));
 			Shield_Health -= damageDone;
-			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.RoyalBlue, $"{damageDone}", Main.rand.Next(30, 40), 5);
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.BlueViolet, $"-{damageDone}", Main.rand.Next(30, 40), 5);
 			if (Shield_Health <= 0) {
 				Shield_IsUp = false;
 				Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<Shield_ModBuff>()));

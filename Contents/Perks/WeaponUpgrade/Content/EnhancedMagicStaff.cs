@@ -45,6 +45,16 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				entity.mana = 6;
 				entity.shootSpeed = 1;
 				break;
+			case ItemID.RubyStaff:
+				entity.damage += 10;
+				entity.shoot = ModContent.ProjectileType<RubyMagicalBolt>();
+				entity.shootSpeed = 1;
+				break;
+			case ItemID.DiamondStaff:
+				entity.damage += 10;
+				entity.shoot = ModContent.ProjectileType<DiamondMagicalBolt>();
+				entity.shootSpeed = 1;
+				break;
 		}
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -54,18 +64,27 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 		switch (item.type) {
 			case ItemID.AmethystStaff:
 				velocity = velocity.Vector2RotateByRandom(10);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.TopazStaff:
 				velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.SapphireStaff:
 				velocity = velocity.Vector2RotateByRandom(6) * Main.rand.NextFloat(.75f, 1.25f);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.EmeraldStaff:
 				velocity *= Main.rand.NextFloat(1, 1.5f);
+				position = position.PositionOFFSET(velocity, 50);
+				break;
+			case ItemID.DiamondStaff:
+				position = position.PositionOFFSET(velocity, 50);
+				break;
+			case ItemID.RubyStaff:
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 		}
-		position = position.PositionOFFSET(velocity, 50);
 	}
 }
 internal class EnhancedMagicStaff : Perk {
@@ -76,5 +95,7 @@ internal class EnhancedMagicStaff : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.EnhancedMagicStaff);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }

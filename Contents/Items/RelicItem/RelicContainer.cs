@@ -3,8 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Artifacts;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Transfixion.Artifacts;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Items.RelicItem {
 	public class RelicContainer : ModItem {

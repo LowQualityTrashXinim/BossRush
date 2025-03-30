@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Perks;
+﻿using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
@@ -11,50 +12,49 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 
 public class NaturalUpgrade_GlobalItem : GlobalItem {
+	public static bool CheckWoodenBow(int type) {
+		switch (type) {
+			case ItemID.WoodenBow:
+			case ItemID.AshWoodBow:
+			case ItemID.BorealWoodBow:
+			case ItemID.RichMahoganyBow:
+			case ItemID.PalmWoodBow:
+			case ItemID.EbonwoodBow:
+			case ItemID.ShadewoodBow:
+			case ItemID.PearlwoodBow:
+				return true;
+		}
+		return false;
+	}
 	public override void SetDefaults(Item entity) {
 		if (UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.NaturalUpgrade)) {
-			switch (entity.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					entity.shootSpeed += 3;
-					entity.crit += 6;
-					entity.damage += 10;
-					break;
+			if (CheckWoodenBow(entity.type)) {
+				entity.shootSpeed += 3;
+				entity.crit += 6;
+				entity.damage += 10;
 			}
 		}
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.NaturalUpgrade)) {
-			switch (item.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					float chance = Main.rand.NextFloat(.2f, .4f);
-					if (Main.rand.NextFloat() <= chance) {
-						Vector2 pos = Main.MouseWorld + Main.rand.NextVector2CircularEdge(2000, 700);
-						Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 5;
-						Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<WindShot>(), (int)(damage * 1.5f), 5f, player.whoAmI);
-					}
-					Vector2 newPos1 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(MathHelper.PiOver2), 5);
-					Vector2 newVelocity1 = (Main.MouseWorld - newPos1).SafeNormalize(Vector2.Zero) * velocity.Length();
-					Vector2 newPos2 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(-MathHelper.PiOver2), 5);
-					Vector2 newVelocity2 = (Main.MouseWorld - newPos2).SafeNormalize(Vector2.Zero) * velocity.Length();
-					Projectile arrow1 = Projectile.NewProjectileDirect(source, newPos1, newVelocity1, type, damage, knockback, player.whoAmI);
-					Projectile arrow2 = Projectile.NewProjectileDirect(source, newPos2, newVelocity2, type, damage, knockback, player.whoAmI);
-					if (ContentSamples.ProjectilesByType[type].arrow) {
-						arrow1.extraUpdates += 1;
-						arrow2.extraUpdates += 1;
-					}
-					return false;
+			if (CheckWoodenBow(item.type)) {
+				float chance = Main.rand.NextFloat(.2f, .4f);
+				if (Main.rand.NextFloat() <= chance) {
+					Vector2 pos = Main.MouseWorld + Main.rand.NextVector2CircularEdge(2000, 700);
+					Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 5;
+					Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<WindShot>(), (int)(damage * 1.5f), 5f, player.whoAmI);
+				}
+				Vector2 newPos1 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(MathHelper.PiOver2), 5);
+				Vector2 newVelocity1 = (Main.MouseWorld - newPos1).SafeNormalize(Vector2.Zero) * velocity.Length();
+				Vector2 newPos2 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(-MathHelper.PiOver2), 5);
+				Vector2 newVelocity2 = (Main.MouseWorld - newPos2).SafeNormalize(Vector2.Zero) * velocity.Length();
+				Projectile arrow1 = Projectile.NewProjectileDirect(source, newPos1, newVelocity1, type, damage, knockback, player.whoAmI);
+				Projectile arrow2 = Projectile.NewProjectileDirect(source, newPos2, newVelocity2, type, damage, knockback, player.whoAmI);
+				if (ContentSamples.ProjectilesByType[type].arrow) {
+					arrow1.extraUpdates += 1;
+					arrow2.extraUpdates += 1;
+				}
+				return false;
 			}
 		}
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
@@ -107,5 +107,18 @@ public class NaturalUpgrade : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = {
+			ItemID.WoodenBow,
+		ItemID.AshWoodBow,
+		ItemID.BorealWoodBow,
+		ItemID.RichMahoganyBow,
+		ItemID.PalmWoodBow,
+		ItemID.EbonwoodBow,
+		ItemID.ShadewoodBow,
+		ItemID.PearlwoodBow,
+		};
+		int weaponType = Main.rand.Next(Orestaff);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), weaponType);
+		LootBoxBase.AmmoForWeapon(player, weaponType);
 	}
 }

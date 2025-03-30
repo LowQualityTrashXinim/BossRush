@@ -7,6 +7,7 @@ using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ChaosTablet : ModItem {

@@ -1,7 +1,5 @@
-﻿using BossRush.Common.Systems;
-using BossRush.Contents.Arguments;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.WeaponEnchantment;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;

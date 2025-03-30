@@ -2,14 +2,14 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Consumable.Potion;
 using System.IO;
+using BossRush.Contents.Transfixion.Artifacts;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {
 		public int ActiveArtifact { get; set; } = Artifact.ArtifactType<NormalizeArtifact>();
-
 		public override void OnEnterWorld() {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {
@@ -19,6 +19,14 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 			else {
 				ActiveArtifact = Artifact.ArtifactType<NormalizeArtifact>();
 			}
+		}
+
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)BossRush.MessageType.Artifact);
+			packet.Write((byte)Player.whoAmI);
+			packet.Write(ActiveArtifact);
+			packet.Send(toWho, fromWho);
 		}
 
 		public override void SaveData(TagCompound tag) {

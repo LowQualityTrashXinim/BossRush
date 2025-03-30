@@ -31,8 +31,8 @@ Mods: {
 				Tooltip:
 					'''
 					[Weapon Enchantment]
-					Customize your weapon with this ancient craft of chaos and amalgams. 
-					Embue your weapon with the essence of up to 3 others, sacrificing them
+					Customize your weapon with the ancient craft of chaos and amalgams. 
+					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
 					in order to gain their uniquely personalized attributes.
 
 					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
@@ -46,21 +46,21 @@ Mods: {
 				'''
 				[Player Info]
 				View your current stats, your current perks and current artifact
-				See how much you progress and how much you lack !
-				Create broken built by looking at what you current most strong at
-				Or even create synergetic build using the current stats, perks and aritfact 
-				by viewing what they do !
+				See how much you progress you made and how much you lack!
+				Create broken builds by looking at what you are currently most strong at
+				Or even create synergistic build using the current stats, perks and aritfact 
+				by viewing what they do!
 				'''
 			Transmutation.Tooltip:
 				'''
 				[Transmutation]
-				This is where you can merge your relic !
-				Relic can be merge up to have 4 effects,
-				merge relic together to create a even stronger relic
-				You can find relic in [c/b7bf5c:Relic Container] or you can get it from spoils !
-				You can also transmute 2 items of the same rarity to get a item with better rarity !
-				There are some item that can be merge to become a special item,
-				best bet to try and find out yourself !
+				This is where you can merge your relics!
+				Relics can be merged to have up to 4 effects,
+				merge relics together to create a even stronger relic
+				You can find relics in [c/b7bf5c:Relic Container] or you can get it from spoils!
+				You can also transmute 2 items of the same rarity to get a item with better rarity!
+				There are some items that can be merge to become a special item,
+				your best bet is to try and find out yourself!
 				'''
 
 			Skill: {
@@ -68,13 +68,13 @@ Mods: {
 				Tooltip:
 					'''
 					[Skill]
-					Plan out your strategy, customize your skill, dominate your enemy !
-					you can get skill from [c/b7bf5c:Skill LootBox] which will automatically added 
-					a skill into your skill inventory ui, move your skill into 1 of 3 active holder
-					to uses the skill, skill can be activate using your hotkey which is in control.
-					Upon using skill, you will uses your energy and skill duration will be set and after
-					skill active duration end then skill cool down will set in, you can't gain energy during
-					skill cool down nor skill active so make your activation count !
+					Plan out your strategy, customize your skill, and dominate your enemy!
+					you can get skills from [c/b7bf5c:Skill LootBox] which will automatically add
+					a skill into your skill inventory ui. Move your skill into 1 of 3 active holders
+					to use the skill. skills can be activated by using your hotkey.
+					Upon using skill, you will use your energy and skill duration will be set. after
+					the skill active duration ends, skill cooldown will set in. you can't gain energy during
+					skill cooldown nor skill active duration so make your activation counts!
 					'''
 			}
 
@@ -90,236 +90,246 @@ Mods: {
 		}
 
 		Projectiles: {
-			SuperFlareP.DisplayName: Super Flare
-			ExplodeProjectile.DisplayName: Explosion
-			SharpBoomerangP.DisplayName: Sharp Boomerang
-			RectangleBullet.DisplayName: Rectangle Bullet
-			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
-			CustomPaintProj.DisplayName: Paint
-			WoodBowP.DisplayName: Wood Bow
-			ShadewoodBowP.DisplayName: Shadewood Bow
-			RichMahoganyBowP.DisplayName: Rich Mahogany Bow
-			PalmWoodBowP.DisplayName: Palm Wood Bow
-			EbonwoodBowP.DisplayName: Ebonwood Bow
-			BorealWoodBowP.DisplayName: Boreal Wood Bow
-			MoonStarProjectileTrail.DisplayName: Moon Star Projectile Trail
-			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile
-			MoonStarProjectile.DisplayName: Moon Star Projectile
-			TopazGemP.DisplayName: Topaz Gem
-			TopazBolt.DisplayName: Topaz Bolt
-			SmallEmerald.DisplayName: Small Emerald
-			SapphireGemP.DisplayName: Sapphire Gem
-			SapphireBolt.DisplayName: Sapphire Bolt
-			RubyGemP.DisplayName: Ruby Gem
-			RubyBolt.DisplayName: Ruby Bolt
-			EmeraldGemP.DisplayName: Emerald Gem
-			EmeraldBolt.DisplayName: Emerald Bolt
-			DiamondGemP.DisplayName: Diamond Gem
-			DiamondBolt.DisplayName: Diamond Bolt
-			AmethystGemP.DisplayName: Amethyst Gem
-			AmethystBolt.DisplayName: Amethyst Bolt
-			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver
-			KnifeRevolverP.DisplayName: Knife Revolver
-			IceStormSnowBallCannonMinion.DisplayName: Snow Ball Cannon
-			IceStormFrostFlowerMinion.DisplayName: Frost Flower
-			smallerHeart.DisplayName: Heart
-			HeartP.DisplayName: Heart
-			TungstenBowP.DisplayName: Tungsten Bow
-			TinBowP.DisplayName: Tin Bow
-			SilverBowP.DisplayName: Silver Bow
-			PlatinumBowP.DisplayName: Platinum Bow
-			LeadBowP.DisplayName: Lead Bow
-			IronBowP.DisplayName: Iron Bow
-			GoldBowP.DisplayName: Gold Bow
-			CopperBowP.DisplayName: Copper Bow
-			SparkFlare.DisplayName: Spark Flare
-			BowmarangP.DisplayName: Bowmarang
-			BloodBullet.DisplayName: Blood Bullet
-			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
-			YinYangShockWave.DisplayName: Yin Yang Shock Wave
-			YinYangP.DisplayName: Yin Yang
-			YinLight.DisplayName: Yin Light
-			YangDark.DisplayName: Yang Dark
-			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
-			SuperShortSwordP.DisplayName: Super Short Sword
-			SuperShortSwordOrbitShortSword.DisplayName: Short Sword
-			ShadowTrickP2.DisplayName: Shadow Trick
-			ShadowTrickP.DisplayName: Shadow Trick
-			ShadowSpike.DisplayName: Shadow Spike
-			FrostDaggerFishP.DisplayName: Frost Dagger Fish
-			KatanaSlash.DisplayName: Katana Slash
-			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
-			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
-			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword
-			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword
-			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword
-			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword
-			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword
-			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword
-			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword
-			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword
-			CactusBall.DisplayName: Cactus Ball
-			BurningPassionP.DisplayName: Burning Passion
-			TopazSwotaffP.DisplayName: Topaz Swotaff
-			SinisterBolt.DisplayName: Sinister Bolt
-			SapphireSwotaffP.DisplayName: Sapphire Swotaff
-			SmallerRubyBolt.DisplayName: Smaller Ruby Bolt
-			GiantRubyBolt.DisplayName: Giant Ruby Bolt
-			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
-			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
-			EmeraldSwotaffP.DisplayName: Emerald Swotaff
-			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
-			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
-			AmethystSwotaffP.DisplayName: Amethyst Swotaff
-			GhostHitBox2.DisplayName: Ghost Hit Box
-			GhostHitBox.DisplayName: Ghost Hit Box
-			ArenaMakerProj.DisplayName: Arena Maker Proj
-			ThrowingKnifeCustom.DisplayName: Throwing Knife
-			ShurikenCustom.DisplayName: Shuriken
-			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
+			ItemProjectile.DisplayName: Item Projectile
+			GemCollectible.DisplayName: Gem Collectible
+			SentientBlood.DisplayName: Sentient Blood
+			EoCServant.DisplayName: Eo C Servant
 			PhantasmalEye.DisplayName: Phantasmal Eye
-			EoCServant.DisplayName: EoC Servant
-			GhostSlime.DisplayName: Ghost Slime
-			GooP.DisplayName: Goo
+			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
+			ChaosExplosion.DisplayName: Chaos Explosion
+			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
+			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
+			ShurikenCustom.DisplayName: Shuriken Custom
+			ThrowingKnifeCustom.DisplayName: Throwing Knife Custom
+			MagicalBolt.DisplayName: Magical Bolt
+			MagicBullet.DisplayName: Magic Bullet
+			MoCCopperOre.DisplayName: Mo C Copper Ore
+			MoCShortSwordP.DisplayName: Mo C Short Sword P
+			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
+			ArenaMakerProj.DisplayName: Arena Maker Proj
+			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
 			TowerDestructionProjectile.DisplayName: Tower Destruction Projectile
-			MusketGunProjectile.DisplayName: Musket Gun Projectile
-			LivingEnchantedSwordProjectile.DisplayName: Living Enchanted Sword Projectile
-			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
-			SandInYourFace.DisplayName: Sand In Your Face
-			DiamondSwotaffP.DisplayName: Diamond Swotaff P
-			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
-			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
-			EmeraldGemProjectile.DisplayName: Emerald Gem Projectile
-			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
-			SapphireSwotaffGemProjectile.DisplayName: Sapphire Swotaff Gem Projectile
-			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
-			RubySwotaffProjectile.DisplayName: Ruby Swotaff Projectile
-			RubySwotaffGemProjectile.DisplayName: Ruby Swotaff Gem Projectile
-			TopazGemProjectile.DisplayName: Topaz Gem Projectile
-			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
-			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
-			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
-			ShortSwordProjectile.DisplayName: Short Sword Projectile
-			SwordBroadProjectile.DisplayName: Sword Broad Projectile
-			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
-			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
-			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Platinum Short Sword Projectile
-			AmberTippedSpearProj.DisplayName: Amber Tipped Spear Proj
-			AcornProjectile.DisplayName: Acorn Projectile
-			SandProjectile.DisplayName: Sand Projectile
-			AcornRainCloud.DisplayName: Acorn Rain Cloud
-			CorruptionTrail.DisplayName: Corruption Trail
-			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
-			ResolveProjectile.DisplayName: Resolve Projectile
-			ServantProjectile.DisplayName: Servant Projectile
-			ServantSmallerProjectile.DisplayName: Servant Smaller Projectile
-			ResolveBroadSword.DisplayName: Resolve Broad Sword
-			ZenishProjectile.DisplayName: Zenish Projectile
-			GhostBroadsword.DisplayName: Ghost Broadsword
-			GhostShortsword.DisplayName: Ghost Shortsword
-			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
-			TinOreProjectile.DisplayName: Tin Ore Projectile
-			TinBarProjectile.DisplayName: Tin Bar Projectile
-			MothProj.DisplayName: Moth Proj
-			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
-			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
-			AmberTippedProjectile.DisplayName: Amber Tipped Projectile
+			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
+			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
+			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
+			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
+			PlasmaExplosion.DisplayName: Plasma Explosion
+			AmethystBolt.DisplayName: Amethyst Bolt
+			AmethystGemP.DisplayName: Amethyst Gem P
+			DiamondBolt.DisplayName: Diamond Bolt
+			DiamondGemP.DisplayName: Diamond Gem P
+			EmeraldBolt.DisplayName: Emerald Bolt
+			EmeraldGemP.DisplayName: Emerald Gem P
+			RubyBolt.DisplayName: Ruby Bolt
+			RubyGemP.DisplayName: Ruby Gem P
+			SapphireBolt.DisplayName: Sapphire Bolt
+			SapphireGemP.DisplayName: Sapphire Gem P
+			SmallEmerald.DisplayName: Small Emerald
+			TopazBolt.DisplayName: Topaz Bolt
+			TopazGemP.DisplayName: Topaz Gem P
+			MoonStarProjectile.DisplayName: Moon Star Projectile
+			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile Smaller
+			FairFrozenMinion.DisplayName: Fair Frozen Minion
 			AmberBoneProjectile.DisplayName: Amber Bone Projectile
 			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
 			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
-			LifeOrb.DisplayName: Life Orb
+			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
+			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
+			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
+			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
+			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
+			ShadowMagicMissle.DisplayName: Shadow Magic Missle
+			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
+			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
+			SinisterBolt.DisplayName: Sinister Bolt
+			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
+			AmethystSwotaffP.DisplayName: Amethyst Swotaff P
+			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
+			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
+			DiamondSwotaffP.DisplayName: Diamond Swotaff P
+			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
+			EmeraldSwotaffP.DisplayName: Emerald Swotaff P
+			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
+			RubySwotaffGemProjectile.DisplayName: Ruby Swotaff Gem Projectile
+			RubySwotaffProjectile.DisplayName: Ruby Swotaff Projectile
+			SapphireSwotaffGemProjectile.DisplayName: Sapphire Swotaff Gem Projectile
+			SapphireSwotaffP.DisplayName: Sapphire Swotaff P
+			TopazGemProjectile.DisplayName: Topaz Gem Projectile
+			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
+			WyvernWrathMainProjectile.DisplayName: Wyvern Wrath Main Projectile
+			WyvernWrathMiniProjectile.DisplayName: Wyvern Wrath Mini Projectile
+			LightningStrike.DisplayName: Lightning Strike
+			BurningPassionP.DisplayName: Burning Passion P
+			CactusBall.DisplayName: Cactus Ball
+			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword P
+			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword P
+			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword P
+			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword P
+			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword P
+			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword P
+			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword P
+			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword P
+			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
+			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
+			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
+			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
+			KatanaSlash.DisplayName: Katana Slash
+			FlamingFireSpark.DisplayName: Flaming Fire Spark
+			FrostDaggerFishP.DisplayName: Frost Dagger Fish P
+			MythrilBeam.DisplayName: Mythril Beam
+			ZenishProjectile.DisplayName: Zenish Projectile
+			RA_AntlionClaw.DisplayName: R A_ Antlion Claw
+			RA_BatBat.DisplayName: R A_ Bat Bat
+			RA_BeeKeeper.DisplayName: R A_ Bee Keeper
+			RA_BoneSword.DisplayName: R A_ Bone Sword
+			RA_PurpleClubberfish.DisplayName: R A_ Purple Clubberfish
+			RA_ZombieArm.DisplayName: R A_ Zombie Arm
+			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
+			SakuraLeaf_Projectile_1.DisplayName: Sakura Leaf_ Projectile_1
+			SakuraLeaf_Projectile_2.DisplayName: Sakura Leaf_ Projectile_2
+			ShadowSpike.DisplayName: Shadow Spike
+			ShadowTrickP.DisplayName: Shadow Trick P
+			ShadowTrickP2.DisplayName: Shadow Trick P2
+			SuperShortSwordOrbitShortSword.DisplayName: Super Short Sword Orbit Short Sword
+			SuperShortSwordP.DisplayName: Super Short Sword P
+			YangDark.DisplayName: Yang Dark
+			YinLight.DisplayName: Yin Light
+			YinYangP.DisplayName: Yin Yang P
+			YinYangShockWave.DisplayName: Yin Yang Shock Wave
+			GhostBroadsword.DisplayName: Ghost Broadsword
+			GhostShortsword.DisplayName: Ghost Shortsword
+			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
+			ResolveProjectile.DisplayName: Resolve Projectile
+			AnnihiliationBullet.DisplayName: Annihiliation Bullet
+			BloodBullet.DisplayName: Blood Bullet
 			BloodWater.DisplayName: Blood Water
-			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
-			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
-			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
-			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
-			NegativeLifeProjectile.DisplayName: Negative Life Projectile
+			Bowmarang_WoodYoyo_Projectile.DisplayName: Bowmarang_ Wood Yoyo_ Projectile
+			BowmarangP.DisplayName: Bowmarang P
+			SparkFlare.DisplayName: Spark Flare
+			CopperBowP.DisplayName: Copper Bow P
+			GoldBowP.DisplayName: Gold Bow P
+			IronBowP.DisplayName: Iron Bow P
+			LeadBowP.DisplayName: Lead Bow P
+			PlatinumBowP.DisplayName: Platinum Bow P
+			SilverBowP.DisplayName: Silver Bow P
+			TinBowP.DisplayName: Tin Bow P
+			TungstenBowP.DisplayName: Tungsten Bow P
+			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
+			HeartP.DisplayName: Heart P
+			smallerHeart.DisplayName: smaller Heart
+			AngelicBolt.DisplayName: Angelic Bolt
+			AngelicSmgHeld.DisplayName: Angelic Smg Held
+			AngelicSmgThrow.DisplayName: Angelic Smg Throw
+			HorusEye_Projectile.DisplayName: Horus Eye_ Projectile
+			IceStormFrostFlowerMinion.DisplayName: Ice Storm Frost Flower Minion
+			IceStormSnowBallCannonMinion.DisplayName: Ice Storm Snow Ball Cannon Minion
+			KnifeRevolverP.DisplayName: Knife Revolver P
+			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver Spear Projectile
+			BorealWoodBowP.DisplayName: Boreal Wood Bow P
+			EbonwoodBowP.DisplayName: Ebonwood Bow P
+			PalmWoodBowP.DisplayName: Palm Wood Bow P
+			RichMahoganyBowP.DisplayName: Rich Mahogany Bow P
+			ShadewoodBowP.DisplayName: Shadewood Bow P
+			WoodBowP.DisplayName: Wood Bow P
+			CustomPaintProj.DisplayName: Custom Paint Proj
+			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
+			PulseHomingProjectile.DisplayName: Pulse Homing Projectile
+			RectangleBullet.DisplayName: Rectangle Bullet
+			SharpBoomerangP.DisplayName: Sharp Boomerang P
+			ExplodeProjectile.DisplayName: Explode Projectile
+			SuperFlareP.DisplayName: Super Flare P
+			EvilShot.DisplayName: Evil Shot
+			WinterFlameProjectile.DisplayName: Winter Flame Projectile
+			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
+			RisingStarProjectile.DisplayName: Rising Star Projectile
+			MothProj.DisplayName: Moth Proj
+			StarWhipProj.DisplayName: Star Whip Proj
+			StarWhipStarProj.DisplayName: Star Whip Star Proj
+			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			GhostSlime.DisplayName: Ghost Slime
+			GooP.DisplayName: Goo P
+			GemStaffAttackOne.DisplayName: Gem Staff Attack One
+			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
 			GuardianProjectile.DisplayName: Guardian Projectile
 			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
+			HostileMinishark.DisplayName: Hostile Minishark
+			HostileMusket.DisplayName: Hostile Musket
+			OreBowAttackOne.DisplayName: Ore Bow Attack One
+			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
 			ShortSwordAttackOne.DisplayName: Short Sword Attack One
 			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
 			SwordBroadAttackOne.DisplayName: Sword Broad Attack One
 			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
 			WoodBowAttackOne.DisplayName: Wood Bow Attack One
 			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
-			GemStaffAttackOne.DisplayName: Gem Staff Attack One
-			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
-			ShadowMagicMissle.DisplayName: Shadow Magic Missle
-			pearlSwordProj.DisplayName: Pearl Sword
-			LightningStrike.DisplayName: Lightning Strike
-			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
-			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
-			HeavenBolt.DisplayName: Heaven Bolt
-			MagicboltProjectile.DisplayName: Magicbolt Projectile
-			OreBowAttackOne.DisplayName: Ore Bow Attack One
-			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
-			LeafProjectile.DisplayName: Leaf Projectile
-			Coconut.DisplayName: Coconut
-			WoodSwordProjectile.DisplayName: Wood Sword Projectile
-			HostileMinishark.DisplayName: Hostile Minishark
-			HostileMusket.DisplayName: Hostile Musket
-			HorusEye_Projectile.DisplayName: Horus Eye Projectile
+			AcornProjectile.DisplayName: Acorn Projectile
+			AcornRainCloud.DisplayName: Acorn Rain Cloud
 			AdventureSpirit.DisplayName: Adventure Spirit
+			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
+			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
+			BlazingTornado.DisplayName: Blazing Tornado
+			CoconutProjectile.DisplayName: Coconut Projectile
+			CorruptionTrail.DisplayName: Corruption Trail
+			DeathSickleClone.DisplayName: Death Sickle Clone
+			DeathSickleGhost.DisplayName: Death Sickle Ghost
+			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
+			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
+			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
+			DirtProjectile.DisplayName: Dirt Projectile
+			ElectricChainBolt.DisplayName: Electric Chain Bolt
+			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
+			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
+			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
+			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
+			GhostHitBox.DisplayName: Ghost Hit Box
+			GhostHitBox2.DisplayName: Ghost Hit Box2
+			GhostYoyo.DisplayName: Ghost Yoyo
+			GlassProjectile.DisplayName: Glass Projectile
+			HitScanBullet.DisplayName: Hit Scan Bullet
+			LeafProjectile.DisplayName: Leaf Projectile
+			LifeOrb.DisplayName: Life Orb
+			MagicboltProjectile.DisplayName: Magicbolt Projectile
+			MusketGunProjectile.DisplayName: Musket Gun Projectile
+			NegativeLifeProjectile.DisplayName: Negative Life Projectile
+			NightmaresProjectile.DisplayName: Nightmares Projectile
+			pearlSwordProj.DisplayName: pearl Sword Proj
+			PowerPlantProjectile.DisplayName: Power Plant Projectile
+			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
+			SacrificialWormholeProjectile.DisplayName: Sacrificial Wormhole Projectile
+			SandProjectile.DisplayName: Sand Projectile
+			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
+			ShortSwordProjectile.DisplayName: Short Sword Projectile
+			SlashProjectile.DisplayName: Slash Projectile
+			SnowBlockProjectile.DisplayName: Snow Block Projectile
+			SoulWoodSword.DisplayName: Soul Wood Sword
+			SpaceGuyProjectile.DisplayName: Space Guy Projectile
+			SpiritProjectile.DisplayName: Spirit Projectile
+			SunflowerProjectile.DisplayName: Sunflower Projectile
 			SwordProjectile.DisplayName: Sword Projectile
 			SwordProjectile2.DisplayName: Sword Projectile2
-			ManaReleaseOrb.DisplayName: Mana Release Orb
-			CoconutProjectile.DisplayName: Coconut Projectile
-			SpiritProjectile.DisplayName: Spirit Projectile
 			SwordProjectile3.DisplayName: Sword Projectile3
-			EssenceProjectile.DisplayName: Essence Projectile
-			MoCCopperOre.DisplayName: Copper Ore
-			MoCShortSwordP.DisplayName: Short Sword P
-			WindSlashProjectile.DisplayName: Wind Slash Projectile
-			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
-			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
-			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
-			GlassProjectile.DisplayName: Glass Projectile
-			MagicalBolt.DisplayName: Magical Bolt
-			MagicBullet.DisplayName: Magic Bullet
-			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
-			MindWaveProjectile.DisplayName: Mind Wave Projectile
-			FlamingFireSpark.DisplayName: Flaming Fire Spark
-			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
-			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
 			SwordProjectileSpear.DisplayName: Sword Projectile Spear
-			ElectricChainBolt.DisplayName: Electric Chain Bolt
-			SoulWoodSword.DisplayName: Soul Wood Sword
-			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
-			PowerPlantProjectile.DisplayName: Power Plant Projectile
-			TransferStationProjectile.DisplayName: Transfer Station Projectile
-			ChaosExplosion.DisplayName: Chaos Explosion
-			AngelicBolt.DisplayName: Angelic Bolt
-			AngelicSmgThrow.DisplayName: Angelic Smg Throw
-			AngelicSmgHeld.DisplayName: Angelic Smg Held
-			SlashProjectile.DisplayName: Slash Projectile
-			GhostYoyo.DisplayName: Ghost Yoyo
-			WyvernWrathMainProjectile.DisplayName: Wyvern Wrath Main Projectile
-			WyvernWrathMiniProjectile.DisplayName: Wyvern Wrath Mini Projectile
-			MythrilBeam.DisplayName: Mythril Beam
-			WinterFlameProjectile.DisplayName: Winter Flame Projectile
-			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
-			StarWhipProj.DisplayName: Star Whip Proj
-			StarWhipStarProj.DisplayName: Star Whip Star Proj
-			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
-			DirtProjectile.DisplayName: Dirt Projectile
+			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
+			TinBarProjectile.DisplayName: Tin Bar Projectile
+			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
+			TinOreProjectile.DisplayName: Tin Ore Projectile
+			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
 			TitaniumShuriken.DisplayName: Titanium Shuriken
-			DeathSickleGhost.DisplayName: Death Sickle Ghost
-			DeathSickleClone.DisplayName: Death Sickle Clone
-			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
-			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
-			WindShot.DisplayName: Wind Shot
-			ItemProjectile.DisplayName: Item Projectile
-			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
-			PlasmaExplosion.DisplayName: Plasma Explosion
-			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TomahawkProjectile.DisplayName: Tomahawk Projectile
-			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
-			EvilShot.DisplayName: Evil Shot
-			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
-			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
-			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
-			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
-			OnyxBulletProjectile.DisplayName: Onyx Bullet Projectile
+			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
+			TransferStationProjectile.DisplayName: Transfer Station Projectile
+			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
+			WindShot.DisplayName: Wind Shot
+			WindSlashProjectile.DisplayName: Wind Slash Projectile
+			EssenceProjectile.DisplayName: Essence Projectile
+			ManaReleaseOrb.DisplayName: Mana Release Orb
+			VoidParticle.DisplayName: Void Particle
+			VoidTrail.DisplayName: Void Trail
+			BallOfHurtProjectile.DisplayName: Ball Of Hurt Projectile
+			CrystalSerpentProjectile.DisplayName: Crystal Serpent Projectile
+			SpearProjectile.DisplayName: Spear Projectile
+			SwordFishProjectile.DisplayName: Sword Fish Projectile
+			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 		}
 
 		NPCs: {
@@ -383,7 +393,7 @@ Mods: {
 				Tooltip:
 					'''
 					It can be many things, but in no way decisive of its identity
-					Shoots out many things
+					Shoots many things
 					Right-Click installs a copy of itself on-screen
 					'''
 				DisplayName: ??? Pistol
@@ -459,8 +469,8 @@ Mods: {
 			KnifeRevolver: {
 				Tooltip:
 					'''
-					"A 2-in-1 English special!"
-					Right-Click enables stab that upon contact hypercharges your next shot
+					"A British-American fusion cuisine!"
+					Right-Click improvises the gun into a knife which upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -490,7 +500,7 @@ Mods: {
 			}
 
 			ForceOfEarth: {
-				Tooltip: The culmination of mother nature at your middle finger
+				Tooltip: The culmination of Mother Nature at your middle finger
 				DisplayName: Natural Disaster
 			}
 
@@ -868,20 +878,19 @@ Mods: {
 					Increases critical strike chance by 5%
 					Increases melee attack speed by 10%
 					Increases jump height and jump speed by 15%
-					Summons a shuriken every time an enemy gets hit 20 times, dealing static damage
+					Throw out a shuriken every 20th strike
 					Summons a ring of shurikens and knives
-					[c/e6ac39:Part I out of II of a beloved series]
+					[c/e6ac39:Parts I and II abridged into a beloved series]
 					'''
-				DisplayName: Guide To Master Ninja I
+				DisplayName: Guide To Master Ninja XL
 			}
 
 			FuryEmblem: {
 				Tooltip:
 					'''
-					"Your rage is what make battle turn tide"
-					Increase 5% damage and crits
-					Increase HP by 25%
-					Grant a buff upon getting hit that increase 50% damage and crits
+					"Your rage is what turns tides in battle"
+					Increase 5% damage, 5% critical strike chance and 25% maximum health
+					Grant a buff upon getting hit that increase 50% damage and critical strike chance
 					But shatter your defense and cut your life regen
 					The buff will reset its life time when you got hit again
 					'''
@@ -892,7 +901,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Truly slime-sentional"
-					Increases player Jump speed
+					Increases player jump height
 					Increases movement speed by 10%
 					Increases defense by 5
 					You shoot out slime spikes when enemy is in range
@@ -925,7 +934,7 @@ Mods: {
 			CorruptedFlesh: {
 				Tooltip:
 					'''
-					"Isn't this is just rotten flesh but even more rotten ?"
+					"Isn't this is just rotten flesh thats even more rotten?"
 					Increases damage by 10%
 					Increases movement speed by 15%
 					Increases melee speed by 10%
@@ -940,9 +949,9 @@ Mods: {
 					'''
 					"A small ancient power left from god, said to be cursed"
 					Increases damage reduction by 15%
-					Most projectile can bounce off tile
+					Most projectiles can bounce off tile
 					Bouncing off a tile increase damage by 20%
-					Bouncing more than 10 time won't no longer increase damage
+					Bouncing more than 10 times won't no longer increase damage
 					Bouncing off a tile will make the projectile disappear after 3s
 					'''
 				DisplayName: Bouncy Relic
@@ -952,8 +961,8 @@ Mods: {
 				Tooltip:
 					'''
 					"The ultimate tile annihilator"
-					Use this if you want to clear out a large area to be flat
-					This will clear out 300 10 tile (X : 300 | Y : 10)
+					Use this if you want to clear out a large area
+					This will clear out 300 by 10 tiles (X : 300 | Y : 10)
 					'''
 				DisplayName: Tower Destruction
 			}
@@ -1041,7 +1050,7 @@ Mods: {
 				Tooltip:
 					'''
 					"High focus, stay alert"
-					Most gun shoot more stable
+					Most gunshots are more stable
 					Increase critical strike chance by 50%
 					Getting hit will remove this buff
 					'''
@@ -1052,9 +1061,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Side effects include becoming an explosive hazard"
-					Increases mana cost by 50% but also increases damage effective by 50%
+					Multiply magic damage by 1.5x
 					Massively increases mana regen
-					Increases max mana by 100
+					Increases maximum mana by 100
+					Increases mana cost by 50%
 					Decreases range, summon, melee damage by 10%
 					'''
 			}
@@ -1063,11 +1073,10 @@ Mods: {
 				DisplayName: Titan Elixir
 				Tooltip:
 					'''
-					"Let your body be shield for the weak"
-					Increases defenses by 45
-					Increases damage reduction by 45%
+					"Let your body be a shield for the weak"
+					Increases defenses by 45 and damage reduction by 45%
 					Increases max life by 400
-					Decreases all classes's damage by 0.25
+					Decreases damage by 25%
 					Multiply Your movement, jumpspeed by 0.75
 					Gain a extra life while the buff active
 					You have knockback immunity !
@@ -1238,13 +1247,8 @@ Mods: {
 				Tooltip:
 					'''
 					{$CommonItemTooltip.RightClickToOpen}
-					Open this bundle to get almost all pre wall of flesh bosses spawner
+					Open this bundle to get almost all pre wall of flesh boss spawners
 					'''
-			}
-
-			AmberTippedJavelin: {
-				DisplayName: Amber Tipped Javelin
-				Tooltip: ""
 			}
 
 			WallOfFleshSpawner: {
@@ -1314,14 +1318,14 @@ Mods: {
 					Increases your maximum health by 25%
 					[[c/8888ea:Active]]
 					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					After the buff end, you receive 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
+					After the buff ends, you receive a 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
 					'''
 				ExtraInfo:
 					'''
 					[c/b7bf5c:Swift Steal] :
 					Increases your damage by 1 for each 5 health you currently have
 					Hitting a enemy will increases your max health by 5% and movement speed by 10% 
-					(max out at 6 time with 2s coold down between hit)
+					(max out at 6 times with 2s coold down between hits)
 					'''
 			}
 
@@ -1343,7 +1347,7 @@ Mods: {
 					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
 
 					[c/b7bf5c:Samsara of Tribution]
-					Increases your damage base on amount of NPC you inflict [c/b7bf5c:Samsara of Retribution] for 15s 
+					Increases your damage based on amount of NPC you inflict with [c/b7bf5c:Samsara of Retribution] for 15s 
 					( Have 25s cooldown )
 					'''
 			}
@@ -1417,26 +1421,6 @@ Mods: {
 
 			Trinket7: {
 				DisplayName: Trinket7
-				Tooltip: ""
-			}
-
-			AuraDamageCard: {
-				DisplayName: Aura Damage Card
-				Tooltip: ""
-			}
-
-			ChaoticElementalCard: {
-				DisplayName: Chaotic Elemental Card
-				Tooltip: ""
-			}
-
-			HealingCard: {
-				DisplayName: Healing Card
-				Tooltip: ""
-			}
-
-			WeakHealingCard: {
-				DisplayName: Weak Healing Card
 				Tooltip: ""
 			}
 
@@ -1536,11 +1520,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			GamblerPerk: {
-				DisplayName: Gambler Perk
-				Tooltip: ""
-			}
-
 			MashedOfCopper: {
 				DisplayName: Mashed Of Copper
 				Tooltip:
@@ -1555,11 +1534,6 @@ Mods: {
 
 			LunaticTablet: {
 				DisplayName: Lunatic Tablet
-				Tooltip: ""
-			}
-
-			PerkDebugShower: {
-				DisplayName: Perk Debug Shower
 				Tooltip: ""
 			}
 
@@ -1726,9 +1700,14 @@ Mods: {
 					'''
 					"No one will live to tell the tale"
 					You become invisible after 15s of not being invisible
-					While invisible your critical damage increases by 35%
-					increases your movement speed by 15%
-					you have chance to dodge an attack
+					While you are invisible you gain various buff 
+					'''
+				ExtraInfo:
+					'''
+					While being invisible :
+					[+] Your critical damage increases by 35%
+					[+] Increases your movement speed by 15%
+					[+] You have 1 in 15 chance to dodge
 					'''
 			}
 
@@ -1766,7 +1745,7 @@ Mods: {
 				DisplayName: Genocidal Pact
 				Tooltip:
 					'''
-					Increases your damage against undamaged enemy by 300%
+					Increases your first strike damage by 300%
 					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases
 					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
 					'''
@@ -1872,7 +1851,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increases your defense by 5
-					Getting hit will randomly taken damage from 25-50%
+					Getting hit will randomly reduce taken damage from 25-50%
 					Have 25% chance to randomly spawn a projectile
 					Have 10% chance to convert taken damage to heal
 					'''
@@ -1883,7 +1862,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increases your defense by 10% and Flat 12
-					Having certain debuff will be also be beneficial
+					Having certain debuff will be beneficial instead
 					Getting hit may resulting you do a elemental explosion
 					'''
 			}
@@ -1898,43 +1877,28 @@ Mods: {
 					'''
 			}
 
+			FragmentRound: {
+				DisplayName: Fragment Round Bundle
+				Tooltip:
+					'''
+					Replace normal bullet with Fragment round
+					Increases range damage by 10% and 3 flat damage
+					Note : effect originate from gun or other source won't be inherited
+					'''
+			}
+
+			LightSpeedRound: {
+				DisplayName: Light-Speed Round
+				Tooltip:
+					'''
+					"Made to be perfect"
+					Replace normal bullet with Light-speed round
+					Drastically reduce gun inaccuracy
+					'''
+			}
+
 			TestTeleporter: {
 				DisplayName: Test Teleporter
-				Tooltip: ""
-			}
-
-			BeeNestTp: {
-				DisplayName: Bee Nest Tp
-				Tooltip: ""
-			}
-
-			CorruptionTp: {
-				DisplayName: Corruption Tp
-				Tooltip: ""
-			}
-
-			CrimsonTp: {
-				DisplayName: Crimson Tp
-				Tooltip: ""
-			}
-
-			DungeonTp: {
-				DisplayName: Dungeon Tp
-				Tooltip: ""
-			}
-
-			FleshRealmTp: {
-				DisplayName: Flesh Realm Tp
-				Tooltip: ""
-			}
-
-			SlimeAreaTp: {
-				DisplayName: Slime Area Tp
-				Tooltip: ""
-			}
-
-			TundraTp: {
-				DisplayName: Tundra Tp
 				Tooltip: ""
 			}
 
@@ -2046,11 +2010,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			AlterItem: {
-				DisplayName: Alter Item
-				Tooltip: ""
-			}
-
 			AltarItem: {
 				DisplayName: Altar Item
 				Tooltip: ""
@@ -2066,11 +2025,6 @@ Mods: {
 				Tooltip: Bring down heaven wrath with this smg
 			}
 
-			WindSlashPerk: {
-				DisplayName: Wind Slash Perk
-				Tooltip: ""
-			}
-
 			GlitchWorldEssence: {
 				DisplayName: World Blessing?
 				Tooltip: Grant a perk
@@ -2080,8 +2034,19 @@ Mods: {
 				DisplayName: Divine Hammer
 				Tooltip:
 					'''
-					Enable ability to modify world's rule which enforce on weapon and override them with something new
+					Enable ability to modify world's rule which enforce on weapon
+					enchant them with something new
 					Can also be used to increases weapon's stats
+					'''
+				ExtraInfo:
+					'''
+					[Weapon Enchantment]
+					Customize your weapon with the ancient craft of chaos and amalgams. 
+					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
+					in order to gain their uniquely personalized attributes.
+
+					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
+					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
 					'''
 			}
 
@@ -2187,7 +2152,25 @@ Mods: {
 
 			SakuraKatana: {
 				DisplayName: Sakura Katana
-				Tooltip: ""
+				Tooltip:
+					'''
+					Your swing are followed with sakura leaf
+					Striking a enemy grant [c/ee82ee:Sakura art] for 7s, each strike have 1s cool down
+					Striking enemy 30 times grant you [c/ff0080:Spring of blossom] aura
+					'''
+				ExtraInfo:
+					'''
+					[c/ee82ee:Sakura art] :
+					Create a sakura flower at enemy position
+					+5% damage and 2% critical strike chance
+					you can stack up to 5 times
+
+					[c/ff0080:Spring of blossom] :
+					Aura last for 30s with 20s cool down, while inside aura, player gain
+					+30% damage, +10 critical strike chance, +50% critical strike damage, 
+					+10 defenses, +5 life regeneration, +5 energy regeneration
+					You spawn sakura leaf which deal 65% of weapon damage
+					'''
 			}
 
 			SpoilGetter: {
@@ -2198,6 +2181,172 @@ Mods: {
 			AnimationTestItemProj: {
 				DisplayName: Animation Test Item Proj
 				Tooltip: ""
+			}
+
+			GuardianAngelItem: {
+				DisplayName: Guardian Angel Item
+				Tooltip: ""
+			}
+
+			Annihiliation: {
+				DisplayName: The Horizon: Annihiliation
+				Tooltip:
+					'''
+					Belong to the most fearsome, recommend pampering
+					Not shooting for a while will grant you [c/8715d2:Epilogue: Ishbóshet]
+					'''
+				ExtraInfo:
+					'''
+					[c/8715d2:Epilogue: Ishbóshet]
+					300% critical strike damage
+					100% attack speed
+					Attack ignore all defense
+					Only applied to The Horizon: Annihiliation
+					'''
+			}
+
+			SkillSlotUnlock: {
+				DisplayName: Skill Slot Unlock
+				Tooltip: ""
+			}
+
+			WeaponTicket: {
+				DisplayName: Weapon Ticket
+				Tooltip:
+					'''
+					Use the item to have a chance to gain 1 of the following item
+					Alt click to select a item to increases it's chance of dropping
+					'''
+			}
+
+			OuterGodTheNihilismItem: {
+				DisplayName: Outer God The Nihilism Item
+				Tooltip: ""
+			}
+
+			SharpshooterGuidanceItem: {
+				DisplayName: Sharpshooter Guidance Item
+				Tooltip: ""
+			}
+
+			SunItem: {
+				DisplayName: Sun Item
+				Tooltip: ""
+			}
+
+			UserInfoTablet: {
+				DisplayName: User Info Tablet
+				Tooltip:
+					'''
+					[Player Info]
+					View your current stats, your current perks and current artifact
+					See how much you progress you made and how much you lack!
+					Create broken builds by looking at what you are currently most strong at
+					Or even create synergistic build using the current stats, perks and aritfact 
+					by viewing what they do!
+					'''
+			}
+
+			ScrollofStrike: {
+				DisplayName: Scroll of Strike
+				Tooltip: Give user strike spell
+			}
+
+			DryadSoulItem: {
+				DisplayName: Dryad Soul Item
+				Tooltip: ""
+			}
+
+			FairFrozen: {
+				DisplayName: Fair Frozen
+				Tooltip:
+					'''
+					Swing your sword to summon a floating frozen blade
+					Also function as a sword
+					'''
+			}
+
+			PulseRifle: {
+				DisplayName: Pulse Rifle
+				Tooltip:
+					'''
+					"From the far future, i think"
+					Every 30th shot, shoot out a arch of 4 pulse bolts
+					Have 1 in 5 chance to shoot out a homing pulse dealing 125% of weapon damage
+					'''
+			}
+
+			TilePosition: {
+				DisplayName: Tile Position
+				Tooltip: ""
+			}
+
+			TheUnderdog: {
+				DisplayName: The Underdog
+				Tooltip:
+					'''
+					"Comeback is always good"
+					+10 critical strike chance and 25% attack speed when below 50% hp
+					'''
+			}
+
+			BlueMinishark: {
+				DisplayName: Blue Minishark
+				Tooltip: ""
+			}
+
+			RelentlessAbomination: {
+				DisplayName: Relentless Abomination
+				Tooltip: '''"Sword made from horror"'''
+			}
+
+			NPCProgressionStatsResetter: {
+				DisplayName: NPC Progression Stats Resetter
+				Tooltip: ""
+			}
+
+			RisingStar: {
+				DisplayName: Rising Star
+				Tooltip: ""
+			}
+
+			WeaponBluePrint: {
+				DisplayName: Weapon Blue Print
+				Tooltip: ""
+			}
+
+			TheBurningSky: {
+				DisplayName: The Burning Sky
+				Tooltip: ""
+			}
+
+			ReInitializeUI: {
+				DisplayName: ReInitialize UI
+				Tooltip: Debug item, do not uses it unless you are the one working on this
+			}
+
+			PerkDebugShower: {
+				DisplayName: Perk Debug Shower
+				Tooltip: ""
+			}
+
+			TundraBow: {
+				DisplayName: Tundra Bow
+				Tooltip:
+					'''
+					Your shot are accompany with a snowbal dealing 35% of weapon damage
+					Every 5th shot shoot a arch of snowball
+					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
+					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
+					'''
+				ExtraInfo:
+					'''
+					[c/75ffff:Hypothermia] :
+					Reduce enemy defenses by 10%
+					Reduce enemy velocity by 20%
+					-3 life per second
+					Increases taken damage from snowball by 20%
+					'''
 			}
 		}
 
@@ -2304,7 +2453,12 @@ Mods: {
 
 			OverCharged: {
 				DisplayName: Overcharged !
-				Description: Electric power your vein
+				Description:
+					'''
+					"Electric power your vein"
+					Increases movement speed, weapon speed, damage by 10%
+					Create a electric charge that target the closest enemy deal 30 damage
+					'''
 			}
 
 			pumpkinOverdose: {
@@ -2670,39 +2824,107 @@ Mods: {
 			}
 
 			SwiftStrike_Axe: {
-				DisplayName: Swift Strike_ Axe
-				Description: Mods.BossRush.Buffs.SwiftStrike_Axe.Description
+				DisplayName: Swift Strike (Axe)
+				Description: Increases attack speed by 15%
 			}
 
 			DryadBlessing_Buff: {
 				DisplayName: Dryad Blessing
 				Description: +8 defenses & + 5 hp/s
 			}
+
+			GrimTouch: {
+				DisplayName: Grim Touch
+				Description: Mods.BossRush.Buffs.GrimTouch.Description
+			}
+
+			Shatter: {
+				DisplayName: Shatter
+				Description: Mods.BossRush.Buffs.Shatter.Description
+			}
+
+			Vulnerable: {
+				DisplayName: Vulnerable
+				Description: Decreases your defenses the longer this debuff last
+			}
+
+			PlatinumDefense: {
+				DisplayName: Platinum Defense
+				Description: Mods.BossRush.Buffs.PlatinumDefense.Description
+			}
+
+			SilverPurification: {
+				DisplayName: Silver Purification
+				Description: Mods.BossRush.Buffs.SilverPurification.Description
+			}
+
+			TungstenEmpowerment: {
+				DisplayName: Tungsten Empowerment
+				Description: " "
+			}
+
+			NightInfection: {
+				DisplayName: Night Infection
+				Description: Mods.BossRush.Buffs.NightInfection.Description
+			}
+
+			StrikeSpell: {
+				DisplayName: Strike Spell
+				Description: Make your next attack do a additional 10 strikes
+			}
+
+			FairFrozenModbuff: {
+				DisplayName: Fair Frozen Modbuff
+				Description: ...
+			}
+
+			LifeLoss: {
+				DisplayName: Life Loss
+				Description: Halve user maximum life
+			}
+
+			Epilogue_Ishboshet: {
+				DisplayName: Epilogue: Ishboshet
+				Description: Make them fear
+			}
+
+			RA_Rotting: {
+				DisplayName: Rotting
+				Description: Mods.BossRush.Buffs.RA_Rotting.Description
+			}
+
+			RisingStarBurning_Debuff: {
+				DisplayName: Rising Star Burning
+				Description: So hot that it's burn your soul
+			}
+
+			Slimey_Debuff: {
+				DisplayName: Slimey_ Debuff
+				Description: Mods.BossRush.Buffs.Slimey_Debuff.Description
+			}
+
+			Slimy_Debuff: {
+				DisplayName: Slimy_ Debuff
+				Description: Mods.BossRush.Buffs.Slimy_Debuff.Description
+			}
+
+			TundraHypothermia: {
+				DisplayName: Tundra Hypothermia
+				Description: Mods.BossRush.Buffs.TundraHypothermia.Description
+			}
 		}
 
 		Configs: {
 			RogueLikeConfig: {
-				DisplayName: Boss Rush Mod Config
+				DisplayName: Roguelike Mod Config
 
 				BossRushMode: {
 					Label: Boss Rush Mode
 					Tooltip:
 						'''
-						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD, THIS WILL MESS WITH YOUR WORLD GEN
-						The mod boss rush mode
-						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
-						What this mode do :
-						-World gen change so you could easily build arena and chest gone
-						'''
-				}
-
-				SynergyMode: {
-					Label: Synergy Mode [IN PROGRESS OF REMOVING]
-					Tooltip:
-						'''
-						Enables Synergy Items, Artifacts, and a lot more.
-						This config adds optional content which can be ignored if necessary. 
-						Warning: This config might not be compatible or balanced with other content mods.
+						Player are given custom starting loot
+						Boss Rush mode world setting are enable
+						Offer custom boss arena World generation
 						'''
 				}
 
@@ -2717,7 +2939,7 @@ Mods: {
 				}
 
 				RoguelikeOverhaul: {
-					Label: "[BETA] Roguelike Overhaul"
+					Label: "[W.I.P] Roguelike Overhaul"
 					Tooltip:
 						'''
 						Enable this to activate vanilla terraria overhaul
@@ -2728,13 +2950,13 @@ Mods: {
 				}
 
 				Nightmare: {
-					Label: Nightmare (W.I.P)
+					Label: Nightmare [W.I.P]
 					Tooltip:
 						'''
 						"So you think the game is too easy ?"
-						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
-						Highly not recommend for inexperience player
-						- Enemy are much more brutal, and is immune to lava and trap
+						Note : Highly not recommend for inexperience player
+						Will enable ForTheWorthy seeds regardless of world type
+						- Enemy are much more brutal and is immune to lava and trap
 						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
 						- Boss can sometime become elite
@@ -2757,12 +2979,12 @@ Mods: {
 
 				HardEnableFeature: {
 					Label: Hard Enable Feature
-					Tooltip: This will enable feature that you should not be able to access regardless of config, this do not guarentee balance
+					Tooltip: This will enable feature that you should not be able to access because of world setting
 				}
 
 				ForceBossDropRegadless: {
 					Label: Force Boss Drop Regardless
-					Tooltip: Make boss drop outside of challenge mode
+					Tooltip: Make boss drop loot outside of world setting
 				}
 
 				WorldGenTest: {
@@ -2772,7 +2994,7 @@ Mods: {
 
 				AutoHardCore: {
 					Label: Auto Hard Core
-					Tooltip: ""
+					Tooltip: Will change your character difficulty to hardcore on world enter
 				}
 
 				AutoRandomizeCharacter: {
@@ -2787,6 +3009,7 @@ Mods: {
 					GameModeHeader: Gamemodes
 					LegacyHeader: Legacy
 					DebugHeader: Debug
+					GameHeader: Game option
 				}
 
 				LegacyLootBoxDrop: {
@@ -2832,7 +3055,16 @@ Mods: {
 						'''
 						Enable to gain access to weapon enchantment system
 						Disable to revoke access to weapon enchantment system
-						Instead weapon enchantment have 20% to appear
+						and you have 20% to get weapon enchantment
+						'''
+				}
+
+				AccessoryPrefix: {
+					Label: Accessory Prefix
+					Tooltip:
+						'''
+						Enable to allow ( vanilla ) lesser accessory prefix to appear 
+						Disable to force reroll until you get the best one
 						'''
 				}
 
@@ -2868,7 +3100,8 @@ Mods: {
 					Tooltip:
 						'''
 						"Blessing and curses"
-						On starting, you will receive 1 randomize curse and 15 taboos
+						You will be cursed right at the start
+						1 Major curses and 15 taboo curses
 						'''
 				}
 
@@ -2887,9 +3120,18 @@ Mods: {
 						'''
 				}
 
-				LegacySpoils: {
-					Label: Legacy Spoils
+				TemplateTest: {
+					Label: Template Test
 					Tooltip: ""
+				}
+
+				HoldShift: {
+					Label: Hold shift
+					Tooltip:
+						'''
+						Enable to make information tooltip need you to hold shift to show
+						Disable to make information tooltip toggle on shift pressed
+						'''
 				}
 			}
 		}

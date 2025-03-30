@@ -4,12 +4,12 @@ using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
-using BossRush.Contents.WeaponEnchantment;
 using BossRush.Texture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using BossRush.Contents.Arguments;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Contents.Transfixion.Arguments;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform;
 internal class ContentTracker : ModItem {

@@ -48,25 +48,17 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 		}
 	}
 	class OvergrownMinisharkProjectileModify : GlobalProjectile {
-		public override void OnSpawn(Projectile projectile, IEntitySource source) {
-			if (source is EntitySource_ItemUse_WithAmmo entity && entity.Item.ModItem is OvergrownMinishark) {
-				IsTruelyFromSource = true;
-			}
-		}
-		public override bool InstancePerEntity => true;
-		bool IsTruelyFromSource = false;
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!IsTruelyFromSource) {
-				return;
-			}
-			target.AddBuff(BuffID.Poisoned, 420);
-			if (Main.rand.NextBool(10)) {
-				float randomRotation = Main.rand.Next(90);
-				Vector2 velocity;
-				for (int i = 0; i < 6; i++) {
-					velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)) * .5f;
-					Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
-					Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
+			if (projectile.Check_ItemTypeSource(ModContent.ItemType<OvergrownMinishark>())) {
+				target.AddBuff(BuffID.Poisoned, 420);
+				if (Main.rand.NextBool(10)) {
+					float randomRotation = Main.rand.Next(90);
+					Vector2 velocity;
+					for (int i = 0; i < 6; i++) {
+						velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)) * .5f;
+						Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
+						Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
+					}
 				}
 			}
 		}

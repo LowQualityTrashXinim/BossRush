@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.BuffAndDebuff;
 internal class Penetrating : ModBuff {
@@ -10,6 +10,6 @@ internal class Penetrating : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense.Base -= 10;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense.Base -= 10;
 	}
 }

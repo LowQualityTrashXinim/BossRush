@@ -12,15 +12,17 @@ using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
-using BossRush.Common.General;
+using BossRush.Contents.Perks;
+using Terraria.GameContent.UI;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.WeaponEnchantment;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
-using BossRush.Contents.Arguments;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -133,6 +135,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public int EnergyBlade_Code1_Energy = 0;
 
 		public int StreetLamp_VampireFrogStaff_HitCounter = 0;
+		public int Annihiliation_Counter = 0;
 
 		public int SinisterBook_DemonScythe_Counter = 0;
 
@@ -142,11 +145,15 @@ namespace BossRush.Contents.Items.Weapon {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
 
+			if (Player.HeldItem.type != ModContent.ItemType<Annihiliation>()) {
+				Annihiliation_Counter = 0;
+			}
+
 			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;
 			}
 			int synergyItem = Player.HeldItem.type;
-			if(!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
+			if (!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
 				return;
 			}
 			int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
@@ -174,6 +181,10 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 	}
+	/// <summary>
+	/// This class hold mainly tooltip information<br/>
+	/// However this doesn't handle overhaul information
+	/// </summary>
 	public class GlobalItemHandle : GlobalItem {
 		public const byte None = 0;
 		public override bool InstancePerEntity => true;
@@ -186,15 +197,28 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public float CriticalDamage = 0;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if(UniversalSystem.EnchantingState) {
+			if (UniversalSystem.EnchantingState) {
 				return;
 			}
-			int index = tooltips.FindIndex(t => t.Name == "CritChance");
-			if (index != -1) {
-				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
-				tooltips.Insert(index + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
+			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
+			if (item.IsAWeapon(true)) {
+				for (int i = 0; i < tooltips.Count; i++) {
+					TooltipLine line = tooltips[i];
+					if (line.Name == "CritChance") {
+						tooltips.Insert(i + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
+						tooltips.Insert(i + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
+					}
+					else if (line.Name == "Damage") {
+						line.Text = line.Text + $" | Base : {item.OriginalDamage}";
+					}
+					else if (line.Name == "Knockback") {
+						line.Text = line.Text + $" | Base : {Math.Round(ContentSamples.ItemsByType[item.type].knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
+					}
+				}
 			}
-			
+			if (ModContent.GetInstance<UniversalSystem>().user2ndInterface.CurrentState == ModContent.GetInstance<UniversalSystem>().transmutationUI) {
+				tooltips.Add(new(Mod, "RarityValue", $"Rarity : [c/{ItemRarity.GetColor(item.OriginalRarity).Hex3()}:{item.OriginalRarity}]"));
+			}
 			if (item.ModItem == null) {
 				return;
 			}
@@ -209,8 +233,8 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {
-				if (!moddedplayer.Hold_Shift) {
-					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Hold shift for more infomation]") { OverrideColor = Color.Gray });
+				if (!moddedplayer.Shift_Option()) {
+					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Press shift for more infomation]") { OverrideColor = Color.Gray });
 				}
 			}
 			if (item.accessory && LostAccessories) {
@@ -230,36 +254,25 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null)
-				if (moddedplayer.Hold_Shift) {
+				if (moddedplayer.Shift_Option()) {
 					float width;
 					float height = -16;
 					Vector2 pos;
-
 					string value = $"Mods.BossRush.Items.{item.ModItem.Name}.ExtraInfo";
 					string ExtraInfo = Language.GetTextValue(value);
-
 					DynamicSpriteFont font = FontAssets.MouseText.Value;
-
 					if (Main.MouseScreen.X < Main.screenWidth / 2) {
 						string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
 						width = ChatManager.GetStringSize(font, widest, Vector2.One).X;
-
 						pos = new Vector2(x, y) + new Vector2(width + 30, 0);
 					}
 					else {
 						width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
-
 						pos = new Vector2(x, y) - new Vector2(width + 30, 0);
 					}
-
 					width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
-
 					height += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
-
-
 					Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
-
-
 					Utils.DrawBorderString(Main.spriteBatch, ExtraInfo, pos, Color.White);
 					pos.Y += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
 				}
@@ -273,6 +286,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
+		public string Set_TooltipName(int ItemID) => $"{Name}_{ContentSamples.ItemsByType[ItemID].Name}";
 		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
 			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });
@@ -287,10 +301,19 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override sealed void ModifyWeaponCrit(Player player, ref float crit) {
+			Synergy_ModifyWeaponCrit(player, ref crit);
+			if (!player.HasPerk<UntappedPotential>()) {
+				return;
+			}
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
 			crit += 4 * modplayer.SynergyBonus;
 		}
+		public virtual void Synergy_ModifyWeaponCrit(Player player, ref float crit) { }
 		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+			Synergy_ModifyWeaponDamage(player, ref damage);
+			if (!player.HasPerk<UntappedPotential>()) {
+				return;
+			}
 			float damageIncreasement = 0;
 			float damageMultiplier = 0;
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
@@ -312,6 +335,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			damage += damageIncreasement;
 		}
+		public virtual void Synergy_ModifyWeaponDamage(Player player, ref StatModifier damage) { }
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
 			base.HoldItem(player);
@@ -321,7 +345,6 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
 			ModifySynergyShootStats(player, player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 		public override sealed void UpdateInventory(Player player) {
@@ -329,7 +352,7 @@ namespace BossRush.Contents.Items.Weapon {
 			//Very funny that hold item happen after ModifyWeaponDamage
 			//This probably will tank our mod performance, but well, it is what it is
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-			if (player.HeldItem == Item && !modplayer.SynergyBonusBlock) {
+			if (player.HeldItem == Item) {
 				HoldSynergyItem(player, modplayer);
 			}
 			SynergyUpdateInventory(player, modplayer);
@@ -484,7 +507,7 @@ namespace BossRush.Contents.Items.Weapon {
 
 		}
 	}
-	public class ItemHandleSystem : ModSystem {
+	class ItemHandleSystem : ModSystem {
 		public override void Load() {
 			On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
 			On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;

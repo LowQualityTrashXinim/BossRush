@@ -3,11 +3,12 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
 using Terraria.ID;
-using BossRush.Common.RoguelikeChange;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using BossRush.Contents.Perks;
+using BossRush.Common.Global;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -19,7 +20,7 @@ namespace BossRush {
 		/// <returns>
 		/// True if health is above or equal said percentage
 		/// </returns>
-		public static bool ComparePlayerHealthInPercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
+		public static bool IsHealthAbovePercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
 		public static bool IsDebugPlayer(this Player player) =>
 			player.name.Contains("Test") ||
 			player.name.Contains("Debug") ||
@@ -28,8 +29,21 @@ namespace BossRush {
 		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
-			where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
+			where T : Artifact => Artifact.PlayerCurrentArtifact<T>(player);
 		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? -1 : 1;
+		public static bool HasPerk<T>(this Player player) where T : Perk {
+			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="player"></param>
+		/// <returns>
+		/// Return true if player is helding the item in hand<br/>
+		/// Return false when player is not helding the item in hand
+		/// </returns>
+		public static bool IsHeldingModItem<T>(this Player player) where T : ModItem => player.HeldItem.type == ModContent.ItemType<T>();
 		public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
 					stats is PlayerStats.Defense
 					|| stats is PlayerStats.MaxMinion
@@ -57,15 +71,25 @@ namespace BossRush {
 			&& item.useAnimation > 0
 			&& !item.accessory
 			&& item.pick == 0
-			&& item.axe == 0
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
-			&& (item.consumable == ConsumableWeapon);
+			&& (item.consumable == false || ConsumableWeapon);
+		/// <summary>
+		/// Not recommend to uses reliably, as this only check vanilla slot
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="itemType"></param>
+		/// <returns></returns>
 		public static bool IsEquipAcc(this Player player, int itemType) {
 			Item[] item = new Item[9];
 			Array.Copy(player.armor, 3, item, 0, 9);
 			return item.Select(i => i.type).Contains(itemType);
 		}
+		/// <summary>
+		/// Highly unstable, not recommend to uses unless you know what you are doing
+		/// </summary>
+		/// <param name="mod"></param>
+		/// <param name="player"></param>
 		public static void Reflesh_GlobalItem(this Mod mod, Player player) {
 			foreach (Item item in player.inventory) {
 				if (item.type == ItemID.None) {
@@ -93,6 +117,39 @@ namespace BossRush {
 					globalitem.SetDefaults(item);
 				}
 			}
+		}
+		/// <summary>
+		/// Mana heal effect added by mod, guaranteed to work
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="amount"></param>
+		public static void ManaHeal(this Player player, int amount) {
+			if (player.statMana >= player.statManaMax2) {
+				if (player.statMana + amount >= player.statManaMax2) {
+					player.statMana = player.statManaMax2;
+				}
+				else {
+					player.statMana += amount;
+				}
+				player.ManaEffect(amount);
+			}
+		}
+		/// <summary>
+		/// First strike check
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public static bool CheckFirstStrike(this NPC npc) {
+			if (npc.TryGetGlobalNPC(out RoguelikeGlobalNPC roguelike)) {
+				return roguelike.HitCount <= 0;
+			}
+			return false;
+		}
+		public static void AddBuff<T>(this NPC npc, int timetoAdd, bool quiet = false) where T : ModBuff {
+			npc.AddBuff(ModContent.BuffType<T>(), timetoAdd, quiet);
+		}
+		public static void AddBuff<T>(this Player player, int timetoAdd, bool quiet = false) where T : ModBuff {
+			player.AddBuff(ModContent.BuffType<T>(), timetoAdd, quiet);
 		}
 		public static bool IsAVanillaSword(int type) {
 			switch (type) {
@@ -195,6 +252,9 @@ namespace BossRush {
 			}
 		}
 	}
+	/// <summary>
+	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats
+	/// </summary>
 	public enum PlayerStats : byte {
 		None,
 		MeleeDMG,
@@ -219,7 +279,7 @@ namespace BossRush {
 		ShieldHealth,
 		ShieldEffectiveness,
 		AttackSpeed,
-		AuraRadius,
+		LifeSteal,
 		HealEffectiveness,
 		MysteriousPotionEffectiveness,
 		EnergyCap,
@@ -232,6 +292,7 @@ namespace BossRush {
 		EnergyRecharge,
 		SkillDuration,
 		SkillCooldown,
+		DebuffDurationInflict
 		//Luck
 	}
 	public class DataStorer : ModSystem {
@@ -249,6 +310,13 @@ namespace BossRush {
 			if (dict_drawCircleContext.ContainsKey(name)) {
 				dict_drawCircleContext[name].Activate = true;
 				dict_drawCircleContext[name].Position = player.Center;
+			}
+
+		}
+		public static void ActivateContext(Vector2 position, string name) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].Activate = true;
+				dict_drawCircleContext[name].Position = position;
 			}
 
 		}

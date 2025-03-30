@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class ShadewoodArmor : ModArmorSet {
@@ -31,33 +31,25 @@ public class ShadewoodGreaves : ModArmorPiece {
 	}
 }
 public class ShadewoodArmorPlayer : PlayerArmorHandle {
-	bool inZone = false;
 	int ShadewoodArmorCD = 0;
 	public override void SetStaticDefaults() {
 		ArmorLoader.SetModPlayer("ShadewoodArmor", this);
 	}
-	public override void Armor_ResetEffects() {
-		inZone = false;
-	}
 	public override void Armor_UpdateEquipsSet() {
 		ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
-		if (Player.ZoneCrimson) {
-			Player.statDefense += 7;
-			Player.moveSpeed += .15f;
-			inZone = true;
-		}
+		Player.statDefense += 7;
+		Player.moveSpeed += .15f;
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_ShadewoodArmor();
 	}
 	private void OnHitNPC_ShadewoodArmor() {
-		if (ShadewoodArmorCD <= 0 && inZone) {
-			float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+		if (ShadewoodArmorCD <= 0) {
 			for (int i = 0; i < 75; i++) {
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.GemRuby);
+				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
+				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
 			}
-			Player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+			Player.Center.LookForHostileNPC(out List<NPC> npclist, 300);
 			foreach (var npc in npclist) {
 				Player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)Player.GetDamage(DamageClass.Generic).ApplyTo(30), 1));
 				npc.AddBuff(BuffID.Ichor, 300);

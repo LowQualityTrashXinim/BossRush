@@ -43,6 +43,8 @@ namespace BossRush.Common.General {
 		public bool LostAccessory { get; set; }
 		[DefaultValue(true)]
 		public bool WeaponEnchantment { get; set; }
+		[DefaultValue(true)]
+		public bool AccessoryPrefix { get; set; }
 		[Header($"QoLHeader")]
 		[DefaultValue(false)]
 		public bool AutoHardCore { get; set; }
@@ -59,11 +61,13 @@ namespace BossRush.Common.General {
 		[DefaultValue(false)]
 		public bool LegacyLootBoxDrop { get; set; }
 		public bool LegacyBossRushWorldGen { get; set; }
-		public bool LegacySpoils { get; set; }
 
 		[Header($"DebugHeader")]
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
+		public bool TemplateTest { get; set; }
 		public bool WorldGenRLSettingTest { get; set; }
+		[Header($"GameHeader")]
+		public bool HoldShift { get; set; }
 	}
 }

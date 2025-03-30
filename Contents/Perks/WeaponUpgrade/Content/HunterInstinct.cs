@@ -4,7 +4,8 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
-using BossRush.Common.Systems;
+using BossRush.Contents.Items.Chest;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class HunterInstinct_GlobalItem : GlobalItem {
@@ -35,13 +36,14 @@ internal class HunterInstinct_GlobalItem : GlobalItem {
 			return;
 		}
 		switch (item.type) {
-			case ItemID.WoodenBow:
-			case ItemID.AshWoodBow:
-			case ItemID.BorealWoodBow:
-			case ItemID.RichMahoganyBow:
-			case ItemID.PalmWoodBow:
-			case ItemID.EbonwoodBow:
-			case ItemID.ShadewoodBow:
+			case ItemID.CopperAxe:
+			case ItemID.TinAxe:
+			case ItemID.IronAxe:
+			case ItemID.LeadAxe:
+			case ItemID.SilverAxe:
+			case ItemID.TungstenAxe:
+			case ItemID.GoldAxe:
+			case ItemID.PlatinumAxe:
 				player.GetModPlayer<PlayerStatsHandle>().DodgeChance += .15f;
 				break;
 		}
@@ -52,13 +54,14 @@ internal class HunterInstinct_GlobalItem : GlobalItem {
 		}
 		if (Main.rand.NextBool(10)) {
 			switch (item.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
+				case ItemID.CopperAxe:
+				case ItemID.TinAxe:
+				case ItemID.IronAxe:
+				case ItemID.LeadAxe:
+				case ItemID.SilverAxe:
+				case ItemID.TungstenAxe:
+				case ItemID.GoldAxe:
+				case ItemID.PlatinumAxe:
 					player.AddBuff(ModContent.BuffType<SwiftStrike_Axe>(), BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 					break;
 			}
@@ -82,5 +85,18 @@ public class HunterInstinct : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.HunterInstinct);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = {
+		ItemID.CopperAxe,
+		ItemID.TinAxe,
+		ItemID.IronAxe,
+		ItemID.LeadAxe,
+		ItemID.SilverAxe,
+		ItemID.TungstenAxe,
+		ItemID.GoldAxe,
+		ItemID.PlatinumAxe
+		};
+		int weapontype = Main.rand.Next(Orestaff);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), weapontype);
+		LootBoxBase.AmmoForWeapon(player, weapontype);
 	}
 }

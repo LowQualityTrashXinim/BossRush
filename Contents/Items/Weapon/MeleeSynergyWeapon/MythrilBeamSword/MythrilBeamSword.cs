@@ -1,27 +1,29 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.Common.Graphics.Structs.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 50, 50, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
+		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 28, 28, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
 		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;
+		Item.UseSound = SoundID.Item1;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		MeleeOverhaulPlayer meleeplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 		for (int i = 0; i < 6; i++) {
 			Vector2 rotate = velocity.Vector2DistributeEvenly(5, 120 * player.direction, meleeplayer.ComboNumber % 2 == 0 ? i : 5 - i) * .5f;
-			Projectile.NewProjectile(source, position.PositionOFFSET(rotate, 36f), rotate, type, damage, knockback, player.whoAmI, ai1: i);
+			Projectile.NewProjectile(source, position.PositionOFFSET(rotate, 62), rotate, type, damage, knockback, player.whoAmI, ai1: i);
 		}
-		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 62), velocity, type, damage, knockback, player.whoAmI);
+		CanShootItem = false;
 	}
 	public override void AddRecipes() {
 		CreateRecipe()
@@ -31,48 +33,33 @@ public class MythrilBeamSword : SynergyModItem {
 	}
 
 }
-public class MythrilBeam : SynergyModProjectile 
-{
-
+public class MythrilBeam : SynergyModProjectile {
 	bool retargeting = false;
-
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;
 	}
-
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.SwordBeam);
-
-
 	public override void SetDefaults() {
 		Projectile.CloneDefaults(ProjectileID.SwordBeam);
 		Projectile.aiStyle = -1;
 
 	}
-
 	public override void OnSpawn(IEntitySource source) {
 		retargeting = false;
 		Projectile.FillProjectileOldPosAndRot();
 	}
-
 	public override bool PreDraw(ref Color lightColor) {
-
-
-		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.SwordBeam];
 		Main.instance.LoadProjectile(ProjectileID.SwordBeam);
-
+		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.SwordBeam];
+		Vector2 origin = texture.Size() * .5f;
 		if (!retargeting) {
-
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
 			default(BeamTrail).Draw(Projectile, Color.Yellow, texture.Size() / 2f);
-
-
 		}
 		else {
-
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
 			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed, texture.Size() / 2f);
-
 		}
 
 		return false;
@@ -95,7 +82,6 @@ public class MythrilBeam : SynergyModProjectile
 			if (!Projectile.velocity.IsLimitReached(20) && Projectile.ai[0] < 25) Projectile.velocity += localOriginalvelocity;
 		}
 	}
-
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		Projectile.ai[0]++;
 		Projectile.rotation = Projectile.velocity.ToRotation();

@@ -3,20 +3,18 @@ using Terraria;
 using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
+using Terraria.Audio;
 using ReLogic.Content;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items;
-using System.Collections.Generic;
+using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Texture;
-using Terraria.Audio;
-using SteelSeries.GameSense.DeviceZone;
-using BossRush.Contents.Perks;
-using ReLogic.Utilities;
+using BossRush.Contents.Transfixion.SoulBound;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {
@@ -71,7 +69,7 @@ public class TransmutationUIState : UIState {
 		if (slot1.item == null || slot2.item == null) {
 			return;
 		}
-		if(TransmutationUIConfirmButton.CheckForSpecialDrop(slot1.item, slot2.item)) {
+		if (TransmutationUIConfirmButton.SpecialInteraction(slot1.item, slot2.item)) {
 			SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
 		}
 		else {
@@ -92,10 +90,7 @@ public class TransmutationUIState : UIState {
 		if (slot1.item == null || slot2.item == null) {
 			return;
 		}
-		float offsetchance = 0;
-		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<Dirt>())) {
-			offsetchance = .05f;
-		}
+		float offsetchance = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		bool AnyRelic = slot1.item.ModItem is Relic || slot2.item.ModItem is Relic;
 		if (slot1.item.ModItem is Relic re1 && slot2.item.ModItem is Relic re2) {
 			txtbox.SetText("Chance to upgrade relic : " + RelicTemplateLoader.RelicValueToNumber(TransmutationUIConfirmButton.GetRelicChance(re1, re2, offsetchance) * 100) + "%");
@@ -162,6 +157,9 @@ public class ExitUI : UIImageButton {
 		base.Update(gameTime);
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (IsMouseHovering) {
+			Main.instance.MouseText("Exit");
 		}
 	}
 }
@@ -234,6 +232,10 @@ public class TransmutationUI : UIImage {
 		base.Draw(spriteBatch);
 		try {
 			if (item != null) {
+				if (IsMouseHovering) {
+					Main.HoverItem = item.Clone();
+					Main.hoverItemName = item.HoverName;
+				}
 				Main.instance.LoadItem(item.type);
 				var texture = TextureAssets.Item[item.type].Value;
 				var origin = texture.Size() * .5f;
@@ -265,8 +267,28 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	/// <param name="item1"></param>
 	/// <param name="item2"></param>
 	/// <returns></returns>
-	public static bool CheckForSpecialDrop(Item item1, Item item2) {
+	public static bool SpecialInteraction(Item item1, Item item2) {
 		var player = Main.LocalPlayer;
+
+		if (item1.ModItem != null || item2.ModItem != null) {
+			BaseSoulBoundItem soul = null;
+			Item armor = null;
+			if (item1.ModItem is BaseSoulBoundItem soulbound) {
+				soul = soulbound;
+				armor = item2;
+			}
+			else if (item2.ModItem is BaseSoulBoundItem soulbound2) {
+				soul = soulbound2;
+				armor = item1;
+			}
+			if (armor != null && SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
+				SoulBoundGlobalItem.AddSoulBound(ref armor, soul.SoulBoundType);
+				soul.Item.TurnToAir();
+				return true;
+			}
+		}
+
+
 		float offsetchance = player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		Relic relicItem = null;
 		Item slotitem;
@@ -284,7 +306,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				if (count > 4) {
 					return false;
 				}
-				if (Main.rand.NextFloat() > GetRelicChance(relicItem, relic2, offsetchance)) {
+				if (Main.rand.NextFloat() > GetRelicChance(relicItem, relic2, offsetchance) && !player.IsDebugPlayer()) {
 					item1.TurnToAir();
 					item2.TurnToAir();
 					return false;
@@ -298,7 +320,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			slotitem2 = item2;
 		}
 		int Option = 0;
-		int rareval1 = slotitem.rare;
+		int rareval1 = ContentSamples.ItemsByType[slotitem.type].rare;
 
 		//Slot item are never null so no need to check for them
 		if (rareval1 < ItemRarityID.Purple - 2) {
@@ -360,7 +382,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			}
 		}
 		else {//Equivalent exchange
-			int rareval2 = slotitem2.rare;
+			int rareval2 = ContentSamples.ItemsByType[slotitem2.type].rare;
 			int Option2 = 0;
 			if (rareval2 < ItemRarityID.Purple - 2) {
 				if (slotitem2.IsAWeapon()) {

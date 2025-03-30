@@ -18,14 +18,14 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
 
-			itempool.DropItemMelee.Add(ItemID.Code1);
-			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
-
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
 			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonerPreEoC);
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
 
+			itempool.DropItemMelee.Add(ItemID.Code1);
+			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };

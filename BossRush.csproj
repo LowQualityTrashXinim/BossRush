@@ -5,6 +5,7 @@
     <AssemblyName>BossRush</AssemblyName>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Common\Graphics\Shaders\Compiler\**" />
@@ -21,19 +22,23 @@
     <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="Assets\Structures\SlimeArena1.txt" />
+    <AdditionalFiles Remove="Assets\Structures\SlimeArena2.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
+    <None Remove="Assets\Images\Trials\TrialRoomTemplate1.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
     <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
-    <None Remove="common\graphics\shaders\LaserEffect.fx" />
-    <None Remove="Common\Graphics\Shaders\LightSpark.fx" />
-    <None Remove="Contents\Artifacts\BootsOfSpeedManipulationArtifact.png" />
-    <None Remove="Contents\Artifacts\HeartOfEarthArtifact.png" />
-    <None Remove="Contents\Artifacts\MagicalCardDeckArtifact.png" />
-    <None Remove="Contents\Artifacts\SkillIssuedArtifact.png" />
-    <None Remove="Contents\Artifacts\TokenOfGreedArtifact.png" />
-    <None Remove="Contents\Artifacts\TokenofPrideArtifact.png" />
-    <None Remove="Contents\Artifacts\VampirismCrystalArtifact.png" />
-    <None Remove="Contents\Items\Accessories\SynergyAccessories\BouncyRelic.png" />
+    <None Remove="Contents\Projectiles\SunflowerProjectile.png" />
+    <None Remove="Contents\Projectiles\SunItem.png" />
+    <None Remove="Contents\Transfixion\Artifacts\BootsOfSpeedManipulationArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\HeartOfEarthArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\MagicalCardDeckArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\SkillIssuedArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\TokenOfGreedArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\TokenofPrideArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\VampirismCrystalArtifact.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
     <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
     <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\MythrilBeamSword\MythrilBeamSword.png" />
@@ -47,6 +52,7 @@
     <None Remove="Common\Graphics\Shaders\FlameBall.fx" />
     <None Remove="Common\Graphics\Shaders\FlameEffect.fx" />
     <None Remove="Contents\Items\Weapon\UnfinishedItem\Item2.png" />
+    <None Remove="Localization\en-US\en-US_Mods.BossRush.SoulBound.hjson" />
     <None Remove="Texture\EmptyCard.png" />
     <None Remove="Texture\ExampleFrame.png" />
     <None Remove="Texture\FourStar.png" />
@@ -61,6 +67,7 @@
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Structures\Template\" />
     <Folder Include="Contents\Tiles\" />
   </ItemGroup>
 </Project>

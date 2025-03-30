@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Potion;
 internal class KeenPotion : ModItem {

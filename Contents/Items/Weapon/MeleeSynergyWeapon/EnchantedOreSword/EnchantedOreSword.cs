@@ -14,13 +14,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 19, 6f, 24, 24, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
+			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 17, 6f, 36, 36, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
 			Item.value = Item.buyPrice(gold: 50);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
+			Item.crit = 6;
 
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-				meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
+				meleeItem.SwingType = BossRushUseStyle.Swipe;
 		}
 		int count = -1;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {

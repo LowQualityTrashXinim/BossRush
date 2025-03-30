@@ -1,10 +1,11 @@
-﻿using BossRush.Common.RoguelikeChange;
+﻿using BossRush.Common.Global;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Texture;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
@@ -47,7 +48,7 @@ class Axe_BleedDebuff : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense -= .2f;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense -= .2f;
 		npc.lifeRegen -= 10;
 	}
 }
@@ -59,5 +60,16 @@ public class RefinedUpgrade : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.RefinedUpgrade);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = {
+		ItemID.CopperAxe,
+		ItemID.TinAxe,
+		ItemID.IronAxe,
+		ItemID.LeadAxe,
+		ItemID.SilverAxe,
+		ItemID.TungstenAxe,
+		ItemID.GoldAxe,
+		ItemID.PlatinumAxe
+		}; 
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }

@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -29,6 +29,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
+			LootBoxBase.GetAccessories(itemsource, player, true);
 			LootBoxBase.GetArmorPiece(itemsource, player, true);
 			LootBoxBase.GetSkillLootbox(itemsource, player);
 			LootBoxBase.GetRelic(itemsource, player);

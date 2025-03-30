@@ -1,16 +1,20 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems;
 using Terraria.ID;
 using System.Collections.Generic;
 using System;
 using BossRush.Texture;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ElementalShield : ModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
+	public override void SetStaticDefaults() {
+		Item.Set_ShieldStats(500, 3);
+	}
 	public override void SetDefaults() {
 		Item.Set_LostAccessory(32, 32);
+		Item.Set_ShieldStats(500, 3);
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<ElementalShieldPlayer>().ElementalShield = true;

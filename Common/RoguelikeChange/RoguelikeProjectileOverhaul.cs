@@ -30,6 +30,12 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 				projectile.velocity /= 1.25f;
 			}
 		}
+		if (projectile.type == ProjectileID.InfluxWaver && projectile.Check_ItemTypeSource(ItemID.InfluxWaver)) {
+			if (projectile.Center.LookForHostileNPC(out NPC npc, 300)) {
+				projectile.velocity += (npc.Center - projectile.Center).SafeNormalize(Vector2.Zero) * .5f;
+				projectile.timeLeft = 90;
+			}
+		}
 		return base.PreAI(projectile);
 	}
 	public override void PostAI(Projectile projectile) {
@@ -46,7 +52,7 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 			if (pos != Vector2.Zero) {
 				float rotateTo = (pos - projectile.Center).SafeNormalize(Vector2.Zero).ToRotation();
 				float currentRotation = projectile.velocity.ToRotation();
-				
+
 				projectile.velocity = projectile.velocity.RotatedBy(rotateTo - currentRotation);
 			}
 			if (player.strongBees) {

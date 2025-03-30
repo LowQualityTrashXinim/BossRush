@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Texture;
 using Terraria;
@@ -16,12 +16,13 @@ namespace BossRush.Contents.Items.Consumable.Potion {
 	}
 	public class TitanElixir_ModPlayer : ModPlayer {
 		public override void ResetEffects() {
-			PlayerStatsHandle.SetSecondLifeCondition(Player,"TE", Player.HasBuff(ModContent.BuffType<Protection>()));
+			PlayerStatsHandle.SetSecondLifeCondition(Player, "TE", Player.HasBuff(ModContent.BuffType<Protection>()));
 		}
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (PlayerStatsHandle.GetSecondLife(Player,"TE")) {
+			if (PlayerStatsHandle.GetSecondLife(Player, "TE")) {
 				Player.ClearBuff(ModContent.BuffType<Protection>());
 				Player.Heal(Player.statLifeMax2);
+				Player.AddImmuneTime(-1, 90);
 				return false;
 			}
 			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);

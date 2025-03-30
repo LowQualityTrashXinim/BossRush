@@ -110,13 +110,13 @@ TokenOfSlothArtifact: {
 	DisplayName: Token Of Sloth
 	Description:
 		'''
-		"..."
+		"To them you are a laughing stock, but to you they are fragile"
 		[c/ffff00:Positive effect] : 
-			+ Increases damage by 35% and undamaged enemy recieve 50% more damage
-			+ Standing still will gain sloth status which will boost the above effect by 10%
+			+ Increases defenses by 10%, maximum health by 15% 
+			+ Standing still will gain sloth status, which grant player 1 hit resistance
+			Note : Maximum sloth status is 2
 		[c/ab3e43:Negative effect] : 
-			- Decreases your attack speed by 35%
-			- Decreases movement speed by 10%
+			- Decreases your attack speed by 35% and movement speed by 10%
 		'''
 }
 
@@ -126,10 +126,12 @@ TokenOfGluttonyArtifact: {
 		'''
 		"..."
 		[c/ffff00:Positive effect] : 
-			+ Damage reduction will be increases by your current defense : max life divide by 2
-			+ You have 1 in 10 chance to negate a hostile projectile hit and heal 10% of that damage
+			+ The lower your health, the less damage you taken
+			+ Hitting enemy with item will heal yourself by small amount
+			+ While having a buff active, increases your damage reduction by 10%
 		[c/ab3e43:Negative effect] : 
-			- Defenses are reduced to 0
+			- Decrease your buff duration by 90%
+			- You now have a small fixed radius, dealing outside of that radius result in 45% damage decreases
 		'''
 }
 
@@ -169,17 +171,17 @@ NormalizeArtifact: {
 }
 
 AlchemistKnowledgeArtifact: {
-	DisplayName: Alchemist Knowledge
+	DisplayName: Alchemist's Book
 	Description:
 		'''
-		"reveal secret of alchemist"
+		"Knowledge of the ancient"
 		[c/ffff00:Positive effect] :
+			+ Increases buff duration by 35%
+			+ Increases transmutation success chance by 20%
 			+ Having active buff will increase your stats
-			+ Attacking enemy that have :
-			1 debuff active will increases your damage
-			3 debuff active or more will heal you
+			+ Healing and Mana potion now heal for double the amount
 		[c/ab3e43:Negative effect] : 
-			- Decreases potion duration by 55%
+			- Debuff duration increases by 100% and are much more lethal
 		'''
 }
 

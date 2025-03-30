@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 	internal class HeartPistol : SynergyModItem {
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(26, 52, 20, 3f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
+			Item.BossRushDefaultRange(26, 52, 16, 3f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;

@@ -54,7 +54,7 @@ namespace BossRush.Contents.Items.Chest {
 			PostModifyTooltips(ref tooltips);
 		}
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
-		private int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
+		private static int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
 			if (influence != -1) {
 				if (Main.rand.NextFloat() <= chance) {
 					return influence;
@@ -68,7 +68,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return rng;
 		}
-		protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
+		protected static int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
 			ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
 			meleeChance = (int)(modPlayer.UpdateMeleeChanceMutilplier * meleeChance);
 			rangeChance = (int)(modPlayer.UpdateRangeChanceMutilplier * rangeChance);
@@ -161,8 +161,29 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			AbsoluteRightClick(player);
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX) && Main.rand.NextBool(1500)) {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
+				if (Main.rand.NextBool()) {
+					Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<WeaponTicket>());
+					WeaponTicket ticket = item.ModItem as WeaponTicket;
+					LootBoxItemPool pool = LootboxSystem.GetItemPool(Type);
+					int amount = Main.rand.Next(4, 9);
+					HashSet<int> p = new(pool.AllItemPool());
+					if (p.Count <= amount) {
+						ticket.Add_HashSet(p);
+					}
+					else {
+						for (int i = 0; i < amount; i++) {
+							int type = Main.rand.NextFromHashSet(p);
+							p.Remove(type);
+							if (!ticket.Add_Item(type)) {
+								i--;
+							}
+						}
+					}
+				}
+				if (Main.rand.NextBool(1500)) {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+				}
 			}
 		}
 		/// <summary>
@@ -543,13 +564,11 @@ namespace BossRush.Contents.Items.Chest {
 			DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
 			DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
 			DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
-			if (NPC.downedSlimeKing) {
-				DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
-				DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
-				DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
-				DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-				DropItemMisc.AddRange(TerrariaArrayID.Special);
-			}
+			DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
+			DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
+			DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
+			DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
+			DropItemMisc.AddRange(TerrariaArrayID.Special);
 			if (NPC.downedBoss1) {
 				DropItemMelee.Add(ItemID.Code1);
 				DropItemMagic.Add(ItemID.ZapinatorGray);
@@ -709,8 +728,8 @@ namespace BossRush.Contents.Items.Chest {
 			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
-				rng = item.RNGManage(player);
-				rng = item.ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				rng = RNGManage(player);
+				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
 				switch (rng) {
 					case 0:
 						continue;
@@ -781,9 +800,19 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		/// <summary>
+		/// Use this if you only care about getting ammo for weapon
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="weapon"></param>
+		/// <param name="AmountModifier"></param>
+		public static void AmmoForWeapon(Player player, int weapon, float AmountModifier = 1) {
+			LootBoxBase.AmmoForWeapon(BossRushModSystem.ListLootboxType.FirstOrDefault(), player, weapon, AmountModifier);
+		}
+		/// <summary>
 		/// Automatically quick drop player ammo item accordingly to weapon ammo type
 		/// </summary>
-		/// /// <param name="player">The player</param>
+		/// <param name="lootbox">The id of lootbox</param>
+		/// <param name="player">The player</param>
 		/// <param name="weapon">Weapon need to be checked</param>
 		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
 		public static void AmmoForWeapon(int lootbox, Player player, int weapon, float AmountModifier = 1) {
@@ -966,7 +995,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	public class LootboxSystem : ModSystem {
-		private static List<LootBoxItemPool> LootBoxDropPool = new List<LootBoxItemPool>();
+		protected static List<LootBoxItemPool> LootBoxDropPool { get; private set; } = new List<LootBoxItemPool>();
 		/// <summary>
 		/// Direct modify maybe unstable, unsure how this will work <br/>
 		/// To safely modifying loot pool of said item, please refer to <see cref="ReplaceItemPool(LootBoxItemPool)"/>

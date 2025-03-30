@@ -10,8 +10,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System;
 using System.Linq.Expressions;
-using BossRush.Common.Graphics.Structs.TrailStructs;
-using BossRush.Common.Graphics;
+using ReLogic.Content;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -22,31 +21,13 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public const int GenericSwingDownImprove = 990;
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
-
-		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-
-			TrailShaderSettings settings = new TrailShaderSettings();
-			settings.oldPos = swingOldPos;
-			settings.oldRot = swingOldRot;
-			settings.Color = ItemAverageColor.averageColorByID[item.type];
-			default(GenericTrail).Draw(settings, TrailWidth, TrailColor);
-			
-			return true;
-		}
-
-		public float TrailWidth(float progress) => progress * 30f;
-		public Color TrailColor(float progress) => Color.White;
-
 		public int SwingType = 0;
 		public float offset = 0;
-		public Vector2[] swingOldPos;
-		public float[] swingOldRot;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
-
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BorealWoodSword] = .45f;
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalmWoodSword] = .45f;
@@ -129,198 +110,193 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.noMelee) {
 				return;
 			}
-
-			//init swing old pos and old rot arrays
-			swingOldPos = new Vector2[item.useAnimation];
-			swingOldRot = new float[item.useAnimation];
-
-			switch (item.type) {
-				case ItemID.WoodenSword:
-				case ItemID.BorealWoodSword:
-				case ItemID.RichMahoganySword:
-				case ItemID.PalmWoodSword:
-				case ItemID.EbonwoodSword:
-				case ItemID.ShadewoodSword:
-				case ItemID.PearlwoodSword:
-				case ItemID.AshWoodSword:
-					item.width = item.height = 32;
-					break;
-				case ItemID.BluePhaseblade:
-				case ItemID.RedPhaseblade:
-				case ItemID.GreenPhaseblade:
-				case ItemID.PurplePhaseblade:
-				case ItemID.OrangePhaseblade:
-				case ItemID.YellowPhaseblade:
-				case ItemID.WhitePhaseblade:
-					item.width = item.height = 48;
-					break;
-				case ItemID.BluePhasesaber:
-				case ItemID.RedPhasesaber:
-				case ItemID.GreenPhasesaber:
-				case ItemID.PurplePhasesaber:
-				case ItemID.OrangePhasesaber:
-				case ItemID.YellowPhasesaber:
-				case ItemID.WhitePhasesaber:
-					item.width = item.height = 56;
-					break;
-				case ItemID.CopperBroadsword:
-				case ItemID.TinBroadsword:
-				case ItemID.LeadBroadsword:
-				case ItemID.IronBroadsword:
-				case ItemID.SilverBroadsword:
-				case ItemID.TungstenBroadsword:
-				case ItemID.GoldBroadsword:
-				case ItemID.PlatinumBroadsword:
-					item.width = item.height = 46;
-					break;
-				case ItemID.CobaltSword:
-					item.width = 56;
-					item.height = 58;
-					break;
-				case ItemID.PalladiumSword:
-					item.width = 50;
-					item.height = 60;
-					break;
-				case ItemID.MythrilSword:
-					item.width = item.height = 58;
-					break;
-				case ItemID.OrichalcumSword:
-					item.width = item.height = 54;
-					break;
-				case ItemID.AdamantiteSword:
-				case ItemID.TitaniumSword:
-					item.width = item.height = 60;
-					break;
-				case ItemID.Muramasa:
-					item.width = 50;
-					item.height = 64;
-					offset += 12;
-					break;
-				case ItemID.LightsBane:
-					item.width = item.height = 50;
-					break;
-				case ItemID.BloodButcherer:
-					item.width = 50;
-					item.height = 58;
-					break;
-				case ItemID.BladeofGrass:
-					item.width = item.height = 70;
-					break;
-				case ItemID.FieryGreatsword:
-					item.width = 84;
-					item.height = 84;
-					break;
-				case ItemID.TheHorsemansBlade:
-					item.width = item.height = 54;
-					break;
-				case ItemID.Frostbrand:
-					item.width = 50;
-					item.height = 58;
-					break;
-				case ItemID.CactusSword:
-					item.width = item.height = 48;
-					break;
-				case ItemID.BeamSword:
-					item.width = item.height = 52;
-					break;
-				case ItemID.Meowmere:
-					item.width = 50;
-					item.height = 58;
-					break;
-				case ItemID.Starfury:
-					item.width = item.height = 42;
-					break;
-				case ItemID.StarWrath:
-					item.width = 46;
-					item.height = 54;
-					break;
-				case ItemID.BatBat:
-					item.width = item.height = 52;
-					break;
-				case ItemID.TentacleSpike:
-					item.width = 44;
-					item.height = 40;
-					break;
-				case ItemID.InfluxWaver:
-					item.width = item.height = 50;
-					break;
-				case ItemID.Seedler:
-					item.width = 48;
-					item.height = 68;
-					break;
-				case ItemID.Keybrand:
-					item.width = 58;
-					item.height = 62;
-					break;
-				case ItemID.ChlorophyteSaber:
-					item.width += 10;
-					item.height += 10;
-					break;
-				case ItemID.BreakerBlade:
-					item.width = 80;
-					item.height = 92;
-					break;
-				case ItemID.BoneSword:
-					item.width = item.height = 50;
-					break;
-				case ItemID.ChlorophyteClaymore:
-					item.width = item.height = 68;
-					break;
-				case ItemID.Bladetongue:
-					item.width = item.height = 50;
-					break;
-				case ItemID.DyeTradersScimitar:
-					item.width = 40;
-					item.height = 48;
-					break;
-				case ItemID.BeeKeeper:
-					item.width = item.height = 44;
-					break;
-				case ItemID.EnchantedSword:
-					item.width = item.height = 34;
-					break;
-				case ItemID.ZombieArm:
-					item.width = 38;
-					item.height = 40;
-					break;
-				case ItemID.FalconBlade:
-					item.width = 36;
-					item.height = 40;
-					break;
-				case ItemID.Cutlass:
-					item.width = 40;
-					item.height = 48;
-					break;
-				case ItemID.CandyCaneSword:
-					item.width = 44;
-					item.height = 75;
-					break;
-				case ItemID.IceBlade:
-					item.width = 38;
-					item.height = 34;
-					break;
-				case ItemID.HamBat:
-					item.width = 44;
-					item.height = 40;
-					break;
-				case ItemID.DD2SquireBetsySword:
-					item.width = 66; item.height = 66;
-					break;
-				case ItemID.PurpleClubberfish:
-					item.width = item.height = 50;
-					break;
-				case ItemID.AntlionClaw:
-					item.width = item.height = 32;
-					break;
-				case ItemID.Katana:
-					item.width = 48;
-					item.height = 54;
-					break;
-				case ItemID.DD2SquireDemonSword:
-				case ItemID.ChristmasTreeSword:
-					item.width = item.height = 60;
-					break;
-			}
+			//switch (item.type) {
+			//	case ItemID.WoodenSword:
+			//	case ItemID.BorealWoodSword:
+			//	case ItemID.RichMahoganySword:
+			//	case ItemID.PalmWoodSword:
+			//	case ItemID.EbonwoodSword:
+			//	case ItemID.ShadewoodSword:
+			//	case ItemID.PearlwoodSword:
+			//	case ItemID.AshWoodSword:
+			//		item.width = item.height = 32;
+			//		break;
+			//	case ItemID.BluePhaseblade:
+			//	case ItemID.RedPhaseblade:
+			//	case ItemID.GreenPhaseblade:
+			//	case ItemID.PurplePhaseblade:
+			//	case ItemID.OrangePhaseblade:
+			//	case ItemID.YellowPhaseblade:
+			//	case ItemID.WhitePhaseblade:
+			//		item.width = item.height = 48;
+			//		break;
+			//	case ItemID.BluePhasesaber:
+			//	case ItemID.RedPhasesaber:
+			//	case ItemID.GreenPhasesaber:
+			//	case ItemID.PurplePhasesaber:
+			//	case ItemID.OrangePhasesaber:
+			//	case ItemID.YellowPhasesaber:
+			//	case ItemID.WhitePhasesaber:
+			//		item.width = item.height = 56;
+			//		break;
+			//	case ItemID.CopperBroadsword:
+			//	case ItemID.TinBroadsword:
+			//	case ItemID.LeadBroadsword:
+			//	case ItemID.IronBroadsword:
+			//	case ItemID.SilverBroadsword:
+			//	case ItemID.TungstenBroadsword:
+			//	case ItemID.GoldBroadsword:
+			//	case ItemID.PlatinumBroadsword:
+			//		item.width = item.height = 46;
+			//		break;
+			//	case ItemID.CobaltSword:
+			//		item.width = 56;
+			//		item.height = 58;
+			//		break;
+			//	case ItemID.PalladiumSword:
+			//		item.width = 50;
+			//		item.height = 60;
+			//		break;
+			//	case ItemID.MythrilSword:
+			//		item.width = item.height = 58;
+			//		break;
+			//	case ItemID.OrichalcumSword:
+			//		item.width = item.height = 54;
+			//		break;
+			//	case ItemID.AdamantiteSword:
+			//	case ItemID.TitaniumSword:
+			//		item.width = item.height = 60;
+			//		break;
+			//	case ItemID.Muramasa:
+			//		item.width = 50;
+			//		item.height = 64;
+			//		offset += 12;
+			//		break;
+			//	case ItemID.LightsBane:
+			//		item.width = item.height = 50;
+			//		break;
+			//	case ItemID.BloodButcherer:
+			//		item.width = 50;
+			//		item.height = 58;
+			//		break;
+			//	case ItemID.BladeofGrass:
+			//		item.width = item.height = 70;
+			//		break;
+			//	case ItemID.FieryGreatsword:
+			//		item.width = 84;
+			//		item.height = 84;
+			//		break;
+			//	case ItemID.TheHorsemansBlade:
+			//		item.width = item.height = 54;
+			//		break;
+			//	case ItemID.Frostbrand:
+			//		item.width = 50;
+			//		item.height = 58;
+			//		break;
+			//	case ItemID.CactusSword:
+			//		item.width = item.height = 48;
+			//		break;
+			//	case ItemID.BeamSword:
+			//		item.width = item.height = 52;
+			//		break;
+			//	case ItemID.Meowmere:
+			//		item.width = 50;
+			//		item.height = 58;
+			//		break;
+			//	case ItemID.Starfury:
+			//		item.width = item.height = 42;
+			//		break;
+			//	case ItemID.StarWrath:
+			//		item.width = 46;
+			//		item.height = 54;
+			//		break;
+			//	case ItemID.BatBat:
+			//		item.width = item.height = 52;
+			//		break;
+			//	case ItemID.TentacleSpike:
+			//		item.width = 44;
+			//		item.height = 40;
+			//		break;
+			//	case ItemID.InfluxWaver:
+			//		item.width = item.height = 50;
+			//		break;
+			//	case ItemID.Seedler:
+			//		item.width = 48;
+			//		item.height = 68;
+			//		break;
+			//	case ItemID.Keybrand:
+			//		item.width = 58;
+			//		item.height = 62;
+			//		break;
+			//	case ItemID.ChlorophyteSaber:
+			//		item.width += 10;
+			//		item.height += 10;
+			//		break;
+			//	case ItemID.BreakerBlade:
+			//		item.width = 80;
+			//		item.height = 92;
+			//		break;
+			//	case ItemID.BoneSword:
+			//		item.width = item.height = 50;
+			//		break;
+			//	case ItemID.ChlorophyteClaymore:
+			//		item.width = item.height = 68;
+			//		break;
+			//	case ItemID.Bladetongue:
+			//		item.width = item.height = 50;
+			//		break;
+			//	case ItemID.DyeTradersScimitar:
+			//		item.width = 40;
+			//		item.height = 48;
+			//		break;
+			//	case ItemID.BeeKeeper:
+			//		item.width = item.height = 44;
+			//		break;
+			//	case ItemID.EnchantedSword:
+			//		item.width = item.height = 34;
+			//		break;
+			//	case ItemID.ZombieArm:
+			//		item.width = 38;
+			//		item.height = 40;
+			//		break;
+			//	case ItemID.FalconBlade:
+			//		item.width = 36;
+			//		item.height = 40;
+			//		break;
+			//	case ItemID.Cutlass:
+			//		item.width = 40;
+			//		item.height = 48;
+			//		break;
+			//	case ItemID.CandyCaneSword:
+			//		item.width = 44;
+			//		item.height = 75;
+			//		break;
+			//	case ItemID.IceBlade:
+			//		item.width = 38;
+			//		item.height = 34;
+			//		break;
+			//	case ItemID.HamBat:
+			//		item.width = 44;
+			//		item.height = 40;
+			//		break;
+			//	case ItemID.DD2SquireBetsySword:
+			//		item.width = 66; item.height = 66;
+			//		break;
+			//	case ItemID.PurpleClubberfish:
+			//		item.width = item.height = 50;
+			//		break;
+			//	case ItemID.AntlionClaw:
+			//		item.width = item.height = 32;
+			//		break;
+			//	case ItemID.Katana:
+			//		item.width = 48;
+			//		item.height = 54;
+			//		break;
+			//	case ItemID.DD2SquireDemonSword:
+			//	case ItemID.ChristmasTreeSword:
+			//		item.width = item.height = 60;
+			//		break;
+			//}
 			switch (item.type) {
 				//Sword that have even end
 				//WoodSword
@@ -429,28 +405,28 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
-			if (SwingType == BossRushUseStyle.GenericSwingDownImprove) {
+			if (SwingType == BossRushUseStyle.GenericSwingDownImprove || SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
 				TooltipLine line = new TooltipLine(Mod, "SwingImprove", "Sword can swing in all direction");
 				line.OverrideColor = Color.LightYellow;
-				tooltips.Add(line);
-			}
-			if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
-				TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
-					"\nHold down right mouse to do heavy attack");
-				line.OverrideColor = Color.Yellow;
 				tooltips.Add(line);
 			}
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
 			//Since we are using entirely new collision detection, we no longer need this
-			//if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) && item.useAnimation > 10) {
-			//	BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
-			//}
+			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+				BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
+			}
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				float itemsize = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				int laserline = (int)itemsize * 2;
+				float extra = 0;
+				if (target.boss) {
+					extra += .25f;
+				}
+				Asset<Texture2D> texture = TextureAssets.Item[item.type];
+				float itemlength = texture.Value.Size().Length() * .9f;
+				float itemsize = itemlength * (player.GetAdjustedItemScale(player.HeldItem) + extra);
+				int laserline = (int)itemsize;
 				if (laserline <= 0) {
 					laserline = 1;
 				}
@@ -473,7 +449,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						check =
 							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, 11f)));
 					}
-					if(player.itemAnimationMax <= 2) {
+					if (player.itemAnimationMax <= 2) {
 						for (int i = 0; i <= laserline; i++) {
 							Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(laserline, 270, i) * itemsize;
 							if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
@@ -496,21 +472,17 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 		}
-		public override bool CanUseItem(Item item, Player player) {
-			if (SwingType != BossRushUseStyle.Swipe &&
-				SwingType != BossRushUseStyle.Poke ||
-				item.noMelee) {
-				return base.CanUseItem(item, player);
-			}
-			return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
-		}
 		public override float UseSpeedMultiplier(Item item, Player player) {
+			float SpeedAdd = 0;
+			if (!player.autoReuseAllWeapons) {
+				SpeedAdd += .11f;
+			}
 			if (SwingType != BossRushUseStyle.Swipe &&
 				SwingType != BossRushUseStyle.Poke ||
 				item.noMelee) {
-				return base.UseSpeedMultiplier(item, player);
+				return base.UseSpeedMultiplier(item, player) + SpeedAdd;
 			}
-			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f;
+			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f + SpeedAdd;
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			//This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
 			if (SwingType == BossRushUseStyle.Swipe) {
@@ -532,7 +504,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
 				return;
 			}
-			InsertOldPosAndRot(player, item);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
 			switch (SwingType) {
@@ -593,11 +564,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!player.ItemAnimationActive) {
 			}
 		}
-		private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
+		private static void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			Poke2(player, modPlayer, percentDone);
 		}
-		private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone) {
+		private static void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone) {
 			float rotation = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation();
 			Vector2 poke = Vector2.SmoothStep(modPlayer.PlayerToMouseDirection * 30f, modPlayer.PlayerToMouseDirection, percentDone).RotatedBy(rotation);
 			player.itemRotation = modPlayer.PlayerToMouseDirection.ToRotation();
@@ -605,7 +576,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
 		}
-		private void WideSwingAttack(Player player, int direct) {
+		private static void WideSwingAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InOutExpo(percentDone);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
@@ -614,7 +585,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void SwipeAttack(Player player, int direct) {
+		private static void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InExpo(percentDone, 11f);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
@@ -623,41 +594,26 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void CircleSwingAttack(Player player) {
+		private static void CircleSwingAttack(Player player) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			float end = (MathHelper.TwoPi + MathHelper.Pi) * -player.direction;
-			float addition = player.direction > 0 ? MathHelper.Pi : 0;
-			Swipe(addition, end + addition, BossRushUtils.InOutExpo(percentDone), player, 1);
+			float end = (MathHelper.TwoPi * 2) * -player.direction;
+			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().ItemRotationBeforeSwitch;
+			float addition = baseAngle;
+			Swipe(addition, end + addition, BossRushUtils.InOutSine(percentDone), player, 1);
 		}
-		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
+		private static void Swipe(float start, float end, float percentDone, Player player, int direct) {
+			bool directIsnegative = direct == -1;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			player.itemRotation = currentAngle;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3;
-			if (direct == -1) {
+			if (directIsnegative) {
 				modPlayer.CustomItemRotation = currentAngle;
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
-			player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (BossRushUtilsPlayer.PLAYERARMLENGTH + 3);
 
-		}
-
-		public void InsertOldPosAndRot(Player player, Item item) 
-		{
-			Vector2 pos = player.itemLocation + item.Size;
-			float rot = player.itemRotation;
-
-			Array.Copy(swingOldPos,1,swingOldPos,0,swingOldPos.Length - 1);
-			Array.Copy(swingOldRot, 1, swingOldRot, 0, swingOldPos.Length - 1);
-
-			swingOldPos[0] = pos;
-			swingOldRot[0] = rot;
-		}
-		public void ClearOldPosAndRot() 
-		{ 
-			Array.Clear(swingOldPos);
-			Array.Clear(swingOldRot);
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {
@@ -667,7 +623,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {
-			if(!UniversalSystem.Check_RLOH()) {
+			if (!UniversalSystem.Check_RLOH()) {
 				orig(self);
 				return;
 			}
@@ -680,24 +636,38 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			Item item = player.HeldItem;
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer)
 				&& item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)
-				&& modplayer.ComboNumber == 1) {
+				&& modplayer.ComboNumber == 1
+				&& item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 				AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 			}
 			orig.Invoke(ref drawinfo);
 		}
-		private void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
+		private static void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
 			DrawData drawdata;
-			if (modplayer.ComboNumber == 1) {
-				for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
-					if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
-						drawdata = drawinfo.DrawDataCache[i];
-						Vector2 origin = drawdata.texture.Size() * .5f;
-						drawdata.sourceRect = null;
-						drawdata.ignorePlayerRotation = true;
-						drawdata.rotation = modplayer.CustomItemRotation;
-						drawdata.position += Vector2.UnitX.RotatedBy(modplayer.CustomItemRotation) * (origin.Length() * drawdata.scale.X + BossRushUtilsPlayer.PLAYERARMLENGTH + meleeItem.offset) * -player.direction;
-						drawinfo.DrawDataCache[i] = drawdata;
+			for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
+				if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
+					drawdata = drawinfo.DrawDataCache[i];
+					float scale = drawdata.scale.X;
+					Vector2 size = drawdata.texture.Size() * scale;
+					Vector2 origin = size * .5f;
+					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
+						origin = new Vector2(size.X, size.X) * .5f;
 					}
+					drawdata.sourceRect = null;
+					drawdata.ignorePlayerRotation = true;
+					drawdata.rotation = modplayer.CustomItemRotation;
+					if (meleeItem.SwingType == BossRushUseStyle.Swipe) {
+						float rotationCs = player.direction == -1 ? MathHelper.PiOver4 : MathHelper.PiOver2 + MathHelper.PiOver4;
+						float rotationAdjustment = (size.ToRotation() - MathHelper.PiOver4) * -player.direction;
+						drawdata.origin = drawdata.texture.Size() * .5f;
+						drawdata.position = drawdata.position.IgnoreTilePositionOFFSET((drawdata.rotation - rotationCs - rotationAdjustment).ToRotationVector2(), origin.X + 13);
+					}
+					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
+						drawdata.position +=
+						Vector2.UnitX.RotatedBy(drawdata.rotation) *
+						(origin.Length() + meleeItem.offset + BossRushUtilsPlayer.PLAYERARMLENGTH + 3) * -player.direction;
+					}
+					drawinfo.DrawDataCache[i] = drawdata;
 				}
 			}
 		}
@@ -708,20 +678,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int delaytimer = 10;
 		public int oldHeldItem;
 		public int CountDownToResetCombo = 0;
-		bool InStateOfSwinging = false;
 		public float CustomItemRotation = 0;
 		public StatModifier DelayReuse = new();
+		public float ItemRotationBeforeSwitch = 0;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
 				oldHeldItem = item.type;
-				ComboNumber = 0;
+				ComboNumber = -1;
 				CountDownToResetCombo = 0;
 			}
 			delaytimer = BossRushUtils.CountDown(delaytimer);
 			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
-			if (CountDownToResetCombo <= 0)
-				ComboNumber = 0;
+			if (CountDownToResetCombo <= 0) {
+				ComboNumber = -1;
+			}
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
 				return;
 			}
@@ -732,15 +703,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 			}
 			DelayReuse = StatModifier.Default;
-			if (Player.ItemAnimationActive) {
-				InStateOfSwinging = true;
+		}
+		public override bool CanUseItem(Item item) {
+			if (!Player.ItemAnimationActive) {
+				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 			}
-			else {
-				if (InStateOfSwinging) {
-					InStateOfSwinging = false;
-					ComboHandleSystem();
-				}
+			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
+				ComboHandleSystem();
+				ItemRotationBeforeSwitch = Player.itemRotation;
 			}
+			//if (UniversalSystem.Check_RLOH()) {
+			//	if (item.IsAWeapon()) {
+			//		return delaytimer <= 0;
+			//	}
+			//}
+			return base.CanUseItem(item);
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			Item item = Player.HeldItem;
@@ -757,8 +734,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		private void ComboHandleSystem() {
-			if (++ComboNumber >= 2)
-				ComboNumber = 0;
+			ComboNumber = BossRushUtils.Safe_SwitchValue(ComboNumber, 1);
 		}
 		public override void PostUpdate() {
 			Item item = Player.HeldItem;
@@ -767,9 +743,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			if (Player.ItemAnimationJustStarted) {
 				JustHitANPC = false;
-				if (delaytimer == 0) {
-					PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
-				}
 			}
 			if (Player.ItemAnimationActive) {
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
@@ -780,8 +753,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
 				return;
 			}
-			if (ComboNumber != 2 && Main.mouseRight && !JustHitANPC) {
-				Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * Player.GetWeaponKnockback(item);
+			if (!JustHitANPC) {
+
 				JustHitANPC = true;
 			}
 		}

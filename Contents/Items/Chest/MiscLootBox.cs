@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Contents.Skill;
 using BossRush.Common.Utils;
 using System.Linq;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Chest;
 internal class WeaponLootBox : ModItem {
@@ -17,7 +18,7 @@ internal class WeaponLootBox : ModItem {
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
 		var entitySource = player.GetSource_OpenItem(Type);
-		if(Main.rand.NextBool(100)) {
+		if (Main.rand.NextBool(100) && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
 			return;
 		}

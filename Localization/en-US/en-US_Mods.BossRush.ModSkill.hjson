@@ -98,6 +98,11 @@ WoodenArrowRain: {
 	Description: Casts an ambush of Arrows that phases through blocks, dealing 28 damage each
 }
 
+ChaosArrowRain: {
+	DisplayName: Chaos Arrow Rain
+	Description: Rain down random arrow dealing 28 damage each
+}
+
 Increases_3xDamage: {
 	DisplayName: Power Bank
 	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute
@@ -116,6 +121,11 @@ MeteorShower: {
 SpiritBurst: {
 	DisplayName: Spirit Burst
 	Description: Bursts out a powerful spirit that homes in on the nearest enemy.
+}
+
+EnergyBolt: {
+	DisplayName: Energy Bolt
+	Description: Increases skill cost and damage for each active skill, shoot out bunch of energy orb
 }
 
 InfiniteManaSupply: {
@@ -208,13 +218,32 @@ TransferStation: {
 	Description: Places a Vampiric Pylon at your cursor, dealing 10 damage per second to enemies and healing you half that amount while in its radius
 }
 
-// UNRELEASED
+OrbOfPurity: {
+	DisplayName: Orb Of Purity
+	Description: A ancient orb
+}
+
+PhoenixBlazingTornado: {
+	DisplayName: Phoenix Blazing Tornado
+	Description: Wait, I know this one, I saw this one before
+}
+
+BulletHell: {
+	DisplayName: Bullet Hell
+	Description: Create a vortex of bullet [Base: 22 damage]
+}
+
+DebugCommand: {
+	DisplayName: Debug command
+	Description: Deal 2000 damage to every npc on screen on activate skill
+}
 
 LucidNightmares: {
 	DisplayName: Lucid Nightmares
 	Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
 }
 
+// UNRELEASED
 SacrificialWormhole: {
 	DisplayName: Sacrificial Wormhole
 	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 240 damage and inflicting the 'Suffocation' debuff

@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	internal class RubySwotaff : SwotaffGemItem {
@@ -34,14 +34,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.height = 18;
 			Projectile.friendly = true;
 			Projectile.tileCollide = true;
-			Projectile.timeLeft = 300;
+			Projectile.timeLeft = 200;
 			Projectile.penetrate = 1;
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		Vector2 firstframePos = Vector2.Zero;
 		float offset = 1;
 		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
-			if (Projectile.timeLeft == 300) {
+			if (Projectile.timeLeft == 200) {
 				firstframePos = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center;
 			}
 			Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(60 * Projectile.ai[2] + 360 * offset)) * Projectile.timeLeft;
@@ -49,8 +49,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			base.SynergyPreAI(player, modplayer, out runAI);
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			int reversecountdown = 300 - Projectile.timeLeft;
-			offset = MathHelper.Lerp(1, -10, BossRushUtils.InExpo(reversecountdown / 300f));
+			int reversecountdown = 200 - Projectile.timeLeft;
+			offset = MathHelper.Lerp(1, -10, BossRushUtils.InExpo(reversecountdown / 200f));
 			if (Main.rand.NextBool(5)) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemRuby);
 				Main.dust[dust].noGravity = true;
@@ -63,8 +63,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			if (timeLeft <= 0) {
-				for (int i = 0; i < 3; i++) {
-					Vector2 vec = Vector2.One.Vector2DistributeEvenly(3, 360, i).RotatedBy(MathHelper.ToRadians(Projectile.ai[2] * 10)) * 3f;
+				for (int i = 0; i < 6; i++) {
+					Vector2 vec = Vector2.One.Vector2DistributeEvenly(6, 360, i).RotatedBy(MathHelper.ToRadians(Projectile.ai[2] * 10)) * 3f;
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vec, ModContent.ProjectileType<RubyGemProjectileSwotaff>(), Projectile.damage, 0, Projectile.owner);
 				}
 			}
@@ -82,9 +82,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.height = 14;
 			Projectile.hide = true;
 			Projectile.friendly = true;
-			Projectile.tileCollide = true;
-			Projectile.timeLeft = 200;
-			Projectile.penetrate = 1;
+			Projectile.tileCollide = false;
+			Projectile.timeLeft = 900;
+			Projectile.penetrate = -1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 6;
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		NPC npcTarget;
@@ -97,17 +99,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			}
 			if (Projectile.timeLeft > 150) {
 				Projectile.velocity -= Projectile.velocity * .01f;
-				return;
 			}
 			if (npcTarget is not null) {
-				Projectile.timeLeft = 100;
-				Projectile.velocity = (npcTarget.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7f;
-				return;
+				if (++Projectile.ai[0] >= 30) {
+					Vector2 vel = (npcTarget.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5;
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, vel, ProjectileID.RubyBolt, (int)(Projectile.damage * .55f), Projectile.knockBack, player.whoAmI);
+				}
 			}
 			if (Projectile.Center.LookForHostileNPC(out NPC npc, 1000)) {
 				npcTarget = npc;
-				Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7f;
-				return;
 			}
 		}
 	}

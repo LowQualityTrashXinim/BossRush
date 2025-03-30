@@ -11,6 +11,12 @@ namespace BossRush.Common;
 public class ImageStructureLoader : ILoadable {
 	private static readonly Dictionary<string, ImageData> Images = new();
 	private static readonly Dictionary<string, ImageData> ImagesTemplate = new();
+	private static readonly Dictionary<string, ImageData> ImagesTrial = new();
+	public void Unload() {
+		Images.Clear();
+		ImagesTemplate.Clear();
+		ImagesTrial.Clear();
+	}
 	public void Load(Mod mod) {
 		foreach (string filePath in mod.GetFileNames()) {
 			if (!filePath.EndsWith(".rawimg")) {
@@ -33,6 +39,14 @@ public class ImageStructureLoader : ILoadable {
 
 				ImagesTemplate[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
 			}
+			else if (filePath.StartsWith("Assets/Images/Trials")) {
+				Texture2D texture = mod.Assets.Request<Texture2D>(filePath[..^7], AssetRequestMode.ImmediateLoad).Value;
+
+				Color[] textureData = new Color[texture.Width * texture.Height];
+				Main.RunOnMainThread(() => texture.GetData(textureData)).Wait();
+
+				ImagesTrial[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
+			}
 		}
 	}
 	public static ImageData Get(string structureName) {
@@ -41,14 +55,15 @@ public class ImageStructureLoader : ILoadable {
 	public static ImageData Get_Tempate(string structureName) {
 		return ImagesTemplate[structureName + ".rawimg"];
 	}
-	public void Unload() {
+	public static ImageData Get_Trials(string structureName) {
+		return ImagesTrial[structureName + ".rawimg"];
 	}
 
 	public const string OverworldArena = "2x1OverworldArena";
 	public const string FleshArenaVar = "3x3FleshArena";
 	public const string JungleArenaVar = "3x3JungleArena";
 	public const string BeeNestArenaVar = "2x4BeeNestArena";
-	public const string SlimeArena = "3x3SlimeArena";
+	public const string SlimeArena = "SlimeArena";
 	public const string CrimsonArena = "3x3CrimsonArena";
 	public const string CorruptionAreana = "2x4CorruptionArena";
 	public const string DungeonAreana = "2x2DungeonArena";

@@ -13,12 +13,14 @@ using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using BossRush.Common.Utils;
+using Terraria.GameContent;
+using System.Drawing;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
 		public static BossRush Instance { get; private set; }
 		public override void Load() {
-			
+
 			Instance = this;
 			base.Load();
 		}
@@ -28,7 +30,15 @@ namespace BossRush {
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
 		public static bool[] AdvancedRPGItem;
-
+		public static List<int> Shield = new() {
+					ItemID.SquireShield,
+			ItemID.EoCShield,
+			ItemID.CobaltShield,
+			ItemID.ObsidianShield,
+			ItemID.PaladinsShield,
+			ItemID.AnkhShield,
+			ItemID.FrozenShield,
+			ItemID.HeroShield};
 		public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
 		public static Dictionary<int, List<int>> AccRarityDB { get; private set; }
 		public static Dictionary<int, List<int>> HeadArmorRarityDB { get; private set; }
@@ -155,7 +165,7 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if (item.accessory && !item.vanity && item.createTile == -1 
+				if (item.accessory && !item.vanity && item.createTile == -1
 					&& item.type != ItemID.ClothierVoodooDoll
 					&& item.type != ItemID.GuideVoodooDoll
 					&& item.type != ItemID.TreasureMagnet

@@ -3,8 +3,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.General {
+	public class DenyYouFromLoot : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
+				return !npc.CanDenyYouFromLoot;
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "deny you from loot regardless";
+	}
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
@@ -19,6 +30,17 @@ namespace BossRush.Common.General {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)
 				return UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) && info.npc.boss;
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
+	public class NoHitAndIsRakan : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation)
+				return info.player.GetModPlayer<ModdedPlayer>().Secret_MrRakan && info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0;
 			return false;
 		}
 
@@ -114,7 +136,7 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Nightmare mode exclusive";
 	}
-	public class PerkDrop  : IItemDropRuleCondition {
+	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1;

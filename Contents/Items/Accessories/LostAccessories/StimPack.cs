@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Terraria;
@@ -21,7 +21,7 @@ public class StimPackPlayer : ModPlayer {
 		StimPack = false;
 	}
 	public override void UpdateEquips() {
-		if(!Player.ComparePlayerHealthInPercentage(.4f) && StimPack) {
+		if(!Player.IsHealthAbovePercentage(.4f) && StimPack) {
 			Player.AddBuff(ModContent.BuffType<StimPackBuff>(), BossRushUtils.ToSecond(10));
 		}
 	}

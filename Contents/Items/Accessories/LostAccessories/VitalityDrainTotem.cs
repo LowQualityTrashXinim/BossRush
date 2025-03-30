@@ -1,10 +1,10 @@
-﻿using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
+﻿using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using System;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class VitalityDrainTotem : ModItem {

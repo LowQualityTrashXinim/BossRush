@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items {
 	internal class SynergyEnergy : ModItem {
@@ -33,6 +34,9 @@ namespace BossRush.Contents.Items {
 			}
 			if(item.ModItem is SynergyModItem) {
 				IsTheItemInQuestionASynergyItem = true;
+			}
+			else {
+				IsTheItemInQuestionASynergyItem = false;
 			}
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;

@@ -1,33 +1,89 @@
-WoodArmor.SetBonus:
-	'''
-	When in forest biome :
-	Increase defense by 5
-	Increase movement speed by 25%
-	Your attack have 25% chance to drop down a acorn dealing 10 damage
-	'''
-BorealWoodArmor.SetBonus:
-	'''
-	When in snow biome :
-	Increase defense by 5
-	Increase movement speed by 20%
-	You are immune to Chilled, Slow
-	Your attack have 30% chance to inflict frost burn for 10 second
-	'''
-RichMahoganyArmor.SetBonus:
-	'''
-	When in jungle biome :
-	Increase defense by 6
-	Increase movement speed by 30%
-	Getting hit release sharp leaf around you that deal 12 damage
-	'''
+WoodArmor: {
+	Head:
+		'''
+		5% ranged critical strike
+		15% acorn critical strike chance
+		2% chance to spawn a acorn
+		'''
+	Body:
+		'''
+		1.1x ranged damage
+		20% acorn damage
+		3% chance to spawn a acorn
+		'''
+	Leg:
+		'''
+		15% movement speed and jump boost
+		35% acorn velocity
+		1% chance to spawn a acorn
+		'''
+	SetBonus:
+		'''
+		Increase defense by 5
+		Increase movement speed by 25%
+		10% chance to spawn a acorn
+		5% to spawn a sunflower
+		'''
+}
+
+BorealwoodArmor: {
+	Head:
+		'''
+		2% chance to inflict frost burn
+		3% chance to shoot snowball
+		10% snowball damage
+		'''
+	Body:
+		'''
+		3% chance to inflict frost burn
+		4% chance to shoot snowball
+		20% chance to throw out a snowblock
+		'''
+	Leg:
+		'''
+		1% chance to inflict frost burn
+		2% chance to shoot snowball
+		Running will cause snow to shoot behind you
+		'''
+	SetBonus:
+		'''
+		Increase defense by 5 and movement speed by 20%
+		You are immune to Chilled, Slow
+		7% chance to inflict frost burn
+		20% chance to shoot snowball
+		Frost burn now grant massive boost in regeneration
+		'''
+}
+
+RichMahoganyArmor: {
+	Head:
+		'''
+		Standing still passively grant you dryad's blessing
+		12% summoner damage
+		'''
+	Body:
+		'''
+		Increases max minion
+		Getting hit release sharp leaf
+		'''
+	Leg:
+		'''
+		15% whip range
+		Increases max sentry
+		'''
+	SetBonus:
+		'''
+		Increase defense by 6 and movement speed by 30%
+		Increases damage of sharp leaf
+		Decreases standing requirement for dryad's blessing
+		'''
+}
+
 ShadewoodArmor.SetBonus:
 	'''
-	When in crimson biome :
-	Increase defense by 7
-	Increase movement speed by 15%
-	Whenever you strike a enemy :
-	A ring of crimson burst out that deal fixed 30 damage ( have 3 second cool down)
-	For each enemy it hit, debuff them with ichor for 5s and heal you for 1hp
+	Increase defense by 7 and movement speed by 15%
+	Striking an enemy creates a ring that deals 30 damage every 3 seconds, 
+	debuff enemies with ichor and heal you for 1hp
 	'''
 EbonwoodArmor.SetBonus:
 	'''
@@ -37,24 +93,59 @@ EbonwoodArmor.SetBonus:
 	Increase damage by 5%
 	You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
 	'''
-AshwoodArmor.SetBonus:
-	'''
-	Increase defense by 8
-	Increase damage by 10%
-	When in underworld or underground caven level :
-	Getting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage
-	All attacks inflicts On Fire! for 5 seconds
-	'''
-CactusArmor.SetBonus:
-	'''
-	Increase defenses by 10
-	Getting hit will drop down a rolling cactus that is friendly with 5s cool down
-	Getting hit will shoot out 8 cactus spike that is friendly deal 15 damage
-	'''
+
+AshwoodArmor: {
+	Head:
+		'''
+		1.09x damage to OnFire enemy
+		20 maximum life
+		'''
+	Body:
+		'''
+		1.11x damage to OnFire enemy
+		30 maximum life
+		'''
+	Leg:
+		'''
+		1.07x damage to OnFire enemy
+		Running will leave a trail of fire spark 
+		'''
+	SetBonus:
+		'''
+		Increase defense by 8
+		Increase damage by 10%
+		Getting hit fires a burst of flames at the attacker
+		'''
+}
+
+CactusArmor: {
+	Head:
+		'''
+		10 thorn damage
+		Increases life regeneration
+		'''
+	Body:
+		'''
+		15 thorn damage
+		4 melee damage
+		'''
+	Leg:
+		'''
+		7 thorn damage
+		14% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defenses by 10
+		Getting hit will :
+		Drop down a friendly rolling cactus ( 5s cool down )
+		and shoot out 8 friendly cactus spike
+		'''
+}
+
 PalmwoodArmor.SetBonus:
 	'''
-	Increase defense by 10
-	Increase movement speed by 17%
+	Increase defense by 10 and movement speed by 17%
 	Jumping will leave a trail of sand that deal 12 damage
 	Shooting out sand 3 time for each 7 shot that deal 50% of your weapon damage
 	At the end throw out a Coconut that deal 125% damage
@@ -103,51 +194,104 @@ BeeArmor: {
 		'''
 }
 
-TinArmor.SetBonus:
-	'''
-	Increase defense by 5
-	Increase movement speed by 21%
-	Buff most weapon with tin power
-	'''
-CopperArmor.SetBonus:
-	'''
-	Increase movement speed by 25%
-	Every 50 hit to enemy give you the over charged for 5s
-	During the rain, your hit requirement reduce by half
-	Over charged: Increases movement speed, weapon speed, damage by 10%
-	Create a electric charge that target the closest enemy deal 30 damage
-	'''
-IronArmor.SetBonus:
-	'''
-	Increase damage reduction 10%
-	Increase defense effectivness by 25%
-	While under 50% HP, gain 25 bonus defense
-	Have 20% to halve incoming damage
-	'''
+TinArmor: {
+	Head:
+		'''
+		9% attack speed
+		4% tin weapon critical strike chance
+		'''
+	Body:
+		'''
+		5% Damage reduction
+		16% tin weapon damage
+		'''
+	Leg:
+		'''
+		10% jump boost
+		12% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defense by 5
+		Increase movement speed by 21%
+		Buff most weapon with tin power
+		'''
+}
+
+CopperArmor: {
+	Head: 2% chance to inflict Electrified on hit
+	Body: 3% chance to inflict Electrified on hit
+	Leg: 1% chance to inflict Electrified on hit
+	SetBonus:
+		'''
+		25% increased movement speed
+		Hitting enemies 50 times, or 25 in the rain grants 5 seconds of Overcharged
+		'''
+}
+
+IronArmor: {
+	Head: 4% Damage reduction
+	Body: 5% Damage reduction
+	Leg: 3% Damage reduction
+	SetBonus:
+		'''
+		Increase damage reduction 10%
+		Increase defense effectivness by 1.25x
+		While under 50% HP, gain 25 bonus defense
+		Have 20% to halve incoming damage
+		'''
+}
+
 JungleArmor.SetBonus:
 	'''
 	When using magic weapon, you will shoot out magical leaf hover around player up to max of 10
-	When there are 10 leafs exist in world, the leaf will home into the closest enemy when possible
+	Reaching max leafs, the leaf will home into the closest enemy when possible
 	'''
-LeadArmor.SetBonus:
-	'''
-	Increase defense by 7
-	Your attack can inflict irradiation poison
-	Lead irradiation increase enemy defense by 20 but deal 50 DoT
-	'''
-SilverArmor.SetBonus:
-	'''
-	During the day : increases defense by 10
-	During the night : increases damage by 10%
-	While above 75% health, these effects are multiply by 2
-	'''
-TungstenArmor.SetBonus:
-	'''
-	When at full health :
-	Reduce your defense down to 0
-	Increase movement speed by 30%
-	The closer your enemy is, the more damage increases
-	'''
+
+LeadArmor: {
+	Head: +5% debuff inflict duration
+	Body: +10% debuff inflict duration
+	Leg: +5% debuff inflict duration
+	SetBonus:
+		'''
+		Increase defense by 7
+		Your attack can inflict irradiation poison
+		Lead irradiation increase enemy defense by 20 but deal 50 DoT
+		'''
+}
+
+SilverArmor: {
+	Head: 16% First strike damage
+	Body: 24% First strike damage
+	Leg: 12% First strike damage
+	SetBonus:
+		'''
+		112% First strike damage increased
+		Dealing first strike cause enemy to move slower
+		During the day : increases defense by 10
+		During the night : increases damage by 10%
+		While above 75% health, day and night effects are multiply by 2
+		'''
+}
+
+TungstenArmor: {
+	Head:
+		'''
+		6% ranged damage increased
+		3% critical strike chance
+		'''
+	Body: 6% melee damage and magic damage increased
+	Leg:
+		'''
+		6% summon damage increased
+		8% movement speed increased
+		'''
+	SetBonus:
+		'''
+		31% movement speed increased
+		Gain a buff that rotate damage increases after 10s
+		'''
+}
 
 GoldArmor: {
 	SetBonus:
@@ -155,7 +299,18 @@ GoldArmor: {
 		Attacking enemy with midas debuff will deal additional damage based on their defense
 		While enemy have midas debuff, you will take 1 damage and heal 5 life ( debuff is removed after )
 		'''
-	Head: Increases chance to inflict midas by 5%
-	Body: Increases chance to inflict midas by 5%
-	Leg: Increases chance to inflict midas by 5%
+	Head: 5% chance to inflict Midas on hit
+	Body: 5% chance to inflict Midas on hit
+	Leg: 5% chance to inflict Midas on hit
+}
+
+PlatinumArmor: {
+	SetBonus:
+		'''
+		Getting hit reduce next incoming damage by 66% for 4s
+		And you spawn valuable gem when collected empowered your next attack
+		'''
+	Head: 4% damage
+	Body: 4% damage
+	Leg: 4% damage
 }

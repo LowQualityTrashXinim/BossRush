@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 namespace BossRush.Common.Systems.Mutation;
 public abstract class ModMutation : ModType {
 	public bool NewGamePlus = false;
-	public bool MutationCondition(NPC npc, Player player) {
+	public virtual bool MutationCondition(NPC npc, Player player) {
 		return false;
 	}
 	public int Type { get; private set; }

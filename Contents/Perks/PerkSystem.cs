@@ -1,7 +1,11 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using System.IO;
 using Terraria.ID;
 using System.Linq;
+using Terraria.UI;
+using Terraria.Audio;
+using ReLogic.Content;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -10,15 +14,11 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Contents.Artifacts;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Xml.Linq;
-using System;
-using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
+using BossRush.Contents.Transfixion.Artifacts;
+using BossRush.Contents.Items.Consumable.SpecialReward;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -64,6 +64,7 @@ namespace BossRush.Contents.Perks {
 	}
 	class PerkModSystem : ModSystem {
 		public static List<int> StarterPerkType { get; private set; } = new();
+		public static List<int> WeaponUpgradeType { get; private set; } = new();
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;
@@ -83,6 +84,9 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.Starter)) {
 					StarterPerkType.Add(i);
+				}
+				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.WeaponUpgrade)) {
+					WeaponUpgradeType.Add(i);
 				}
 			}
 		}
@@ -183,6 +187,11 @@ namespace BossRush.Contents.Perks {
 		public override void PostUpdate() {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).Update(Player);
+			}
+		}
+		public override void PostUpdateRunSpeeds() {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).PostUpdateRun(Player);
 			}
 		}
 		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -298,6 +307,12 @@ namespace BossRush.Contents.Perks {
 			}
 			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 		}
+		public override bool OnPickup(Item item) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).OnPickUp(Player, item);
+			}
+			return base.OnPickup(item);
+		}
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
@@ -398,6 +413,10 @@ namespace BossRush.Contents.Perks {
 			return ModContent.GetInstance<T>().Type;
 		}
 		public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
+		/// <summary>
+		/// If you are using <see cref="StackAmount(Player)"/> check for tooltip, always set it back at lest by 1
+		/// </summary>
+		/// <returns></returns>
 		public virtual string ModifyToolTip() {
 			if (Description != null)
 				return Description;
@@ -439,6 +458,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void OnUseItem(Player player, Item item) { }
 		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 		public virtual void Update(Player player) { }
+		public virtual void PostUpdateRun(Player player) { }
 		public virtual void UpdateEquip(Player player) { }
 		public virtual void ResetEffect(Player player) { }
 		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
@@ -468,6 +488,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void OnChoose(Player player) { }
 		public virtual bool FreeDodge(Player player, Player.HurtInfo hurtInfo) => false;
 		public virtual bool PreKill(Player player) => false;
+		public virtual void OnPickUp(Player player, Item item) { }
 	}
 	public static class ModPerkLoader {
 		private static readonly List<Perk> _perks = new();
@@ -490,6 +511,7 @@ namespace BossRush.Contents.Perks {
 		public const short StarterPerkState = 1;
 		public const short DebugState = 2;
 		public const short GamblerState = 3;
+		public const short WeaponUpgradeState = 4;
 		public short StateofState = 0;
 		public UIText toolTip;
 		public Roguelike_UIImageButton reroll = null;
@@ -505,7 +527,6 @@ namespace BossRush.Contents.Perks {
 
 			list_perkbtn = new();
 			toolTip = new UIText("");
-			Info = "";
 			Append(toolTip);
 		}
 
@@ -543,15 +564,20 @@ namespace BossRush.Contents.Perks {
 					listOfPerk.Add(i);
 				}
 			}
-			if (StateofState == StarterPerkState) {
-				listOfPerk = PerkModSystem.StarterPerkType;
+			else if (StateofState == StarterPerkState) {
+				listOfPerk = [.. PerkModSystem.StarterPerkType];
 			}
 			foreach (var item in list_perkbtn) {
+				if (listOfPerk.Contains(item.perkType)) {
+					listOfPerk.Remove(item.perkType);
+				}
 				if (listOfPerk.Count < 1) {
 					item.ChangePerkType(Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() }));
 				}
 				else {
-					item.ChangePerkType(Main.rand.Next(listOfPerk));
+					int perkChoosen = Main.rand.Next(listOfPerk);
+					item.ChangePerkType(perkChoosen);
+					listOfPerk.Remove(perkChoosen);
 				}
 			}
 			modplayer.Modify_RerollCount(1, true);
@@ -578,6 +604,32 @@ namespace BossRush.Contents.Perks {
 				if (StateofState == GamblerState) {
 					ActivateGamblerUI(modplayer, player);
 				}
+				if (StateofState == WeaponUpgradeState) {
+					ActivateWeaponUpgradeUI(modplayer, player);
+				}
+			}
+		}
+		private void ActivateWeaponUpgradeUI(PerkPlayer modplayer, Player player) {
+			reroll.Hide = false;
+			Vector2 originDefault = new Vector2(26, 26);
+			List<int> starterPerk = new(PerkModSystem.WeaponUpgradeType);
+			int limit = 3;
+			for (int i = 0; i < limit; i++) {
+				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
+				starterPerk.Remove(choosenperk.Type);
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
+				//After that we assign perk
+				if (modplayer.perks.ContainsKey(choosenperk.Type)) {
+					if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
+						continue;
+					}
+				}
+				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = choosenperk.Type;
+				list_perkbtn.Add(btn);
+				Append(btn);
 			}
 		}
 		private void ActivateDebugPerkUI(Player player) {
@@ -658,7 +710,7 @@ namespace BossRush.Contents.Perks {
 		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 			reroll.Hide = false;
 			Vector2 originDefault = new Vector2(26, 26);
-			List<int> starterPerk = new(PerkModSystem.StarterPerkType);
+			List<int> starterPerk = [.. PerkModSystem.StarterPerkType];
 			int limit = 3;
 			for (int i = 0; i < limit; i++) {
 				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));

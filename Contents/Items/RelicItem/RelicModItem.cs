@@ -6,9 +6,9 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -116,7 +116,7 @@ public class Relic : ModItem {
 	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
-		NameLine.Text = $"[Tier : {TemplateCount}] {this.DisplayName}";
+		NameLine.Text = $"[Tier {TemplateCount}] {this.DisplayName}";
 		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
@@ -226,6 +226,7 @@ public class Relic : ModItem {
 	}
 }
 public abstract class RelicTemplate : ModType {
+	public float EnergyCost = 0;
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}

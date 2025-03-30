@@ -3,10 +3,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class GenericTemplate : RelicTemplate {
@@ -176,7 +176,7 @@ public class CombatV2Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.ComparePlayerHealthInPercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
+		if (player.IsHealthAbovePercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV3Template : RelicTemplate {
@@ -219,7 +219,7 @@ public class CombatV3Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
+		if (!player.IsHealthAbovePercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV4Template : RelicTemplate {
@@ -292,7 +292,7 @@ public class HealthV2Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.4f, 1.85f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.35f)) {
+		if (!player.IsHealthAbovePercentage(.35f)) {
 			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}
@@ -543,7 +543,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		//We are randomizing the base damage that our friendly slime spike gonna deal
-		return new(1, 1, 0, 10 + Main.rand.Next(0, 6));
+		return new(1, 1, 0, 15 + Main.rand.Next(0, 6));
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		//This is to get the name of the stats which we set
@@ -552,9 +552,11 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		//SlimeSpikeTemplate.Description: Shoot [c/{0}:{1} friendly slime spike] dealing [c/{2}:{3}] [c/{4}:{5}] when enemy are near
 		//As such it is important to format these string so that custom value can be shown on relic
 		return string.Format(Description, new string[] {
+			//Terraria have a feature that allow we to add color to text, they uses hex3 for custom text coloring
 				Color.Blue.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
+				//This is my custom method that convert float number to string
 				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				Color.Yellow.Hex3(),
 				Name
@@ -582,7 +584,11 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * Tier + 1)),
 				2 + .5f * Tier,
 				player.whoAmI);
+			//Setting projectile travel distance before killing
+			proj.Set_ProjectileTravelDistance(375);
+			//Setting projectile damage type
 			proj.DamageType = dmgclass;
+			//Set the projectile to ignore tile collision
 			proj.tileCollide = false;
 		}
 	}
@@ -609,7 +615,7 @@ public class SkillCoolDownTemplate : RelicTemplate {
 public class FireBallTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		DataStorer.AddContext("Relic_FireBall", new(
-			350,
+			400,
 			Vector2.Zero,
 			false,
 			Color.OrangeRed
@@ -641,7 +647,7 @@ public class FireBallTemplate : RelicTemplate {
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		DataStorer.ActivateContext(player, "Relic_FireBall");
-		if (!player.Center.LookForAnyHostileNPC(350f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(400f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}
 		int Tier = relic.RelicTier;
@@ -655,6 +661,7 @@ public class FireBallTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * Tier + 1)),
 				4 + .5f * Tier,
 				player.whoAmI);
+			proj.Set_ProjectileTravelDistance(400);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
 		}
@@ -715,6 +722,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				4 + .5f * Tier,
 				player.whoAmI);
+			proj.Set_ProjectileTravelDistance(450);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
 		}
@@ -743,7 +751,7 @@ public class MagicMissileTemplate : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		int cooldown = 180 - 10 * (relic.RelicTier - 1);
+		int cooldown = 180 - 20 * (relic.RelicTier - 1);
 		return string.Format(Description, new string[] {
 				Color.LightSkyBlue.Hex3(),
 				(Math.Round(cooldown / 60f, 2)).ToString(),
@@ -756,7 +764,7 @@ public class MagicMissileTemplate : RelicTemplate {
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		DataStorer.ActivateContext(player, "Relic_MagicMissile");
-		int cooldown = 180 - 10 * (relic.RelicTier - 1);
+		int cooldown = 180 - 20 * (relic.RelicTier - 1);
 		if (!player.Center.LookForAnyHostileNPC(650f) || (modplayer.synchronize_Counter - 10) % cooldown != 0) {
 			return;
 		}
@@ -773,7 +781,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			player.whoAmI);
 		proj.DamageType = dmgclass;
 		proj.tileCollide = false;
-
+		proj.Set_ProjectileTravelDistance(650);
 	}
 }
 
@@ -822,16 +830,95 @@ public class DemonScytheTemplate : RelicTemplate {
 		int Tier = relic.RelicTier;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
+			Vector2 pos = player.Center + Main.rand.NextVector2Circular(590, 590);
+			Vector2 vel = (npc.Center - pos).SafeNormalize(Vector2.Zero);
 			Projectile proj = Projectile.NewProjectileDirect(
 				player.GetSource_ItemUse(relic.Item, Type.ToString()),
-				player.Center,
-				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
+				player.Center + Main.rand.NextVector2Circular(590, 590),
+				vel,
 				ProjectileID.DemonScythe,
 				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
+			proj.Set_ProjectileTravelDistance(600);
+		}
+	}
+}
+public class BlizzardTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		DataStorer.AddContext("Relic_Blizzard", new(
+			650,
+			Vector2.Zero,
+			false,
+			Color.LightBlue
+			));
+	}
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return Main.rand.Next(new PlayerStats[] {
+			PlayerStats.MeleeDMG,
+			PlayerStats.RangeDMG,
+			PlayerStats.MagicDMG,
+			PlayerStats.SummonDMG,
+			PlayerStats.PureDamage
+		});
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new(1, 1, 0, 20 + Main.rand.Next(0, 6));
+	}
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		int cooldown = Math.Clamp(120 - 20 * (relic.RelicTier - 1), 10, 999);
+		return string.Format(Description, new string[] {
+				Color.LightSkyBlue.Hex3(),
+				(Math.Round(cooldown / 60f, 2)).ToString(),
+				Color.Red.Hex3(),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				Color.Yellow.Hex3(),
+				Name
+		});
+	}
+
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		DataStorer.ActivateContext(player, "Relic_Blizzard");
+		int cooldown = Math.Clamp(120 - 20 * (relic.RelicTier - 1), 10, 999);
+		if (!player.Center.LookForAnyHostileNPC(650f) || (modplayer.synchronize_Counter - 10) % cooldown != 0) {
+			return;
+		}
+		int Tier = relic.RelicTier;
+		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
+
+		Projectile proj = Projectile.NewProjectileDirect(
+			player.GetSource_ItemUse(relic.Item, Type.ToString()),
+			player.Center,
+			Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(10, 15), Main.rand.NextFloat(10, 15)),
+			ProjectileID.Blizzard,
+			(int)(value.Base * (1 + .1f * Tier + 1)),
+			4 + .5f * Tier,
+			player.whoAmI);
+		proj.DamageType = dmgclass;
+		proj.tileCollide = false;
+		proj.Set_ProjectileTravelDistance(650);
+	}
+}
+
+public class MiniHeartStatuesTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return base.StatCondition(relic, player);
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new(1, 1, 0, Main.rand.Next(1, 5) * 5);
+	}
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		return string.Format(Description, new string[] {
+				Color.Green.Hex3(),
+				RelicTemplateLoader.RelicValueToNumber(value.Base),
+		});
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		if (modplayer.synchronize_Counter % 600 == 0) {
+			player.Heal((int)value.Base);
 		}
 	}
 }

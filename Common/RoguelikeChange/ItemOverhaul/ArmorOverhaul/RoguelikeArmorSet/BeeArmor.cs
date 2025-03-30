@@ -143,6 +143,6 @@ public class BeeArmorPlayer : PlayerArmorHandle {
 			Main.projectile[proj].friendly = true;
 			Main.projectile[proj].hostile = false;
 		}
-		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		return true;
 	}
 }

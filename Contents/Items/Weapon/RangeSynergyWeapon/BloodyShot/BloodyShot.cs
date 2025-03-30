@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AquaScepter);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
+			Item.BossRushDefaultRange(42, 36, 22, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
 			Item.scale = 0.9f;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);

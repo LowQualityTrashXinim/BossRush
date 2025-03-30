@@ -12,10 +12,10 @@ StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
 		'''
-		You have 20% to 70% to
-		+ Have your output damage increases when hitting NPC from 15% to 100%
-		+ Damage dealt onto you may be reduce from 15% to dealing 1 damage
-		You have 10% to 90% to dodge a attack which give you 44 to 88 i-frame
+		Your chance range from 20% to 70%
+		+ Your damage increases from 15% to 100% when strike NPC
+		+ Damage dealt onto you may be reduced from 15% to 100%
+		You have 10% to 90% to dodge
 		'''
 }
 
@@ -24,10 +24,10 @@ UncertainStrike: {
 	Description:
 		'''
 		Your strike have
-		+ 33% to increases damage up to 55% or decreases down to 15%
-		+ 15% to ignore 20 defenses
-		+ 5% for damage to be multiply by 2
-		+ 1% to heal player
+		+ 33% chance to vary your damage from -15% to 55%
+		+ 15% chance to ignore 20 defenses
+		+ 5% chance to multiply damage by 2.0x
+		+ 1% chance to heal player
 		'''
 }
 
@@ -99,9 +99,9 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of transmutation success by 5%
-		+ Increases the chance of accessory augmentated by 5%
-		+ Increases the chance of weapon enchanted by 5%
+		+ Increases the chance of transmutation success by 10%
+		+ Increases the chance of accessory augmentated by 10%
+		+ Increases the chance of weapon enchanted by 10%
 		'''
 }
 
@@ -118,7 +118,7 @@ AlchemistEmpowerment: {
 	DisplayName: Alchemist Empowerment
 	Description:
 		'''
-		+ Drinking any buff potion have chance to give you additional helpful buff
+		+ Drinking any buff potion will give you additional helpful buff
 		+ Quick Potion heal is halved, but also cleanses almost all debuffs
 		+ Potion have 55% to not be consumed when not using Quick Buff key
 		+ Opening Lootbox will drop you 1 random special potion
@@ -152,7 +152,11 @@ ProjectileDuplication: {
 
 ScatterShot: {
 	DisplayName: Scatter Shot
-	Description: + When a projectile die, it will shoot out a weaker version of itself
+	Description:
+		'''
+		+ When a projectile die, it will shoot out a weaker version of itself
+		Note : There are projectiles which are blocked to work with this perk
+		'''
 }
 
 BloodStrike: {
@@ -169,14 +173,20 @@ SpeedArmor: {
 	DisplayName: Speed Armor
 	Description:
 		'''
-		+ The faster you are, the more defenses increases
-		+ Increases your movement speed by 15%
+		+ The faster you are, the more defenses is increases
+		+ Increases your movement ability
 		'''
 }
 
 CelestialRage: {
 	DisplayName: Celestial Rage
-	Description: + A gift from celestial being
+	Description:
+		'''
+		+ A gift from celestial being
+		Multiply damage by 1.1x
+		+5 critical strike chance
+		+100% critical strike damage
+		'''
 }
 
 BlessingOfSolar: {
@@ -186,6 +196,13 @@ BlessingOfSolar: {
 		+ 12% melee size increases
 		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
 		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		'''
+	Description3:
+		'''
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		+ Collecting heart have chance to heal additional 100 life
 		'''
 }
 
@@ -207,6 +224,13 @@ BlessingOfNebula: {
 		+ Increases max mana by 78
 		+ Mana star have 6% to spawn from hitting NPC with magic projectile
 		'''
+	Description3:
+		'''
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		+ Collecting star have chance to gain nebula booster
+		'''
 }
 
 BlessingOfStarDust: {
@@ -214,14 +238,19 @@ BlessingOfStarDust: {
 	Description:
 		'''
 		+ Your whip inflict Star gaze
-		+ For 2 minion/sentry slot you have, you gain 1 damage
+		+ For 2 minion/sentry slot you have, you gain 1 base damage
 		+ Increases your max minion slot and sentry slot by 1
 		'''
 }
 
 BlessingOfSynergy: {
 	DisplayName: Blessing Of Synergy
-	Description: + Increases weapon flat damage by 10 when switch to a different weapon after used
+	Description:
+		'''
+		+ Give you 1 synergy energy ( only once )
+		+ Increases weapon flat damage by 10 when switch to a different weapon after used
+		+ Weapon drop amount are increases by 1
+		'''
 }
 
 BlessingOfTitan: {
@@ -250,7 +279,7 @@ BlessingOfPerk: {
 		'''
 		+ Increases perk range amount by 1
 		+ Increases lootbox drop amount by 1
-		+ Rare spoils are more common
+		+ Rare spoils are more common ( applied only once )
 		'''
 }
 
@@ -297,8 +326,9 @@ BeyondCritcal: {
 	DisplayName: Beyond Critical
 	Description:
 		'''
-		+ You have 4% chance to ignore 90% target hit defense and increases damage by 2.5 time
 		+ Increases critcal strike chance by 5%
+		+ You have 4% chance to ignore 90% target hit defense and increases damage by 2.5 time
+		+ Critical strike will make above chance increases to 15%
 		'''
 }
 
@@ -357,7 +387,7 @@ AspectOfTheUnderworld: {
 		'''
 		+ You have a aura of fire and you become immune to on fire
 		+ Enemy that have On Fire debuff will receive more critical damage
-		- While your life is above 66%, decreases life regen by 32 flat but your aura of fire is stronger
+		- While your life is above 66%, decreases life regen by 32 but your aura of fire is stronger
 		'''
 }
 
@@ -370,11 +400,7 @@ AspectOfFirstChaos: {
 		+ Hitting enemy with item will also occasionally shoot out random projectile
 		+ You sometime hit enemy multiple time
 		'''
-}
-
-AspectOfFirstChaos1: {
-	DisplayName: Aspect Of First Chaos
-	Description:
+	Description1:
 		'''
 		+ Increases the chance of spawning random projectile and doing multiple hit
 		+ Projectile that is spawn from this perk have 1 in 4 chance to spawn another different projectile
@@ -396,7 +422,6 @@ OathOfSword: {
 	Description:
 		'''
 		+ Increases your melee damage by 100% and melee damage are multiply by 1.1x
-		- Melee attack speed are multiply by 0.45x
 		- Using any other weapon that is not melee will decreases their damage by 65%
 		'''
 }
@@ -405,8 +430,9 @@ HybridRanger: {
 	DisplayName: Spirit Ranger
 	Description:
 		'''
-		+ Your range damage is increased by how many max minion and sentry slot are
-		+ Increases your max minion and sentry slot by your range damage to 1:100
+		+ Increases max minion and sentry by 1 and range damage by 10%
+		+ For every 2 max minion or sentry, summon short lived spectre spirit when shoot
+		+ Summon damage now have critical strike chance base on ranger critical strike chance
 		'''
 }
 
@@ -440,7 +466,7 @@ LostInWonderLand: {
 		[WARNING:EXPERIMENTAL DO NOT CHOOSE]
 		+ Increases chance of NPC getting mutate by 10%
 		+ Your weapon have 10% to get enchantment
-		+ Your weapon have 10% to get augmentation
+		+ Your accessory have 10% to get augmentation
 		'''
 }
 
@@ -470,7 +496,8 @@ EndlessHunger: {
 	Description:
 		'''
 		+ Increases your damage reduction by 5%
-		+ When your damage reduction is over 20%, getting hit will heal you a random amount
+		+ When your damage reduction is over 20% and your health is below 50%
+		Getting hit will heal you a random amount
 		(Note : The higher your damage reduction, the better the heal become)
 		'''
 }
@@ -520,7 +547,7 @@ NaturalThorn: {
 	DisplayName: Natural Thorn
 	Description:
 		'''
-		+ Increases your maximum health by 10%
+		+ Increases your maximum health by 15%
 		+ Deal damage to enemy close to you ( damage depend on your current health )
 		+ Getting hit will deal damage back to NPC depend on your regenerative power
 		'''
@@ -542,7 +569,7 @@ NightTerror: {
 		'''
 		During night :
 		+ Increases your life regeneration by 25% and flat 10
-		Increases your :
+		Also increases your :
 		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
 		( Note : effect above are stack differently )
 		'''
@@ -611,7 +638,7 @@ RefinedUpgrade: {
 		+ Axe critical hit damage are increased by 200%
 		+ Base damage increases by 10
 		+ Axe delay reuses are decrease by 50%
-		+ Hitting enemy with axe will causes them to bleed
+		+ Hitting enemy with axe can causes them to bleed
 		'''
 }
 
@@ -650,5 +677,122 @@ DemolitionistGunner: {
 		+ Explosive bullet have 10% to deal 55% more damage to enemy
 		+ Explosive bullet have 5% to do a big explosion
 		+ You have 5% chance to throw out friendly grenade which deal 3x damage
+		'''
+}
+
+MindOfBattlefield: {
+	DisplayName: Mind Of Battlefield
+	Description:
+		'''
+		+ Increases movement speed by 25%, jump boost by 20% and reduce damage taken by 10
+		+ Increases critical strike chance by 7% when using bow/repeater 
+		+ Helding sword will increases your i-frame duration by 11%
+		+ Using explosive increases direct hit damage by 50%
+		+ Shooting gun is 14% faster
+		'''
+}
+
+TripletShot: {
+	DisplayName: Triplet Shot
+	Description:
+		'''
+		+ Weapon uses arrow will shoot out additional spread of 3 arrows !
+		- Decreases attack speed of the weapon by 15%
+		- Decreases base damage by 4 ( can't go below 1 )
+		'''
+}
+
+VampirismCrystal_Upgrade1: {
+	DisplayName: Vitality Crystal [Vampirism Crystal]
+	Description: + Lessen the effect of decreases maximum hp from 55% -> 15%
+}
+
+VampirismCrystal_Upgrade2: {
+	DisplayName: Pure Vampire Crystal [Vampirism Crystal]
+	Description:
+		'''
+		+ Decreases cooldown between each life steal by half
+		+ Life steal is a lot stronger
+		- Strengthen decreases maximum life effect from 55% -> 65% 
+		'''
+}
+
+TokenOfPride_Upgrade1: {
+	DisplayName: Noble Pride [Token Of Pride]
+	Description: + Loot drop value are now halve instead of 0x
+}
+
+TokenOfPride_Upgrade2: {
+	DisplayName: Blacksmith Pride [Token Of Pride]
+	Description:
+		'''
+		+ Increases chance of getting augmentation from 65% to 85%
+		+ Weapon have 20% chance to get additional enchanted
+		'''
+}
+
+SoulShatter: {
+	DisplayName: Soul Shatter
+	Description:
+		'''
+		~ 1 bullet is all it matter ~
+		+ Increases first strike damage by 500% and critical strike damage by 40%
+		+ After waiting for 1.5s, increases the next shot damage by 40% and critical strike damage by 100%
+		+ Your bullet have 0.1% chance to instantly kill non-boss enemy
+		+ Killing a enemy with 1 shot will debuff surrounding enemy with "shatter" debuff
+		'''
+}
+
+SlothVessle: {
+	DisplayName: Sloth Vessle
+	Description:
+		'''
+		+ You have 10% chance to resist an attack
+		+ Increases i-frame duration by 10%
+		+ During i-frame, your attack have 5% chance to heal you
+		'''
+}
+
+FoolDomain: {
+	DisplayName: Fool's Domain
+	Description:
+		'''
+		+ Enemy enter your aura will take 20% less damage but they are slower by 35%
+		+ When not moving, after a short while, you enter a slumber state
+		+ During slumber state getting hit will make enemy within the aura will receive 10% damage of their max life
+		+ You will only receive 1 damage during slumber state
+		Note : there is a 1 minute cool down before you can re-enter slumber state
+		'''
+}
+
+BlessedKnowledge: {
+	DisplayName: Blessed Knowledge
+	Description:
+		'''
+		+ Drinking a potion will heal player for 10 health
+		+ Increases healing effectiveness by 20%
+		+ Increase debuff damage by 12%
+		'''
+}
+
+AncientKnowledge: {
+	DisplayName: Ancient Knowledge
+	Description:
+		'''
+		+ Increases debuff duration on inflicting enemy by 10%
+		+ Decreases your debuff duration by 10%
+		+ Increases transmutation success by 20% ( not stackable )
+		'''
+}
+
+UntappedPotential: {
+	DisplayName: Untapped Potential
+	Description:
+		'''
+		+ Increases damage of synergy weapon base on 
+		Synergy bonus value
+		Amount of weapon in player inventory
+		Note : damage is increased base on weapon's damage
+		+ Increases synergy weapon critical strike chance base on synergy bonus
 		'''
 }

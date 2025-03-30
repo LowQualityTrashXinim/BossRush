@@ -16,6 +16,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<BurningPassionP>(), 3.7f);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(silver: 1000);
+			Item.UseSound = SoundID.Item1;
 		}
 		public override bool AltFunctionUse(Player player) {
 			return player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown <= 0;

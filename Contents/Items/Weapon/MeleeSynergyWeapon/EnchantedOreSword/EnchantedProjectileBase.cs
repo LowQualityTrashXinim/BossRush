@@ -15,6 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;
 			Projectile.width = Projectile.height = 32;
+			Projectile.alpha = 0;
 		}
 		public virtual void PostSetDefault() { }
 		int counter = 0;
@@ -37,7 +38,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		}
 		public virtual void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
 		public override bool PreDraw(ref Color lightColor) {
-			Projectile.DrawTrail(lightColor);
+			Projectile.DrawTrailWithoutAlpha(lightColor);
 			return base.PreDraw(ref lightColor);
 		}
 	}

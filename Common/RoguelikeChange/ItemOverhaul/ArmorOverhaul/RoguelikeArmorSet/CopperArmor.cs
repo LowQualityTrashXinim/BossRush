@@ -14,19 +14,37 @@ internal class CopperArmor : ModArmorSet {
 public class CopperHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperHelmet;
-		Add_Defense = 2;
+		Add_Defense = 2; 
+		TypeEquipment = Type_Head;
+		ArmorName = "CopperArmor";
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .02f;
 	}
 }
 public class CopperChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperChainmail;
 		Add_Defense = 3;
+		TypeEquipment = Type_Body;
+		ArmorName = "CopperArmor";
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .03f;
 	}
 }
 public class CopperGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CopperGreaves;
 		Add_Defense = 2;
+		TypeEquipment = Type_Leg;
+		ArmorName = "CopperArmor";
+		AddTooltip = true;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		player.GetModPlayer<RoguelikeArmorPlayer>().ElectricityChance += .01f;
 	}
 }
 public class CopperArmorPlayer : PlayerArmorHandle {

@@ -60,11 +60,7 @@ class SkillGetterUI : UIState {
 	int currentSelectTemplate = -1;
 
 	private int linePosition;
-	private int maxLinePosition;
-	private const int MAX_LINES = 6;
-
 	List<btn_Skill> btn_list;
-	private List<ModSkill> list_Skill = new();
 	public const int SKILL_MAXLINE = 10;
 	public override void OnInitialize() {
 		btn_select = new UIImageButton(TextureAssets.InventoryBack);
@@ -91,22 +87,20 @@ class SkillGetterUI : UIState {
 			if (i % SKILL_MAXLINE == 0) {
 				lineCounter++;
 			}
-			ModSkill skill = SkillModSystem.GetSkill(i);
-			list_Skill.Add(skill);
-			if (lineCounter < SKILL_MAXLINE) {
 
-				btn_Skill button = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)) {
-					Width = StyleDimension.FromPixels(44f),
-					Height = StyleDimension.FromPixels(44f),
-					Left = StyleDimension.FromPixels((i % SKILL_MAXLINE) * 46.0f + 6.0f),
-					Top = StyleDimension.FromPixels((i / SKILL_MAXLINE) * 48.0f + 1.0f)
-				};
-				button.ModSkillID = i;
-				button.OnLeftClick += Text_OnLeftClick;
-				button.OnUpdate += Text_OnUpdate;
-				btn_list.Add(button);
-				panel.Append(button);
-			}
+
+			btn_Skill button = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)) {
+				Width = StyleDimension.FromPixels(44f),
+				Height = StyleDimension.FromPixels(44f),
+				Left = StyleDimension.FromPixels((i % SKILL_MAXLINE) * 46.0f + 6.0f),
+				Top = StyleDimension.FromPixels((i / SKILL_MAXLINE) * 48.0f + 1.0f)
+			};
+			button.ModSkillID = i;
+			button.OnLeftClick += Text_OnLeftClick;
+			button.OnUpdate += Text_OnUpdate;
+			btn_list.Add(button);
+			panel.Append(button);
+
 		}
 	}
 
@@ -132,20 +126,23 @@ class SkillGetterUI : UIState {
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		linePosition -= MathF.Sign(evt.ScrollWheelValue);
 		int offsetvalue = linePosition * SKILL_MAXLINE;
-		int length = list_Skill.Count;
+		int length = SkillModSystem.TotalCount;
 		int offsetlength = length - offsetvalue;
 		for (int i = 0; i < length; i++) {
+			if (i < 0 || i >= btn_list.Count) {
+				continue;
+			}
 			int arty = Math.Clamp(i + offsetvalue, 0, length - 1);
-			btn_list[i].ModSkillID = -1;
+			btn_list[i].ChangeModSKillID(-1);
 			if (i > offsetlength) {
 				continue;
 			}
-			btn_list[i].ModSkillID = arty;
+			btn_list[i].ChangeModSKillID(arty);
 		}
 	}
 	private void Text_OnUpdate(UIElement affectedElement) {
-		if (currentSelectTemplate == affectedElement.UniqueId) {
-			btn_Skill text = btn_list.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
+		if (affectedElement.IsMouseHovering) {
+			btn_Skill text = btn_list.Where(i => i.UniqueId == affectedElement.UniqueId).FirstOrDefault();
 			if (text == null) {
 				return;
 			}
@@ -159,7 +156,6 @@ class SkillGetterUI : UIState {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
-
 	private void Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		currentSelectTemplate = listeningElement.UniqueId;
 	}

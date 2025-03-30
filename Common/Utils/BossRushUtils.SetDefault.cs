@@ -12,7 +12,8 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System.Diagnostics;
 using System.Threading.Channels;
-using BossRush.Contents.Arguments;
+using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -147,8 +148,17 @@ namespace BossRush {
 			}
 		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
-			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.CriticalDamage = critDmg;
+			}
+		}
+		public static void Set_ShieldStats(this Item item, int health, float res) {
+			if (item.TryGetGlobalItem(out Shield_GlobalItem globalitem)) {
+				globalitem.ShieldPoint = health;
+				globalitem.ShieldRes = res;
+			}
+			if (!BossRushModSystem.Shield.Contains(item.type)) {
+				BossRushModSystem.Shield.Add(item.type);
 			}
 		}
 		/// <summary>

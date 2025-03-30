@@ -16,6 +16,7 @@ public enum WeaponUpgradeID : short {
 	WindSlash,
 	HunterInstinct,
 	EnhancedMagicStaff,
+	TripletShot,
 }
 public class UpgradePlayer : ModPlayer {
 	public HashSet<WeaponUpgradeID> Upgrades = new();

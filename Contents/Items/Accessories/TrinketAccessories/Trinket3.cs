@@ -4,7 +4,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 internal class Trinket_of_Ample_Perception : BaseTrinket {

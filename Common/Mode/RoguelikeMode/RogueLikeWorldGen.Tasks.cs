@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using BossRush.Common.General;
 using System;
+using Terraria.Utilities;
+using System.Diagnostics;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
@@ -35,10 +37,12 @@ public class BiomeAreaID {
 	public const short BeeNest = 15;
 	public const short Hallow = 16;
 	public const short Ocean = 17;
+	public const short Advanced = 999;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, string> BiomeID;
+	public static TimeSpan WatchTracker = TimeSpan.Zero;
 	public override void OnModLoad() {
 		BiomeID = new();
 		FieldInfo[] field = typeof(BiomeAreaID).GetFields();
@@ -53,10 +57,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 			short objvalue = (short)obj;
 			BiomeID.Add(objvalue, field[i].Name);
 		}
-
+		Biome = new();
+		TrialArea = new();
 	}
 	public override void OnModUnload() {
 		BiomeID = null;
+		TrialArea = null;
 	}
 
 	public static int GridPart_X = Main.maxTilesX / 24;
@@ -66,25 +72,92 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		if (ModContent.GetInstance<RogueLikeConfig>().WorldGenTest) {
 			//tasks.ForEach(g => g.Disable());
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Living Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wood Tree Walls")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Islands")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Island Houses")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Life Crystals")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Pyramids")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Altars")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Hives")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Buried Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests Placement")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Water Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Temple")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Micro Biomes")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Marble")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Granite")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Mushrooms")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Moss")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Ore and Stone")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Planting Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Larva")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Cactus, Palm Trees, & Coral")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Gems In Ice Biome")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Random Gems")));
-			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Vines")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Piles")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Traps")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Statues")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shell Piles")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Oasis")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Water Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Flowers")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wavy Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Rock Layer Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Weeds")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Webs And Honey")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Clay")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Herbs")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dye Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dirt Layer Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Moss Grass")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Hellforge")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Pots")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Place Fallen Log")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Mushroom Patches")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Glowing Mushrooms and Jungle Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Full Desert")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wall Variety")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Gem Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Cave Walls")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Temple")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Generate Ice Biome")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Corruption")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Waterfalls")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Water From Sand")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Create Ocean Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Slush")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Mud Caves To Grass")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dirt To Mud")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Lakes")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Muds Walls In Jungle")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Silt")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Grass")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Sunflowers")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Guide")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dungeon")));
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 	}
 	public static Dictionary<short, List<Rectangle>> Biome;
+	public static List<Rectangle> TrialArea = new();
 	public override void SaveWorldData(TagCompound tag) {
 		if (Biome == null) {
 			return;
 		}
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
+		tag["TrialArea"] = TrialArea;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		var Type = tag.Get<List<short>>("BiomeType");
@@ -93,25 +166,39 @@ public partial class RogueLikeWorldGen : ModSystem {
 			return;
 		}
 		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
+	public UnifiedRandom Rand => WorldGen.genRand;
+	public static readonly Point OffSetPoint = new Point(-64, -64);
+	Rectangle rect = new();
+	Point counter = OffSetPoint;
+	HashSet<Point> EmptySpaceRecorder = new();
+	int count = -1;
+	bool IsUsingHorizontal = false;
+	int offsetcount = 0;
+	int additionaloffset = -1;
+	bool SpawnedShrine = false;
 	[Task]
-	public void AddAltar() {
+	public void SetUp() {
+		WatchTracker = TimeSpan.Zero;
+		Biome = new();
 		GridPart_X = Main.maxTilesX / 24;//small world : 175
 		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
+	}
+	[Task]
+	public void AddAltar() {
+		ResetTemplate_GenerationValue();
 		bool RNG = false;
-		bool PlacedSlimeShrine = false;
 		for (int i = 1; i < Main.maxTilesX - 1; i++) {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
-				if (WorldGen.genRand.NextBool(10000)) {
-					//StructureHelper.Generator.GenerateStructure("Assets/Structures/SlimeShrine", new(i, j), Mod);
-					//WorldGen.PlaceChest()
-				}
+				//Cleanup possible liquid
+				Main.tile[i, j].LiquidAmount = 0;
 				if (!RNG) {
-					if (WorldGen.genRand.NextBool(1500)) {
+					if (Rand.NextBool(1500)) {
 						RNG = true;
 					}
 				}
@@ -121,6 +208,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						for (int offsetY = -1; offsetY <= 1; offsetY++) {
 							if (offsetX == 0 && offsetY == 0) continue;
 							if (offsetY == 1 && offsetX == 0) continue;
+							if (!WorldGen.InWorld(i + offsetX, j + offsetY)) continue;
 							if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
 								j = Math.Clamp(j + 1, 0, Main.maxTilesY);
 								break;
@@ -131,43 +219,117 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						}
 					}
 					if (pass >= 7) {
-						WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
+						if (WorldGen.genRand.NextBool(100)) {
+							Generate_Trial(i, j);
+						}
+						else {
+							WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
+						}
 						RNG = false;
-					}
-				}
-
-				if (!PlacedSlimeShrine) {
-					if (WorldGen.genRand.NextBool(10500)) {
-						Generate_SlimeBossAltar(i, j);
-					}
-					if (WorldGen.genRand.NextBool(10500)) {
-						Generate_EoCAltar(i, j);
 					}
 				}
 			}
 		}
 	}
-	public void Generate_SlimeBossAltar(int X, int Y) {
-		GenerationHelper.PlaceStructure("Shrine/SlimeShrine", new Rectangle(X, Y, 11, 12));
-		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<SlimeBossAltar>());
-	}
-	public void Generate_EoCAltar(int X, int Y) {
-		GenerationHelper.PlaceStructure("Shrine/FleshShrine", new Rectangle(X, Y, 11, 12));
-		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<EoCBossAltar>());
+	[Task]
+	public void Generate_TrialTest() {
+		Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
 	}
 	[Task]
 	public void GenerateSlimeZone() {
-		Rectangle rect = new();
-		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-		Point counter = new();
-		int count = -1;
-		while (counter.X < rect.Width || counter.Y < rect.Width) {
-			ImageData template;
-			if (++count % 2 == 0) {
-				template = ImageStructureLoader.Get_Tempate("WG_HorizontalTemplate" + WorldGen.genRand.Next(1, 5));
+		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void GenerateFleshZone() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateForest() {
+		Stopwatch watch = new();
+		watch.Start();
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(7, 10, 10, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 11, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(5, 12, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(9, 12, 11, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(10, 9, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 13, 6, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(17, 11, 2, 1),
+		};
+		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 10, 15, 5);
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Dirt;
+		ushort wallID = WallID.Dirt;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
 			}
 			else {
-				template = ImageStructureLoader.Get_Tempate("WG_VerticalTemplate" + WorldGen.genRand.Next(1, 5));
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+		Biome.Add(BiomeAreaID.Forest, listrect);
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateDungeon() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(20, 6, 3, 7);
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			ImageData template;
+			IsUsingHorizontal = ++count % 2 == 0;
+			if (IsUsingHorizontal) {
+				template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateHorizontal" + WorldGen.genRand.Next(1, 10));
+			}
+			else {
+				template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateVertical" + WorldGen.genRand.Next(1, 10));
+			}
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
 			}
 			template.EnumeratePixels((a, b, color) => {
 				a += rect.X + counter.X;
@@ -180,24 +342,560 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.B == 0 && color.G == 0) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
 				}
-				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeon);
 			});
 			if (counter.X < rect.Width) {
 				counter.X += template.Width;
 			}
 			else {
-				counter.X = 0;
-				counter.Y += template.Height;
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
 			}
 		}
-		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+		Biome.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
+		ResetTemplate_GenerationValue();
+	}
+	//[Task]
+	//public void Re_GenerateBeeHive() {
+	//	rect = GenerationHelper.GridPositionInTheWorld24x24(5, 8, 2, 2);
+	//	File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest);
+	//	ResetTemplate_GenerationValue();
+	//}
+	[Task]
+	public void Re_GenerateJungle() {
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(8, 4, 4, 5),
+			GenerationHelper.GridPositionInTheWorld24x24(12, 5, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(12, 7, 1, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 9, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 5, 4, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 8, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 6, 2, 1),
+		};
+		Stopwatch watch = new();
+		watch.Start();
+		rect = GenerationHelper.GridPositionInTheWorld24x24(3, 5, 12, 6);
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Mud;
+		ushort wallID = WallID.MudUnsafe;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Jungle, listrect);
+		ResetTemplate_GenerationValue();
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
 	}
 	[Task]
-	public void GenerateFleshZone() {
+	public void Re_GenerateTundra() {
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(2, 8, 4, 4),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 7, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(1, 11, 1, 6),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 10, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 11, 1, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 12, 1, 6),
+			GenerationHelper.GridPositionInTheWorld24x24(5, 15, 1, 4),
+		};
+		rect = GenerationHelper.GridPositionInTheWorld24x24(2, 8, 6, 12);
+		Stopwatch watch = new();
+		watch.Start();
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.IceBlock;
+		ushort wallID = WallID.IceUnsafe;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Tundra, listrect);
+		ResetTemplate_GenerationValue();
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+	}
+	[Task]
+	public void Re_GenerateDesert() {
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(12, 4, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 5, 6, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(12, 6, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(13, 7, 1, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 8, 3, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 6, 2, 3),
+		};
+		rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 10, 7);
+		Stopwatch watch = new();
+		watch.Start();
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Sandstone;
+		ushort wallID = WallID.Sandstone;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Desert, listrect);
+		ResetTemplate_GenerationValue();
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+	}
+	[Task]
+	public void Re_GenerateCorruption() {
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(3, 12, 1, 9),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 13, 1, 7),
+			GenerationHelper.GridPositionInTheWorld24x24(1, 17, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 18, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 19, 5, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 16, 2, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(8, 17, 1, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(9, 18, 1, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(10, 19, 1, 1),
+		};
+		rect = GenerationHelper.GridPositionInTheWorld24x24(2, 13, 10, 10);
+		Stopwatch watch = new();
+		watch.Start();
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Ebonstone;
+		ushort wallID = WallID.Ebonwood;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Corruption, listrect);
+		ResetTemplate_GenerationValue();
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+	}
+	[Task]
+	public void Re_GenerateCrimson() {
+		List<Rectangle> listrect = new List<Rectangle>{
+			GenerationHelper.GridPositionInTheWorld24x24(17, 8, 3, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 9, 2, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(19, 11, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 12, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(21, 13, 2, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 16, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(19, 17, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(18, 18, 4, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(16, 20, 5, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 21, 5, 1),
+		};
+		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 9, 8, 14);
+		Stopwatch watch = new();
+		watch.Start();
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Crimstone;
+		ushort wallID = WallID.CrimsonUnsafe1;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					foreach (var item in listrect) {
+						if (item.Contains(x, y)) {
+							t.Tile_Type = tileID;
+							t.Tile_WallData = wallID;
+							GenerationHelper.Structure_PlaceTile(x, y, ref t);
+							break;
+						}
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Crimson, listrect);
+		ResetTemplate_GenerationValue();
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+	}
+	[Task]
+	public void Re_GenerateHallow() {
 
-		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+	}
+	[Task]
+	public void Re_GenerateTemple() {
+
+	}
+	[Task]
+	public void Re_GenerateGranite() {
+
+	}
+	[Task]
+	public void Re_GenerateMarble() {
+		Console.WriteLine("Total gen time : " + WatchTracker.ToString());
+
+	}
+	[Task]
+	public void FinalTask() {
+	}
+	public void Generate_Trial(int X, int Y) {
+		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");
+		template.EnumeratePixels((a, b, color) => {
+			if (a == 25 && b == 25) {
+				a += X;
+				b += Y;
+				GenerationHelper.FastRemoveTile(a, b);
+				WorldGen.PlaceTile(a, b, ModContent.TileType<StartTrialAltar_Template_1>());
+				GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+				return;
+			}
+			a += X;
+			b += Y;
+			GenerationHelper.FastRemoveTile(a, b);
+			if (color.R == 255 && color.B == 0 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
+			}
+			else if (color.R == 0 && color.B == 255 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+			}
+			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+		});
+	}
+	public void Generate_TrialTest(int X, int Y) {
+		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 49, 49));
+		WorldGen.PlaceTile(X + 25, Y + 25, ModContent.TileType<StartTrialAltar_Template_1>());
+	}
+	public void Generate_Shrine(string shrineType, int X, int Y, int width = 11, int height = 12) {
+		if (shrineType == string.Empty) {
+			return;
+		}
+		GenerationHelper.Safe_PlaceStructure($"Shrine/{shrineType}", new Rectangle(X, Y, width, height));
+		WorldGen.PlaceTile(X + width / 2, Y + height / 2, ModContent.TileType<SlimeBossAltar>());
+	}
+	public void ResetTemplate_GenerationValue() {
+		rect = new();
+		counter = OffSetPoint;
+		EmptySpaceRecorder.Clear();
+		count = -1;
+		IsUsingHorizontal = false;
+		offsetcount = 0;
+		additionaloffset = -1;
+		SpawnedShrine = false;
+	}
+	/// <summary>
+	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
+	/// Will automatically handle template placing and auto handle shrine
+	/// </summary>
+	/// <param name="TileID"></param>
+	/// <param name="WallID"></param>
+	/// <param name="BiomeID">Use <see cref="BiomeAreaID"/> for BiomeID</param>
+	public void Generate_Biome(ushort TileID, ushort WallID, short BiomeID, string ShrineType) {
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			ImageData template;
+			IsUsingHorizontal = ++count % 2 == 0;
+			if (IsUsingHorizontal) {
+				template = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal" + WorldGen.genRand.Next(1, 9));
+			}
+			else {
+				template = ImageStructureLoader.Get_Tempate("WG_TemplateVertical" + WorldGen.genRand.Next(1, 9));
+			}
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			bool ChanceOfSpawningShrine = Rand.NextBool(300) && !SpawnedShrine;
+			template.EnumeratePixels((a, b, color) => {
+				a += rect.X + counter.X;
+				b += rect.Y + counter.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				if (a < rect.Left || b < rect.Top) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.B == 0 && color.G == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID);
+				}
+				else if (ChanceOfSpawningShrine) {
+					EmptySpaceRecorder.Add(new(a, b));
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID);
+			});
+			if (ChanceOfSpawningShrine) {
+				if (EmptySpaceRecorder.Count > 1) {
+					ChanceOfSpawningShrine = false;
+					SpawnedShrine = true;
+				}
+			}
+			if (counter.X < rect.Width) {
+				counter.X += template.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		if (EmptySpaceRecorder.Count > 0) {
+			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
+			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
+		}
+		if (Biome.ContainsKey(BiomeID)) {
+			Biome[BiomeID].Add(rect);
+		}
+		else {
+			Biome.Add(BiomeID, new List<Rectangle> { rect });
+		}
+	}
+	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
+	/// <summary>
+	/// Use this when it is assumed that you already have the template pre saved in a file format
+	/// </summary>
+	/// <param name="TemplatePath"></param>
+	/// <param name="BiomeID"></param>
+	/// <param name="ShrineType"></param>
+	public void File_GenerateBiomeTemplate(string TemplatePath, ushort TileID, ushort WallID, short BiomeID) {
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					if (rect.Contains(x, y)) {
+						t.Tile_Type = TileID;
+						t.Tile_WallData = WallID;
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
+					if (rect.Contains(x, y)) {
+						t.Tile_Type = TileID;
+						t.Tile_WallData = WallID;
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		if (Biome.ContainsKey(BiomeID)) {
+			Biome[BiomeID].Add(rect);
+		}
+		else {
+			Biome.Add(BiomeID, new List<Rectangle> { rect });
+		}
 	}
 	//[Task]
 	//public void SetUp() {
@@ -233,182 +931,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//	//medium world : x = 6400 | y = 1800
 	//	//large world  : x = 8400 | y = 2400
 	//}
-	//[Task]
-	//public void Create_Hell() {
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 23, 24, 1),
-	//	(i, j) => {
-	//		if (j == GridPart_Y * 23) {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.AshGrass);
-	//		}
-	//		else {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.Ash);
-	//		}
-	//	});
-	//}
-	//[Task]
-	//public void Empty_AreaAroundPlayer() {
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 5),
-	//	(i, j) => {
-	//		GenerationHelper.FastRemoveTile(i, j);
-	//	});
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 5, 2, 1),
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Grass);
-	//	});
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 7, 2, 1),
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.Stone);
-	//	});
-	//}
-	//[Task]
-	//public void Create_Jungle() {//17 -> 21
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(15, 5, 2, 6));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		if (i <= rectList[0].PointOnRectX(.01f) || i >= rectList[0].PointOnRectX(.99f)) {
-	//			//only place block if I is between 20% and 80% of rect width
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
-	//		}
-	//		else if (j <= rectList[0].PointOnRectY(.01f) || j >= rectList[0].PointOnRectY(.99f)) {
-	//			//only place block if J is between 20% and 80% of rect height
-	//			{
-	//				GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
-	//			}
-	//		}
-	//		else {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.Mud);
-	//		}
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Jungle, rectList);
-	//}
-	//[Task]
-	//public void Create_Tundra() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(9, 5, 2, 6));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		if (i <= rectList[0].PointOnRectX(.05f) || i >= rectList[0].PointOnRectX(.95f)) {
-	//			//only place block if I is between 20% and 80% of rect width
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
-	//		}
-	//		else if (j <= rectList[0].PointOnRectY(.05f) || j >= rectList[0].PointOnRectY(.95f)) {
-	//			//only place block if J is between 20% and 80% of rect height
-	//			{
-	//				GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
-	//			}
-	//		}
-	//		else {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.IceBlock);
-	//		}
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Tundra, rectList);
-	//}
-	//[Task]
-	//public void Create_Crimson() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(4, 5, 3, 7));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Crimson, rectList);
-	//}
-	//[Task]
-	//public void Create_Corruption() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 5, 3, 7));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
 
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
-	//}
-
-	//[Task]
-	//public void Create_Hallowed() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(20, 5, 1, 7));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Pearlstone);
-
-	//	});
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 1, 7));
-	//	GenerationHelper.ForEachInRectangle(rectList[1],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Pearlstone);
-
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
-	//}
-	//[Task]
-	//public void Create_Desert() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 7));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Sandstone);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Desert, rectList);
-	//}
-	//[Task]
-	//public void Create_BlueShroom() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(18, 14, 3, 3));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.MushroomGrass);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.BlueShroom, rectList);
-	//}
-	//[Task]
-	//public void Create_BigGranite() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 12, 3, 1));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Granite);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.GraniteUnsafe);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Granite, rectList);
-	//}
-	//[Task]
-	//public void Create_Marble() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(13, 12, 2, 2));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.Marble);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.MarbleUnsafe);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.Marble, rectList);
-	//}
-	//[Task]
-	//public void Create_Dungeon() {
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(9, 11, 2, 5),
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.BlueDungeonBrick);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.BlueDungeonUnsafe);
-	//	});
-	//}
-	//[Task]
-	//public void Create_JungleTemple() {
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(15, 11, 2, 5),
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.LihzahrdBrickUnsafe);
-	//	});
-	//}
-	//public void Create_BeeNest() {
-	//	GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(15, 11, 2, 5),
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.BeeHive);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.Hive);
-	//	});
-	//}
 	//[Task]//Test
 	//public void Create_MinerParadise() {
 	//	//Minor Biome or soon to be
@@ -429,29 +952,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//		GenerationHelper.FastPlaceWall(i, j, WallID.Cloud);
 	//	});
 	//}
-	//[Task]
-	//public void Create_SlimeWorld() {
-	//	//Minor Biome or soon to be
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(11, 8, 2, 3));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.Slime);
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.SlimeBlock);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.BlueSlime, rectList);
-	//}
-	//[Task]
-	//public void Create_FleshRealm() {
-	//	//Minor Biome or soon to be
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3));
-	//	GenerationHelper.ForEachInRectangle(rectList[0], (i, j) => {
-	//		GenerationHelper.FastPlaceTile(i, j, TileID.FleshBlock);
-	//		GenerationHelper.FastPlaceWall(i, j, WallID.Flesh);
-	//	});
-	//	//Biome.Add(RogueLike_BiomeAreaID.FleshRealm, rectList);
-	//}
+
 	//[Task]
 	//public void Create_TheBoneZone() {
 	//	//Minor Biome or soon to be
@@ -461,39 +962,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//		GenerationHelper.FastPlaceWall(i, j, WallID.Bone);
 	//	});
 	//}
-	//[Task]
-	//public void Create_Beach() {
-	//	List<Rectangle> rectList = new List<Rectangle>();
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 3, 2));
-	//	GenerationHelper.ForEachInRectangle(rectList[0],
-	//	(i, j) => {
-	//		if (i <= rectList[0].PointOnRectX(.4f) && j <= rectList[0].PointOnRectY(.4f)) {
-	//			GenerationHelper.FastRemoveTile(i, j);
-	//		}
-	//		else {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.Sand);
-	//		}
-	//	});
-	//	rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(21, 5, 3, 2));
-	//	GenerationHelper.ForEachInRectangle(rectList[1],
-	//	(i, j) => {
-	//		if (i >= rectList[1].PointOnRectX(.6f) && j <= rectList[1].PointOnRectY(.4f)) {
-	//			GenerationHelper.FastRemoveTile(i, j);
-	//		}
-	//		else {
-	//			GenerationHelper.FastPlaceTile(i, j, TileID.Sand);
-	//		}
-	//	});
-	//}
-	//[Task]
-	//public void Create_Path() {
-	//	//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
-	//	//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 24, 1), GenerationHelper.FastRemoveTile);
-	//	//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
-	//	//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
-	//	////Create path from hel-la-va-tor through slime biome to miner paradise
-	//	//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 36, 27, 1), GenerationHelper.FastRemoveTile);
-	//}
+
 	//[Task]
 	//public void Final_CleanUp() {
 	//}

@@ -48,6 +48,6 @@ public class JungleArmorPlayer : PlayerArmorHandle {
 				Projectile.NewProjectile(source, Player.Center, Vector2.Zero, ModContent.ProjectileType<LeafProjectile>(), (int)(damage * 1.25f), knockback, Player.whoAmI, indexThatIsMissing);
 			}
 		}
-		return base.Armor_Shoot(item, source, position, velocity, type, damage, knockback);
+		return true;
 	}
 }

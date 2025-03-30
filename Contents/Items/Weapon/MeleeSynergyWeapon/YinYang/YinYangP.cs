@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
-	internal class YinYangP : ModProjectile {
+	public class YinYangP : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 25f;
 		}
@@ -46,7 +46,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
 		}
 	}
 
-	abstract class BaseBoltProjectile : ModProjectile {
+	public abstract class BaseBoltProjectile : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.width = 10;
@@ -81,7 +81,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
 			Projectile.alpha = (int)MathHelper.Lerp(0, 255, (999 - Projectile.timeLeft) / 999f);
 			Projectile.Center = getPosToReturn(Offset(), Counter, projCenter, distance);
 		}
-		public Vector2 getPosToReturn(float offSet, int Counter, Vector2 pos, float Distance = 50) {
+		private static Vector2 getPosToReturn(float offSet, int Counter, Vector2 pos, float Distance = 50) {
 			Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
 			return pos + Rotate.RotatedBy(MathHelper.ToRadians(Counter)) * Distance;
 		}
@@ -90,11 +90,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
 			return true;
 		}
 	}
-	internal class YinLight : BaseBoltProjectile {
+	public class YinLight : BaseBoltProjectile {
 		public override int Offset() => 0;
 	}
 
-	internal class YangDark : BaseBoltProjectile {
+	public class YangDark : BaseBoltProjectile {
 		public override int Offset() => 180;
 	}
 }

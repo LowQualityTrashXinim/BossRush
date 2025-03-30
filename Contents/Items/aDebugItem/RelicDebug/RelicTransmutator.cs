@@ -49,7 +49,7 @@ class RelicTransmuteUI : UIState {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
 		panel.VAlign = .5f;
-		panel.UISetWidthHeight(500, 500);
+		panel.UISetWidthHeight(600, 600);
 		Append(panel);
 
 		textlist = new List<UIText>();

@@ -2,6 +2,7 @@
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Potion {
 	internal class SageElixir : ModItem {
@@ -26,7 +27,7 @@ namespace BossRush.Contents.Items.Consumable.Potion {
 			player.GetDamage(DamageClass.Magic) *= 1.5f;
 			player.manaCost += 0.5f;
 			player.statManaMax2 += 100;
-			if (player.statMana < player.statManaMax2) player.statMana++;
+			player.GetModPlayer<PlayerStatsHandle>().Rapid_ManaRegen += 1;
 		}
 	}
 }

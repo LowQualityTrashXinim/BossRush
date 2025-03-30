@@ -15,6 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 12, 13, false);
 			Item.scale = .75f;
 			Item.rare = ItemRarityID.Orange;
+			Item.UseSound = SoundID.Item92 with { Pitch = 1f };
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Flamelash))

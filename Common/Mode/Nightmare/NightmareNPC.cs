@@ -6,12 +6,28 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.Audio;
 using BossRush.Common.General;
-using BossRush.Common.RoguelikeChange;
+using Terraria.DataStructures;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Mode.Nightmare {
 	internal class NightmareNPC : GlobalNPC {
 		public override bool InstancePerEntity => true;
 		int aiTimer = 0;
+		public override void OnSpawn(NPC npc, IEntitySource source) {
+			if (!NightmareSystem.IsANightmareWorld()) {
+				return;
+			}
+			if (npc.type == NPCID.EyeofCthulhu) {
+				for (int i = 0; i < 3; i++) {
+					NPC servant = NPC.NewNPCDirect(source, npc.Center, NPCID.ServantofCthulhu);
+					RoguelikeGlobalNPC global = servant.GetGlobalNPC<RoguelikeGlobalNPC>();
+					global.BelongToWho = npc.whoAmI;
+					global.IsAGhostEnemy = true;
+					global.CanDenyYouFromLoot = true;
+					servant.velocity += Main.rand.NextVector2CircularEdge(6, 6);
+				}
+			}
+		}
 		public override void SetDefaults(NPC npc) {
 			if (!NightmareSystem.IsANightmareWorld()) {
 				return;
@@ -28,7 +44,7 @@ namespace BossRush.Common.Mode.Nightmare {
 			npc.knockBackResist *= .5f;
 		}
 		private void BossChange(NPC npc) {
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().EliteBoss = Main.rand.NextBool();
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().EliteBoss = Main.rand.NextBool();
 			if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody) {
 				npc.lifeMax += 250;
 				npc.scale += .25f;

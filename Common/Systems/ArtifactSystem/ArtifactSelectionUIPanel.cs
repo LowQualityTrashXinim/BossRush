@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Artifacts;
+﻿using BossRush.Contents.Transfixion.Artifacts;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using System;
