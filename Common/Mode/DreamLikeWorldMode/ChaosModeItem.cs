@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Mode.DreamLikeWorldMode;
 internal class ChaosModeItem : GlobalItem {

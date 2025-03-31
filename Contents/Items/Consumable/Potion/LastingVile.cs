@@ -5,6 +5,9 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Consumable.Potion;
 internal class LastingVilePotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LastingVileBuff>(), BossRushUtils.ToMinute(5));
 		Item.Set_ItemIsRPG();

@@ -42,8 +42,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				}
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
-				for (int i = 0; i < 3; i++) {
-					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10f), ProjectileID.BladeOfGrass, damage, knockback, player.whoAmI);
+				int amount = Main.rand.Next(6, 10);
+				for (int i = 0; i < amount; i++) {
+					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(amount, 65, i), ProjectileID.BladeOfGrass, damage, knockback, player.whoAmI);
 				}
 			}
 			CanShootItem = true;

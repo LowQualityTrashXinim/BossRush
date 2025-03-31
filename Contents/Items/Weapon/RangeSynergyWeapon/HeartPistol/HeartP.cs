@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			int projectileType = ModContent.ProjectileType<smallerHeart>();
 			int damage = (int)(Projectile.damage * 0.5f);
 			float knockback = Projectile.knockBack;
-			float Rotation = MathHelper.ToRadians(Main.rand.Next(360));
+			float Rotation = Projectile.rotation;
 			Vector2 leftsideofheartshape1 = new Vector2(-5, 0);
 			Vector2 leftsideofheartshape2 = new Vector2(-5, -2.5f);
 			Vector2 leftsideofheartshape3 = new Vector2(-2.5f, -5);

@@ -50,6 +50,11 @@ namespace BossRush {
 		public static List<Item> RPGItem { get; private set; }
 		public static List<int> ListLootboxType { get; private set; }
 		public static HashSet<Item> List_Weapon { get; private set; }
+		/// <summary>
+		/// This is not handle automatically since this is for modded potion within the mod<br/>
+		/// Uses this if you want a potion of your to be added into lootbox potion pool or spoil potion pool
+		/// </summary>
+		public static HashSet<Item> LootboxPotion { get; private set; }
 		public static int Safe_GetWeaponRarity(int rare) {
 			if (WeaponRarityDB.ContainsKey(rare)) {
 				return Main.rand.Next(WeaponRarityDB[rare]);
@@ -92,6 +97,7 @@ namespace BossRush {
 			LegsArmorRarityDB = new();
 			AccRarityDB = new();
 			List_Weapon = new();
+			LootboxPotion = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -107,6 +113,7 @@ namespace BossRush {
 			LegsArmorRarityDB = null;
 			AccRarityDB = null;
 			List_Weapon = null;
+			LootboxPotion = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);

@@ -1,12 +1,12 @@
-﻿using BossRush.Common.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Terraria;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
+using BossRush.Common.Systems;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Mode.DreamLikeWorldMode;
 internal class ChaosModeSystem : ModSystem {

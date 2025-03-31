@@ -72,7 +72,7 @@ public class Skip1 : ModSkill {
 				continue;
 			}
 			index = index + 1;
-			energy.Base -= 100;
+			energy.Base -= 300;
 			break;
 		}
 	}
@@ -156,7 +156,7 @@ public class GuaranteedCrit : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 425;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
-		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_CoolDown = BossRushUtils.ToSecond(2.5f);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {

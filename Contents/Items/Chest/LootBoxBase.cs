@@ -525,13 +525,12 @@ namespace BossRush.Contents.Items.Chest {
 			AddAcc(FlagNumAcc());
 			return Main.rand.NextFromCollection(Accessories);
 		}
-		List<int> DropItemPotion = new List<int>();
 		/// <summary>
 		/// Return random potion
 		/// </summary>
 		/// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
 		public int GetPotion(bool MovementPotionOnly = false) {
-			DropItemPotion.AddRange(TerrariaArrayID.NonMovementPotion);
+			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. BossRushModSystem.LootboxPotion.Select(i => i.type)];
 			if (Main.hardMode) {
 				DropItemPotion.Add(ItemID.LifeforcePotion);
 				DropItemPotion.Add(ItemID.InfernoPotion);
@@ -928,14 +927,14 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="type"></param>
 		/// <param name="player"></param>
 		public static void GetPotion(int type, Player player) {
-			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
+			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion, .. BossRushModSystem.LootboxPotion.Select(i => i.type)];
 			DropItemPotion.Add(ItemID.LifeforcePotion);
 			DropItemPotion.Add(ItemID.InfernoPotion);
 			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			modplayer.GetAmount();
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			for (int i = 0; i < modplayer.potionNumAmount; i++) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(DropItemPotion), modplayer.potionTypeAmount);
+			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(DropItemPotion), modplayer.potionNumAmount);
 			}
 		}
 		public static void GetArmorPiece(int type, Player player, bool randomized = false) {

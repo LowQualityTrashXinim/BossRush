@@ -85,13 +85,13 @@ public class Spiky : BaseAccPrefix {
 	}
 }
 public class Vampiric : BaseAccPrefix {
-	public override float PowerLevel => base.PowerLevel * 4;
+	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.LifeSteal += .01f * PowerLevel;
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+4% life steal") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+2% life steal") {
 			IsModifier = true,
 		};
 	}

@@ -1,16 +1,11 @@
-﻿using BossRush.Common.Mode.Nightmare;
-using BossRush.Common.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 using BossRush.Common.Global;
+using Terraria.DataStructures;
+using BossRush.Common.Systems;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Mode.HellishEndeavour;
 internal class HellishEndeavorSystem : ModSystem {

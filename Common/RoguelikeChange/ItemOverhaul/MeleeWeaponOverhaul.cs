@@ -651,7 +651,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					Vector2 size = drawdata.texture.Size() * scale;
 					Vector2 origin = size * .5f;
 					if (meleeItem.SwingType == BossRushUseStyle.Poke) {
-						origin = new Vector2(size.X, size.X) * .5f;
+						if (item.ModItem == null || item.scale <= 1.1f) {
+							origin = new Vector2(size.X, size.X) * .5f;
+						}
 					}
 					drawdata.sourceRect = null;
 					drawdata.ignorePlayerRotation = true;

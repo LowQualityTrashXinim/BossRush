@@ -200,7 +200,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (UniversalSystem.EnchantingState) {
 				return;
 			}
-			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
+			tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
 			if (item.IsAWeapon(true)) {
 				for (int i = 0; i < tooltips.Count; i++) {
 					TooltipLine line = tooltips[i];

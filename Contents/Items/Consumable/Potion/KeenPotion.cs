@@ -6,6 +6,9 @@ using BossRush.Common.Global;
 namespace BossRush.Contents.Items.Consumable.Potion;
 internal class KeenPotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<KeenBuff>(), BossRushUtils.ToMinute(2));
 		Item.Set_AdvancedBuffItem();

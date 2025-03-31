@@ -1968,7 +1968,7 @@ Mods: {
 
 			LifeStealPotion: {
 				DisplayName: Life Steal Potion
-				Tooltip: Give 2% life steal effect
+				Tooltip: Give 5% life steal effect
 			}
 
 			ShadowPotion: {

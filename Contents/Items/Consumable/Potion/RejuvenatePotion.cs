@@ -6,6 +6,9 @@ using BossRush.Common.Global;
 namespace BossRush.Contents.Items.Consumable.Potion;
 internal class RejuvenatePotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<FireResistanceBuff>(), BossRushUtils.ToMinute(.5f));
 		Item.Set_AdvancedBuffItem();
@@ -18,7 +21,7 @@ public class RejuvenatePotionBuff : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: 30);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: 10);
 		if (player.buffTime[buffIndex] <= 0) {
 			player.Heal(200);
 		}
