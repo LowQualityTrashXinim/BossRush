@@ -7,16 +7,24 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Global;
 
-namespace BossRush.Contents.Items.Weapon.UnfinishedItem;
-class TundraBow : SynergyModItem {
-	public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
+namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TundraBow;
+public class TundraBow : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 20, 2f, 18, 18, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 10, true, AmmoID.Arrow);
+		Item.BossRushDefaultRange(26, 72, 20, 2f, 18, 18, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 10, true, AmmoID.Arrow);
 		Item.Set_InfoItem();
 	}
 	int delayBetweenShot = 0;
+	public override Vector2? HoldoutOffset() {
+		return new Vector2(-8, 0);
+	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		int snowdustamount = Main.rand.Next(5, 12);
+		for (int i = 0; i < snowdustamount; i++) {
+			Dust dust = Dust.NewDustDirect(position, 0, 0, DustID.SnowBlock);
+			dust.velocity = velocity.Vector2RotateByRandom(20) * Main.rand.NextFloat(.2f, .5f);
+			dust.scale = Main.rand.NextFloat(.85f, 1.12f);
+		}
 		int hitcounter = player.GetModPlayer<TundraBow_ModPlayer>().HitCounter;
 		int snowballDamage = (int)(damage * (.35f + hitcounter * .1f));
 		if (++delayBetweenShot < 5) {
@@ -73,7 +81,7 @@ public class TundraHypothermia : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		RoguelikeGlobalNPC global = npc.GetGlobalNPC<RoguelikeGlobalNPC>();
+		var global = npc.GetGlobalNPC<RoguelikeGlobalNPC>();
 		global.VelocityMultiplier -= .2f;
 		global.StatDefense -= .1f;
 		npc.lifeRegen -= 3;

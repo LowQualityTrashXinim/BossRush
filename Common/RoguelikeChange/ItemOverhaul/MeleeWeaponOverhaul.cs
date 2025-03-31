@@ -434,7 +434,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				BossRushUtilsPlayer utilsplayer = player.GetModPlayer<BossRushUtilsPlayer>();
 				if (modplayer.ComboNumber != 2) {
 					Vector2 offset = player.Center - utilsplayer.PlayerLastPositionBeforeAnimation;
-					Vector2 directionTo = (player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation + offset - player.Center).SafeNormalize(Vector2.Zero);
+					Vector2 directionTo = (utilsplayer.MouseLastPositionBeforeAnimation + offset - player.Center).SafeNormalize(Vector2.Zero);
 					bool checkComboNum = modplayer.ComboNumber == 0;
 					int LastCollideCheck, check;
 					if (checkComboNum && player.direction == 1 || !checkComboNum && player.direction == -1) {

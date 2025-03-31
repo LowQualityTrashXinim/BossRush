@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WoodYoyo);
 		}
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(32, 64, 15, 3f, 15, 15, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
+			Item.BossRushDefaultRange(32, 64, 15, 3f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
 			Item.crit = 10;
 			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.Item7;

@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Localization;
 using BossRush.Contents.NPCs;
+using BossRush.Common.Global;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
@@ -22,7 +23,6 @@ using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -200,7 +200,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (UniversalSystem.EnchantingState) {
 				return;
 			}
-			tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
+			//tooltips.Add(new(Mod, "Debug", $"Item width : {item.width} | height {item.height}"));
 			if (item.IsAWeapon(true)) {
 				for (int i = 0; i < tooltips.Count; i++) {
 					TooltipLine line = tooltips[i];

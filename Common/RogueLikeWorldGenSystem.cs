@@ -30,7 +30,7 @@ public class StructureUI : UIState {
 	public Roguelike_UIImageButton btn_confirm;
 	public Roguelike_UIImageButton btn_cancel;
 	public Roguelike_UITextPanel textPanel;
-	public StructureEnterText txt_FileName;
+	public Roguelike_TextBox txt_FileName;
 
 	public List<Roguelike_UIImageButton> list_btn = new();
 	Asset<Texture2D> defaultlookingassbtn = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
@@ -63,7 +63,7 @@ public class StructureUI : UIState {
 		textPanel.Hide = true;
 		panel.Append(textPanel);
 
-		txt_FileName = new();
+		txt_FileName = new("");
 		txt_FileName.HAlign = .5f;
 		txt_FileName.VAlign = .45f;
 		txt_FileName.Hide = true;
