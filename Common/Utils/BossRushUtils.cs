@@ -64,6 +64,12 @@ namespace BossRush {
 
 		}
 
+		public static void Push<T>(ref T[] array, T value)
+		{
+			Array.Copy(array,0,array,1,array.Length - 1);
+			array[0] = value;
+		}
+
 		public static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
 			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
 			Color bigColor = shineColor * opacity * 0.5f;

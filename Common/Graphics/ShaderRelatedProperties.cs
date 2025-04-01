@@ -18,6 +18,7 @@ public struct TrailShaderSettings {
 	public float[] oldRot;
 	public Asset<Texture2D> image1;
 	public Asset<Texture2D> image2;
+	public Asset<Texture2D> image3;
 	public Vector4 shaderData;
 	public Vector2 offset;
 }

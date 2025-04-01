@@ -1,6 +1,10 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Terraria;
+using ReLogic.Peripherals.RGB;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -27,6 +31,7 @@ namespace BossRush {
 			}
 			return NameSpace.Replace(".", "/") + "/" + altName;
 		}
+
 		public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
 	}
 }
