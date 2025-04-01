@@ -1,5 +1,5 @@
 ﻿namespace BossRush.Texture {
-	static class BossRushTexture {
+	public static class BossRushTexture {
 		public const string CommonTextureStringPattern = "BossRush/Texture/";
 		public const string MissingTexture_Folder = "MissingTexture/";
 		public const string PinIcon = CommonTextureStringPattern + "UI/PinIcon";
