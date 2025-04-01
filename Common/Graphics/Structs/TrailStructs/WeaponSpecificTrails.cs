@@ -18,7 +18,7 @@ using BossRush.Common.Graphics.Primitives;
 namespace BossRush.Common.Graphics.TrailStructs;
 public struct WyvernTrailMain {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 
@@ -41,7 +41,7 @@ public struct WyvernTrailMain {
 }
 public struct WyvernTrailMini {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 		//MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
@@ -74,7 +74,7 @@ public struct WyvernTrailMini {
 public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Projectile projectile, Color color, Vector2 offset) {
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
@@ -94,7 +94,7 @@ public struct BeamTrail {
 }
 public struct FlameThrowerFrost {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
 
 		shader.setProperties(Color.CornflowerBlue, TextureAssets.Extra[193].Value);
@@ -116,7 +116,7 @@ public struct FlameThrowerFrost {
 }
 public struct FlameThrowerFire {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
 
@@ -143,7 +143,7 @@ public struct FlameThrowerFire {
 }
 public struct StarTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 		//MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
@@ -173,7 +173,7 @@ public struct StarTrail {
 }
 public struct StarTrailEmpowered {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
+	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 		shader.setProperties(Color.Gold, TextureAssets.Extra[193].Value);

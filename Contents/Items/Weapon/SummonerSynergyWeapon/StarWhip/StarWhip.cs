@@ -15,6 +15,7 @@ using ReLogic.Content;
 using System.Diagnostics;
 using Terraria.Audio;
 using Terraria.Localization;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;

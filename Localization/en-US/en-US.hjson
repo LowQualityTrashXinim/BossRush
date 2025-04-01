@@ -330,6 +330,7 @@ Mods: {
 			SpearProjectile.DisplayName: Spear Projectile
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
+			OnyxBulletProjectile.DisplayName: Onyx Bullet Projectile
 		}
 
 		NPCs: {

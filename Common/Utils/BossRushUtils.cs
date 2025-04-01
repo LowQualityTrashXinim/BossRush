@@ -48,6 +48,27 @@ namespace BossRush {
 			return false;
 		}
 
+		public static Color ToColor(this Vector4 v) {
+			return new Color(v.X, v.Y, v.Z, v.W);
+		}
+
+		public static Color AddColor(this Color color, Color color2) {
+
+			return new Color(color.R + color2.R, color.G + color2.G, color.B + color2.B, color.A + color2.A);
+
+		}
+
+		public static Color DivideColor(this Color color, int number) {
+
+			return new Color(color.R / number, color.G / number, color.B / number, color.A / number);
+
+		}
+
+		public static void Push<T>(ref T[] array, T value)
+		{
+			Array.Copy(array,0,array,1,array.Length - 1);
+			array[0] = value;
+		}
 
 		public static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
 			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
@@ -411,5 +432,6 @@ namespace BossRush {
 
 			return color1;
 		}
+
 	}
 }

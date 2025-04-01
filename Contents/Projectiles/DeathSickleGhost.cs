@@ -1,5 +1,5 @@
 ﻿using BossRush.Common.Graphics;
-using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -58,7 +58,7 @@ public class DeathSickleGhost : ModProjectile {
 			gts.image1 = ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise);
 			gts.Color = Color.Purple;
 			gts.offset = Vector2.Zero;
-			gts.shaderType = ShadersID.TrailShader;
+			gts.shaderType = "TrailEffect";
 			gts.shaderData = new Vector4(0, 0, 0, 0);
 			gts.image2 = ModContent.Request<Texture2D>(BossRushTexture.Perlinnoise);
 

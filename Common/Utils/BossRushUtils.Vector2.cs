@@ -61,6 +61,13 @@ namespace BossRush {
 			}
 			return vec;
 		}
+		public static Vector2 InverseVector2DistributeEvenly(this Vector2 vec, float ProjectileAmount, float rotation, float i) {
+			if (ProjectileAmount > 1) {
+				rotation = MathHelper.ToRadians(rotation);
+				return vec.RotatedBy(MathHelper.Lerp(rotation * -.5f, rotation * .5f, i / ProjectileAmount));
+			}
+			return vec;
+		}
 		public static Vector2 Vector2DistributeEvenlyPlus(this Vector2 vec, float ProjectileAmount, float rotation, float i) {
 			if (ProjectileAmount > 1) {
 				rotation = MathHelper.ToRadians(rotation);

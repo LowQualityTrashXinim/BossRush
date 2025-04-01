@@ -2,7 +2,6 @@
 using BossRush.Common.Graphics;
 using BossRush.Common.Graphics.Primitives;
 using BossRush.Common.Graphics.RenderTargets;
-using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
@@ -14,6 +13,8 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Graphics.AnimationSystems;
+using BossRush.Common.Graphics.Structs.TrailStructs;
+using BossRush.Common.Graphics.Structs.QuadStructs;
 
 namespace BossRush.Contents.Items.Weapon.ArcaneRange.LaserSniper;
 internal class LaserSniper : SynergyModItem {
@@ -167,7 +168,7 @@ public class LaserSniperProjectile : ModProjectile
 		s.oldPos = Projectile.oldPos;
 		s.oldRot = Projectile.oldRot;
 		s.Color = Color.Aqua;
-		s.shaderType = ShadersID.FlameShader;
+		s.shaderType = "FlameEffect";
 		default(GenericTrail).Draw(s,(a) => MathHelper.Lerp(2f, 6f, Utils.GetLerpValue(0f, 0.2f, a, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, a, clamped: true), (a) => Color.Aqua);
 
 		return false;
@@ -228,11 +229,7 @@ public class PlasmaExplosion : ModProjectile
 	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 6;
 	}
-	private static ModdedShaderHandler shader;
-	private PrimitiveDrawer primitiveDrawer;
-	public override void Load() {
-		shader = new ModdedShaderHandler(EffectsLoader.loadedShaders["ExplosionPrimitive"].Value);
-	}
+
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 98;
 		Projectile.friendly = true;
@@ -244,10 +241,6 @@ public class PlasmaExplosion : ModProjectile
 		Projectile.scale = 4;
 	}
 
-	public override void OnSpawn(IEntitySource source) {
-		primitiveDrawer = new PrimitiveDrawer(PrimitiveShape.Quad);
-	}
-
 	public override void AI() {
 
 
@@ -256,11 +249,13 @@ public class PlasmaExplosion : ModProjectile
 
 	public override bool PreDraw(ref Color lightColor) {
 
-		shader.setProperties(Color.Aqua, TextureAssets.Extra[193].Value,shaderData: new Vector4(Projectile.ai[0], Projectile.ai[0], Projectile.ai[0],0));
-		shader.apply();
+		ShaderSettings shaderSettings = new ShaderSettings();
+		shaderSettings.image1 = TextureAssets.Extra[193];
+		shaderSettings.Color = Color.Turquoise;
+		shaderSettings.shaderData = new Vector4(Projectile.ai[0]);
 
-		primitiveDrawer.Draw([Projectile.Center], [Color.White], [new Vector2(512)]);
-
+		default(ExplosionQuad).Draw(Projectile.Center,0,Vector2.One * 512, shaderSettings);
+		
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 		return false;

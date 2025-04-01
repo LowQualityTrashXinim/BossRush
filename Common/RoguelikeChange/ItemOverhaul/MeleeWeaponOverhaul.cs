@@ -11,6 +11,12 @@ using BossRush.Common.Systems;
 using System;
 using System.Linq.Expressions;
 using ReLogic.Content;
+using Terraria.Graphics;
+using BossRush.Common.Graphics.Structs.TrailStructs;
+using BossRush.Common.Graphics;
+using BossRush.Contents.Perks;
+using Steamworks;
+using BossRush.Texture;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -396,10 +402,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
 					item.Set_ItemCriticalDamage(1f);
+					item.CloneDefaults(ItemID.LightsBane);
+					item.shoot = 0;
 					break;
 				default:
 					break;
+
 			}
+			
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -560,6 +570,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			//	scale += MathHelper.SmoothStep(-.75f, .6f, progress);
 			//}
 		}
+
+
 		public override void HoldItem(Item item, Player player) {
 			if (!player.ItemAnimationActive) {
 			}
@@ -621,7 +633,20 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += On_PlayerDrawLayers_DrawPlayer_RenderAllLayers;
 			On_Player.ApplyAttackCooldown += On_Player_ApplyAttackCooldown;
 		}
+		private static void DrawSwordTrail(MeleeOverhaulPlayer modplayer) {
+			TrailShaderSettings trailShaderSettings = new TrailShaderSettings();
+			trailShaderSettings.oldPos = modplayer.swordTipPositions;
+			trailShaderSettings.oldRot = modplayer.swordRotations;
+			trailShaderSettings.shaderType = "SwordTrailEffect";
+			trailShaderSettings.image1 = TextureAssets.Extra[193];
+			trailShaderSettings.image2 = ModContent.Request<Texture2D>(BossRushTexture.Gradient);
+			trailShaderSettings.image3 = ModContent.Request<Texture2D>(BossRushTexture.PingpongGradient);
+			trailShaderSettings.Color = ItemAverageColor.averageColorByID[modplayer.Player.HeldItem.type] * 2;
+			default(GenericTrail).Draw(trailShaderSettings,
+			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
+			(progress) => { return Color.White; });
 
+		}
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {
 			if (!UniversalSystem.Check_RLOH()) {
 				orig(self);
@@ -634,14 +659,20 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		private void On_PlayerDrawLayers_DrawPlayer_RenderAllLayers(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo) {
 			Player player = Main.LocalPlayer;
 			Item item = player.HeldItem;
-			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer)
-				&& item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)
-				&& modplayer.ComboNumber == 1
+			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer) && item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+			{
+				if (modplayer.ComboNumber == 1
 				&& item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
-				AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
+					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
+				}
+
+				if(ItemAverageColor.averageColorByID.ContainsKey(item.type))
+					DrawSwordTrail(modplayer);
 			}
+
 			orig.Invoke(ref drawinfo);
 		}
+
 		private static void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
 			DrawData drawdata;
 			for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
@@ -683,6 +714,13 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public float CustomItemRotation = 0;
 		public StatModifier DelayReuse = new();
 		public float ItemRotationBeforeSwitch = 0;
+		// sword trail fields
+		public Vector2[] swordTipPositions = new Vector2[15];
+		public float[] swordRotations = new float[15];
+		public float swordLength = 0;
+		public float lastFrameArmRotation = 0;
+		public float startSwordSwingAngle = 0;
+		public int swordTrailLength = 30;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
@@ -713,12 +751,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 				ComboHandleSystem();
 				ItemRotationBeforeSwitch = Player.itemRotation;
+				Player.direction = (PlayerToMouseDirection.X > 0 ? 1 : -1);
 			}
 			//if (UniversalSystem.Check_RLOH()) {
 			//	if (item.IsAWeapon()) {
 			//		return delaytimer <= 0;
 			//	}
 			//}
+
 			return base.CanUseItem(item);
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
@@ -735,9 +775,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 			}
 		}
+
 		private void ComboHandleSystem() {
 			ComboNumber = BossRushUtils.Safe_SwitchValue(ComboNumber, 1);
 		}
+
 		public override void PostUpdate() {
 			Item item = Player.HeldItem;
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
@@ -745,11 +787,36 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			if (Player.ItemAnimationJustStarted) {
 				JustHitANPC = false;
+				Player.direction = (PlayerToMouseDirection.X > 0 ? 1 : -1);
+
+				swordLength = TextureAssets.Item[item.type].Size().Length() * 0.5f;
+
+				swordTipPositions = new Vector2[30];
+				swordRotations = new float[30];
+				startSwordSwingAngle = Player.compositeFrontArm.rotation;
+
 			}
 			if (Player.ItemAnimationActive) {
-				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
+				Player.direction = (PlayerToMouseDirection.X > 0 ? 1 : -1);
+
+				for (float i = 0; i < 30; i++) 
+				{
+					Vector2 offset = (ComboNumber != 0) ? Vector2.Zero : (new Vector2(5, 0) * Player.direction);
+					Vector2 dir = (MathHelper.Lerp(MathHelper.Lerp(Player.compositeFrontArm.rotation, startSwordSwingAngle, ((float)Player.itemAnimation / (float)Player.itemAnimationMax)), Player.compositeFrontArm.rotation, BossRushUtils.OutSine((float)i / 30)) + MathHelper.PiOver2).ToRotationVector2();
+					Vector2 insertPos = swordLength * dir + Player.Center - offset;
+					BossRushUtils.Push(ref swordTipPositions, insertPos);
+					BossRushUtils.Push(ref swordRotations, dir.ToRotation() - MathHelper.PiOver2);
+				}
+
+			}
+			if (Player.ItemAnimationEndingOrEnded) {
+				//TODO: make it not hard coded
+				swordTipPositions = Array.Empty<Vector2>();
+				swordRotations = Array.Empty<float>();
+
 			}
 		}
+
 		bool JustHitANPC = false;
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {

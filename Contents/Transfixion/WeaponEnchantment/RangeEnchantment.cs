@@ -799,3 +799,15 @@ public class TitaniumRepeater : TitaniumEnchantment {
 
 }
 
+public class OnyxBlaster : ModEnchantment 
+{
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.OnyxBlaster;
+	}
+
+
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		type = ModContent.ProjectileType<OnyxBulletProjectile>();
+	}
+}
