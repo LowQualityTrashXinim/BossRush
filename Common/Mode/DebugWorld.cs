@@ -31,7 +31,7 @@ public partial class DebugWorld : ITaskCollection {
 	public void GenerateHorizonTemplate() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 1, 64, 32));
 		int X = 0;
-		for (int i = 0; i < 9; i++) {
+		for (int i = 1; i < 9; i++) {
 			X = re.Width * i + 10 * i;
 			GenerationHelper.PlaceStructure("Template/WG_Template" + "Horizontal" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
@@ -41,7 +41,7 @@ public partial class DebugWorld : ITaskCollection {
 	public void GenerateVerticalTemplate() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 2, 32, 64));
 		int X = 0;
-		for (int i = 0; i < 9; i++) {
+		for (int i = 1; i < 9; i++) {
 			X = re.Width * i + 10 * i;
 			GenerationHelper.PlaceStructure("Template/WG_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
@@ -49,42 +49,20 @@ public partial class DebugWorld : ITaskCollection {
 
 	[Task]
 	public void GenerateDungeonTemplate_Horizontal() {
-		ImageData template;
-		Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(1, 3, 64, 32));
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 3, 64, 32));
 		int X = 0;
-		Point counter = Point.Zero;
-		for (int i = 0; i < 9; i++) {
-			X = rect.Width * i + 10 * i;
-			template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateHorizontal" + (i + 1));
-			template.EnumeratePixels((a, b, color) => {
-				a += rect.X + counter.X + X;
-				b += rect.Y + counter.Y;
-				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.B == 0 && color.G == 0) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
-				}
-				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeon);
-			});
+		for (int i = 1; i < 10; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Dungeon_Template" + "Horizontal" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
 	}
 	[Task]
 	public void GenerateDungeonTemplate_Vertical() {
-		ImageData template;
-		Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(1, 4, 64, 32));
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 4, 32, 64));
 		int X = 0;
-		Point counter = Point.Zero;
-		for (int i = 0; i < 9; i++) {
-			X = rect.Width * i + 10 * i;
-			template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateVertical" + (i + 1));
-			template.EnumeratePixels((a, b, color) => {
-				a += rect.X + counter.X + X;
-				b += rect.Y + counter.Y;
-				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.B == 0 && color.G == 0) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
-				}
-				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeon);
-			});
+		for (int i = 1; i < 10; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Dungeon_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
 	}
 
