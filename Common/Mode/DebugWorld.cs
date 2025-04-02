@@ -11,6 +11,7 @@ using Terraria.WorldBuilding;
 using Microsoft.Xna.Framework;
 using System.Diagnostics.Metrics;
 using Terraria.ID;
+using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.Mode;
 public partial class DebugWorld : ModSystem {
@@ -31,7 +32,7 @@ public partial class DebugWorld : ITaskCollection {
 	public void GenerateHorizonTemplate() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 1, 64, 32));
 		int X = 0;
-		for (int i = 1; i < 9; i++) {
+		for (int i = 1; i < 10; i++) {
 			X = re.Width * i + 10 * i;
 			GenerationHelper.PlaceStructure("Template/WG_Template" + "Horizontal" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
@@ -41,7 +42,7 @@ public partial class DebugWorld : ITaskCollection {
 	public void GenerateVerticalTemplate() {
 		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 2, 32, 64));
 		int X = 0;
-		for (int i = 1; i < 9; i++) {
+		for (int i = 1; i < 10; i++) {
 			X = re.Width * i + 10 * i;
 			GenerationHelper.PlaceStructure("Template/WG_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
@@ -65,5 +66,29 @@ public partial class DebugWorld : ITaskCollection {
 			GenerationHelper.PlaceStructure("Template/WG_Dungeon_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
 		}
 	}
-
+	[Task]
+	public void GenerateEmptyTemplate() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 5, 64, 64));
+		int X = re.Width + 10;
+		ImageData arena = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal1");
+		arena.EnumeratePixels((a, b, color) => {
+			a += re.X;
+			b += re.Y;
+			GenerationHelper.FastRemoveTile(a, b);
+			if (color.R == 255 && color != Color.White) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+			}
+			GenerationHelper.FastPlaceWall(a, b, WallID.Stone);
+		});
+		ImageData arena2 = ImageStructureLoader.Get_Tempate("WG_TemplateVertical1");
+		arena2.EnumeratePixels((a, b, color) => {
+			a += re.X + X;
+			b += re.Y;
+			GenerationHelper.FastRemoveTile(a, b);
+			if (color.R == 255 && color != Color.White) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+			}
+			GenerationHelper.FastPlaceWall(a, b, WallID.Stone);
+		});
+	}
 }

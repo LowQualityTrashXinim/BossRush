@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TundraBow;
 public class TundraBow : SynergyModItem {
@@ -39,12 +39,7 @@ public class TundraBow : SynergyModItem {
 	}
 	public override void AddRecipes() {
 		CreateRecipe()
-			.AddIngredient(ItemID.PlatinumBow)
-			.AddIngredient(ItemID.SnowballCannon)
-			.Register();
-
-		CreateRecipe()
-			.AddIngredient(ItemID.GoldBow)
+			.AddRecipeGroup("Wood Bow")
 			.AddIngredient(ItemID.SnowballCannon)
 			.Register();
 	}

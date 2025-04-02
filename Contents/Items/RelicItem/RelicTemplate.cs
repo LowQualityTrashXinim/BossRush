@@ -31,7 +31,7 @@ public class GenericTemplate : RelicTemplate {
 				});
 			}
 		}
-		else if (perkplayer.HasPerk<BlessingOfStarDust>()) {
+		else if (perkplayer.HasPerk<BlessingOfStardust>()) {
 			if (Main.rand.NextFloat() <= .35f) {
 				return PlayerStats.SummonDMG;
 			}
@@ -914,10 +914,12 @@ public class MiniHeartStatuesTemplate : RelicTemplate {
 		return string.Format(Description, new string[] {
 				Color.Green.Hex3(),
 				RelicTemplateLoader.RelicValueToNumber(value.Base),
+				MathF.Round(Math.Max(600 - 60 * (relic.RelicTier - 1), 120) / 60f,2).ToString(),
+				Color.Yellow.Hex3(),
 		});
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (modplayer.synchronize_Counter % 600 == 0) {
+		if (modplayer.synchronize_Counter % Math.Max(600 - 60 * (relic.RelicTier - 1), 120) == 0) {
 			player.Heal((int)value.Base);
 		}
 	}
