@@ -714,8 +714,8 @@ BloodButcherer.Description:
 BreakerBlade.Description:
 	'''
 	Increases Weapon Size by 100%
+	Increases Damage by 25
 	Decreases Attack Speed by 20%
-	Increases Damage by 25;
 	Gives a random early-hardmode Melee Weapon
 	(most of these bonuses applies only to melee weapons)
 	'''

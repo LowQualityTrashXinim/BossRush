@@ -143,7 +143,6 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, 1.25f, Flat: 10 * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, Multiplicative: 1.3f + .1f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.4f + .1f * StackAmount(player));
-			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, 1.45f);
 			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.55f + .1f * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.55f + .1f * StackAmount(player));
 		}

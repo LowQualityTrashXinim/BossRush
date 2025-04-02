@@ -136,7 +136,7 @@ namespace BossRush.Contents.Items.Toggle {
 			textpanel = new Roguelike_WrapTextUIPanel("");
 			textpanel.HAlign = .53f;
 			textpanel.VAlign = .5f;
-			textpanel.UISetWidthHeight(450, 600);
+			textpanel.UISetWidthHeight(550, 600);
 			Append(textpanel);
 
 			generalTextPanel = new Roguelike_UITextPanel("");
@@ -267,7 +267,7 @@ namespace BossRush.Contents.Items.Toggle {
 				}
 			}
 		}
-		public string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
+		public static string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
 		public override void Update(GameTime gameTime) {
 			InfoShowToItem = string.Empty;
 			base.Update(gameTime);
@@ -280,6 +280,9 @@ namespace BossRush.Contents.Items.Toggle {
 			var player = Main.LocalPlayer;
 			string line;
 			var statshandle = player.GetModPlayer<PlayerStatsHandle>();
+			var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
+			var augmentation = player.GetModPlayer<AugmentsPlayer>();
 			switch (CurrentState) {
 				case 0:
 					foreach (var item in list_info) {
@@ -288,15 +291,15 @@ namespace BossRush.Contents.Items.Toggle {
 					// 0 to 17 is default stats
 					if (list_info.Count < 1) {
 						list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[0].SetInfo($"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%");
+						list_info[list_info.Count - 1].action = () => list_info[0].SetInfo($"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Base : {player.GetTotalDamage(DamageClass.Melee).Base} Flat : {player.GetTotalDamage(DamageClass.Melee).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[1].SetInfo($"{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%");
+						list_info[list_info.Count - 1].action = () => list_info[1].SetInfo($"{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Base : {player.GetTotalDamage(DamageClass.Ranged).Base} Flat : {player.GetTotalDamage(DamageClass.Ranged).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[2].SetInfo($"{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%");
+						list_info[list_info.Count - 1].action = () => list_info[2].SetInfo($"{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Base : {player.GetTotalDamage(DamageClass.Magic).Base} Flat : {player.GetTotalDamage(DamageClass.Magic).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[3].SetInfo($"{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}%");
+						list_info[list_info.Count - 1].action = () => list_info[3].SetInfo($"{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}% Base : {player.GetTotalDamage(DamageClass.Summon).Base} Flat : {player.GetTotalDamage(DamageClass.Summon).Flat}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
+						list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Base : {player.GetTotalDamage(DamageClass.Generic).Base} Flat : {player.GetTotalDamage(DamageClass.Generic).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
@@ -323,6 +326,12 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action = () => list_info[16].SetInfo($"{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[17].SetInfo($"{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}");
+						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {chestplayer.DropModifier.ApplyTo(1)}");
+						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}");
+						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
+						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}");
 						for (int i = 0; i < list_info.Count; i++) {
 							float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
 							list_info[i].SetAlign(0, Y);
@@ -338,15 +347,11 @@ namespace BossRush.Contents.Items.Toggle {
 					foreach (var item in list_info) {
 						item.Hide(true);
 					}
-					var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 					var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 					var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
-					var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
-					var augmentation = player.GetModPlayer<AugmentsPlayer>();
 					chestplayer.GetAmount();
 					line =
-						$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
-						$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
+						$"Amount drop chest final weapon : {chestplayer.weaponAmount}" +
 						$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
 						$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
 						$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
@@ -355,9 +360,7 @@ namespace BossRush.Contents.Items.Toggle {
 						$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 						$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 						$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-						$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
-						$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}" +
-						$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}";
+						$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
 					textpanel.SetText(line);
 					break;
 				case 2:

@@ -1,8 +1,8 @@
-﻿using BossRush.Common.Global;
-using Humanizer;
-using System;
+﻿using System;
 using Terraria;
+using Humanizer;
 using Terraria.ID;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.SoulBound;
 internal class SharpshooterGuidance : ModSoulBound {
@@ -19,7 +19,6 @@ internal class SharpshooterGuidance : ModSoulBound {
 		handle.AddStatsToPlayer(PlayerStats.PureDamage, 1 - (.1f + .02f * GetLevel(item)));
 	}
 }
-
 internal class SharpshooterGuidanceItem : BaseSoulBoundItem {
 	public override short SoulBoundType => ModSoulBound.GetSoulBoundType<SharpshooterGuidance>();
 	public override void AddRecipes() {

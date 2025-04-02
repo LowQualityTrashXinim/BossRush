@@ -11,7 +11,6 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {
 		public override Color DisplayNameColor => Color.Navy;
 	}
-
 	public class GreedPlayer : ModPlayer {
 		bool Greed = false;
 		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();

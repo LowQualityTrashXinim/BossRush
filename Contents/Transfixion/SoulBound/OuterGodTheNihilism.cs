@@ -1,12 +1,12 @@
-﻿using BossRush.Common.Global;
-using BossRush.Texture;
-using Humanizer;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
+using Humanizer;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Transfixion.SoulBound;
 internal class OuterGodTheNihilism : ModSoulBound {

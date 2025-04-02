@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish {
 	internal class FrostSwordFish : SynergyModItem {
 		public override void SetDefaults() {
-			BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, ItemUseStyleID.Swing, true);
+			BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 6f, 18, 18, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
 
 			Item.rare = ItemRarityID.Green;

@@ -31,7 +31,7 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 		}
 		Player.Heal(Main.rand.Next(1, 5));
 	}
-	public bool IsWithinTheRadius(Vector2 player, Vector2 entity) => player.DistanceSQ(entity) <= 300;
+	public static bool IsWithinTheRadius(Vector2 player, Vector2 entity) => player.DistanceSQ(entity) <= 300;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		if (!TokenOfGluttony) {
 			return;
@@ -81,7 +81,7 @@ public class EndlessHunger : Perk {
 			player.Heal((int)(hurtInfo.SourceDamage * Safe_MultiScale(player.endurance)));
 		}
 	}
-	private float Safe_MultiScale(float endurance) => Main.rand.NextFloat(Math.Min(endurance, 1f), Math.Max(endurance, 1f));
+	private static float Safe_MultiScale(float endurance) => Main.rand.NextFloat(Math.Min(endurance, 1f), Math.Max(endurance, 1f));
 }
 public class Satisfaction : Perk {
 	public override void SetDefaults() {

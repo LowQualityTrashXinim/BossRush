@@ -1,9 +1,9 @@
-﻿using BossRush.Common.Global;
-using Humanizer;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
+using Humanizer;
 using Terraria.ID;
+using BossRush.Common.Global;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Transfixion.SoulBound;
 internal class GuardianAngel : ModSoulBound {

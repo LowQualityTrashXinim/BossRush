@@ -1976,7 +1976,7 @@ Mods: {
 				DisplayName: Shadow Potion
 				Tooltip:
 					'''
-					Give 2% to dodge a attack
+					Give 4% to dodge a attack
 					Increases invincibility frame duration by 10%
 					'''
 			}
@@ -2003,12 +2003,12 @@ Mods: {
 
 			KeenPotion: {
 				DisplayName: Keen Potion
-				Tooltip: ""
+				Tooltip: Increases critical damage by 100% and make each strike deal critical strike
 			}
 
 			RejuvenatePotion: {
 				DisplayName: Rejuvenate Potion
-				Tooltip: ""
+				Tooltip: Increases life regeneration by 10, at the end of buff heal player for 200 health
 			}
 
 			AltarItem: {

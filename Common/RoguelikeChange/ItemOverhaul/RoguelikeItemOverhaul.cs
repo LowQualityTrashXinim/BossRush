@@ -119,6 +119,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.scale += .5f;
 					item.shootsEveryUse = true;
 					break;
+				case ItemID.IceBlade:
+					item.shootsEveryUse = true;
+					item.scale += .5f;
+					break;
 				case ItemID.InfluxWaver:
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;
