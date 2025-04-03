@@ -692,9 +692,6 @@ internal static partial class GenerationHelper {
 			throw;
 		}
 	}
-	public static string CustomRecSavingtFormat(Rectangle rect) {
-		return $"A{rect.Width}B{rect.Height}";
-	}
 }
 public enum GenerateStyle : byte {
 	None,
@@ -746,6 +743,7 @@ public struct TileData : ICloneable {
 	public bool Tile_Echo = false;
 	public bool Tile_WallEcho = false;
 	public SlopeType Tile_Slope = SlopeType.Solid;
+	public bool IsATileObject = false;
 	public static TileData Default => new();
 	public TileData() {
 		Tile_Type = 0;
@@ -760,6 +758,7 @@ public struct TileData : ICloneable {
 		Tile_Slope = SlopeType.Solid;
 		Tile_WallEcho = false;
 		Tile_Echo = false;
+		IsATileObject = false;
 	}
 	public char Slope_Parser(SlopeType type) {
 		switch (type) {

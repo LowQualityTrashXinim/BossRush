@@ -1,17 +1,12 @@
 ﻿using BossRush.Common.General;
 using BossRush.Common.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using Microsoft.Xna.Framework;
-using System.Diagnostics.Metrics;
 using Terraria.ID;
-using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.Mode;
 public partial class DebugWorld : ModSystem {
@@ -90,5 +85,14 @@ public partial class DebugWorld : ITaskCollection {
 			}
 			GenerationHelper.FastPlaceWall(a, b, WallID.Stone);
 		});
+	}
+	[Task]
+	public void GenerateTestStructure() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 6, 18, 8));
+		int X = 0;
+		for (int i = 1; i < 10; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Detailed_TestSave", new(re.X + X, re.Y, re.Width, re.Height));
+		}
 	}
 }
