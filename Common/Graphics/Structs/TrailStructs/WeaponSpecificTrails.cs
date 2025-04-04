@@ -74,7 +74,7 @@ public struct WyvernTrailMini {
 public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Projectile projectile, Color color, Vector2 offset) {
-		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["TrailEffect"];
 		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
