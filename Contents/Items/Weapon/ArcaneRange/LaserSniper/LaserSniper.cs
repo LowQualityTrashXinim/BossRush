@@ -169,6 +169,8 @@ public class LaserSniperProjectile : ModProjectile
 		s.oldRot = Projectile.oldRot;
 		s.Color = Color.Aqua;
 		s.shaderType = "FlameEffect";
+		s.image2 = null;
+		s.image3 = null;
 		default(GenericTrail).Draw(s,(a) => MathHelper.Lerp(2f, 6f, Utils.GetLerpValue(0f, 0.2f, a, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, a, clamped: true), (a) => Color.Aqua);
 
 		return false;
@@ -254,8 +256,10 @@ public class PlasmaExplosion : ModProjectile
 		shaderSettings.Color = Color.Turquoise;
 		shaderSettings.shaderData = new Vector4(Projectile.ai[0]);
 
+
 		default(ExplosionQuad).Draw(Projectile.Center,0,Vector2.One * 512, shaderSettings);
 		
+
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 		return false;

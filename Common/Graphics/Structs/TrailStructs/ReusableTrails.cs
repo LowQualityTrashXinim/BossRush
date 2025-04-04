@@ -20,7 +20,7 @@ public struct GenericTrail {
 
 		ModdedShaderHandler shader = EffectsLoader.shaderHandlers[GenericTrailSettings.shaderType];
 		shader.enabled = true;
-		shader.setProperties(GenericTrailSettings.Color, GenericTrailSettings.image1.Value, GenericTrailSettings.image2.Value,GenericTrailSettings.image3.Value, shaderData: GenericTrailSettings.shaderData);
+		shader.setProperties(GenericTrailSettings.Color, GenericTrailSettings.image1?.Value, GenericTrailSettings.image2?.Value,GenericTrailSettings.image3?.Value, shaderData: GenericTrailSettings.shaderData);
 		shader.apply();
 
 		_vertexStrip.PrepareStrip(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, -Main.screenPosition + GenericTrailSettings.offset, null, true);
