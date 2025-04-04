@@ -20,11 +20,5 @@ namespace BossRush.Contents.Items.LegacyItem {
 			modplayer.ProjectileAmountModify += 1;
 			modplayer.SpreadModify += .35f;
 		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Minishark)
-				.AddIngredient(ItemID.WhiteString)
-				.Register();
-		}
 	}
 }

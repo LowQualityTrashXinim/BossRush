@@ -69,4 +69,9 @@
   <ItemGroup>
     <Folder Include="Contents\Tiles\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="StructureHelper">
+      <HintPath>Assets\StructureHelper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

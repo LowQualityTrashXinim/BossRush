@@ -6,6 +6,7 @@ using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
+using Terraria.DataStructures;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SSRspoil {
@@ -30,7 +31,15 @@ internal class SSRspoil {
 			}
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), type);
 			LootBoxBase.GetSkillLootbox(itemsource, player);
-			LootBoxBase.GetRelic(itemsource, player, 2);
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
+			for (int i = 0; i < amount; i++) {
+				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+				if (relicitem.ModItem is Relic relic) {
+					relic.AutoAddRelicTemplate(player, 3);
+				}
+			}
+			LootBoxBase.GetAccessories(itemsource, player, true);
 		}
 	}
 	public class LegendaryRelicSpoil : ModSpoil {

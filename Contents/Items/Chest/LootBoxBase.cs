@@ -919,7 +919,7 @@ namespace BossRush.Contents.Items.Chest {
 				acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
 			}
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			player.QuickSpawnItem(entitySource, Main.rand.Next(acc));
+			player.QuickSpawnItem(entitySource, Main.rand.NextFromCollection(acc));
 		}
 		/// <summary>
 		/// This function will automatically handle drop for you so no need to do it yourself

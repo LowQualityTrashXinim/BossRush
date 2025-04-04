@@ -7,6 +7,7 @@ using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using BossRush.Common.Global;
+using System.ComponentModel.DataAnnotations;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class GenericTemplate : RelicTemplate {
@@ -27,7 +28,6 @@ public class GenericTemplate : RelicTemplate {
 				return Main.rand.Next([
 					PlayerStats.MagicDMG,
 					PlayerStats.MaxMana,
-					PlayerStats.MaxHP,
 				]);
 			}
 		}
@@ -56,22 +56,17 @@ public class GenericTemplate : RelicTemplate {
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
-			PlayerStats.PureDamage,
 
 			PlayerStats.RegenHP,
 			PlayerStats.RegenMana,
 			PlayerStats.MaxHP,
 			PlayerStats.MaxMana,
 			PlayerStats.Defense,
-			PlayerStats.DefenseEffectiveness,
-			PlayerStats.ShieldHealth,
-			PlayerStats.ShieldEffectiveness,
 
 			PlayerStats.MaxMinion,
 			PlayerStats.MaxSentry,
 
 			PlayerStats.EnergyCap,
-			PlayerStats.EnergyRechargeCap,
 
 			PlayerStats.MovementSpeed,
 			PlayerStats.JumpBoost,
@@ -82,8 +77,7 @@ public class GenericTemplate : RelicTemplate {
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
-		if (stat == PlayerStats.ShieldHealth
-			|| stat == PlayerStats.Defense
+		if (stat == PlayerStats.Defense
 			|| stat == PlayerStats.MaxMana
 			|| stat == PlayerStats.MaxHP
 			|| stat == PlayerStats.RegenMana
@@ -91,10 +85,9 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.MaxMinion
 			|| stat == PlayerStats.MaxSentry
 			|| stat == PlayerStats.EnergyCap
-			|| stat == PlayerStats.EnergyRechargeCap
 			|| stat == PlayerStats.Thorn
 			) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value * (1 + .25f * relic.RelicTier));
 		}
 		else {
 			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
@@ -117,23 +110,14 @@ public class GenericTemplate : RelicTemplate {
 		if (stat == PlayerStats.Defense) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5));
 		}
-		if (stat == PlayerStats.ShieldHealth) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10 + 100);
-		}
-		if (stat == PlayerStats.PureDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.01f, 1.06f), 2), 1);
-		}
 		if (stat == PlayerStats.MeleeDMG
 			|| stat == PlayerStats.RangeDMG
 			|| stat == PlayerStats.MagicDMG
 			|| stat == PlayerStats.SummonDMG) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.01f, 1.11f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.1f), 2), 1);
 		}
 		if (stat == PlayerStats.EnergyCap) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 6) * 20);
-		}
-		if (stat == PlayerStats.EnergyRechargeCap) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
 		}
 		if (stat == PlayerStats.Thorn) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(10, 40));
@@ -141,7 +125,7 @@ public class GenericTemplate : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
+		modplayer.AddStatsToPlayer(stat, value, 1 + .25f * relic.RelicTier);
 	}
 }
 public class CombatV2Template : RelicTemplate {
@@ -151,7 +135,6 @@ public class CombatV2Template : RelicTemplate {
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
-			PlayerStats.PureDamage,
 			PlayerStats.CritChance
 		});
 	}
@@ -159,10 +142,10 @@ public class CombatV2Template : RelicTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
 		if (stat == PlayerStats.CritChance) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value * (1 + .3f * relic.RelicTier));
 		}
 		else {
-			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value * (1 + .3f * relic.RelicTier));
 		}
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring]);
 	}
@@ -170,20 +153,16 @@ public class CombatV2Template : RelicTemplate {
 		if (stat == PlayerStats.CritChance) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(5, 16));
 		}
-		if (stat == PlayerStats.PureDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.15f), 2), 1);
-		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.2f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.IsHealthAbovePercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
+		if (player.IsHealthAbovePercentage(.9f)) modplayer.AddStatsToPlayer(stat, value, 1 + .3f * relic.RelicTier);
 	}
 }
 public class CombatV3Template : RelicTemplate {
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		if (Main.rand.NextFloat() <= .25f) {
 			return Main.rand.Next([
-			PlayerStats.PureDamage,
 			PlayerStats.CritChance,
 			PlayerStats.AttackSpeed
 		]);
@@ -199,10 +178,10 @@ public class CombatV3Template : RelicTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
 		if (stat == PlayerStats.CritChance) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value * (1 + .3f * relic.RelicTier));
 		}
 		else {
-			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value * (1 + .3f * relic.RelicTier));
 		}
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring]);
 	}
@@ -213,20 +192,14 @@ public class CombatV3Template : RelicTemplate {
 		if (stat == PlayerStats.AttackSpeed) {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f), 2), 1);
 		}
-		if (stat == PlayerStats.PureDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.2f), 2), 1);
-		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.2f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.IsHealthAbovePercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
+		if (!player.IsHealthAbovePercentage(.45f)) modplayer.AddStatsToPlayer(stat, value, 1 + .3f * relic.RelicTier);
 	}
 }
 public class CombatV4Template : RelicTemplate {
 	public override PlayerStats StatCondition(Relic relic, Player player) {
-		if (Main.rand.NextFloat() <= .25f) return Main.rand.Next([
-			PlayerStats.PureDamage,
-		]);
 		return Main.rand.Next([
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
@@ -240,14 +213,11 @@ public class CombatV4Template : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		var value = new StatModifier();
-		if (stat == PlayerStats.PureDamage) {
-			value.Base += Main.rand.Next(1, 6);
-			return value;
-		}
-		value.Base += Main.rand.Next(5, 11);
+		value.Base += Main.rand.Next(1, 4);
 		return value;
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		value.Base += relic.RelicTier - 1;
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
@@ -257,10 +227,10 @@ public class StrikeFullHPTemplate : RelicTemplate {
 		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value),]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1.01f) + 1, 2), 1, 0, 0);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
+		modplayer.AddStatsToPlayer(stat, value, 1 + .5f * relic.RelicTier);
 	}
 }
 public class HealthV2Template : RelicTemplate {
@@ -284,16 +254,16 @@ public class HealthV2Template : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(3, 7) * 2);
+			return new StatModifier(1, 1, 0, Main.rand.Next(4, 6) * 2);
 		}
 		if (stat == PlayerStats.Defense) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 5);
+			return new StatModifier(1, 1, 0, Main.rand.Next(7, 11));
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.4f, 1.85f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (!player.IsHealthAbovePercentage(.35f)) {
-			modplayer.AddStatsToPlayer(stat, value);
+			modplayer.AddStatsToPlayer(stat, value, 1, 1 + .2f * relic.RelicTier);
 		}
 	}
 }
@@ -310,7 +280,7 @@ public class HealthV3Template : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(4, 7) * 3);
+			return new StatModifier(1, 1, 0, Main.rand.Next(3, 5) * 3);
 		}
 		return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 2);
 	}
@@ -883,11 +853,11 @@ public class BlizzardTemplate : RelicTemplate {
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		DataStorer.ActivateContext(player, "Relic_Blizzard");
-		int cooldown = Math.Clamp(120 - 20 * (relic.RelicTier - 1), 10, 999);
+		int Tier = relic.RelicTier;
+		int cooldown = Math.Clamp(120 - 20 * (Tier - 1), 10, 999);
 		if (!player.Center.LookForAnyHostileNPC(650f) || (modplayer.synchronize_Counter - 10) % cooldown != 0) {
 			return;
 		}
-		int Tier = relic.RelicTier;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 
 		Projectile proj = Projectile.NewProjectileDirect(
@@ -895,7 +865,7 @@ public class BlizzardTemplate : RelicTemplate {
 			player.Center,
 			Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(10, 15), Main.rand.NextFloat(10, 15)),
 			ProjectileID.Blizzard,
-			(int)(value.Base * (1 + .1f * Tier + 1)),
+			(int)(value.Base * (1 + .1f * Tier - 1)),
 			4 + .5f * Tier,
 			player.whoAmI);
 		proj.DamageType = dmgclass;

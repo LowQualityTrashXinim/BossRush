@@ -70,7 +70,7 @@ RareWeaponSpoil: {
 
 SSRPerkSpoil: {
 	DisplayName: Roguelike Legend
-	Description: Contains 1 perk blessing, {0} skillbox(es) and {1} relic(s).
+	Description: Contains 1 perk blessing, {0} skillbox(es), {1} tier 3 relic(s), {0} accessory(ies).
 }
 
 WeaponPotionSpoil: {

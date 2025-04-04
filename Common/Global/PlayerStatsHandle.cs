@@ -340,8 +340,8 @@ public class PlayerStatsHandle : ModPlayer {
 			modplayer.Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
-		
-		
+
+
 		EnergyRegen = StatModifier.Default;
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
@@ -383,11 +383,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
-	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod) {
+	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatMod.Additive, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base, 2));
+		StatMod = new(MathF.Round(StatMod.Additive * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
@@ -602,13 +602,13 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
+	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
 		var StatMod = new StatModifier();
 		StatMod += Additive - 1;
 		StatMod *= Multiplicative;
 		StatMod.Flat = Flat;
 		StatMod.Base = Base;
-		AddStatsToPlayer(stat, StatMod);
+		AddStatsToPlayer(stat, StatMod, singularAdditiveMultiplier, singularBaseMultiplier);
 	}
 	/// <summary>
 	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
@@ -620,8 +620,8 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base, singularAdditiveMultiplier, singularBaseMultiplier);
 	}
 	/// <summary>
 	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
@@ -633,8 +633,8 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat, StatModifier modifier) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier);
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, StatModifier modifier, float singularAdditiveMultiplier = 1, float singularBaseMultiplier = 1) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier, singularAdditiveMultiplier, singularBaseMultiplier);
 	}
 	/// <summary>
 	/// Only work with certain PlayerStats
