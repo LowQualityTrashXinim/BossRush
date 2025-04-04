@@ -320,9 +320,6 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
-		EnergyRegen = StatModifier.Default;
-		EnergyRegenCount = StatModifier.Default;
-		EnergyRegenCountLimit = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -343,6 +340,11 @@ public class PlayerStatsHandle : ModPlayer {
 			modplayer.Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
+		
+		
+		EnergyRegen = StatModifier.Default;
+		EnergyRegenCount = StatModifier.Default;
+		EnergyRegenCountLimit = StatModifier.Default;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
@@ -385,18 +387,19 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
+		StatMod = new(MathF.Round(StatMod.Additive, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
-				Player.GetDamage(DamageClass.Melee) = Player.GetTotalDamage(DamageClass.Melee).CombineWith(StatMod);
+				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
 				break;
 			case PlayerStats.RangeDMG:
-				Player.GetDamage(DamageClass.Ranged) = Player.GetTotalDamage(DamageClass.Ranged).CombineWith(StatMod);
+				Player.GetDamage(DamageClass.Ranged) = Player.GetDamage(DamageClass.Ranged).CombineWith(StatMod);
 				break;
 			case PlayerStats.MagicDMG:
 				Player.GetDamage(DamageClass.Magic) = Player.GetDamage(DamageClass.Magic).CombineWith(StatMod);
 				break;
 			case PlayerStats.SummonDMG:
-				Player.GetDamage(DamageClass.Summon) = Player.GetTotalDamage(DamageClass.Summon).CombineWith(StatMod);
+				Player.GetDamage(DamageClass.Summon) = Player.GetDamage(DamageClass.Summon).CombineWith(StatMod);
 				break;
 			case PlayerStats.MovementSpeed:
 				UpdateMovement = UpdateMovement.CombineWith(StatMod);

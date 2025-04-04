@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BatScepter", $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat"));
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
-				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BladeOfGrass", $"[i:{ItemID.BladeofGrass}] Increase weapon size by 150% and shoot out leaf blade"));
+				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BladeOfGrass", $"[i:{ItemID.BladeofGrass}] Increase weapon size by 50% and shoot out leaf blade"));
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 		}
 		public override void ModifyItemScale(Player player, ref float scale) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
-				scale += 1.5f;
+				scale += .5f;
 			}
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {

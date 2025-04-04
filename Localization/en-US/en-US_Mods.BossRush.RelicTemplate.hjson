@@ -115,5 +115,5 @@ BlizzardTemplate: {
 
 MiniHeartStatuesTemplate: {
 	DisplayName: Mini heart statues
-	Description: Every 10s, heal you for [c/{0}:{1} hp]
+	Description: Every [c/{3}:{2}s], heal you for [c/{0}:{1} hp]
 }

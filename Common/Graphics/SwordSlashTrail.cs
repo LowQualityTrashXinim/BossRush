@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,16 +55,13 @@ public class SwordSlashTrail : ModSystem {
 			return;
 		Main.instance.LoadItem(id);
 		Texture2D sprite = TextureAssets.Item[id].Value;
-		int R = 0;
-		int G = 0;
-		int B = 0;
+		int R = 0,G = 0, B = 0;
 		int length = sprite.Width * sprite.Height;
 		int nonTransparentPixelsAmount = 1;
 
 		Color[] color = new Color[length];
 
-		Main.RunOnMainThread(() =>
-		{
+		Main.RunOnMainThread(() => {
 			sprite.GetData(color);
 
 
@@ -71,15 +69,15 @@ public class SwordSlashTrail : ModSystem {
 		averageColorByID.Add(id, new Color());
 
 		//loop for each pixel
+		//Xinim optimization : check for Alpha check only instead all 3 colours check, and also only do addition if alpha is not 0
 		for (int i = 0; i < length; i++) {
-
-			if (color[i].R != 0 && color[i].G != 0 && color[i].B != 0)
-				nonTransparentPixelsAmount++;
-
+			if (color[i].A == 0) {
+				continue;
+			}
+			nonTransparentPixelsAmount++;
 			R += color[i].R;
 			G += color[i].G;
 			B += color[i].B;
-
 		}
 
 		R /= nonTransparentPixelsAmount;

@@ -233,7 +233,7 @@ BlessingOfNebula: {
 		'''
 }
 
-BlessingOfStarDust: {
+BlessingOfStardust: {
 	DisplayName: Blessing Of Stardust
 	Description:
 		'''
@@ -794,5 +794,16 @@ UntappedPotential: {
 		Amount of weapon in player inventory
 		Note : damage is increased base on weapon's damage
 		+ Increases synergy weapon critical strike chance base on synergy bonus
+		'''
+}
+
+LegendaryWoodSword: {
+	DisplayName: Legendary Wood Sword
+	Description:
+		'''
+		Wood sword are strengthen
+		+ Increases base damage by 20
+		+ Weapon size increases by 50%
+		+ After every 3 swing, throw out wood that deal 200% of weapon damage
 		'''
 }

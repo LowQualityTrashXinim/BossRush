@@ -1,13 +1,8 @@
-﻿using BossRush.Common.Global;
-using Humanizer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Terraria;
+using Humanizer;
 using Terraria.ID;
-using Terraria.ModLoader;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.SoulBound {
 	class DryadSoul : ModSoulBound {
@@ -27,6 +22,7 @@ namespace BossRush.Contents.Transfixion.SoulBound {
 		}
 	}
 	class DryadSoulItem : BaseSoulBoundItem {
+		public override short SoulBoundType => ModSoulBound.GetSoulBoundType<DryadSoul>();
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Daybloom, 10)

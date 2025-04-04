@@ -34,10 +34,6 @@ class RelicTransmuteUI : UIState {
 	UIPanel panel;
 	List<UIText> textlist;
 	int currentSelectTemplate = -1;
-
-	private int linePosition;
-	private int maxLinePosition;
-	private const int MAX_LINES = 6;
 	public override void OnInitialize() {
 		btn_select = new UIImageButton(TextureAssets.InventoryBack);
 		btn_select.HAlign = .65f;
@@ -49,18 +45,16 @@ class RelicTransmuteUI : UIState {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
 		panel.VAlign = .5f;
-		panel.UISetWidthHeight(600, 600);
+		panel.UISetWidthHeight(400, 600);
 		Append(panel);
 
 		textlist = new List<UIText>();
 	}
-
 	private void Btn_select_OnUpdate(UIElement affectedElement) {
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
-
 	private void Btn_select_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UIText text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
 		if (text == null) {
@@ -76,10 +70,6 @@ class RelicTransmuteUI : UIState {
 		}
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
-
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
-		linePosition -= MathF.Sign(evt.ScrollWheelValue);
-	}
 	public override void OnActivate() {
 		textlist.Clear();
 		panel.RemoveAllChildren();
@@ -92,7 +82,6 @@ class RelicTransmuteUI : UIState {
 			textlist.Add(text);
 		}
 	}
-
 	private void Text_OnUpdate(UIElement affectedElement) {
 		if (currentSelectTemplate == affectedElement.UniqueId) {
 			UIText text = textlist.Where(i => i.UniqueId == currentSelectTemplate).FirstOrDefault();
@@ -120,9 +109,7 @@ class RelicTransmuteUI : UIState {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
-
 	private void Text_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		currentSelectTemplate = listeningElement.UniqueId;
 	}
-
 }

@@ -1203,7 +1203,6 @@ public class ThornChakram : ModEnchantment {
 	}
 }
 public class BreakerBlade : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BreakerBlade;
 	}
@@ -1211,28 +1210,21 @@ public class BreakerBlade : ModEnchantment {
 		int meleeItem = TerrariaArrayID.MeleeHM[Main.rand.Next(TerrariaArrayID.MeleeHM.Length)];
 		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_Loot(), meleeItem);
 	}
-
 	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
 		scale += 1f;
 	}
-
 	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
 		if (item.DamageType == DamageClass.Melee)
 			useSpeed *= 0.8f;
 	}
-
 	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 		if (item.DamageType == DamageClass.Melee)
 			damage.Base += 25;
 	}
-
 }
 public abstract class YoyoEnchantment : ModEnchantment {
-
 	public float yoyoAmount = 2f;
-
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-
 		for (int i = 0; i < 200; i++) {
 			if (Main.projectile[i].type == ModContent.ProjectileType<GhostYoyo>() && Main.projectile[i].ai[0] == ItemIDType && Main.projectile[i].active)
 				return;

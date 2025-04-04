@@ -43,7 +43,7 @@ public class AugmentsWeapon : GlobalItem {
 			tooltips.Add(new TooltipLine(Mod, $"Augments{i + 1}", $"[c/{Augments.tooltipColor.Hex3()}:{Augments.DisplayName}] : {Augments.Description}"));
 		}
 	}
-	public float ItemConditionalChance(Item item, Player player) {
+	public static float ItemConditionalChance(Item item, Player player) {
 		float Chance = 0;
 		if (item.prefix == PrefixID.Broken || item.prefix == PrefixID.Annoying) {
 			Chance += 1;
@@ -86,7 +86,7 @@ public class AugmentsWeapon : GlobalItem {
 			int currentEmptySlot = 0;
 			bool passException = false;
 
-			float chanceDecay = handle.AugmentationChance + chance + weapon.ItemConditionalChance(item, player);
+			float chanceDecay = handle.AugmentationChance + chance + ItemConditionalChance(item, player);
 			ModAugments modAugments = null;
 			float augmentChance = 0;
 			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
@@ -207,7 +207,7 @@ public class AugmentsPlayer : ModPlayer {
 		valid = 0;
 		accItemUpdate.Clear();
 	}
-	private bool IsAugmentsable(Item item) => item.accessory;
+	private static bool IsAugmentsable(Item item) => item.accessory;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		foreach (var item in accItemUpdate) {
 			if (IsAugmentsable(item)) {

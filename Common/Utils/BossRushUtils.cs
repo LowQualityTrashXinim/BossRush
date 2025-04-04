@@ -27,7 +27,7 @@ namespace BossRush {
 			if (!dust.active) {
 				return;
 			}
-			if(action == null) {
+			if (action == null) {
 				return;
 			}
 			RoguelikeGlobalDust.Dust[dust.dustIndex].AI = action;
@@ -64,9 +64,8 @@ namespace BossRush {
 
 		}
 
-		public static void Push<T>(ref T[] array, T value)
-		{
-			Array.Copy(array,0,array,1,array.Length - 1);
+		public static void Push<T>(ref T[] array, T value) {
+			Array.Copy(array, 0, array, 1, array.Length - 1);
 			array[0] = value;
 		}
 
@@ -111,6 +110,23 @@ namespace BossRush {
 		}
 		public static T NextFromHashSet<T>(this UnifiedRandom r, HashSet<T> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
+		}
+		public static string JumboString(UnifiedRandom r, string str) {
+			string strCached = str;
+			int length = str.Length;
+			string result = string.Empty;
+			for (int i = 0; i < length; i++) {
+				int currentlenght = strCached.Length;
+				if (currentlenght <= 1) {
+					result += strCached;
+					continue;
+				}
+				int index = r.Next(0, currentlenght);
+				char c = strCached[r.Next(0, currentlenght)];
+				result += c;
+				strCached = strCached.Remove(index, 1);
+			}
+			return result;
 		}
 		/// <summary>
 		/// Spawn combat text above player without the random Y position
@@ -237,7 +253,7 @@ namespace BossRush {
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
 		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1)
-			=> round == -1 ? modifier.ApplyTo(1) * additionalMulti : MathF.Round(modifier.ApplyTo(1) * additionalMulti, round);
+			=> round == -1 ? modifier.Additive * modifier.Multiplicative * additionalMulti : MathF.Round(modifier.Additive * modifier.Multiplicative * additionalMulti, round);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
 		public static float InOutExpo(float t) {

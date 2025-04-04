@@ -6,8 +6,10 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.NPCs;
 using BossRush.Contents.Transfixion.Artifacts;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -20,6 +22,9 @@ public class TheBeginningOfEndless : ModAchievement {
 	}
 	public override bool Condition() {
 		return RoguelikeData.Lootbox_AmountOpen > 0;
+	}
+	public override void SpecialEffectOnAchieved() {
+		Projectile.NewProjectile(null, Main.LocalPlayer.Center, -Vector2.UnitY, ProjectileID.FireworkFountainRainbow, 0, 0);
 	}
 }
 
@@ -139,7 +144,7 @@ public class GamblerSoul : ModAchievement {
 		DifficultyTag = AchievementTag.Easy;
 	}
 	public override bool Condition() {
-		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>();
+		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>() && UniversalSystem.NotNormalMode();
 	}
 }
 public class ManaOverloader : ModAchievement {
@@ -199,7 +204,8 @@ public class NightmareOvercome : ModAchievement {
 }
 public class TrueNightmare : ModAchievement {
 	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Challenge;
+		DifficultyTag = AchievementTag.Mastery;
+		CategoryTag = AchievementTag.Challenge;
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld() && Main.masterMode && Main.getGoodWorld;
@@ -207,7 +213,8 @@ public class TrueNightmare : ModAchievement {
 }
 public class GodOfChallenge : ModAchievement {
 	public override void SetStaticDefault() {
-		DifficultyTag = AchievementTag.Challenge;
+		DifficultyTag = AchievementTag.Mastery;
+		CategoryTag = AchievementTag.Challenge;
 	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
@@ -237,15 +244,36 @@ public class SpeedRunner : ModAchievement {
 		return false;
 	}
 }
-
-public class BossRushRunner : ModAchievement {
+public class BossRushRunnerI : ModAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
+		CategoryTag = AchievementTag.BossRush;
+	}
+	public override bool Condition() {
+		if (Main.ActivePlayerFileData != null) {
+			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 10 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+		}
+		return false;
+	}
+}
+public class BossRushRunnerII : ModAchievement {
+	public override void SetStaticDefault() {
+		DifficultyTag = AchievementTag.Hard;
+		CategoryTag = AchievementTag.BossRush;
 	}
 	public override bool Condition() {
 		if (Main.ActivePlayerFileData != null) {
 			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 5 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
 		}
 		return false;
+	}
+}
+public class StraightForTheWall : ModAchievement {
+	public override void SetStaticDefault() {
+		DifficultyTag = AchievementTag.Hard;
+		CategoryTag = AchievementTag.Challenge;
+	}
+	public override bool Condition() {
+		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh) || ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFleshEye) && ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count <= 1;
 	}
 }

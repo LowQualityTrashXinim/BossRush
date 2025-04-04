@@ -21,6 +21,8 @@ public class TokenOfSlothPlayer : ModPlayer {
 	public int SlothMeter = 0;
 	public int Counter_Sloth = 0;
 	public const int ThreeSecond = 180;
+	public int SlumberCounter = 0;
+	public bool SlumberState = false;
 	public override void ResetEffects() {
 		TokenOfSloth = Player.HasArtifact<TokenOfSlothArtifact>();
 		if (SlothMeter <= 0 || Player.velocity == Vector2.Zero || !TokenOfSloth) {
@@ -117,7 +119,7 @@ public class FoolDomain : Perk {
 	}
 	public override void ResetEffect(Player player) {
 		if (player.velocity == Vector2.Zero) {
-			FoolDomain_Player modplayer = player.GetModPlayer<FoolDomain_Player>();
+			TokenOfSlothPlayer modplayer = player.GetModPlayer<TokenOfSlothPlayer>();
 			modplayer.SlumberCounter++;
 			if (modplayer.SlumberCounter >= 240) {
 				modplayer.SlumberState = true;
@@ -133,12 +135,12 @@ public class FoolDomain : Perk {
 		}
 	}
 	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
-		if (player.GetModPlayer<FoolDomain_Player>().SlumberState) {
+		if (player.GetModPlayer<TokenOfSlothPlayer>().SlumberState) {
 			modifiers.SetMaxDamage(1);
 		}
 	}
 	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (player.GetModPlayer<FoolDomain_Player>().SlumberState) {
+		if (player.GetModPlayer<TokenOfSlothPlayer>().SlumberState) {
 			modifiers.SetMaxDamage(1);
 		}
 	}
@@ -158,8 +160,4 @@ public class FoolDomain : Perk {
 			player.StrikeNPCDirect(target, newinfo);
 		}
 	}
-}
-public class FoolDomain_Player : ModPlayer {
-	public int SlumberCounter = 0;
-	public bool SlumberState = false;
 }

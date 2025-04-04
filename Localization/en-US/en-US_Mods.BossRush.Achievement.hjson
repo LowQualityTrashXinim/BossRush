@@ -30,84 +30,91 @@ SkillCheck: {
 
 TokenOfGreed: {
 	DisplayName: Token of Greed
-	Description: Greed
-	ConditionTip: Beat the mod with Token of Greed artifact
-	Reward: Exclusive perk of this artifact can appear in normal perk pool
+	Description: Greed, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Greed artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool, unlock Eternal Wealth artifact
 }
 
 TokenOfPride: {
 	DisplayName: Token of Pride
-	Description: Pride
-	ConditionTip: Beat the mod with Token of Pride artifact
+	Description: Pride, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Pride artifact in expert or higher difficulty
 	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 TokenOfWrath: {
 	DisplayName: Token Of Wrath
-	Description: Wrath
-	ConditionTip: Beat the mod with Token of Wrath artifact
+	Description: Wrath, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Wrath artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 TokenOfSloth: {
 	DisplayName: Token Of Sloth
-	Description: Sloth
-	ConditionTip: Beat the mod with Token of Sloth artifact
+	Description: Sloth, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Sloth artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 TokenOfGluttony: {
 	DisplayName: Token Of Gluttony
-	Description: Gluttony
-	ConditionTip: Beat the mod with Token of Gluttony artifact
+	Description: Gluttony, 1 of 7 origin sin
+	ConditionTip: Beat the mod with Token of Gluttony artifact in expert or higher difficulty
 	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 BootOfSpeedManipulation: {
 	DisplayName: Boot Of Speed Manipulation
 	Description: Run with uncontrollable speed
-	ConditionTip: Beat the mod with Boot Of Speed Manipulation artifact
+	ConditionTip: Beat the mod with Boot Of Speed Manipulation artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 VampirismCrystal: {
 	DisplayName: Vampirism Crystal
 	Description: Give you knowledge of the darkness
-	ConditionTip: Beat the mod with Vampirism Crystal artifact
+	ConditionTip: Beat the mod with Vampirism Crystal artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 HeartOfEarth: {
 	DisplayName: Heart Of Earth
 	Description: A beating heart, it is warm to hold
-	ConditionTip: Beat the mod with Heart Of Earth artifact
+	ConditionTip: Beat the mod with Heart Of Earth artifact in expert or higher difficulty
 	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 GamblerSoul: {
 	DisplayName: Gambler Soul
 	Description: Your entire life is to gamble on every moment
-	ConditionTip: Beat the mod with Gambler Soul artifact
+	ConditionTip: Beat the mod with Gambler Soul artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 ManaOverloader: {
 	DisplayName: Mana Overloader
 	Description: Overflowing with endless power, too bad you can't use more
-	ConditionTip: Beat the mod with ManaOverloader artifact
+	ConditionTip: Beat the mod with ManaOverloader artifact in expert or higher difficulty
 }
 
 EssenceLantern: {
 	DisplayName: Essence Lantern
 	Description: Enable new world perspective, shine light on the 3rd world
-	ConditionTip: Beat the mod with Essence Lantern artifact
+	ConditionTip: Beat the mod with Essence Lantern artifact in expert or higher difficulty
 }
 
 AlchemistKnowledge: {
 	DisplayName: Alchemist Knowledge
 	Description: Knowledge said to be from True God
-	ConditionTip: Beat the mod with Alchemist Knowledge artifact
+	ConditionTip: Beat the mod with Alchemist Knowledge artifact in expert or higher difficulty
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 LordOfLootBox: {
 	DisplayName: Lord Of Lootbox
 	Description: Requirement, prove your skill and beat a god
-	ConditionTip: Beat Loot Box Lord
+	ConditionTip: ???
+	ConditionTipAfterAchieve: Beat Loot box lord, gained by no hitting all boss before hardmode
 }
 
 WeaponChallenge1: {
@@ -146,8 +153,20 @@ SpeedRunner: {
 	ConditionTip: Beat the mod under 30 minutes
 }
 
-BossRushRunner: {
-	DisplayName: Boss Hunter
+BossRushRunnerI: {
+	DisplayName: Boss Hunter I
 	Description: You are certified a boss hunter
+	ConditionTip: Beat the mod while in boss rush mode under 10 minutes
+}
+
+BossRushRunnerII: {
+	DisplayName: Boss Hunter II
+	Description: You are certified a boss hunter expert
 	ConditionTip: Beat the mod while in boss rush mode under 5 minutes
+}
+
+StraightForTheWall: {
+	DisplayName: Straight For The Wall
+	Description: Aren't you a bit too hurry ?
+	ConditionTip: Beat wall of flesh without beating any other boss prior
 }

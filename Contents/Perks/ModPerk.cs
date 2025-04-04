@@ -424,9 +424,9 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class BlessingOfStarDust : Perk {
+	public class BlessingOfStardust : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStarDust>();
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStardust>();
 			list_category.Add(PerkCategory.Starter);
 			CanBeStack = true;
 			StackLimit = 3;
@@ -916,7 +916,7 @@ namespace BossRush.Contents.Perks {
 			if (perkplayer.perks.ContainsKey(GetPerkType<BlessingOfNebula>())
 				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfSolar>())
 				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfVortex>())
-				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfStarDust>())) {
+				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfStardust>())) {
 				return true;
 			}
 			return false;

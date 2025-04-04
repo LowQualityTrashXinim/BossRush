@@ -1116,7 +1116,7 @@ namespace BossRush.Contents.Items.Chest {
 		public float UpdateSummonChanceMutilplier = 0;
 		public bool LootboxCanDropSpecialPotion = false;
 		public int ModifyGetAmount(int baseValue) {
-			int amount = (int)DropModifier.ApplyTo(baseValue);
+			int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
 			if (amount <= 0) {
 				return 1;
 			}
