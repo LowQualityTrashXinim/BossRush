@@ -803,6 +803,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					BossRushUtils.Push(ref swordRotations, dir.ToRotation() - MathHelper.PiOver2);
 				}
 			}
+			//can't believe we have to do this
+			if(Player.ItemAnimationEndingOrEnded) {
+				Array.Fill(swordTipPositions, Vector2.Zero);
+				Array.Fill(swordRotations, 0);
+			}
 		}
 	}
 }

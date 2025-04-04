@@ -127,6 +127,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.useTime = item.useAnimation = 30;
 					item.shootsEveryUse = true;
 					break;
+				case ItemID.Frostbrand:
+					item.shootsEveryUse = true;
+					break;
+				case ItemID.Starfury:
+					item.scale += .25f;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
