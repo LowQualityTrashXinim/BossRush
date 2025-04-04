@@ -437,7 +437,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					extra += .25f;
 				}
 				Asset<Texture2D> texture = TextureAssets.Item[item.type];
-				float itemlength = texture.Value.Size().Length() * .9f;
+				float itemlength = texture.Value.Size().Length();
 				float itemsize = itemlength * (player.GetAdjustedItemScale(player.HeldItem) + extra);
 				int laserline = (int)itemsize;
 				if (laserline <= 0) {
@@ -765,8 +765,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			//		return delaytimer <= 0;
 			//	}
 			//}
-
-
 			return base.CanUseItem(item);
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
@@ -782,7 +780,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					drawInfo.itemEffect = SpriteEffects.FlipHorizontally;
 				}
 			}
-
 		}
 
 		private void ComboHandleSystem() {

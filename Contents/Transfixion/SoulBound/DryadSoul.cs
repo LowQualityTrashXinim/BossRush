@@ -22,6 +22,7 @@ namespace BossRush.Contents.Transfixion.SoulBound {
 		}
 	}
 	class DryadSoulItem : BaseSoulBoundItem {
+		public override short SoulBoundType => ModSoulBound.GetSoulBoundType<DryadSoul>();
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Daybloom, 10)

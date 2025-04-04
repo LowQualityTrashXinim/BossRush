@@ -42,7 +42,9 @@ public class LegendaryWoodSword_ModPlayer : ModPlayer {
 			case ItemID.EbonwoodSword:
 			case ItemID.ShadewoodSword:
 			case ItemID.PearlwoodSword:
-				Counter = BossRushUtils.Safe_SwitchValue(Counter, 3);
+				if (Player.ItemAnimationJustStarted) {
+					Counter = BossRushUtils.Safe_SwitchValue(Counter, 3,1);
+				}
 				return Counter >= 3;
 		}
 		return base.CanShoot(item);
@@ -72,9 +74,11 @@ public class WoodProjectile : ModProjectile {
 		Projectile.friendly = true;
 	}
 	public override void AI() {
-		if (++Projectile.ai[0] >= 30) {
-			Projectile.velocity.Y += .1f;
+		if (++Projectile.ai[0] >= 10) {
+			Projectile.velocity.Y += .25f;
 		}
+		Projectile.rotation += MathHelper.ToRadians(20) * Projectile.direction;
+		Projectile.velocity *= .99f;
 	}
 	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 10; i++) {

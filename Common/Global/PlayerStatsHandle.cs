@@ -320,9 +320,6 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
-		EnergyRegen = StatModifier.Default;
-		EnergyRegenCount = StatModifier.Default;
-		EnergyRegenCountLimit = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -343,6 +340,11 @@ public class PlayerStatsHandle : ModPlayer {
 			modplayer.Modify_EnergyAmount((int)Math.Ceiling(EnergyRegen.ApplyTo(0)));
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
+		
+		
+		EnergyRegen = StatModifier.Default;
+		EnergyRegenCount = StatModifier.Default;
+		EnergyRegenCountLimit = StatModifier.Default;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
