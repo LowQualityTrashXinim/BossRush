@@ -31,8 +31,8 @@ namespace BossRush.Contents.Items.Weapon {
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul globalitem)) {
 				globalitem.SwingType = BossRushUseStyle.Swipe;
 				Item.useTurn = false;
-				Item.Set_ItemCriticalDamage(1f);
 			}
+			Item.Set_ItemCriticalDamage(1f);
 		}
 		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
 			if (player.GetModPlayer<PlayerStatsHandle>().CurrentMinionAmount >= player.maxMinions) {
@@ -52,7 +52,7 @@ namespace BossRush.Contents.Items.Weapon {
 				projectile.OriginalCritChance = Item.crit;
 				projectile.knockBack = 0;
 			}
-			if(player.altFunctionUse == 2) {
+			if (player.altFunctionUse == 2) {
 				player.MinionNPCTargetAim(false);
 			}
 			return false;

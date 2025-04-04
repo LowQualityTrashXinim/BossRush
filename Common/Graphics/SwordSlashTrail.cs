@@ -13,20 +13,39 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Graphics;
-public class ItemAverageColor : ModSystem {
+public class SwordSlashTrail : ModSystem {
 
-	public static Dictionary<int, Color> averageColorByID = new();
-	public override void PostAddRecipes() {
-		Stopwatch watch = new();
-		watch.Start();
-		foreach (Item item in BossRushModSystem.List_Weapon) {
+	public static Dictionary<int,Color> averageColorByID = new();
+	public static Dictionary<int,string> swordSlashShaderType = new();
+
+
+	public override void PostAddRecipes() 
+	{ 
+		foreach(Item item in BossRushModSystem.List_Weapon.Where(RoguelikeOverhaul_ModSystem.Optimized_CheckItem)) {
 			AddColor(item);
+			SetTrailDefaults(item);
 		}
-		foreach (Item item in BossRushModSystem.SynergyItem) {
+		foreach (Item item in BossRushModSystem.SynergyItem.Where(RoguelikeOverhaul_ModSystem.Optimized_CheckItem)) {
 			AddColor(item);
+			SetTrailDefaults(item);
 		}
-		watch.Stop();
-		Console.WriteLine("Shader color calculation took : " + watch.ToString());
+
+		
+	}
+	private static void SetTrailDefaults(Item item) 	
+	{ 
+		
+	
+
+
+	}
+
+	public static string GetShaderType(Player player) 
+	{
+		if (player.magmaStone)
+			return "FlameEffect";
+
+		return "SwordTrailEffect";
 	}
 
 	private static void AddColor(Item item) {

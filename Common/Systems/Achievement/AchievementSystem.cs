@@ -520,7 +520,6 @@ public class AchievementUI : UIState {
 	}
 }
 public class TagPanel : UITextPanel<string> {
-	public bool Toggle = false;
 	public void SetActive() {
 		this.BorderColor = Color.Yellow;
 	}

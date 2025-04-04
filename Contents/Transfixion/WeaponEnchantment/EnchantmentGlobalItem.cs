@@ -382,7 +382,7 @@ public class EnchantmentModplayer : ModPlayer {
 }
 internal class EnchantmentUIState : UIState {
 	UIPanel panel;
-	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
+	public WeaponEnchantmentUIslot weaponEnchantmentUIslot;
 	ExitUI weaponEnchantmentUIExit;
 	bool isMousePressed = false;
 	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
@@ -533,10 +533,7 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 			}
 		}
 	}
-	public override void OnDeactivate() {
-		textUqID.Clear();
-		Player player = Main.LocalPlayer;
-		UniversalSystem.EnchantingState = false;
+	public void DropItem(Player player) {
 		if (item == null)
 			return;
 		for (int i = 0; i < 50; i++) {
@@ -552,6 +549,12 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 		}
 		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
 		item = null;
+	}
+	public override void OnDeactivate() {
+		textUqID.Clear();
+		Player player = Main.LocalPlayer;
+		UniversalSystem.EnchantingState = false;
+		DropItem(player);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		Vector2 drawpos = position + positionOffset + texture.Size() * .5f;

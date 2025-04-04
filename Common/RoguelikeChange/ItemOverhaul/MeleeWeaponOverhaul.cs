@@ -18,6 +18,7 @@ using BossRush.Contents.Perks;
 using Steamworks;
 using BossRush.Texture;
 using BossRush.Common.Global;
+using System.Linq;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -30,6 +31,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	internal class MeleeWeaponOverhaul : GlobalItem {
 		public int SwingType = 0;
 		public float offset = 0;
+		public static float swingExpo = 15f;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -451,15 +453,15 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					int LastCollideCheck, check;
 					if (checkComboNum && player.direction == 1 || !checkComboNum && player.direction == -1) {
 						LastCollideCheck =
-							(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, 11f)));
+							(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, swingExpo)));
 						check =
-							(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, 11f)));
+							(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, swingExpo)));
 					}
 					else {
 						LastCollideCheck =
-							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, 11f)));
+							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, swingExpo)));
 						check =
-							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, 11f)));
+							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, swingExpo)));
 					}
 					if (player.itemAnimationMax <= 2) {
 						for (int i = 0; i <= laserline; i++) {
@@ -601,7 +603,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private static void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			percentDone = BossRushUtils.InExpo(percentDone, 11f);
+			percentDone = BossRushUtils.InExpo(percentDone, swingExpo);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
 			float angle = MathHelper.ToRadians(135) * player.direction;
 			float start = baseAngle + angle * direct;
@@ -627,7 +629,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
 			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (BossRushUtilsPlayer.PLAYERARMLENGTH + 3);
-
+			Main.NewText(MathHelper.ToDegrees(player.compositeFrontArm.rotation));
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {
@@ -639,16 +641,19 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			TrailShaderSettings trailShaderSettings = new TrailShaderSettings();
 			trailShaderSettings.oldPos = modplayer.swordTipPositions;
 			trailShaderSettings.oldRot = modplayer.swordRotations;
-			trailShaderSettings.shaderType = "SwordTrailEffect";
+			trailShaderSettings.shaderType = SwordSlashTrail.GetShaderType(modplayer.Player);
 			trailShaderSettings.image1 = TextureAssets.Extra[193];
 			trailShaderSettings.image2 = ModContent.Request<Texture2D>(BossRushTexture.Gradient);
 			trailShaderSettings.image3 = ModContent.Request<Texture2D>(BossRushTexture.PingpongGradient);
-			trailShaderSettings.Color = ItemAverageColor.averageColorByID[modplayer.Player.HeldItem.type] * 2;
+			trailShaderSettings.Color = SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type] * 2;
 			default(GenericTrail).Draw(trailShaderSettings,
 			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
 			(progress) => { return Color.White; });
+			BossRushUtils.DrawPrettyStarSparkle(1f,SpriteEffects.None,modplayer.swordTipPositions.ElementAt(modplayer.swordTipPositions.Length / 2) - Main.screenPosition, SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type],Color.White,0f, 0.1f, 0f, 1f, 0f, 0,Vector2.One * 5,Vector2.One * 5);
+			
 
 		}
+
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {
 			if (!UniversalSystem.Check_RLOH()) {
 				orig(self);
@@ -665,7 +670,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				if (modplayer.ComboNumber == 1 && item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
-				if (ItemAverageColor.averageColorByID.ContainsKey(item.type)) {
+				if (SwordSlashTrail.averageColorByID.ContainsKey(item.type)) {
 					DrawSwordTrail(modplayer);
 				}
 			}
@@ -714,8 +719,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public StatModifier DelayReuse = new();
 		public float ItemRotationBeforeSwitch = 0;
 		// sword trail fields
-		public Vector2[] swordTipPositions = new Vector2[15];
-		public float[] swordRotations = new float[15];
+		public Vector2[] swordTipPositions = new Vector2[30];
+		public float[] swordRotations = new float[30];
 		public float swordLength = 0;
 		public float lastFrameArmRotation = 0;
 		public float startSwordSwingAngle = 0;
@@ -743,22 +748,23 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			DelayReuse = StatModifier.Default;
 		}
+	
 		public override bool CanUseItem(Item item) {
 			if (!Player.ItemAnimationActive) {
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 				swordLength = TextureAssets.Item[item.type].Size().Length() * 0.5f * Player.GetAdjustedItemScale(item);
 				//This is just how my code in Swipe calculate starting swing degree lol
 				int direct;
-				if(ComboNumber == 0) {
+				if (ComboNumber == 0) {
 					direct = 1;
 				}
 				else {
 					direct = -1;
 				}
 				float baseAngle = PlayerToMouseDirection.ToRotation();
-				float angle = MathHelper.ToRadians(135) * (PlayerToMouseDirection.X > 0 ? 1 : -1);
+				float angle = (PlayerToMouseDirection.X > 0 ? 1 : -1);
 				float start = baseAngle + angle * direct;
-				startSwordSwingAngle = start;
+				startSwordSwingAngle = MathHelper.Lerp(0,MathHelper.TwoPi, start / MathHelper.TwoPi);
 				//Resetting array
 				Array.Fill(swordTipPositions, Vector2.Zero);
 				Array.Fill(swordRotations, 0);
@@ -772,6 +778,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			//		return delaytimer <= 0;
 			//	}
 			//}
+
 
 			return base.CanUseItem(item);
 		}
@@ -788,6 +795,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					drawInfo.itemEffect = SpriteEffects.FlipHorizontally;
 				}
 			}
+			
 		}
 
 		private void ComboHandleSystem() {
@@ -801,15 +809,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			if (Player.ItemAnimationActive) {
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
-				for (float i = 0; i < 30; i++) {
-					Vector2 offset = (ComboNumber != 0) ? Vector2.Zero : (new Vector2(5, 0) * Player.direction);
+				for (float i = 0; i < 30f; i++) {
 					//Slight clean up for your code
-					Vector2 dir = (MathHelper.Lerp(MathHelper.Lerp(Player.compositeFrontArm.rotation, startSwordSwingAngle, Player.itemAnimation / (float)Player.itemAnimationMax), Player.compositeFrontArm.rotation, i / 30f) + MathHelper.PiOver2).ToRotationVector2();
-					Vector2 insertPos = swordLength * dir + Player.Center - offset;
+					Vector2 dir = (MathHelper.Lerp(MathHelper.Lerp(Player.compositeFrontArm.rotation, startSwordSwingAngle - MathHelper.PiOver2, ( (Player.itemAnimation) / (float)Player.itemAnimationMax)), Player.compositeFrontArm.rotation, i / 30f) + MathHelper.PiOver2).ToRotationVector2();
+					Vector2 insertPos = (swordLength) * (dir) + Player.Center;
 					BossRushUtils.Push(ref swordTipPositions, insertPos);
 					BossRushUtils.Push(ref swordRotations, dir.ToRotation() - MathHelper.PiOver2);
 				}
 			}
+			if(Player.ItemAnimationEndingOrEnded) 
+			{
+				Array.Fill(swordTipPositions, Vector2.Zero);
+				Array.Fill(swordRotations,0);
+
+			}
+
 		}
 	}
 }

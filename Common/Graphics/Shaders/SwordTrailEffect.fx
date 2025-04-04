@@ -12,20 +12,16 @@ float3 color;
 float4 SwordTrail(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float2 uv = coords;
-    float blurEdge = saturate(lerp(1, 0, 1. / abs(uv.y * 100 - 1)));
-    float4 noiseTex = tex2D(image1, uv * 2 - time);
-    float4 gradient = tex2D(image2, uv);
-    float4 pingpongGradient = tex2D(image3, uv);
-    noiseTex.rgb *= color;
+    
+    float4 noiseTex = tex2D(image1, uv - time);
     noiseTex.a = noiseTex.r;
-    noiseTex.a *= gradient.r;
-    float4 color1 = noiseTex;
-    color1.rgb += color * (uv.x + 1);
-    color1.rgba -= uv.x * 3;
-    color1.rgba *= pingpongGradient.r;
-   
+    float4 mainSlash = noiseTex * color.rgbr * 2;
+    float upperPart = saturate(lerp(1, 0, length((uv.y))) * lerp(1, 0, uv.x));
+    float upperPart2 = saturate(lerp(1, 0, length((uv.y) * 35)));
 
-    return color1;
+    float4 finalResult = (mainSlash * upperPart + saturate(upperPart2 * color.rgbr * 5)) * lerp(1, 0, uv.x * 1.1) * lerp(0, 1, uv.x * 5);
+    return finalResult;
+    
 }
     
 technique Technique1
@@ -33,6 +29,6 @@ technique Technique1
     pass SwordTrail
     {
         
-        PixelShader = compile ps_2_0 SwordTrail();
+        PixelShader = compile ps_3_0 SwordTrail();
     }
 }
