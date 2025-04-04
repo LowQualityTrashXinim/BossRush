@@ -35,7 +35,6 @@ using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
 using Terraria.IO;
-using System.Xml;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -224,12 +223,12 @@ internal class UniversalSystem : ModSystem {
 	}
 
 	private PlayerFileData On_PlayerFileData_CreateAndSave(On_PlayerFileData.orig_CreateAndSave orig, Player player) {
-		PlayerFileData file = orig(player);
 		if (player.TryGetModPlayer(out UniversalModPlayer modplayer)) {
 			if (modplayer.UniqueID == string.Empty) {
 				modplayer.UniqueID = RoguelikeData.Run_Amount + BossRushUtils.JumboString(Main.rand, player.name);
 			}
 		}
+		PlayerFileData file = orig(player);
 		return file;
 	}
 

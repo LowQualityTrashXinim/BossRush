@@ -331,6 +331,7 @@ Mods: {
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 			OnyxBulletProjectile.DisplayName: Onyx Bullet Projectile
+			WoodProjectile.DisplayName: Wood Projectile
 		}
 
 		NPCs: {
@@ -2352,6 +2353,11 @@ Mods: {
 
 			TurnOnEndUI: {
 				DisplayName: Turn On End UI
+				Tooltip: ""
+			}
+
+			StarStrike: {
+				DisplayName: Star Strike
 				Tooltip: ""
 			}
 		}
