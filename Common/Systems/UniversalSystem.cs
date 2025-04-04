@@ -34,6 +34,8 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
+using Terraria.IO;
+using System.Xml;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -218,6 +220,17 @@ internal class UniversalSystem : ModSystem {
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
+		On_PlayerFileData.CreateAndSave += On_PlayerFileData_CreateAndSave;
+	}
+
+	private PlayerFileData On_PlayerFileData_CreateAndSave(On_PlayerFileData.orig_CreateAndSave orig, Player player) {
+		PlayerFileData file = orig(player);
+		if (player.TryGetModPlayer(out UniversalModPlayer modplayer)) {
+			if (modplayer.UniqueID == string.Empty) {
+				modplayer.UniqueID = RoguelikeData.Run_Amount + BossRushUtils.JumboString(Main.rand, player.name);
+			}
+		}
+		return file;
 	}
 
 	public override void Unload() {
@@ -422,6 +435,7 @@ internal class UniversalSystem : ModSystem {
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
 	public List<int> LootBoxOpen = new();
+	public string UniqueWorldPlayerID = "";
 	public override void ClearWorld() {
 		GivenBossSpawnItem = new List<int>();
 		ListOfBossKilled = new();
@@ -439,6 +453,7 @@ internal class UniversalSystem : ModSystem {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
 		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
+		UniqueWorldPlayerID = tag.Get<string>("UniqueID");
 		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
 			timeBeatenTheGame = time;
 		}
@@ -513,12 +528,25 @@ public class UniversalGlobalItem : GlobalItem {
 	}
 }
 public class UniversalModPlayer : ModPlayer {
+	public string UniqueID = "";
+	public string UniqueWorldID = "";
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		if (UniqueID == string.Empty) {
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Detected : using a unrecognized player character ");
+			UniqueID = RoguelikeData.Run_Amount + BossRushUtils.JumboString(Main.rand, Player.name + Main.worldName);
+		}
+		else {
+			if (UniqueWorldID == string.Empty) {
+				UniqueWorldID = RoguelikeData.Run_Amount + BossRushUtils.JumboString(Main.rand, Player.name + Main.worldName);
+				RoguelikeData.Run_Amount++;
+			}
+		}
 		if (uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
 			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");
 			Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
 			NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
+			uiSystemInstance.Enchant_uiState.weaponEnchantmentUIslot.DropItem(Player);
 		}
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
@@ -529,10 +557,14 @@ public class UniversalModPlayer : ModPlayer {
 	}
 	int WarnAlready = 0;
 	public override void SaveData(TagCompound tag) {
+		tag.Add("UniqueID", UniqueID);
+		tag.Add("UniqueWorldID", UniqueWorldID);
 		tag.Add("WarnAlready", WarnAlready);
 	}
 	public override void LoadData(TagCompound tag) {
 		WarnAlready = (int)tag["WarnAlready"];
+		UniqueID = tag.Get<string>("UniqueID");
+		UniqueWorldID = tag.Get<string>("UniqueWorldID");
 	}
 }
 class DefaultUI : UIState {
@@ -550,7 +582,6 @@ class DefaultUI : UIState {
 
 	private UITextBox timer;
 
-	private UIImage itemUseTexture;
 	private UITextBox totalDMG;
 	private UITextBox totalHitTaken;
 	private UITextBox dmgTaken;

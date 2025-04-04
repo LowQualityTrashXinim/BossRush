@@ -27,7 +27,7 @@ namespace BossRush {
 			if (!dust.active) {
 				return;
 			}
-			if(action == null) {
+			if (action == null) {
 				return;
 			}
 			RoguelikeGlobalDust.Dust[dust.dustIndex].AI = action;
@@ -64,9 +64,8 @@ namespace BossRush {
 
 		}
 
-		public static void Push<T>(ref T[] array, T value)
-		{
-			Array.Copy(array,0,array,1,array.Length - 1);
+		public static void Push<T>(ref T[] array, T value) {
+			Array.Copy(array, 0, array, 1, array.Length - 1);
 			array[0] = value;
 		}
 
@@ -111,6 +110,23 @@ namespace BossRush {
 		}
 		public static T NextFromHashSet<T>(this UnifiedRandom r, HashSet<T> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
+		}
+		public static string JumboString(UnifiedRandom r, string str) {
+			string strCached = str;
+			int length = str.Length;
+			string result = string.Empty;
+			for (int i = 0; i < length; i++) {
+				int currentlenght = strCached.Length;
+				if (currentlenght <= 1) {
+					result += strCached;
+					continue;
+				}
+				int index = r.Next(0, currentlenght);
+				char c = strCached[r.Next(0, currentlenght)];
+				result += c;
+				strCached = strCached.Remove(index, 1);
+			}
+			return result;
 		}
 		/// <summary>
 		/// Spawn combat text above player without the random Y position
