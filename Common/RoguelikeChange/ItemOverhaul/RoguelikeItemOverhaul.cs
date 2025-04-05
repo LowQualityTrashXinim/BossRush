@@ -221,6 +221,15 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						return false;
 					}
 					break;
+				case ItemID.Frostbrand:
+					modplayer.FrostBandBurst = BossRushUtils.Safe_SwitchValue(modplayer.FrostBandBurst, 3, 1);
+					if (modplayer.FrostBandBurst >= 3) {
+						for (int i = 0; i < 6; i++) {
+							Vector2 vel = velocity.Vector2DistributeEvenlyPlus(6, 120, i);
+							Projectile.NewProjectile(source, position.PositionOFFSET(vel, 50), vel, type, damage, knockback, player.whoAmI);
+						}
+					}
+					break;
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
@@ -328,6 +337,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 
 		public int ShortSword_ThrownCD = 90;
 		public bool ShortSword_OnCoolDown = false;
+		public int FrostBandBurst = 0;
 		public override void ResetEffects() {
 			ShortSword_ThrownCD = 90;
 			ShortSword_OnCoolDown = false;

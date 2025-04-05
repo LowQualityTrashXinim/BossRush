@@ -110,12 +110,12 @@ Increases_3xDamage: {
 
 Icicle: {
 	DisplayName: Icicle
-	Description: Shoots out up to 6 icicles every 5 ticks towards your cursor, dealing 18 damage and inflicting the 'Chilled' debuff
+	Description: Shoots out up to 6 icicles every 20 ticks towards your cursor, dealing 9 damage and inflicting the 'Chilled' debuff
 }
 
 MeteorShower: {
 	DisplayName: Meteor Shower
-	Description: Rains down several meteors towards your cursor, dealing 44 base damage + 44% weapon damage within a large radius
+	Description: Rains down several meteors towards your cursor, dealing 44 base damage within a large radius
 }
 
 SpiritBurst: {
@@ -145,12 +145,12 @@ RapidHealing: {
 
 FireBall: {
 	DisplayName: Fireball
-	Description: Shoots out a fireball every 10 ticks, dealing 43 magic damage and inflicting the 'On Fire!' debuff
+	Description: Shoots out a fireball every 10 ticks, dealing 23 magic damage and inflicting the 'On Fire!' debuff
 }
 
 StarFury: {
 	DisplayName: Starfall Blast
-	Description: Shoots down a Fallen Star every 2 seconds towards your cursor, dealing 1000 damage
+	Description: Shoots down a Fallen Star every 1.5s seconds towards your cursor, dealing 1000 damage
 }
 
 WoodSwordSpirit: {
@@ -180,7 +180,7 @@ AdAstra: {
 
 BulletStorm: {
 	DisplayName: Bullet Whirlwind
-	Description: Rains down various bullets that deal 30 ranged damage
+	Description: Rains down various bullets that deal 14 ranged damage
 }
 
 TerrorForm: {
@@ -195,12 +195,12 @@ AllOrNothing: {
 
 IceAge: {
 	DisplayName: Ice Age
-	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius
+	Description: Casts out a large glacier from the sky towards your cursor, dealing 24 base damage in a large radius
 }
 
 ElectricChain: {
 	DisplayName: Electric Chain
-	Description: Releases a zap that deals 43 damage to up to 10 unelectrified enemies close to each other, inflicting the 'Electrified' debuff and returning 5 Energy each
+	Description: Releases a zap that deals 33 damage, inflicting the 'Electrified' debuff and returning 5 Energy each time it hit
 }
 
 WilloFreeze: {

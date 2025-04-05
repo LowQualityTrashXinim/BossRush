@@ -340,17 +340,17 @@ public class ChaosArrowRain : ModSkill {
 public class SpiritBurst : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 210;
-		Skill_Duration = BossRushUtils.ToSecond(.5f);
-		Skill_CoolDown = BossRushUtils.ToSecond(7);
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(10);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player) {
-		if (!Main.rand.NextBool(10)) {
-			return;
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (Main.rand.NextBool(10) || modplayer.Duration % 15 == 0) {
+			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 44));
+			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 64));
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
-		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 	}
 }
 public class Icicle : ModSkill {
@@ -362,10 +362,10 @@ public class Icicle : ModSkill {
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
+		if (modplayer.Duration % 20 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(18);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 9));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 		float rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
 		int Index = Main.rand.Next(6);
@@ -388,7 +388,7 @@ public class FireBall : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<FireBall>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 45;
-		Skill_Duration = 7;
+		Skill_Duration = 10;
 		Skill_CoolDown = BossRushUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
@@ -397,7 +397,7 @@ public class FireBall : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(43);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 23));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(4);
 		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15f;
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Flamelash, damage, knockback, player.whoAmI);
@@ -409,17 +409,17 @@ public class FireBall : ModSkill {
 public class StarFury : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAs<StarFury>("StarFall");
 	public override void SetDefault() {
-		Skill_EnergyRequire = 225;
+		Skill_EnergyRequire = 325;
 		Skill_Duration = 6;
 		Skill_CoolDown = BossRushUtils.ToSecond(20);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 120 != 0) {
+		if (modplayer.Duration % 90 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(1000);
+		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(SkillDamage(player, 1000));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 		Vector2 position = player.Center.Add(0, 1000);
 		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 20f;
@@ -434,7 +434,7 @@ public class MeteorShower : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAs<MeteorShower>("MeteorStrike");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
-		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_Duration = BossRushUtils.ToSecond(.4f);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
@@ -443,7 +443,7 @@ public class MeteorShower : ModSkill {
 		if (modplayer.Duration % 5 != 0) {
 			return;
 		}
-		int damage = (int)(player.GetTotalDamage(DamageClass.Magic).ApplyTo(44) + player.GetWeaponDamage(player.HeldItem) * .44f);
+		int damage = (int)(player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 44)));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 		Vector2 position = player.Center.Add(Main.rand.Next(-1000, 1000), 1000);
 		Vector2 velocity = (Main.MouseWorld - position + Main.rand.NextVector2Circular(200, 200)).SafeNormalize(Vector2.Zero) * 10f;
@@ -463,7 +463,7 @@ public class BulletStorm : ModSkill {
 	}
 	public override void Update(Player player) {
 		Vector2 spawn = player.Center.Add(0, 1000);
-		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(30);
+		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 14));
 		for (int i = 0; i < 3; i++) {
 			float RandomizeX = Main.rand.NextFloat(-300, 300);
 			Projectile.NewProjectile(player.GetSource_Misc("Skill"), spawn.Add(RandomizeX, 0) + Main.rand.NextVector2Circular(300, 300), Vector2.UnitY * Main.rand.Next(10, 14), Main.rand.Next(TerrariaArrayID.Bullet), damage, 2);
@@ -482,8 +482,7 @@ public class IceAge : ModSkill {
 		if (modplayer.Duration % 50 != 0) {
 			return;
 		}
-		int weaponDamage = (int)(player.GetWeaponDamage(player.HeldItem) * 2.5f);
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(62) + weaponDamage;
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 24));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 
 		Vector2 pos = Main.MouseWorld - Vector2.UnitY * Main.rand.Next(500, 600);
@@ -492,7 +491,7 @@ public class IceAge : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
-		Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * (14);
+		Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * 14;
 		Projectile proj = Projectile.NewProjectileDirect(player.GetSource_Misc("Skill_IceAge"), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
 
 		proj.timeLeft = 120;
@@ -543,9 +542,7 @@ public class ElectricChain : ModSkill {
 		if (modplayer.Duration % 50 != 0) {
 			return;
 		}
-
-		int weaponDamage = (int)(player.GetWeaponDamage(player.HeldItem) * 2.5f);
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(62) + weaponDamage;
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(32);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 		Projectile.NewProjectileDirect(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(1, 1), ModContent.ProjectileType<ElectricChainBolt>(), damage, knockback, player.whoAmI);
 	}

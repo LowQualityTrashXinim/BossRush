@@ -3,6 +3,8 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
+using BossRush.Common.Global;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Contents.Projectiles;
 internal class ElectricChainBolt : ModProjectile {
@@ -40,7 +42,8 @@ internal class ElectricChainBolt : ModProjectile {
 		Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(13,17)));
+		target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(13, 17)));
+		Main.player[Projectile.owner].GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(5);
 		npc = null;
 	}
 }

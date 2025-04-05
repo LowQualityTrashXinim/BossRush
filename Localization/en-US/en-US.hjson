@@ -332,6 +332,8 @@ Mods: {
 			TheMeatBallProjectile.DisplayName: The Meat Ball Projectile
 			OnyxBulletProjectile.DisplayName: Onyx Bullet Projectile
 			WoodProjectile.DisplayName: Wood Projectile
+			OnHitRangeP.DisplayName: On Hit Range P
+			PlasmaProjectile.DisplayName: Plasma Projectile
 		}
 
 		NPCs: {
@@ -2358,6 +2360,11 @@ Mods: {
 
 			StarStrike: {
 				DisplayName: Star Strike
+				Tooltip: ""
+			}
+
+			Mixmaster: {
+				DisplayName: Mixmaster
 				Tooltip: ""
 			}
 		}
