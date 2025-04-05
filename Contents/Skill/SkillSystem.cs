@@ -134,6 +134,10 @@ public class SkillModSystem : ModSystem {
 	}
 }
 public class SkillHandlePlayer : ModPlayer {
+	public int SkillDamage(int damage) {
+		StatModifier modifier = skilldamage.CombineWith(SkillDamageWhileActive);
+		return (int)Math.Ceiling(modifier.ApplyTo(damage));
+	}
 	public StatModifier skilldamage = new StatModifier();
 	public StatModifier SkillDamageWhileActive = new StatModifier();
 	public int EnergyCap = 1500;

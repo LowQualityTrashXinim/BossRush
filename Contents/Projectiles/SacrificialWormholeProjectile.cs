@@ -57,7 +57,7 @@ namespace BossRush.Contents.Projectiles {
 					return;
 				}
 				foreach (NPC npc in npclist) {
-					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(240, 1));
+					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, 1));
 					npc.velocity += (Projectile.Center - npc.Center).SafeNormalize(Vector2.Zero);
 				}
 				CoolDown = 10;

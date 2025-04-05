@@ -15,20 +15,16 @@ public class BroadSwordSpirit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void Update(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
 			for (int i = 0; i < 3; i++) {
-				SummonSword(player, i);
+				int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(modplayer.SkillDamage(34));
+				float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
+				int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, i);
+				if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
+					woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
 			}
 		}
-	}
-	private void SummonSword(Player player, int index) {
-		int weapondamage = (int)(player.GetWeaponDamage(player.HeldItem) * .75f);
-		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(34) + weapondamage;
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, index);
-		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
-			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
 	}
 }
 public class WoodSwordSpirit : ModSkill {
@@ -38,9 +34,9 @@ public class WoodSwordSpirit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void Update(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SoulWoodSword>()] < 1) {
-			int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(24);
+			int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(modplayer.SkillDamage(24));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(5);
 			int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SoulWoodSword>(), damage, knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -57,9 +53,9 @@ public class WilloFreeze : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void Update(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<WilloFreezeProjectile>()] < 1) {
-			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(36);
+			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(modplayer.SkillDamage(36));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(5);
 			for (int i = 0; i < 4; i++) {
 				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<WilloFreezeProjectile>(), damage, knockback, player.whoAmI, 75, i, 4);
@@ -101,9 +97,10 @@ public class OrbOfPurity : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void Update(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DiamondSwotaffOrb>(), 10, 0, player.whoAmI);
+			int damage = modplayer.SkillDamage(10);
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DiamondSwotaffOrb>(), damage, 0, player.whoAmI);
 		}
 	}
 }
@@ -115,9 +112,10 @@ public class PhoenixBlazingTornado : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void Update(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), 120, 0, player.whoAmI);
+			int damage = modplayer.SkillDamage(120);
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), damage, 0, player.whoAmI);
 		}
 	}
 }
@@ -130,9 +128,10 @@ public class DebugCommand : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		int damage = modplayer.SkillDamage(2000);
 		player.Center.LookForHostileNPC(out List<NPC> npclist, 2500);
 		foreach (NPC npc in npclist) {
-			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(2000, BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
 		}
 	}
 }
@@ -145,8 +144,9 @@ public class LucidNightmares : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		int damage = modplayer.SkillDamage(53);
 		for (int i = 0; i < 3; i++) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), 53, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
 		}
 	}
 }
@@ -159,8 +159,9 @@ public class SacrificialWormhole : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
 	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
+		int damage = modplayer.SkillDamage(50);
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
-			ModContent.ProjectileType<SacrificialWormholeProjectile>(), 53, 0, player.whoAmI);
+			ModContent.ProjectileType<SacrificialWormholeProjectile>(), damage, 0, player.whoAmI);
 		player.AddBuff<LifeLoss>(BossRushUtils.ToSecond(60));
 	}
 }

@@ -26,7 +26,7 @@ internal class BlazingTornado : ModProjectile {
 		Vector2 rotationVec = Projectile.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver4);
 		Projectile.Center = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(-Projectile.timeLeft / 4)) * 100;
 		Vector2 pos = Projectile.Center.PositionOFFSET(rotationVec, Main.rand.NextFloat(-length, length));
-		if (Projectile.timeLeft % 400 == 0) {
+		if (Projectile.timeLeft % 800 == 0) {
 			Projectile.NewProjectile(
 				Projectile.GetSource_FromAI(),
 				pos,

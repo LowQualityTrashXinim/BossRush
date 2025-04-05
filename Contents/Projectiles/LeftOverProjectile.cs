@@ -15,7 +15,7 @@ namespace BossRush.Contents.Projectiles {
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
 			Projectile.DamageType = DamageClass.Magic;
-			Projectile.timeLeft = 400;
+			Projectile.timeLeft = 1200;
 		}
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
@@ -67,7 +67,7 @@ namespace BossRush.Contents.Projectiles {
 			Projectile.height = 30;
 			Projectile.timeLeft = 90;
 			Projectile.tileCollide = false;
-			Projectile.penetrate = -1;
+			Projectile.penetrate = 1;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.alpha = 255;

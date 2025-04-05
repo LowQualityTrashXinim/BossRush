@@ -243,8 +243,7 @@ LucidNightmares: {
 	Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
 }
 
-// UNRELEASED
 SacrificialWormhole: {
 	DisplayName: Sacrificial Wormhole
-	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 240 damage and inflicting the 'Suffocation' debuff
+	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 50 damage and inflicting the 'Suffocation' debuff
 }
