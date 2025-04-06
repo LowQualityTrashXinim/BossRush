@@ -148,18 +148,18 @@ namespace BossRush.Common.Global {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
-                if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-                    LifeCrystal += 5;
-                    ManaCrystal += 4;
-                    if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-                        yield return new Item(ModContent.ItemType<ExoticTeleporter>());
-                    }
-                    else {
-                        yield return new Item(ModContent.ItemType<BuilderLootBox>());
-                    }
-                    if (UniversalSystem.CanEnchantmentBeAccess()) {
-                        yield return new Item(ModContent.ItemType<DivineHammer>());
-                    }
+				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+					LifeCrystal += 5;
+					ManaCrystal += 4;
+					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
+					}
+					else {
+						yield return new Item(ModContent.ItemType<BuilderLootBox>());
+					}
+					if (UniversalSystem.CanEnchantmentBeAccess()) {
+						yield return new Item(ModContent.ItemType<DivineHammer>());
+					}
 					if (UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
 						yield return new Item(ModContent.ItemType<SkillLootBox>(), 3);
 						yield return new Item(ModContent.ItemType<WorldEssence>());
@@ -179,7 +179,7 @@ namespace BossRush.Common.Global {
 						yield return new Item(ModContent.ItemType<CelestialEssence>());
 					}
 					//yield return new Item(ModContent.ItemType<WindSlashPerk>());
-					yield return new Item(ModContent.ItemType<SynergyEnergy>());
+					//yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					yield return new Item(ModContent.ItemType<UserInfoTablet>());
 				}
 				if (ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest) {

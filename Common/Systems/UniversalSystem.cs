@@ -868,10 +868,8 @@ class UISystemMenu : UIState {
 	UIPanel panel;
 	UITextPanel<string> uitextpanel;
 	UIImageButton open_skill_UI;
-	UIImageButton open_Transmutation_UI;
 	UIImageButton open_AchievmentUI;
 	bool SkillHover = false;
-	bool Transmutation = false;
 	bool Achievement = false;
 	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 3f);
 	public override void OnInitialize() {
@@ -895,16 +893,6 @@ class UISystemMenu : UIState {
 		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
 		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
 		Append(open_skill_UI);
-
-
-		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
-		open_Transmutation_UI.UISetWidthHeight(52, 52);
-		open_Transmutation_UI.VAlign = .4f;
-		open_Transmutation_UI.HAlign = SetHAlign(1);
-		open_Transmutation_UI.SetVisibility(1f, 67f);
-		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick;
-		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate;
-		Append(open_Transmutation_UI);
 
 		open_AchievmentUI = new(TextureAssets.InventoryBack);
 		open_AchievmentUI.UISetWidthHeight(52, 52);
@@ -936,32 +924,12 @@ class UISystemMenu : UIState {
 			Main.instance.MouseText("Skill inventory");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
 		}
-		else if (Transmutation) {
-			Main.instance.MouseText("Transmutation menu");
-			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Transmutation.Tooltip"));
-		}
 		else if (Achievement) {
 			Main.instance.MouseText("Achievement menu");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Achievement.Tooltip"));
 		}
 		else {
 			uitextpanel.SetText("");
-		}
-	}
-
-
-	private void Open_Transmutation_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateTransmutationUI();
-	}
-	private void Open_Transmutation_UI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (affectedElement.IsMouseHovering) {
-			Transmutation = true;
-		}
-		else {
-			Transmutation = false;
 		}
 	}
 

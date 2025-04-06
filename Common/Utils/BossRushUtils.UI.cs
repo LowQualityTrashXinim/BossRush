@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.Systems;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -371,6 +372,29 @@ namespace BossRush {
 			PreDraw(spriteBatch);
 			base.Draw(spriteBatch);
 			PostDraw(spriteBatch);
+		}
+	}
+	public class ExitUI : UIImageButton {
+		public ExitUI(Asset<Texture2D> texture) : base(texture) {
+		}
+
+		public override void LeftClick(UIMouseEvent evt) {
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.CrossSprite).Value;
+			CalculatedStyle rect = this.GetDimensions();
+			spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.White);
+		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			if (ContainsPoint(Main.MouseScreen)) {
+				Main.LocalPlayer.mouseInterface = true;
+			}
+			if (IsMouseHovering) {
+				Main.instance.MouseText("Exit");
+			}
 		}
 	}
 }

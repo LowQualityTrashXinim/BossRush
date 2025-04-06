@@ -64,27 +64,27 @@ public class StrokeOfLuck : Perk {
 		CanBeStack = false;
 	}
 	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+		if (Main.rand.NextFloat() <= .2f) {
 			modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(npc.damage * .85f));
 		}
 	}
 	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+		if (Main.rand.NextFloat() <= .2f) {
 			modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(proj.damage * .85f));
 		}
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+		if (Main.rand.NextFloat() <= .2f) {
 			modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+		if (Main.rand.NextFloat() <= .2f) {
 			modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 		}
 	}
 	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
-		if (!player.immune && Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .9f)) {
+		if (!player.immune && Main.rand.NextFloat() <= .35f) {
 			player.AddImmuneTime(hurtInfo.CooldownCounter, Main.rand.Next(44, 89));
 			player.immune = true;
 			return true;

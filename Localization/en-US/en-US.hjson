@@ -2367,6 +2367,11 @@ Mods: {
 				DisplayName: Mixmaster
 				Tooltip: ""
 			}
+
+			TransmuteTablet: {
+				DisplayName: Transmute Tablet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

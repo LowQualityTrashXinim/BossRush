@@ -60,7 +60,7 @@ namespace BossRush.Contents.Perks {
 		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
 			ModifyHit(ref modifiers);
 		}
-		private void ModifyHit(ref Player.HurtModifiers modifiers) {
+		private static void ModifyHit(ref Player.HurtModifiers modifiers) {
 			modifiers.FinalDamage += .25f;
 			modifiers.Knockback *= .35f;
 		}
@@ -121,7 +121,7 @@ namespace BossRush.Contents.Perks {
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			LifeForceSpawn(player, target);
 		}
-		private void LifeForceSpawn(Player player, NPC target) {
+		private static void LifeForceSpawn(Player player, NPC target) {
 			if (Main.rand.NextBool(10))
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(target.width + 100, target.height + 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
@@ -241,6 +241,9 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<ProjectileProtection>();
 			CanBeStack = true;
 			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			player.endurance += .05f * StackAmount(player);
 		}
 		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
 			modifiers.SourceDamage += -.3f * StackAmount(player);
@@ -588,7 +591,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.DamageType == DamageClass.Magic && player.statMana == player.statLifeMax2) {
-				target.Center.LookForHostileNPC(out List<NPC> npclist, 64);
+				target.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 				for (int i = 0; i < 65; i++) {
 					var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
 					Main.dust[d].noGravity = true;
@@ -1123,7 +1126,7 @@ namespace BossRush.Contents.Perks {
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			Chance_InstantKill(player, target, hit);
 		}
-		private void Chance_InstantKill(Player player, NPC target, NPC.HitInfo info) {
+		private static void Chance_InstantKill(Player player, NPC target, NPC.HitInfo info) {
 			if (player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount == 1) {
 				target.Center.LookForHostileNPC(out List<NPC> npclist, 400);
 				foreach (NPC npc in npclist) {

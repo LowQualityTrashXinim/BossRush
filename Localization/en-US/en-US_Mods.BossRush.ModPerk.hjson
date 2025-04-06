@@ -12,10 +12,10 @@ StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
 		'''
-		Your chance range from 20% to 70%
+		Your attack have 20% chance to do the following
 		+ Your damage increases from 15% to 100% when strike NPC
 		+ Damage dealt onto you may be reduced from 15% to 100%
-		You have 10% to 90% to dodge
+		You have 35% to dodge a attack
 		'''
 }
 
@@ -137,7 +137,11 @@ SelfExplosion: {
 
 ProjectileProtection: {
 	DisplayName: Projectile Protection
-	Description: + You are 30% more resistant to projectile
+	Description:
+		'''
+		+ You are 30% more resistant to projectile
+		+ Increases damage reduction by 5%
+		'''
 }
 
 ProjectileDuplication: {
@@ -735,10 +739,9 @@ SoulShatter: {
 	DisplayName: Soul Shatter
 	Description:
 		'''
-		~ 1 bullet is all it matter ~
 		+ Increases first strike damage by 500% and critical strike damage by 40%
-		+ After waiting for 1.5s, increases the next shot damage by 40% and critical strike damage by 100%
-		+ Your bullet have 0.1% chance to instantly kill non-boss enemy
+		+ After waiting for 1.5s, increases next strike damage by 40% and critical strike damage by 100%
+		+ Your strike have 0.1% chance to instantly kill non-boss enemy
 		+ Killing a enemy with 1 shot will debuff surrounding enemy with "shatter" debuff
 		'''
 }
