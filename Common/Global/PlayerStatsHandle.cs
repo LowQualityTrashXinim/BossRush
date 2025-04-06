@@ -43,11 +43,11 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier HealEffectiveness = new StatModifier();
 	public StatModifier EnergyCap = new StatModifier();
 	public StatModifier RechargeEnergyCap = new StatModifier();
+	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier UpdateFullHPDamage = new StatModifier();
 	public StatModifier StaticDefense = new StatModifier();
 	public StatModifier DebuffDamage = new StatModifier();
 	public StatModifier SynergyDamage = new StatModifier();
-	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier SkillCoolDown = new();
@@ -110,7 +110,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float AugmentationChance = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
-		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
+		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(1) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
