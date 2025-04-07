@@ -166,11 +166,9 @@ namespace BossRush {
 		/// <param name="distance"></param>
 		/// <returns></returns>
 		public static bool LookForAnyHostileNPC(this Vector2 position, float distance) {
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				if (Main.npc[i].active && !Main.npc[i].friendly && Main.npc[i].CanBeChasedBy()) {
-					if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) {
-						return true;
-					}
+			foreach (var target in Main.ActiveNPCs) {
+				if (!target.friendly && target.CanBeChasedBy() && CompareSquareFloatValue(position, target.Center, distance * distance)) {
+					return true;
 				}
 			}
 			return false;
@@ -178,10 +176,9 @@ namespace BossRush {
 		public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance, bool notHitThroughTiles = true) {
 			Vector2 hostilePos = Vector2.Zero;
 			float maxDistanceSquare = distance * distance;
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC npc = Main.npc[i];
-				if (Main.npc[i].active
-					&& CompareSquareFloatValue(npc.Center, position, maxDistanceSquare, out float dis)
+			foreach (var target in Main.ActiveNPCs) {
+				NPC npc = target;
+				if (CompareSquareFloatValue(npc.Center, position, maxDistanceSquare, out float dis)
 					&& npc.CanBeChasedBy()
 					&& !npc.friendly
 					&& (!notHitThroughTiles || Collision.CanHitLine(position, 10, 10, npc.position, npc.width, npc.height))
@@ -195,10 +192,9 @@ namespace BossRush {
 		public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLookThroughTile = false) {
 			float maxDistanceSquare = distance * distance;
 			npc = null;
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC mainnpc = Main.npc[i];
-				if (mainnpc.active
-					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+			foreach (var target in Main.ActiveNPCs) {
+				NPC mainnpc = target;
+				if (CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
 					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
@@ -212,10 +208,9 @@ namespace BossRush {
 		public static bool LookForHostileNPCNotImmune(this Vector2 position, out NPC npc, float distance, int whoAmI, bool CanLookThroughTile = false) {
 			float maxDistanceSquare = distance * distance;
 			npc = null;
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC mainnpc = Main.npc[i];
-				if (mainnpc.active
-					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+			foreach (var target in Main.ActiveNPCs) {
+				NPC mainnpc = target;
+				if (CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
 					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || CanLookThroughTile)
@@ -229,9 +224,9 @@ namespace BossRush {
 		}
 		public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance) {
 			npc = new List<NPC>();
-			for (int i = 0; i < Main.maxNPCs; i++) {
-				NPC Npc = Main.npc[i];
-				if (Npc.active && Npc.CanBeChasedBy() && Npc.type != NPCID.TargetDummy && !Npc.friendly && CompareSquareFloatValueWithHitbox(position, Npc.position, Npc.Hitbox, distance))
+			foreach (var target in Main.ActiveNPCs) {
+				NPC Npc = target;
+				if (Npc.CanBeChasedBy() && Npc.type != NPCID.TargetDummy && !Npc.friendly && CompareSquareFloatValueWithHitbox(position, Npc.position, Npc.Hitbox, distance))
 					npc.Add(Npc);
 			}
 		}

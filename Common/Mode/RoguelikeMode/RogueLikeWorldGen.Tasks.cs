@@ -192,41 +192,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void AddAltar() {
 		ResetTemplate_GenerationValue();
-		bool RNG = false;
 		for (int i = 1; i < Main.maxTilesX - 1; i++) {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
 				//Cleanup possible liquid
 				Main.tile[i, j].LiquidAmount = 0;
-				if (!RNG) {
-					if (Rand.NextBool(1500)) {
-						RNG = true;
-					}
-				}
-				else {
-					int pass = 0;
-					for (int offsetX = -1; offsetX <= 1; offsetX++) {
-						for (int offsetY = -1; offsetY <= 1; offsetY++) {
-							if (offsetX == 0 && offsetY == 0) continue;
-							if (offsetY == 1 && offsetX == 0) continue;
-							if (!WorldGen.InWorld(i + offsetX, j + offsetY)) continue;
-							if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
-								j = Math.Clamp(j + 1, 0, Main.maxTilesY);
-								break;
-							}
-							else {
-								pass++;
-							}
-						}
-					}
-					if (pass >= 7) {
-						if (WorldGen.genRand.NextBool(100)) {
-							//Generate_Trial(i, j);
+				int pass = 0;
+				for (int offsetX = -1; offsetX <= 1; offsetX++) {
+					for (int offsetY = -1; offsetY <= 1; offsetY++) {
+						if (offsetX == 0 && offsetY == 0) continue;
+						if (offsetY == 1 && offsetX == 0) continue;
+						if (!WorldGen.InWorld(i + offsetX, j + offsetY)) continue;
+						if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
+							j = Math.Clamp(j + 1, 0, Main.maxTilesY);
+							break;
 						}
 						else {
-							WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
+							pass++;
 						}
-						RNG = false;
 					}
+				}
+				if (pass >= 7) {
+					WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
 				}
 			}
 		}

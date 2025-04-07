@@ -12,10 +12,10 @@ namespace BossRush {
 			return velocity;
 		}
 		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, Rectangle rect) {
-			float X = r.NextFloat(0, rect.Width);
-			float Y = r.NextFloat(0, rect.Height);
+			float X = r.NextFloat(-rect.Width, rect.Width);
+			float Y = r.NextFloat(-rect.Height, rect.Height);
 			bool Randomdecider = r.NextBool();
-			Vector2 RandomPointOnEdge = new Vector2(X * Randomdecider.ToInt(), Y * (!Randomdecider).ToInt());
+			Vector2 RandomPointOnEdge = new Vector2(X * r.NextBool().ToInt(), Y * r.NextBool().ToInt());
 			if (RandomPointOnEdge.X == 0) {
 				RandomPointOnEdge.X = rect.Width;
 			}

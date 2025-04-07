@@ -79,6 +79,7 @@ namespace BossRush.Contents.Items.Toggle {
 			if (StatePressed) {
 				InfoUI.InfoShowToItem += Info + "\n";
 			}
+			affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
 		}
 
 		private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

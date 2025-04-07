@@ -348,6 +348,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					ModeSwitch_Revolver = BossRushUtils.Safe_SwitchValue(ModeSwitch_Revolver, 1);
 				}
 			}
+			if (UniversalSystem.Check_RLOH()) {
+				Player.downedDD2EventAnyDifficulty = true;
+			}
 		}
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			WeaponKeyPressed = UniversalSystem.WeaponActionKey.JustPressed;

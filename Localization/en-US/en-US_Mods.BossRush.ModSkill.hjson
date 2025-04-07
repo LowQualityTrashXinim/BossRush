@@ -58,17 +58,17 @@ FrostburnArrowRain: {
 	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
 }
 
-BoneArrowRain: {
+Skill_BoneArrow: {
 	DisplayName: Bonefide Shower
-	Description: Casts a shower of Bone Arrows that phases through blocks, dealing 10 damage each
+	Description: Casts a ring of 16 bone arrows, dealing 10 damage each
 }
 
-UnholyArrowRain: {
+Skill_UnholyArrow: {
 	DisplayName: Demonic Shatter
 	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
 }
 
-HolyArrowRain: {
+Skill_HolyArrow: {
 	DisplayName: Blessed Flood
 	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
 }
@@ -205,7 +205,7 @@ ElectricChain: {
 
 WilloFreeze: {
 	DisplayName: Will o' Freeze
-	Description: Summons 4 frozen flames that spin around the player while spreading out, dealing 36 damage and inflicting the 'Frostburn' debuff
+	Description: Summons 4 frost spriti that spin around spawn position, dealing 36 damage and inflicting the 'Frostburn' debuff
 }
 
 PowerPlant: {

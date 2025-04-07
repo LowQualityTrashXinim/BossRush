@@ -22,7 +22,11 @@ namespace BossRush {
 		//for real, who the fuk came up with these name
 		public readonly static int ScreenWidth = Main.PendingResolutionWidth;
 		public readonly static int ScreenHeight = Main.PendingResolutionHeight;
-
+		public static void Disable_MouseItemUsesWhenHoverOverAUI(this UIElement el) {
+			if (el.ContainsPoint(Main.MouseScreen)) {
+				Main.LocalPlayer.mouseInterface = true;
+			}
+		}
 		public static void UISetWidthHeight(this UIElement ui, float width, float height) {
 			ui.Width.Pixels = width;
 			ui.Height.Pixels = height;
@@ -289,6 +293,7 @@ namespace BossRush {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
+			this.Disable_MouseItemUsesWhenHoverOverAUI();
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
@@ -322,6 +327,7 @@ namespace BossRush {
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
+			this.Disable_MouseItemUsesWhenHoverOverAUI();
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
@@ -389,9 +395,7 @@ namespace BossRush {
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (ContainsPoint(Main.MouseScreen)) {
-				Main.LocalPlayer.mouseInterface = true;
-			}
+			this.Disable_MouseItemUsesWhenHoverOverAUI();
 			if (IsMouseHovering) {
 				Main.instance.MouseText("Exit");
 			}

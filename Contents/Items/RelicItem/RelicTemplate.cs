@@ -469,7 +469,7 @@ public class SkillDurationTemplate : RelicTemplate {
 		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value.Base + BossRushUtils.ToSecond(relic.RelicTier - 1));
+		modplayer.AddStatsToPlayer(stat, Base: value.Base + BossRushUtils.ToSecond(relic.RelicTier - 1));
 	}
 }
 public class DebuffTemplateV1 : RelicTemplate {

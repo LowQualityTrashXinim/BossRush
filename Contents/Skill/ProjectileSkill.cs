@@ -87,7 +87,7 @@ public class FrostburnArrowRain : ModSkill {
 		}
 	}
 }
-public class UnholyArrowRain : ModSkill {
+public class Skill_UnholyArrow : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 75;
 		Skill_Duration = BossRushUtils.ToSecond(1);
@@ -101,20 +101,20 @@ public class UnholyArrowRain : ModSkill {
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 11));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
+		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
+		position.Y += 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.UnholyArrow, damage, knockback, player.whoAmI);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, -Vector2.UnitY * Main.rand.NextFloat(12, 14), ProjectileID.UnholyArrow, damage, knockback, player.whoAmI);
 		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		Main.projectile[proj].timeLeft = 360;
 		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			int dust = Dust.NewDust(position, 0, 0, DustID.Corruption, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
 }
-public class BoneArrowRain : ModSkill {
+public class Skill_BoneArrow : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 65;
 		Skill_Duration = BossRushUtils.ToSecond(1);
@@ -123,25 +123,20 @@ public class BoneArrowRain : ModSkill {
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
+		if (modplayer.Duration % 30 != 0) {
 			return;
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 10));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.BoneArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
-		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		for (int i = 0; i < 16; i++) {
+			Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i).RotatedBy(MathHelper.ToRadians(modplayer.Duration)) * 16;
+			int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, vel, ProjectileID.BoneArrow, damage, knockback, player.whoAmI);
+			Main.projectile[proj].tileCollide = false;
+			Main.projectile[proj].timeLeft = 180;
 		}
 	}
 }
-public class HolyArrowRain : ModSkill {
+public class Skill_HolyArrow : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 75;
 		Skill_Duration = BossRushUtils.ToSecond(1);
@@ -155,14 +150,14 @@ public class HolyArrowRain : ModSkill {
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 8));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
+		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.HolyArrow, damage, knockback, player.whoAmI);
 		Main.projectile[proj].tileCollide = false;
 		Main.projectile[proj].timeLeft = 180;
 		for (int l = 0; l < 2; l++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			int dust = Dust.NewDust(position, 0, 0, DustID.AncientLight, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
@@ -177,15 +172,17 @@ public class WoodenArrowRain : ModSkill {
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
+		if (modplayer.Duration % 5 != 0) {
 			return;
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 6));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
+		Vector2 position = player.Center;
+		position.Y -= 1000;
+		position.X += Main.rand.NextFloat(0, 2000) * -modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
+		Vector2 vel = Vector2.One * Main.rand.NextFloat(20, 24);
+		vel.X *= modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, vel, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		Main.projectile[proj].tileCollide = false;
 		Main.projectile[proj].timeLeft = 180;
 		for (int l = 0; l < 2; l++) {
@@ -285,15 +282,14 @@ public class JesterArrowRain : ModSkill {
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (modplayer.Duration % 10 != 0) {
+		if (modplayer.Duration % 20 != 0) {
 			return;
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 15));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
-		Vector2 position = Main.MouseWorld;
-		position.Y -= 500;
-		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.JestersArrow, damage, knockback, player.whoAmI);
+		Vector2 position = player.Center + Main.rand.NextVector2RectangleEdge(new(0, 0, 1000, 1000)) * Main.rand.NextBool().ToDirectionInt();
+		Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Main.rand.Next(12, 15);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, vel, ProjectileID.JestersArrow, damage, knockback, player.whoAmI);
 		Main.projectile[proj].tileCollide = false;
 		Main.projectile[proj].timeLeft = 180;
 		for (int l = 0; l < 2; l++) {

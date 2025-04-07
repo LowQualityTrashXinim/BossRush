@@ -162,6 +162,8 @@ public class SkillHandlePlayer : ModPlayer {
 	public int BloodToPower = 0;
 	public int Request_Repeat = 0;
 	List<ModSkill> activeskill = new();
+	public int Skill_DirectionPlayerFaceBeforeSkillActivation = -1;
+	public Vector2 Skill_PlayerLastPositionBeforeSkillActivation = Vector2.Zero;
 	public override void OnEnterWorld() {
 		activeskill = new();
 	}
@@ -189,7 +191,7 @@ public class SkillHandlePlayer : ModPlayer {
 	/// Return false when skill slot can't no longer be increased
 	/// </returns>
 	public bool IncreasesSkillSlot() {
-		if(AvailableSkillActiveSlot <= SkillHolder1.Length){
+		if (AvailableSkillActiveSlot <= SkillHolder1.Length) {
 			AvailableSkillActiveSlot++;
 			return true;
 		}
@@ -435,6 +437,8 @@ public class SkillHandlePlayer : ModPlayer {
 				return;
 			}
 			else {
+				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
+				Skill_PlayerLastPositionBeforeSkillActivation = Player.Center;
 				MaximumCoolDown = CoolDown;
 				MaximumDuration = Duration;
 				Energy -= energy;
@@ -636,11 +640,16 @@ public class SkillHandlePlayer : ModPlayer {
 public class SkillOrb : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.width = Item.height = 30;
-		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.width = Item.height = 32;
 		Item.useTime = Item.useAnimation = 15;
+		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.autoReuse = false;
+		Item.noUseGraphic = true;
 	}
 	public override bool? UseItem(Player player) {
+		if (player.ItemAnimationJustStarted) {
+			ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
+		}
 		return base.UseItem(player);
 	}
 }
