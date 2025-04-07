@@ -193,6 +193,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
+		public bool OverrideVanillaEffect = false;
 		public override void SetDefaults(Item entity) {
 		}
 		public float CriticalDamage = 0;

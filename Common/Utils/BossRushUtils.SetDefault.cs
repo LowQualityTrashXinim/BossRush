@@ -152,6 +152,36 @@ namespace BossRush {
 				globalitem.CriticalDamage = critDmg;
 			}
 		}
+		/// <summary>
+		/// This will work for most vanilla accessory, however item effect such as follow will not work :<br/>
+		/// - kbglove<br/>
+		/// - accFishingBobber<br/>
+		/// - skyStoneEffects<br/>
+		/// - dd2Accessory<br/>
+		/// - accFlipper<br/>
+		/// - chiselSpeed<br/>
+		/// - equippedAnyWallSpeedAcc<br/>
+		/// - equippedAnyTileRangeAcc<br/>
+		/// - accWatch<br/>
+		/// - hasLuck_LuckyHorseshoe<br/>
+		/// - hasLuck_LuckyCoin<br/>
+		/// - dpsStarted<br/>
+		/// For detailed information on why those won't work, see <see cref="Player.UpdateEquips"/><br/>
+		/// Should you want to remove any of above effect, do it manually after UpdateEquips via a hook is recommended
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="itemoverride"></param>
+		public static void Item_Set_OverrideVanillaEffect(this Item item, bool itemoverride = true) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle handle)) {
+				handle.OverrideVanillaEffect = itemoverride;
+			}
+		}
+		public static bool Item_Can_OverrideVanillaEffect(this Item item) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle handle)) {
+				return handle.OverrideVanillaEffect;
+			}
+			return false;
+		}
 		public static void Set_ShieldStats(this Item item, int health, float res) {
 			if (item.TryGetGlobalItem(out Shield_GlobalItem globalitem)) {
 				globalitem.ShieldPoint = health;

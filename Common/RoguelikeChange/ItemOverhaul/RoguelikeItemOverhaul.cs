@@ -456,6 +456,13 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override void Load() {
 			base.Load();
 			ItemThatSubsTo_MeleeOverhaul = new();
+			On_Player.ApplyEquipFunctional += On_Player_ApplyEquipFunctional1;
+		}
+		private void On_Player_ApplyEquipFunctional1(On_Player.orig_ApplyEquipFunctional orig, Player self, Item currentItem, bool hideVisual) {
+			if (currentItem.Item_Can_OverrideVanillaEffect() || currentItem.ModItem != null) {
+				return;
+			}
+			orig(self, currentItem, hideVisual);
 		}
 		public override void Unload() {
 			base.Unload();
