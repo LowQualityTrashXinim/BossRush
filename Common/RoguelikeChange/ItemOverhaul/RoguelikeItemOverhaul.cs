@@ -460,6 +460,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private void On_Player_ApplyEquipFunctional1(On_Player.orig_ApplyEquipFunctional orig, Player self, Item currentItem, bool hideVisual) {
 			if (currentItem.Item_Can_OverrideVanillaEffect() || currentItem.ModItem != null) {
+				currentItem.ModItem.UpdateAccessory(self, hideVisual);
 				return;
 			}
 			orig(self, currentItem, hideVisual);
