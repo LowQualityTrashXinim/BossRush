@@ -96,14 +96,7 @@ public class UncommonSpoil {
 			for (int i = 0; i < amount; i++) {
 				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {
-					if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-						if (Main.rand.NextBool(4)) {
-							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
-						}
-					}
-					else {
-						relic.AutoAddRelicTemplate(player, 2);
-					}
+					relic.AutoAddRelicTemplate(player, 2);
 				}
 			}
 		}

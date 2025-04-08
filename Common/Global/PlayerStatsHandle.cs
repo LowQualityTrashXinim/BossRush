@@ -171,19 +171,19 @@ public class PlayerStatsHandle : ModPlayer {
 		modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(NonCriticalDamage);
 		if (modifiers.DamageType == DamageClass.Melee) {
 			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Melee_CritDamage);
-			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Melee_NonCritDmg);
+			modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(Melee_NonCritDmg);
 		}
 		else if (modifiers.DamageType == DamageClass.Ranged) {
 			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Range_CritDamage);
-			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Range_NonCritDmg);
+			modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(Range_NonCritDmg);
 		}
 		else if (modifiers.DamageType == DamageClass.Magic) {
 			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Magic_CritDamage);
-			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Magic_NonCritDmg);
+			modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(Magic_NonCritDmg);
 		}
 		else if (modifiers.DamageType == DamageClass.Summon) {
 			modifiers.CritDamage = modifiers.CritDamage.CombineWith(Summon_CritDamage);
-			modifiers.CritDamage = modifiers.NonCritDamage.CombineWith(Summon_NonCritDmg);
+			modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(Summon_NonCritDmg);
 		}
 		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= 0) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
@@ -490,6 +490,30 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.LifeSteal:
 				LifeSteal = LifeSteal.CombineWith(StatMod - 1);
+				break;
+			case PlayerStats.MeleeCritDmg:
+				Melee_CritDamage = Melee_CritDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.RangeCritDmg:
+				Range_CritDamage = Range_CritDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.MagicCritDmg:
+				Magic_CritDamage = Magic_CritDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.SummonCritDmg:
+				Summon_CritDamage = Summon_CritDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.MeleeNonCritDmg:
+				Melee_NonCritDmg = Melee_NonCritDmg.CombineWith(StatMod);
+				break;
+			case PlayerStats.RangeNonCritDmg:
+				Range_NonCritDmg = Range_NonCritDmg.CombineWith(StatMod);
+				break;
+			case PlayerStats.MagicNonCritDmg:
+				Magic_NonCritDmg = Magic_NonCritDmg.CombineWith(StatMod);
+				break;
+			case PlayerStats.SummonNonCritDmg:
+				Summon_NonCritDmg = Summon_NonCritDmg.CombineWith(StatMod);
 				break;
 			default:
 				break;

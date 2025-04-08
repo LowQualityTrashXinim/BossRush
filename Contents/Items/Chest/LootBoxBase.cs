@@ -139,15 +139,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
 				if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
-					if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-						Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
-						if (relicitem.ModItem is Relic relic) {
-							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
-						}
-					}
-					else {
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-					}
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
 					if (modplayer.CanDropSynergyEnergy) {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
@@ -952,17 +944,7 @@ namespace BossRush.Contents.Items.Chest {
 			amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(amount);
 
 			for (int i = 0; i < amount; i++) {
-				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-					Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
-					if (Main.rand.NextBool(4)) {
-						if (relicitem.ModItem is Relic relic) {
-							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
-						}
-					}
-				}
-				else {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-				}
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
 			}
 		}
 		public static void GetSkillLootbox(int type, Player player, int amount = 1) {

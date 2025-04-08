@@ -50,8 +50,13 @@ public class GenericTemplate : RelicTemplate {
 				]);
 			}
 		}
-		return Main.rand.Next([
-			PlayerStats.MeleeDMG,
+		else if(perkplayer.HasPerk<BlessingOfSynergy>()) {
+			if (Main.rand.NextFloat() <= .5f) {
+				return PlayerStats.SynergyDamage;
+			}
+		}
+			return Main.rand.Next([
+				PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
@@ -70,12 +75,29 @@ public class GenericTemplate : RelicTemplate {
 			PlayerStats.MovementSpeed,
 			PlayerStats.JumpBoost,
 
-			PlayerStats.Thorn
-		]);
+			PlayerStats.Thorn,
+
+			PlayerStats.DebuffDamage,
+			PlayerStats.FullHPDamage,
+			PlayerStats.SynergyDamage
+			]);
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
+		float multiValue = 0;
+		if (stat == PlayerStats.DebuffDamage) {
+			multiValue = .1f * (relic.RelicTier - 1);
+		}
+		else if (stat == PlayerStats.SynergyDamage) {
+			multiValue = .12f * (relic.RelicTier - 1);
+		}
+		else if (stat == PlayerStats.FullHPDamage) {
+			multiValue = .5f * (relic.RelicTier - 1);
+		}
+		else {
+			multiValue = .25f * (relic.RelicTier - 1);
+		}
 		if (stat == PlayerStats.Defense
 			|| stat == PlayerStats.MaxMana
 			|| stat == PlayerStats.MaxHP
@@ -86,10 +108,10 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.EnergyCap
 			|| stat == PlayerStats.Thorn
 			) {
-			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + (value.Base - 1) * (.25f * (relic.RelicTier - 1)));
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + (value.Base - 1) * multiValue);
 		}
 		else {
-			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.25f * (relic.RelicTier - 1)));
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * multiValue);
 		}
 		return string.Format(Description, [Color.Yellow.Hex3(), Name, valuestring,]);
 	}
@@ -121,10 +143,117 @@ public class GenericTemplate : RelicTemplate {
 		if (stat == PlayerStats.Thorn) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(10, 40));
 		}
+		if (stat == PlayerStats.DebuffDamage) {
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
+		}
+		if (stat == PlayerStats.FullHPDamage) {
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
+		}
+		if (stat == PlayerStats.SynergyDamage) {
+			return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
+		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value, .25f * (relic.RelicTier - 1));
+		float multiValue = 0;
+		if (stat == PlayerStats.DebuffDamage) {
+			multiValue = .1f * (relic.RelicTier - 1);
+		}
+		else if (stat == PlayerStats.SynergyDamage) {
+			multiValue = .12f * (relic.RelicTier - 1);
+		}
+		else if (stat == PlayerStats.FullHPDamage) {
+			multiValue = .5f * (relic.RelicTier - 1);
+		}
+		else if (stat == PlayerStats.SynergyDamage) {
+			float tierValue = .12f * (relic.RelicTier - 1);
+			value.Flat += value.Flat * tierValue;
+			modplayer.AddStatsToPlayer(stat, value);
+			return;
+		}
+		else {
+			multiValue = .25f * (relic.RelicTier - 1);
+		}
+		modplayer.AddStatsToPlayer(stat, value, multiValue);
+	}
+}
+public class DebuffDamageIncreasesTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.DebuffDamage;
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.1f * (relic.RelicTier - 1))),]);
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value, .1f * (relic.RelicTier - 1));
+	}
+}
+public class SynergyTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SynergyDamage;
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) =>
+		string.Format(Description, [
+			Color.Yellow.Hex3(),
+			RelicTemplateLoader.RelicValueToNumber(value.Flat + value.Flat * .12f * (relic.RelicTier - 1)),
+			new Color(100, 255, 255).Hex3()
+		]);
+
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		float tierValue = .12f * (relic.RelicTier - 1);
+		value.Flat += value.Flat * tierValue;
+		modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+public class StrikeFullHPTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.FullHPDamage;
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.5f * (relic.RelicTier - 1))),]);
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value, .5f * (relic.RelicTier - 1));
+	}
+}
+public class SkillDurationTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SkillDuration;
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		return string.Format(Description, [
+			Color.Yellow.Hex3(),
+			Name,
+			RelicTemplateLoader.RelicValueToNumber(value.Base / 60 + relic.RelicTier - 1)
+	]);
+	}
+
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, Base: value.Base + BossRushUtils.ToSecond(relic.RelicTier - 1));
+	}
+}
+public class SkillCoolDownTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return PlayerStats.SkillCooldown;
+	}
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		return string.Format(Description, [
+			Color.Yellow.Hex3(),
+			Name,
+			RelicTemplateLoader.RelicValueToNumber(value.Base / 60)
+	]);
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 10)));
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV2Template : RelicTemplate {
@@ -220,18 +349,6 @@ public class CombatV4Template : RelicTemplate {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class StrikeFullHPTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.FullHPDamage;
-	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.5f * (relic.RelicTier - 1))),]);
-	}
-	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1f) + 1, 2), 1, 0, 0);
-	}
-	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value, .5f * (relic.RelicTier - 1));
-	}
-}
 public class HealthV2Template : RelicTemplate {
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
@@ -296,18 +413,6 @@ public class HealthV3Template : RelicTemplate {
 		}
 	}
 }
-public class DebuffDamageIncreasesTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.DebuffDamage;
-	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.1f * (relic.RelicTier - 1))),]);
-	}
-	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
-	}
-	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value, .1f * (relic.RelicTier - 1));
-	}
-}
 public class StaticDefeneseTemplate : RelicTemplate {
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.StaticDefense;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
@@ -342,24 +447,6 @@ public class MagicCostTemplate : RelicTemplate {
 		value *= tierValue + 1;
 		modplayer.AddStatsToPlayer(stat, value);
 		player.manaCost += .15f;
-	}
-}
-public class SynergyTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SynergyDamage;
-	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) =>
-		string.Format(Description, [
-			Color.Yellow.Hex3(),
-			RelicTemplateLoader.RelicValueToNumber(value.Flat + value.Flat * .12f * (relic.RelicTier - 1)),
-			new Color(100, 255, 255).Hex3()
-		]);
-
-	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
-	}
-	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		float tierValue = .12f * (relic.RelicTier - 1);
-		value.Flat += value.Flat * tierValue;
-		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class GunFireRateTemplate : RelicTemplate {
@@ -452,24 +539,6 @@ public class SkillActivateTemplate : RelicTemplate {
 				modplayer.AddStatsToPlayer(stat, value, (relic.RelicTier - 1) / 3f);
 			}
 		}
-	}
-}
-public class SkillDurationTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SkillDuration;
-	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, [
-			Color.Yellow.Hex3(),
-			Name,
-			RelicTemplateLoader.RelicValueToNumber(value.Base / 60 + relic.RelicTier - 1)
-	]);
-	}
-
-	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
-	}
-	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, Base: value.Base + BossRushUtils.ToSecond(relic.RelicTier - 1));
 	}
 }
 public class DebuffTemplateV1 : RelicTemplate {
@@ -574,25 +643,6 @@ public class SlimeSpikeTemplate : RelicTemplate {
 			//Set the projectile to ignore tile collision
 			proj.tileCollide = false;
 		}
-	}
-}
-public class SkillCoolDownTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) {
-		return PlayerStats.SkillCooldown;
-	}
-	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, [
-			Color.Yellow.Hex3(),
-			Name,
-			RelicTemplateLoader.RelicValueToNumber(value.Base / 60)
-	]);
-	}
-	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 10)));
-	}
-	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class FireBallTemplate : RelicTemplate {

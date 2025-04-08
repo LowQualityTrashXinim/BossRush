@@ -292,7 +292,15 @@ namespace BossRush {
 		EnergyRecharge,
 		SkillDuration,
 		SkillCooldown,
-		DebuffDurationInflict
+		DebuffDurationInflict,
+		MeleeCritDmg,
+		RangeCritDmg,
+		MagicCritDmg,
+		SummonCritDmg,
+		MeleeNonCritDmg,
+		RangeNonCritDmg,
+		MagicNonCritDmg,
+		SummonNonCritDmg
 		//Luck
 	}
 	public class DataStorer : ModSystem {
