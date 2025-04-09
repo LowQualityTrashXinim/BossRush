@@ -201,30 +201,28 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void GenerateSlimeZone() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
-		ResetTemplate_GenerationValue();
+		//rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
+		//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
+		//ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void GenerateFleshZone() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
-		ResetTemplate_GenerationValue();
+		//rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
+		//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
+		//ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void Re_GenerateForest() {
 		Stopwatch watch = new();
 		watch.Start();
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(7, 10, 10, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(6, 11, 1, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(5, 12, 3, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(9, 12, 11, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(10, 9, 4, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(15, 13, 6, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(17, 11, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(8, 10, 10, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(7, 11, 12, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 12, 13, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(7, 13, 13, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 14, 3, 1),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 9, 15, 5);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 10, 14, 5);
 		string TemplatePath = "Template/WG_Template";
 		ushort tileID = TileID.Dirt;
 		ushort wallID = WallID.Dirt;
@@ -282,16 +280,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateDungeon() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(9, 14, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(8, 15, 5, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(8, 16, 7, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(9, 17, 7, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(9, 17, 5, 1),
 			GenerationHelper.GridPositionInTheWorld24x24(10, 18, 6, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(11, 19, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(11, 19, 5, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 20, 2, 1),
 		};
 		Stopwatch watch = new();
 		watch.Start();
-		rect = GenerationHelper.GridPositionInTheWorld24x24(8, 14, 8, 6);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(9, 17, 7, 4);
 		string TemplatePath = "Template/WG_Dungeon_Template";
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
@@ -349,17 +345,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateJungle() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(8, 4, 4, 5),
-			GenerationHelper.GridPositionInTheWorld24x24(12, 5, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(12, 7, 1, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(6, 9, 4, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(4, 5, 4, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(6, 8, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(2, 6, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 5, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(7, 5, 1, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(8, 4, 5, 6),
+			GenerationHelper.GridPositionInTheWorld24x24(13, 5, 1, 5),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 6, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 7, 1, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 9, 1, 1),
 		};
 		Stopwatch watch = new();
 		watch.Start();
-		rect = GenerationHelper.GridPositionInTheWorld24x24(2, 4, 12, 6);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(6, 4, 10, 6);
 		string TemplatePath = "Template/WG_Template";
 		ushort tileID = TileID.Mud;
 		ushort wallID = WallID.MudUnsafe;
@@ -417,15 +413,18 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateTundra() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(2, 8, 4, 4),
-			GenerationHelper.GridPositionInTheWorld24x24(2, 7, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(1, 11, 1, 6),
-			GenerationHelper.GridPositionInTheWorld24x24(6, 10, 1, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(2, 11, 1, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(4, 12, 1, 6),
-			GenerationHelper.GridPositionInTheWorld24x24(5, 15, 1, 4),
+			GenerationHelper.GridPositionInTheWorld24x24(5, 6, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 7, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(3, 8, 5, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 10, 6, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 11, 5, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 12, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(3, 13, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 14, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(5, 15, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(7, 16, 2, 1),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(1, 7, 6, 12);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(2, 6, 7, 11);
 		Stopwatch watch = new();
 		watch.Start();
 		string TemplatePath = "Template/WG_Template";
@@ -485,14 +484,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateDesert() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(12, 4, 4, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(14, 5, 6, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(12, 6, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(13, 7, 1, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(14, 8, 3, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(20, 6, 2, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(13, 4, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 5, 6, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(16, 6, 8, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 7, 9, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(14, 8, 10, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 9, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 9, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(22, 10, 2, 1),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(12, 4, 10, 7);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(13, 4, 11, 6);
 		Stopwatch watch = new();
 		watch.Start();
 		string TemplatePath = "Template/WG_Template";
@@ -552,17 +553,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateCorruption() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(3, 12, 1, 9),
-			GenerationHelper.GridPositionInTheWorld24x24(2, 13, 1, 7),
-			GenerationHelper.GridPositionInTheWorld24x24(1, 17, 1, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(4, 18, 1, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(4, 19, 5, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(6, 16, 2, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(8, 17, 1, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(2, 13, 1, 4),
+			GenerationHelper.GridPositionInTheWorld24x24(3, 14, 1, 4),
+			GenerationHelper.GridPositionInTheWorld24x24(4, 15, 1, 5),
+			GenerationHelper.GridPositionInTheWorld24x24(5, 16, 1, 5),
+			GenerationHelper.GridPositionInTheWorld24x24(6, 16, 1, 6),
+			GenerationHelper.GridPositionInTheWorld24x24(7, 17, 2, 5),
 			GenerationHelper.GridPositionInTheWorld24x24(9, 18, 1, 3),
 			GenerationHelper.GridPositionInTheWorld24x24(10, 19, 1, 1),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(1, 12, 10, 10);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(2, 13, 9, 9);
 		Stopwatch watch = new();
 		watch.Start();
 		string TemplatePath = "Template/WG_Template";
@@ -622,18 +622,19 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateCrimson() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(17, 8, 3, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(20, 9, 2, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(19, 11, 4, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(20, 12, 3, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(21, 13, 2, 3),
-			GenerationHelper.GridPositionInTheWorld24x24(20, 16, 3, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(19, 17, 3, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(18, 18, 4, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(16, 20, 5, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(18, 9, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(18, 10, 5, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(19, 11, 5, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 13, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(21, 14, 3, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(22, 15, 2, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(20, 16, 4, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(19, 17, 5, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(18, 18, 6, 2),
+			GenerationHelper.GridPositionInTheWorld24x24(17, 20, 6, 1),
 			GenerationHelper.GridPositionInTheWorld24x24(15, 21, 5, 1),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(15, 8, 8, 14);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(15, 9, 9, 13);
 		Stopwatch watch = new();
 		watch.Start();
 		string TemplatePath = "Template/WG_Template";
@@ -693,13 +694,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Re_GenerateHallow() {
 		List<Rectangle> listrect = new List<Rectangle>{
-			GenerationHelper.GridPositionInTheWorld24x24(18, 0, 6, 2),
-			GenerationHelper.GridPositionInTheWorld24x24(16, 2, 8, 3),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 0, 9, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(16, 1, 8, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(17, 2, 7, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(15, 3, 9, 1),
+			GenerationHelper.GridPositionInTheWorld24x24(16, 4, 8, 1),
 			GenerationHelper.GridPositionInTheWorld24x24(20, 5, 4, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(22, 6, 2, 1),
-			GenerationHelper.GridPositionInTheWorld24x24(23, 7, 1, 2),
 		};
-		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 0, 8, 9);
+		rect = GenerationHelper.GridPositionInTheWorld24x24(15, 0, 9, 6);
 		Stopwatch watch = new();
 		watch.Start();
 		string TemplatePath = "Template/WG_Template";
@@ -762,6 +764,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Re_GenerateGranite() {
+
+	}
+
+	[Task]
+	public void Re_GenerateGiantLake() {
 
 	}
 	[Task]
