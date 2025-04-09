@@ -42,7 +42,7 @@ namespace BossRush.Contents.Perks {
 			CanBeChoosen = false;
 		}
 		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<RelicContainer>());
+			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
 		}
 	}
 	public class MarkOfSpectre : Perk {

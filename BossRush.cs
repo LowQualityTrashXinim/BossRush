@@ -45,7 +45,11 @@ namespace BossRush {
 		public static Dictionary<int, List<int>> BodyArmorRarityDB { get; private set; }
 		public static Dictionary<int, List<int>> LegsArmorRarityDB { get; private set; }
 		public static List<Item> SynergyItem { get; private set; }
-		public static List<Item> LostAccessories { get; private set; }
+		public static HashSet<Item> LostAccessories { get; private set; }
+		/// <summary>
+		/// Due to how annoying this is in <see cref="LootBoxBase"/>, I decide to just make a hard record of it in the mod instead of trying to hack my own mod lol
+		/// </summary>
+		public static HashSet<int> VanillaAndLostAcc { get; private set; }
 		public static List<Item> TrinketAccessories { get; private set; }
 		public static List<Item> RPGItem { get; private set; }
 		public static List<int> ListLootboxType { get; private set; }
@@ -98,6 +102,7 @@ namespace BossRush {
 			AccRarityDB = new();
 			List_Weapon = new();
 			LootboxPotion = new();
+			VanillaAndLostAcc = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -114,6 +119,7 @@ namespace BossRush {
 			AccRarityDB = null;
 			List_Weapon = null;
 			LootboxPotion = null;
+			VanillaAndLostAcc = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
@@ -131,7 +137,21 @@ namespace BossRush {
 					SynergyItem.Add(item);
 					continue;
 				}
-				if (!item.vanity)
+				if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+					if (globalitem.LostAccessories) {
+						LostAccessories.Add(item);
+						VanillaAndLostAcc.Add(item.type);
+						continue;
+					}
+					if (globalitem.RPGItem) {
+						if (globalitem.AdvancedBuffItem) {
+							AdvancedRPGItem[item.type] = true;
+						}
+						RPGItem.Add(item);
+						continue;
+					}
+				}
+				if (!item.vanity) {
 					if (item.headSlot > 0) {
 						if (!HeadArmorRarityDB.ContainsKey(item.rare)) {
 							HeadArmorRarityDB.Add(item.rare, new List<int> { item.type });
@@ -159,62 +179,50 @@ namespace BossRush {
 						}
 						continue;
 					}
-				if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-					if (globalitem.LostAccessories) {
-						LostAccessories.Add(item);
-						continue;
-					}
-					if (globalitem.RPGItem) {
-						if (globalitem.AdvancedBuffItem) {
-							AdvancedRPGItem[item.type] = true;
+					if (item.accessory && item.createTile == -1
+						&& item.type != ItemID.ClothierVoodooDoll
+						&& item.type != ItemID.GuideVoodooDoll
+						&& item.type != ItemID.TreasureMagnet
+						&& item.type != ItemID.DontStarveShaderItem
+						&& item.type != ItemID.JellyfishNecklace
+						&& item.type != ItemID.JellyfishDivingGear
+						&& item.type != ItemID.GreedyRing
+						&& item.type != ItemID.GoldRing
+						&& item.type != ItemID.LuckyCoin
+						&& item.type != ItemID.DiscountCard
+						&& item.type != ItemID.CoinRing
+						&& item.type != ItemID.ShimmerCloak
+						&& item.type != ItemID.SpectreGoggles
+						&& item.type != ItemID.FlowerBoots
+						&& item.type != ItemID.CordageGuide
+						&& !TerrariaArrayID.IsFishingBobber.Contains(item.type)
+						&& !TerrariaArrayID.NonHelpfulCombatAcc.Contains(item.type)
+						&& !TerrariaArrayID.IsInfoAcc.Contains(item.type)
+						&& !TerrariaArrayID.FishingAcc.Contains(item.type)) {
+						if (item.ModItem is BaseTrinket) {
+							TrinketAccessories.Add(item);
+							continue;
 						}
-						RPGItem.Add(item);
+						if (!AccRarityDB.ContainsKey(item.rare)) {
+							AccRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							AccRarityDB[item.rare].Add(item.type);
+						}
 						continue;
 					}
 				}
-				if (item.accessory && !item.vanity && item.createTile == -1
-					&& item.type != ItemID.ClothierVoodooDoll
-					&& item.type != ItemID.GuideVoodooDoll
-					&& item.type != ItemID.TreasureMagnet
-					&& item.type != ItemID.DontStarveShaderItem
-					&& item.type != ItemID.JellyfishNecklace
-					&& item.type != ItemID.JellyfishDivingGear
-					&& item.type != ItemID.GreedyRing
-					&& item.type != ItemID.GoldRing
-					&& item.type != ItemID.LuckyCoin
-					&& item.type != ItemID.DiscountCard
-					&& item.type != ItemID.CoinRing
-					&& item.type != ItemID.ShimmerCloak
-					&& item.type != ItemID.SpectreGoggles
-					&& item.type != ItemID.FlowerBoots
-					&& item.type != ItemID.CordageGuide
-					&& !TerrariaArrayID.IsFishingBobber.Contains(item.type)
-					&& !TerrariaArrayID.NonHelpfulCombatAcc.Contains(item.type)
-					&& !TerrariaArrayID.IsInfoAcc.Contains(item.type)
-					&& !TerrariaArrayID.FishingAcc.Contains(item.type)) {
-					if (item.ModItem is BaseTrinket) {
-						TrinketAccessories.Add(item);
-						continue;
-					}
-					if (!AccRarityDB.ContainsKey(item.rare)) {
-						AccRarityDB.Add(item.rare, new List<int> { item.type });
+				if (item.IsAWeapon()) {
+					List_Weapon.Add(item);
+					if (!WeaponRarityDB.ContainsKey(item.rare)) {
+						WeaponRarityDB.Add(item.rare, new List<int> { item.type });
 					}
 					else {
-						AccRarityDB[item.rare].Add(item.type);
+						WeaponRarityDB[item.rare].Add(item.type);
 					}
-					continue;
-				}
-				if (!item.IsAWeapon()) {
-					continue;
-				}
-				List_Weapon.Add(item);
-				if (!WeaponRarityDB.ContainsKey(item.rare)) {
-					WeaponRarityDB.Add(item.rare, new List<int> { item.type });
-				}
-				else {
-					WeaponRarityDB[item.rare].Add(item.type);
 				}
 			}
+			VanillaAndLostAcc.Union(TerrariaArrayID.EveryCombatHealtMovehAcc);
 		}
 		public override void PostAddRecipes() {
 			if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {

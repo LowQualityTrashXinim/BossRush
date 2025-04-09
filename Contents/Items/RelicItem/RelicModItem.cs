@@ -226,7 +226,6 @@ public class Relic : ModItem {
 	}
 }
 public abstract class RelicTemplate : ModType {
-	public float EnergyCost = 0;
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
@@ -238,7 +237,6 @@ public abstract class RelicTemplate : ModType {
 		Type = RelicTemplateLoader.Register(this);
 	}
 	public virtual void OnSettingTemplate() { }
-	public virtual bool SelectCondition(Relic relic, Player player) => true;
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
 	public virtual PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.None;
