@@ -401,6 +401,18 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.SummonDMG:
 				Player.GetDamage(DamageClass.Summon) = Player.GetDamage(DamageClass.Summon).CombineWith(StatMod);
 				break;
+			case PlayerStats.MeleeCritChance:
+				Player.GetCritChance(DamageClass.Melee) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Melee));
+				break;
+			case PlayerStats.RangeCritChance:
+				Player.GetCritChance(DamageClass.Ranged) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Ranged));
+				break;
+			case PlayerStats.MagicCritChance:
+				Player.GetCritChance(DamageClass.Magic) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Magic));
+				break;
+			case PlayerStats.SummonCritChance:
+				Player.GetCritChance(DamageClass.Summon) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Summon));
+				break;
 			case PlayerStats.MovementSpeed:
 				UpdateMovement = UpdateMovement.CombineWith(StatMod);
 				break;

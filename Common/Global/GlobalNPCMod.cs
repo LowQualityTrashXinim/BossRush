@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items;
 using BossRush.Common.General;
+using BossRush.Contents.Items.Consumable;
 
 namespace BossRush.Common.Global {
 	class GlobalNPCMod : GlobalNPC {
@@ -121,7 +122,7 @@ namespace BossRush.Common.Global {
 			else if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
-				noHit.OnSuccess(ItemDropRule.ByCondition(new NoHitAndIsRakan(), ModContent.ItemType<WeaponBluePrint>())).OnFailedConditions(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WeaponBluePrint>(),100));
+				noHit.OnSuccess(ItemDropRule.ByCondition(new NoHitAndIsRakan(), ModContent.ItemType<WeaponBluePrint>())).OnFailedConditions(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WeaponBluePrint>(), 100));
 
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
@@ -224,6 +225,7 @@ namespace BossRush.Common.Global {
 			LeadingConditionRule perkrule2 = new(new PerkDrop2());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
 			perkrule2.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
+			IsABoss.OnSuccess(ItemDropRule.ByCondition(new SkillUnlockRule(), ModContent.ItemType<SkillSlotUnlock>()));
 			npcLoot.Add(perkrule);
 			npcLoot.Add(perkrule2);
 			npcLoot.Add(noHit);

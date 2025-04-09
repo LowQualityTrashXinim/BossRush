@@ -180,16 +180,43 @@ public class GenericTemplate : RelicTemplate {
 		modplayer.AddStatsToPlayer(stat, value, multiValue);
 	}
 }
-public class DebuffDamageIncreasesTemplate : RelicTemplate {
-	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.DebuffDamage;
+public class BattleMountTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return Main.rand.Next(new PlayerStats[] {
+			PlayerStats.MeleeDMG,
+			PlayerStats.RangeDMG,
+			PlayerStats.MagicDMG,
+			PlayerStats.SummonDMG,
+			PlayerStats.MeleeCritChance,
+			PlayerStats.RangeCritChance,
+			PlayerStats.MagicCritChance,
+			PlayerStats.SummonCritChance,
+			PlayerStats.MeleeCritDmg,
+			PlayerStats.RangeCritDmg,
+			PlayerStats.MagicCritDmg,
+			PlayerStats.SummonCritDmg,
+		});
+	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
-		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.1f * (relic.RelicTier - 1))),]);
+		string valuestring;
+		if (stat == PlayerStats.CritChance) {
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + value.Base * (.2f * (relic.RelicTier - 1)));
+		}
+		else {
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.2f * (relic.RelicTier - 1)));
+		}
+		return string.Format(Description, [Color.Yellow.Hex3(), valuestring,]);
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
+		if (stat == PlayerStats.CritChance) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(10, 20));
+		}
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value, .1f * (relic.RelicTier - 1));
+		if (player.mount.Active) {
+			modplayer.AddStatsToPlayer(stat, value, .2f * (relic.RelicTier - 1));
+		}
 	}
 }
 public class SynergyTemplate : RelicTemplate {
@@ -287,7 +314,14 @@ public class CombatV2Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.2f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.IsHealthAbovePercentage(.9f)) modplayer.AddStatsToPlayer(stat, value, 1 + .3f * (relic.RelicTier - 1));
+		if (player.IsHealthAbovePercentage(.9f)) {
+			if (stat == PlayerStats.CritChance) {
+				modplayer.AddStatsToPlayer(stat, value, singularBaseMultiplier: .3f * (relic.RelicTier - 1));
+			}
+			else {
+				modplayer.AddStatsToPlayer(stat, value, .3f * (relic.RelicTier - 1));
+			}
+		}
 	}
 }
 public class CombatV3Template : RelicTemplate {
@@ -326,7 +360,14 @@ public class CombatV3Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.2f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.IsHealthAbovePercentage(.45f)) modplayer.AddStatsToPlayer(stat, value, 1 + .3f * (relic.RelicTier - 1));
+		if (!player.IsHealthAbovePercentage(.45f)) {
+			if (stat == PlayerStats.CritChance) {
+				modplayer.AddStatsToPlayer(stat, value, singularBaseMultiplier: .3f * (relic.RelicTier - 1));
+			}
+			else {
+				modplayer.AddStatsToPlayer(stat, value, .3f * (relic.RelicTier - 1));
+			}
+		}
 	}
 }
 public class CombatV4Template : RelicTemplate {

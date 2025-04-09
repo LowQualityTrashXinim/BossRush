@@ -191,7 +191,7 @@ public class SkillHandlePlayer : ModPlayer {
 	/// Return false when skill slot can't no longer be increased
 	/// </returns>
 	public bool IncreasesSkillSlot() {
-		if (AvailableSkillActiveSlot <= SkillHolder1.Length) {
+		if (AvailableSkillActiveSlot < SkillHolder1.Length) {
 			AvailableSkillActiveSlot++;
 			return true;
 		}

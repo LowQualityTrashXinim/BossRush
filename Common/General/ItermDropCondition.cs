@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.Global;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Common.General {
 	public class DenyYouFromLoot : IItemDropRuleCondition {
@@ -143,7 +144,7 @@ namespace BossRush.Common.General {
 			}
 			return false;
 		}
-		public bool CanShowItemDropInUI() => true;
+		public bool CanShowItemDropInUI() => false;
 		public string GetConditionDescription() => "";
 	}
 	public class PerkDrop2 : IItemDropRuleCondition {
@@ -153,13 +154,25 @@ namespace BossRush.Common.General {
 			}
 			return false;
 		}
+		public bool CanShowItemDropInUI() => false;
+		public string GetConditionDescription() => "";
+	}
+	public class SkillUnlockRule : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count >= 3 && info.player.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot <= 9 &&
+					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+			}
+			return false;
+		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "";
 	}
 	public class LifeCrystalDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.ConsumedLifeCrystals < Player.LifeCrystalMax;
+				return info.player.ConsumedLifeCrystals < Player.LifeCrystalMax &&
+					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
 			}
 			return false;
 		}
@@ -171,7 +184,8 @@ namespace BossRush.Common.General {
 	public class ManaCrystalDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.ConsumedManaCrystals < Player.ManaCrystalMax;
+				return info.player.ConsumedManaCrystals < Player.ManaCrystalMax &&
+					UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
 			}
 			return false;
 		}

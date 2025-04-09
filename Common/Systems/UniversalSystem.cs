@@ -867,7 +867,6 @@ public class WeaponDPSimage : UIImageButton {
 class UISystemMenu : UIState {
 	UIPanel panel;
 	UITextPanel<string> uitextpanel;
-	UIImageButton open_skill_UI;
 	UIImageButton open_AchievmentUI;
 	bool SkillHover = false;
 	bool Achievement = false;
@@ -884,15 +883,6 @@ class UISystemMenu : UIState {
 		uitextpanel.VAlign = .7f;
 		uitextpanel.UISetWidthHeight(450, 350);
 		Append(uitextpanel);
-
-		open_skill_UI = new UIImageButton(TextureAssets.InventoryBack);
-		open_skill_UI.UISetWidthHeight(52, 52);
-		open_skill_UI.VAlign = .4f;
-		open_skill_UI.HAlign = SetHAlign(0);
-		open_skill_UI.SetVisibility(1f, 67f);
-		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
-		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
-		Append(open_skill_UI);
 
 		open_AchievmentUI = new(TextureAssets.InventoryBack);
 		open_AchievmentUI.UISetWidthHeight(52, 52);
@@ -930,21 +920,6 @@ class UISystemMenu : UIState {
 		}
 		else {
 			uitextpanel.SetText("");
-		}
-	}
-
-	private void Open_skill_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
-	}
-	private void Open_skill_UI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (affectedElement.IsMouseHovering) {
-			SkillHover = true;
-		}
-		else {
-			SkillHover = false;
 		}
 	}
 }

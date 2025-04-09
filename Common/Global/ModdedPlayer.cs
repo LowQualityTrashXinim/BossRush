@@ -24,6 +24,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using BossRush.Common.Utils;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Common.General;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Common.Global {
 	/// <summary>
@@ -181,6 +182,8 @@ namespace BossRush.Common.Global {
 					//yield return new Item(ModContent.ItemType<WindSlashPerk>());
 					//yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					yield return new Item(ModContent.ItemType<UserInfoTablet>());
+					yield return new Item(ModContent.ItemType<TransmuteTablet>());
+					yield return new Item(ModContent.ItemType<SkillOrb>());
 				}
 				if (ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest) {
 					yield return new Item(ItemID.CopperPickaxe);

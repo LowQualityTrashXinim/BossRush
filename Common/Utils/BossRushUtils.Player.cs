@@ -300,7 +300,11 @@ namespace BossRush {
 		MeleeNonCritDmg,
 		RangeNonCritDmg,
 		MagicNonCritDmg,
-		SummonNonCritDmg
+		SummonNonCritDmg,
+		MeleeCritChance,
+		RangeCritChance,
+		MagicCritChance,
+		SummonCritChance,
 		//Luck
 	}
 	public class DataStorer : ModSystem {
