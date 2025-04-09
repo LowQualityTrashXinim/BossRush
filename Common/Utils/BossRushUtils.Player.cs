@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using BossRush.Common.Global;
+using System.Collections;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -98,16 +99,34 @@ namespace BossRush {
 				//if (item.ModItem != null) {
 				//	continue;
 				//}
-				//Resetting only important stats
-				Item itemA = ContentSamples.ItemsByType[item.type];
-				item.damage = itemA.damage;
-				item.crit = itemA.crit;
-				item.ArmorPenetration = itemA.ArmorPenetration;
-				item.scale = itemA.scale;
-				item.useTime = itemA.useTime;
-				item.useAnimation = itemA.useAnimation;
-				item.shoot = itemA.shoot;
-				item.shootSpeed = itemA.shootSpeed;
+				//Item itemA = ContentSamples.ItemsByType[item.type];
+				//item.damage = itemA.damage;
+				//item.crit = itemA.crit;
+				//item.ArmorPenetration = itemA.ArmorPenetration;
+				//item.scale = itemA.scale;
+				//item.useTime = itemA.useTime;
+				//item.useAnimation = itemA.useAnimation;
+				//item.shoot = itemA.shoot;
+				//item.shootSpeed = itemA.shootSpeed;
+				int type = item.type;
+				if (ItemID.Sets.IsFood[type]) {
+					continue;
+				}
+				else if (type <= 1000) {
+					item.SetDefaults1(type);
+				}
+				else if (type <= 2001) {
+					item.SetDefaults2(type);
+				}
+				else if (type <= 3000) {
+					item.SetDefaults3(type);
+				}
+				else if (type <= 3989) {
+					item.SetDefaults4(type);
+				}
+				else {
+					item.SetDefaults5(type);
+				}
 				Set_ItemCriticalDamage(item, 0f);
 				foreach (var globalitem in item.Globals) {
 					if (globalitem == null || globalitem.Mod.Name != mod.Name) {

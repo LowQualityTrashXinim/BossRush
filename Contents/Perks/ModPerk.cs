@@ -126,19 +126,6 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(target.width + 100, target.height + 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	//public class IllegalTrading : Perk {
-	//	public override void SetDefaults() {
-	//		CanBeStack = true;
-	//		StackLimit = 5;
-	//		CanBeChoosen = false;
-	//	}
-	//	public override void ResetEffect(Player player) {
-	//		player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount(player);
-	//	}
-	//	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-	//		damage -= .07f * StackAmount(player);
-	//	}
-	//}
 	public class BackUpMana : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();

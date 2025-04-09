@@ -71,21 +71,21 @@ internal class BattleAxeOverhaul : GlobalItem {
 				}
 				MeleeOverhaulPlayer modplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 				float baseAngle = modplayer.PlayerToMouseDirection.ToRotation();
-				float angle = MathHelper.ToRadians(145);
+				float angle = MathHelper.ToRadians(155);
 				float start = baseAngle + angle - angle * .5f;
 				float end = baseAngle - angle;
 				int LastCollideCheck, check;
 				if (player.direction == 1) {
 					LastCollideCheck =
-						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutBack((player.itemAnimation + 1) / (float)player.itemAnimationMax)));
+						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, 11)));
 					check =
-						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutBack(player.itemAnimation / (float)player.itemAnimationMax)));
+						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutExpo(player.itemAnimation / (float)player.itemAnimationMax, 11)));
 				}
 				else {
 					LastCollideCheck =
-						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutBack((player.itemAnimation + 1) / (float)player.itemAnimationMax)));
+						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutExpo((player.itemAnimation + 1) / (float)player.itemAnimationMax, 11)));
 					check =
-						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutBack(player.itemAnimation / (float)player.itemAnimationMax)));
+						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutExpo(player.itemAnimation / (float)player.itemAnimationMax, 11)));
 				}
 				if (player.itemAnimationMax <= 2) {
 					for (int i = 0; i <= laserline; i++) {
@@ -121,7 +121,7 @@ internal class BattleAxeOverhaul : GlobalItem {
 			item.noMelee) {
 			return base.CanUseItem(item, player);
 		}
-		return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
+		return base.CanUseItem(item, player);
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (player.ItemAnimationJustStarted) {
@@ -146,9 +146,9 @@ internal class BattleAxeOverhaul : GlobalItem {
 	}
 	private void SwipeAttack(Player player) {
 		float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-		percentDone = BossRushUtils.InOutBack(percentDone);
+		percentDone = BossRushUtils.InOutExpo(percentDone, 11);
 		float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
-		float angle = MathHelper.ToRadians(145) * player.direction;
+		float angle = MathHelper.ToRadians(155) * player.direction;
 		float start = baseAngle + angle - angle * .5f;
 		float end = baseAngle - angle;
 		Swipe(start, end, percentDone, player);
