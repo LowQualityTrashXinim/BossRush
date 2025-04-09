@@ -475,7 +475,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void OnChoose(Player player) {
-			if (StackAmount(player) <= 0) {
+			if (StackAmount(player) <= 1) {
 				player.QuickSpawnItem(player.GetSource_FromThis("Perk"), ModContent.ItemType<SynergyEnergy>());
 			}
 			base.OnChoose(player);

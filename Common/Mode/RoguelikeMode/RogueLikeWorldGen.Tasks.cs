@@ -188,34 +188,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GridPart_Y = Main.maxTilesY / 24;//small world : 50
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
+		Main.spawnTileX = GridPart_X * 11;
+		Main.spawnTileY = GridPart_Y * 11;
 	}
 	[Task]
 	public void AddAltar() {
 		ResetTemplate_GenerationValue();
-		for (int i = 1; i < Main.maxTilesX - 1; i++) {
-			for (int j = 1; j < Main.maxTilesY - 1; j++) {
-				//Cleanup possible liquid
-				Main.tile[i, j].LiquidAmount = 0;
-				int pass = 0;
-				for (int offsetX = -1; offsetX <= 1; offsetX++) {
-					for (int offsetY = -1; offsetY <= 1; offsetY++) {
-						if (offsetX == 0 && offsetY == 0) continue;
-						if (offsetY == 1 && offsetX == 0) continue;
-						if (!WorldGen.InWorld(i + offsetX, j + offsetY)) continue;
-						if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
-							j = Math.Clamp(j + 1, 0, Main.maxTilesY);
-							break;
-						}
-						else {
-							pass++;
-						}
-					}
-				}
-				if (pass >= 7) {
-					WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
-				}
-			}
-		}
 	}
 	[Task]
 	public void Generate_TrialTest() {
