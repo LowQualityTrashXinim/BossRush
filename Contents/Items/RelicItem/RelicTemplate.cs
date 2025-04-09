@@ -50,13 +50,13 @@ public class GenericTemplate : RelicTemplate {
 				]);
 			}
 		}
-		else if(perkplayer.HasPerk<BlessingOfSynergy>()) {
+		else if (perkplayer.HasPerk<BlessingOfSynergy>()) {
 			if (Main.rand.NextFloat() <= .5f) {
 				return PlayerStats.SynergyDamage;
 			}
 		}
-			return Main.rand.Next([
-				PlayerStats.MeleeDMG,
+		return Main.rand.Next([
+			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
@@ -80,7 +80,7 @@ public class GenericTemplate : RelicTemplate {
 			PlayerStats.DebuffDamage,
 			PlayerStats.FullHPDamage,
 			PlayerStats.SynergyDamage
-			]);
+		]);
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
@@ -109,6 +109,9 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.Thorn
 			) {
 			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Base + (value.Base - 1) * multiValue);
+		}
+		else if (stat == PlayerStats.SynergyDamage) {
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value.Flat + (value.Flat - 1) * multiValue);
 		}
 		else {
 			valuestring = RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * multiValue);
