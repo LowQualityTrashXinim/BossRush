@@ -34,7 +34,7 @@ public class TokenOfSlothPlayer : ModPlayer {
 			for (int i = 0; i < SlothMeter; i++) {
 				Vector2 pos = Player.Center +
 						Vector2.One.Vector2DistributeEvenly(SlothMeter, 360, i)
-						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<TrinketPlayer>().counterToFullPi)) * 30 - Vector2.One;
+						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<BossRushUtilsPlayer>().counterToFullPi)) * 30 - Vector2.One;
 				int dust = Dust.NewDust(pos, 0, 0, DustID.GemTopaz);
 				Main.dust[dust].velocity = Vector2.Zero;
 				Main.dust[dust].noGravity = true;

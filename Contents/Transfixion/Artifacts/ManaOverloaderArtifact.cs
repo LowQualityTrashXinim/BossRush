@@ -32,7 +32,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				for (int i = 0; i < StackPoint; i++) {
 					Vector2 pos = Player.Center +
 						Vector2.One.Vector2DistributeEvenly(StackPoint, 360, i)
-						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<TrinketPlayer>().counterToFullPi)) * 30;
+						.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<BossRushUtilsPlayer>().counterToFullPi)) * 30;
 					int dust = Dust.NewDust(pos, 0, 0, DustID.ManaRegeneration);
 					Main.dust[dust].velocity = Vector2.Zero;
 					Main.dust[dust].noGravity = true;

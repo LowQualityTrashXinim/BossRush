@@ -10,6 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 		public override void Synergy_SetStaticDefaults() {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting);
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ChainKnife);
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(74, 74, 25, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
@@ -32,6 +33,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 				tooltips.Add(new TooltipLine(Mod, "SkyFracture", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
 			}
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ChainKnife)) {
+				tooltips.Add(new TooltipLine(Mod, "ChainKnife", $"[i:{ItemID.ChainKnife}] Massively reduce alt attack cool down"));
+			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			if (player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown == 1)
@@ -45,8 +49,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = BossRushUtils.CountDown(player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (player.altFunctionUse == 2 && player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown <= 0) {
-				player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = 120;
+			BurningPassionPlayer burning = player.GetModPlayer<BurningPassionPlayer>();
+			if (player.altFunctionUse == 2 && burning.BurningPassion_Cooldown <= 0) {
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ChainKnife)) {
+					burning.BurningPassion_Cooldown = 30;
+				}
+				else {
+					burning.BurningPassion_Cooldown = 120;
+				}
 				player.velocity = velocity * 5f;
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {

@@ -244,46 +244,46 @@ CopperShortSword.Description:
 	'''
 TinShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 IronShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 LeadShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 SilverShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 TungstenShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 GoldShortSword.Description:
 	'''
-	Increases base damage by 2
-	Increases critical strike damage by 25%
-	Inflict Midas for 6 second upon critical hit via sword
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Have 10% to inflict midas debuff
 	'''
 PlatinumShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 Gladius.Description:
 	'''

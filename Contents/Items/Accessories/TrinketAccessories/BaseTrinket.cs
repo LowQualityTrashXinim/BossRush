@@ -19,14 +19,6 @@ public abstract class BaseTrinket : ModItem {
 //This will store all the information about the trinket and how they will interact with player
 public class TrinketPlayer : ModPlayer {
 	public PlayerStatsHandle GetStatsHandle() => Player.GetModPlayer<PlayerStatsHandle>();
-
-	public int counterToFullPi = 0;
-	public override void PreUpdate() {
-		if (++counterToFullPi >= 360)
-			counterToFullPi = 0;
-	}
-	public override void PostUpdate() {
-	}
 }
 public class Trinket_GlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;

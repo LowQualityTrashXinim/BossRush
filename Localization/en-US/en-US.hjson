@@ -334,6 +334,7 @@ Mods: {
 			WoodProjectile.DisplayName: Wood Projectile
 			OnHitRangeP.DisplayName: On Hit Range P
 			PlasmaProjectile.DisplayName: Plasma Projectile
+			Enchantment_ShortSwordProjectile.DisplayName: Enchantment_ Short Sword Projectile
 		}
 
 		NPCs: {
@@ -2081,7 +2082,11 @@ Mods: {
 
 			StarWhip: {
 				DisplayName: Star Whip
-				Tooltip: ""
+				Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					'''
 			}
 
 			SpecialSkillLootBox: {

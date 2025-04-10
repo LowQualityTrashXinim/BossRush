@@ -394,6 +394,11 @@ namespace BossRush {
 		public const float PLAYERARMLENGTH = 12f;
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
 		public Vector2 PlayerLastPositionBeforeAnimation = Vector2.Zero;
+		public int counterToFullPi = 0;
+		public override void PreUpdate() {
+			if (++counterToFullPi >= 360)
+				counterToFullPi = 0;
+		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				MouseLastPositionBeforeAnimation = Main.MouseWorld;

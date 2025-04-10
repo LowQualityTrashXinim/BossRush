@@ -95,10 +95,10 @@ internal class SwordProjectile2 : ModProjectile {
 	}
 	public override void AI() {
 		if (State == 1) {
-			if (Projectile.timeLeft > 300) {
-				Projectile.timeLeft = 300;
+			if (Projectile.timeLeft > 30) {
+				Projectile.timeLeft = 30;
 			}
-			Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 300f);
+			Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 30f);
 			Projectile.velocity = Vector2.Zero;
 			return;
 		}
@@ -222,7 +222,7 @@ internal class SwordProjectileSpear : ModProjectile {
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[Projectile.owner];
-		
+
 		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
 		modifiers.HitDirectionOverride = directionTo;
 	}
