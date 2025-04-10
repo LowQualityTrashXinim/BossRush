@@ -237,34 +237,33 @@ NightsEdge.Description:
 	'''
 CopperShortSword.Description:
 	'''
-	Increases critical strike damage by 25%
+	Increases critical strike damage by 35% and critical strike chance by 5
 	Remove cool down effect of shortsword alt attack
-	Critical striking enemy have 50% chance to spawn a shortsword
+	Critical striking enemy have 50% chance to throw a shortsword
 	( Have 1s cool down )
 	'''
 TinShortSword.Description:
 	'''
-	Summon a shortsword after each strike with 5s cool down
-	For each shortsword active increases base damage by 1 and critical strike damage by 25%
-	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Summon a shortsword that deal 3x damage after each strike with 5s cool down
+	For each shortsword active increases critical strike damage by 25%
+	Shortsword form a ring around player depend on amount of shortsword enchantment
 	'''
 IronShortSword.Description:
 	'''
-	Summon a shortsword after each strike with 5s cool down
-	For each shortsword active increases base damage by 1 and critical strike damage by 25%
-	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Summon a shortsword that deal 3x damage after each strike with 5s cool down
+	For each shortsword active increases defenses by 3
+	Shortsword form a ring around player depend on amount of shortsword enchantment
 	'''
 LeadShortSword.Description:
 	'''
 	Summon a shortsword after each strike with 5s cool down
-	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	For each shortsword active increases debuff damage by 8%
 	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 SilverShortSword.Description:
 	'''
-	Summon a shortsword after each strike with 5s cool down
-	For each shortsword active increases base damage by 1 and critical strike damage by 25%
-	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Increases first strike damage by 40%
+	On first strike, throw out a silver shortsword toward that NPC
 	'''
 TungstenShortSword.Description:
 	'''

@@ -335,6 +335,7 @@ Mods: {
 			OnHitRangeP.DisplayName: On Hit Range P
 			PlasmaProjectile.DisplayName: Plasma Projectile
 			Enchantment_ShortSwordProjectile.DisplayName: Enchantment_ Short Sword Projectile
+			ChannelShortSword.DisplayName: Channel Short Sword
 		}
 
 		NPCs: {
