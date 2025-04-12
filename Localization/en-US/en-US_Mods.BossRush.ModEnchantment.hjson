@@ -267,9 +267,8 @@ SilverShortSword.Description:
 	'''
 TungstenShortSword.Description:
 	'''
-	Summon a shortsword after each strike with 5s cool down
-	For each shortsword active increases base damage by 1 and critical strike damage by 25%
-	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Increases base damage by 3
+	During your attack, every 0.4s pass throw out a weak shortsword
 	'''
 GoldShortSword.Description:
 	'''

@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Graphics.AnimationSystems;
 using BossRush.Common.Graphics.Structs.TrailStructs;
 using BossRush.Common.Graphics.Structs.QuadStructs;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.ArcaneRange.LaserSniper;
 internal class LaserSniper : SynergyModItem {
@@ -44,20 +45,23 @@ internal class LaserSniper : SynergyModItem {
 	Tween<Vector2> recoilPos = new Tween<Vector2>(Vector2.Lerp);
 	public override bool? UseItem(Player player) {
 
-		if (Main.myPlayer == player.whoAmI) {
+		if (Main.myPlayer == player.whoAmI && player.altFunctionUse != 2) {
 
 			var dir = Main.MouseWorld.X > player.Center.X ? 1 : -1;
 
 
-			if (itemProj != null)
-				itemProj.Projectile.Kill();
+			if (itemProj != null) {
+				if (itemProj.Type == ModContent.ProjectileType<ItemProjectile>()) {
+					itemProj.Projectile.Kill();
+				}
+			}
 
 			var rot = player.Center.DirectionTo(Main.MouseWorld);
 
 			itemProj = ItemProjectile.SpawnItemProjectile(player, player.Center + player.Center.DirectionTo(Main.MouseWorld) * 15, rot.ToRotation(), Item.useAnimation, TextureAssets.Item[Type].Value, Rectangle.Empty, TextureAssets.Item[Type].Value.Size() / 2f, new Vector2(1f, 1f), dir == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically, BoltActionAnimation);
-	
+
 			recoilScale.SetProperties(new Vector2(0.8f, 2f), new Vector2(1f, 1f), TweenEaseType.OutExpo, Item.useAnimation / 3);
-			recoilPos.SetProperties(new Vector2(0,0),new Vector2(0,0).PositionOFFSET(rot,15), TweenEaseType.OutExpo, player.itemAnimationMax / 3);
+			recoilPos.SetProperties(new Vector2(0, 0), new Vector2(0, 0).PositionOFFSET(rot, 15), TweenEaseType.OutExpo, player.itemAnimationMax / 3);
 			recoilPos.Start();
 			recoilScale.Start();
 
@@ -68,21 +72,20 @@ internal class LaserSniper : SynergyModItem {
 
 		return true;
 	}
-	public bool BoltActionAnimation(Player player, Vector2 pos, Vector2 offset) 
-	{
+	public bool BoltActionAnimation(Player player, Vector2 pos, Vector2 offset) {
 
 		recoilScale.Update();
 		recoilPos.Update();
 		recoilHandler.Update();
 
 
-		if(player.itemAnimation == player.itemAnimationMax)
+		if (player.itemAnimation == player.itemAnimationMax)
 			itemProj.PositionOffset = player.Center.DirectionTo(Main.MouseWorld) * 15;
 
 		itemProj.spriteScale = recoilScale.currentProgress;
 		itemProj.Projectile.rotation = recoilHandler.currentTween.currentProgress;
-		player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Quarter, player.direction == 1 ? itemProj.Projectile.rotation : itemProj.Projectile.rotation - MathHelper.Pi );
-		player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, player.direction == 1 ? itemProj.Projectile.rotation - MathHelper.PiOver2: itemProj.Projectile.rotation - MathHelper.PiOver2);
+		player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Quarter, player.direction == 1 ? itemProj.Projectile.rotation : itemProj.Projectile.rotation - MathHelper.Pi);
+		player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, player.direction == 1 ? itemProj.Projectile.rotation - MathHelper.PiOver2 : itemProj.Projectile.rotation - MathHelper.PiOver2);
 
 		return true;
 	}
@@ -112,6 +115,9 @@ internal class LaserSniper : SynergyModItem {
 		player.GetModPlayer<LaserSniperPlayer>().ManaMissing = true;
 		player.statMana += neededMana;
 	}
+	public override bool AltFunctionUse(Player player) {
+		return true;
+	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-20, 0);
 	}
@@ -119,14 +125,21 @@ internal class LaserSniper : SynergyModItem {
 		if (player.GetModPlayer<LaserSniperPlayer>().ManaMissing) {
 			damage = (int)(damage * .8f);
 		}
+		else {
+			damage *= 2;
+		}
 		type = ModContent.ProjectileType<LaserSniperProjectile>();
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-
-		Projectile projectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 90), velocity, type, damage, knockback, player.whoAmI);
-
-		if (!player.GetModPlayer<LaserSniperPlayer>().ManaMissing) {
-			projectile.damage *= 2;
+		if (player.altFunctionUse == 2) {
+			Projectile.NewProjectileDirect(source, position, velocity * 2, ModContent.ProjectileType<PlasmaGrenade>(), damage, knockback, player.whoAmI);
+		}
+		else {
+			Projectile proj = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, 90), velocity, type, damage, knockback, player.whoAmI);
+			if (!player.GetModPlayer<LaserSniperPlayer>().ManaMissing) {
+				proj.penetrate = 3;
+				proj.maxPenetrate = 3;
+			}
 		}
 		CanShootItem = false;
 	}
@@ -138,8 +151,7 @@ public class LaserSniperPlayer : ModPlayer {
 	}
 }
 
-public class LaserSniperProjectile : ModProjectile 
-{
+public class LaserSniperProjectile : ModProjectile {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -161,9 +173,8 @@ public class LaserSniperProjectile : ModProjectile
 		Projectile.FillProjectileOldPosAndRot();
 	}
 	public override bool PreDraw(ref Color lightColor) {
-
 		var s = new TrailShaderSettings();
-		s.offset = Projectile.Size / 2f;
+		s.offset = Projectile.Size * .5f;
 		s.image1 = TextureAssets.Extra[193];
 		s.oldPos = Projectile.oldPos;
 		s.oldRot = Projectile.oldRot;
@@ -171,67 +182,51 @@ public class LaserSniperProjectile : ModProjectile
 		s.shaderType = "FlameEffect";
 		s.image2 = null;
 		s.image3 = null;
-		default(GenericTrail).Draw(s,(a) => MathHelper.Lerp(2f, 6f, Utils.GetLerpValue(0f, 0.2f, a, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, a, clamped: true), (a) => Color.Aqua);
-
+		default(GenericTrail).Draw(s, (a) => MathHelper.Lerp(2f, 6f, Utils.GetLerpValue(0f, 0.2f, a, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, a, clamped: true), (a) => Color.Aqua);
 		return false;
-	}
-
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(3) || target.type == ModContent.NPCType<PlasmaGrenade>()) 
-		{
-
-			var grenade = NPC.NewNPCDirect(Projectile.GetSource_OnHit(target),(int)Projectile.Center.X,(int)Projectile.Center.Y,ModContent.NPCType<PlasmaGrenade>());
-			grenade.velocity.Y = -10;
-
-		}
 	}
 }
 
-public class PlasmaGrenade : ModNPC 
-{
+public class PlasmaGrenade : SynergyModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(657);
 	public override void SetDefaults() {
-		NPC.CloneDefaults(ModContent.NPCType<FallenStarPower>());
-		NPC.HitSound = SoundID.DD2_ExplosiveTrapExplode;
-		NPC.noTileCollide = true;
+		Projectile.width = Projectile.height = 32;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 300;
+		Projectile.penetrate = 1;
+		Projectile.tileCollide = false;
+	}
+	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		Projectile.velocity *= .98f;
+		Projectile.rotation += Projectile.velocity.ToRotation() * .1f;
+
+		foreach (Projectile proj in Main.ActiveProjectiles) {
+			if (proj.type == ModContent.ProjectileType<LaserSniperProjectile>()
+				&& Projectile.Center.IsCloseToPosition(proj.Center, 32)) {
+				Projectile.damage *= 3;
+				Projectile.Kill();
+			}
+		}
+
+	}
+	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<PlasmaExplosion>(), Projectile.damage / 3, 0, Projectile.owner);
+		SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
 	}
 
-	public override bool? CanBeHitByProjectile(Projectile projectile) {
-		return projectile.type == ModContent.ProjectileType<LaserSniperProjectile>();
-	}
-
-	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
-		Projectile.NewProjectile(NPC.GetSource_OnHurt(Main.player[projectile.owner]),projectile.Center,Vector2.Zero,ModContent.ProjectileType<PlasmaExplosion>(),projectile.damage / 3, 0, projectile.owner);
-	}
-
-	
-	public override void AI() {
-		NPC.velocity.Y += 0.2f;
-		if (NPC.collideY || NPC.collideX)
-			NPC.StrikeInstantKill();
-
-		NPC.rotation += 0.1f;
-	}
-
-	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-
+	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadItem(ItemID.Grenade);
-		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, NPC.Center - Main.screenPosition, null, Color.Aqua, NPC.rotation, TextureAssets.Item[ItemID.Grenade].Size() / 2f, 1.1f, SpriteEffects.None);
-		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, NPC.Center - Main.screenPosition, null, Color.Aqua, NPC.rotation, TextureAssets.Item[ItemID.Grenade].Size() / 2f, 1f, SpriteEffects.None);
-
+		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, Projectile.Center - Main.screenPosition, null, new Color(255, 255, 255, 0), Projectile.rotation, TextureAssets.Item[ItemID.Grenade].Size() * .5f, 1.25f, SpriteEffects.None);
+		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, Projectile.Center - Main.screenPosition, null, Color.Aqua, Projectile.rotation, TextureAssets.Item[ItemID.Grenade].Size() * .5f, 1f, SpriteEffects.None);
 		return false;
 	}
 }
 
-public class PlasmaExplosion : ModProjectile 
-{
-
+public class PlasmaExplosion : ModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.Flames);
-
 	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 6;
 	}
-
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 98;
 		Projectile.friendly = true;
@@ -239,29 +234,21 @@ public class PlasmaExplosion : ModProjectile
 		Projectile.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
 		Projectile.penetrate = -1;
 		Projectile.frame = 0;
-		Projectile.timeLeft = 35;
+		Projectile.timeLeft = 15;
 		Projectile.scale = 4;
+		Projectile.tileCollide = false;
 	}
 
 	public override void AI() {
-
-
 		Projectile.ai[0] += 0.1f;
 	}
-
 	public override bool PreDraw(ref Color lightColor) {
-
 		ShaderSettings shaderSettings = new ShaderSettings();
 		shaderSettings.image1 = TextureAssets.Extra[193];
 		shaderSettings.Color = Color.Turquoise;
 		shaderSettings.shaderData = new Vector4(Projectile.ai[0]);
-
-
-		default(ExplosionQuad).Draw(Projectile.Center,0,Vector2.One * 512, shaderSettings);
-		
-
+		default(ExplosionQuad).Draw(Projectile.Center, 0, Vector2.One * 512, shaderSettings);
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-
 		return false;
 	}
 }

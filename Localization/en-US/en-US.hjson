@@ -1969,6 +1969,9 @@ Mods: {
 					'''
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
+					Alt click to throw out a anti gravity plasma grenade
+					Shooting the plasma grenade will make it explode
+					Letting it collide or explode naturally will make it deal 1/3 of original damage
 					'''
 			}
 
