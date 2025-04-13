@@ -188,7 +188,6 @@ public class LaserSniperProjectile : ModProjectile {
 }
 
 public class PlasmaGrenade : SynergyModProjectile {
-	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(657);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.friendly = true;
@@ -198,11 +197,11 @@ public class PlasmaGrenade : SynergyModProjectile {
 	}
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		Projectile.velocity *= .98f;
-		Projectile.rotation += Projectile.velocity.ToRotation() * .1f;
+		Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * Projectile.direction) * .5f;
 
 		foreach (Projectile proj in Main.ActiveProjectiles) {
 			if (proj.type == ModContent.ProjectileType<LaserSniperProjectile>()
-				&& Projectile.Center.IsCloseToPosition(proj.Center, 32)) {
+				&& Projectile.Center.IsCloseToPosition(proj.Center, 40)) {
 				Projectile.damage *= 3;
 				Projectile.Kill();
 			}
@@ -215,9 +214,10 @@ public class PlasmaGrenade : SynergyModProjectile {
 	}
 
 	public override bool PreDraw(ref Color lightColor) {
-		Main.instance.LoadItem(ItemID.Grenade);
-		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, Projectile.Center - Main.screenPosition, null, new Color(255, 255, 255, 0), Projectile.rotation, TextureAssets.Item[ItemID.Grenade].Size() * .5f, 1.25f, SpriteEffects.None);
-		Main.EntitySpriteDraw(TextureAssets.Item[ItemID.Grenade].Value, Projectile.Center - Main.screenPosition, null, Color.Aqua, Projectile.rotation, TextureAssets.Item[ItemID.Grenade].Size() * .5f, 1f, SpriteEffects.None);
+		Main.instance.LoadProjectile(Type);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
+		Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, new Color(255, 255, 255, 0), Projectile.rotation, texture.Size() * .5f, 1.25f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.Aqua, Projectile.rotation, texture.Size() * .5f, 1f, SpriteEffects.None);
 		return false;
 	}
 }
