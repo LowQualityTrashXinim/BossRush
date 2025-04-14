@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 
@@ -16,6 +17,7 @@ public class BabyBirdStaff : ModEnchantment {
 		Main.projectile[globalItem.Item_Counter2[index]].Kill();
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.08f);
 		if (player.ownedProjectileCounts[ProjectileID.BabyBird] < 1) {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabyBird, player.GetWeaponDamage(item), 0, player.whoAmI);
 			Main.projectile[proj].minionSlots = 0;
@@ -40,6 +42,7 @@ public class BabySlimeStaff : ModEnchantment {
 		Main.projectile[globalItem.Item_Counter2[index]].Kill();
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.SummonDMG, 1.12f);
 		if (player.ownedProjectileCounts[ProjectileID.BabySlime] < 1) {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ProjectileID.BabySlime, player.GetWeaponDamage(item), 0, player.whoAmI);
 			Main.projectile[proj].minionSlots = 0;
@@ -86,7 +89,7 @@ public class LeatherWhip : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlandWhip;
 	}
-	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.10f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.10f;
 		player.GetDamage(DamageClass.Summon).Base += 1;
@@ -99,7 +102,7 @@ public class Snapthorn : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ThornWhip;
 	}
-	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.15f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.15f;
 		player.GetDamage(DamageClass.Summon).Base += 2;
@@ -120,7 +123,7 @@ public class SpinalTap : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BoneWhip;
 	}
-	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.2f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.2f;
 		player.GetDamage(DamageClass.Summon).Base += 3;
@@ -128,52 +131,36 @@ public class SpinalTap : ModEnchantment {
 }
 
 public class ImpStaff : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ImpStaff;
 		ForcedCleanCounter = true;
 	}
-
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-
 		globalItem.Item_Counter1[index]++;
-
-
 		foreach (Projectile minion in Main.ActiveProjectiles) {
 			NPC target = minion.FindTargetWithinRange(200);
 			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 30 && target != null) {
-
 				Projectile.NewProjectile(player.GetSource_FromAI(), minion.position, (target.Center - minion.Center).SafeNormalize(Vector2.UnitY) * 15, ProjectileID.ImpFireball, 15, 0, player.whoAmI);
 				globalItem.Item_Counter1[index] = 0;
-
 			}
-
 		}
 	}
 }
 
 
 public class HornetStaff : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.HornetStaff;
 		ForcedCleanCounter = true;
 	}
-
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-
 		globalItem.Item_Counter1[index]++;
-
-
 		foreach (Projectile minion in Main.ActiveProjectiles) {
 			NPC target = minion.FindTargetWithinRange(200);
 			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 40 && target != null) {
-
 				Projectile.NewProjectile(player.GetSource_FromAI(), minion.position, (target.Center - minion.Center).SafeNormalize(Vector2.UnitY) * 5, ProjectileID.HornetStinger, 12, 0, player.whoAmI);
 				globalItem.Item_Counter1[index] = 0;
-
 			}
-
 		}
 	}
 }

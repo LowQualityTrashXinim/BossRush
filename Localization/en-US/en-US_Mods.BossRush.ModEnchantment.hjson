@@ -608,11 +608,13 @@ FlowerOfFrost.Description:
 	'''
 BabyBirdStaff.Description:
 	'''
+	+8% summoner damage
 	Spawn elite baby bird to aid you during fight
 	Elite baby bird also shoot whatever you are shooting dealing 25% of original damage
 	'''
 BabySlimeStaff.Description:
 	'''
+	+12% summoner damage
 	Spawn spiked baby slime to aid you during fight
 	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
