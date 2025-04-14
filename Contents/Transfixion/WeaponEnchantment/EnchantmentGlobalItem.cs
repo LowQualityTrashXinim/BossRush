@@ -118,6 +118,18 @@ public class EnchantmentGlobalItem : GlobalItem {
 		return valid;
 	}
 	public override void UpdateInventory(Item item, Player player) {
+		if (EnchantmenStlot == null) {
+			return;
+		}
+		//This is here to be consistent
+		if (player.HeldItem.type == ItemID.None || item.type == ItemID.None) {
+			return;
+		}
+		for (int l = 0; l < EnchantmenStlot.Length; l++) {
+			if (EnchantmenStlot[l] == 0)
+				continue;
+			EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[l]).Update(l, item, this, player);
+		}
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
@@ -188,16 +200,6 @@ public class EnchantmentModplayer : ModPlayer {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem localglobal)) {
 				globalItem = localglobal;
 			}
-		}
-	}
-	public override void UpdateEquips() {
-		if (CommonEnchantmentCheck()) {
-			return;
-		}
-		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
-			if (globalItem.EnchantmenStlot[i] == 0)
-				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).Update(Player);
 		}
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {

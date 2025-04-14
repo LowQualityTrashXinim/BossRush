@@ -11,6 +11,9 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 using BossRush.Common.Global;
+using BossRush.Texture;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class CopperBroadsword : ModEnchantment {
@@ -1263,5 +1266,139 @@ public class SpearProjectile : ModProjectile {
 		if (Projectile.velocity.Y < 14) {
 			Projectile.velocity.Y += .5f;
 		}
+		if (Projectile.penetrate == 1) {
+			if (Projectile.timeLeft > 20) {
+				Projectile.timeLeft = 20;
+			}
+			Projectile.ProjectileAlphaDecay(20);
+		}
+	}
+}
+public class Trident : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Trident;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle modplayer = player.ModPlayerStats();
+		modplayer.AddStatsToPlayer(PlayerStats.MeleeCritChance, Base: 10);
+		modplayer.AddStatsToPlayer(PlayerStats.MeleeCritDmg, 1.24f);
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 30;
+			int type = Main.rand.Next([ModContent.ProjectileType<TridentEnchantmentProjectile_Fish1>(), ModContent.ProjectileType<TridentEnchantmentProjectile_Fish2>()]);
+			if (type == ModContent.ProjectileType<TridentEnchantmentProjectile_Fish1>()) {
+				Vector2 pos = player.Center + Main.rand.NextVector2RectangleEdge(1000, 1000);
+				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, type, hit.Damage, hit.Knockback, player.whoAmI);
+			}
+			else {
+				Vector2 pos = player.Center + new Vector2(Main.rand.Next(300, 1000), 1000);
+				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 14;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, type, hit.Damage, hit.Knockback, player.whoAmI);
+			}
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0
+			&& proj.type != ModContent.ProjectileType<TridentEnchantmentProjectile_Fish1>()
+			&& proj.type != ModContent.ProjectileType<TridentEnchantmentProjectile_Fish2>()) {
+			globalItem.Item_Counter1[index] = 150;
+			int type = Main.rand.Next([ModContent.ProjectileType<TridentEnchantmentProjectile_Fish1>(), ModContent.ProjectileType<TridentEnchantmentProjectile_Fish2>()]);
+			if (type == ModContent.ProjectileType<TridentEnchantmentProjectile_Fish1>()) {
+				Vector2 pos = player.Center + Main.rand.NextVector2RectangleEdge(1000, 1000);
+				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, type, hit.Damage, hit.Knockback, player.whoAmI);
+			}
+			else {
+				Vector2 pos = player.Center + new Vector2(Main.rand.Next(300, 1000), 1000);
+				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 14;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, type, hit.Damage, hit.Knockback, player.whoAmI);
+			}
+		}
+	}
+}
+public class TridentEnchantmentProjectile_Fish1 : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Bass);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.timeLeft = 360;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.idStaticNPCHitCooldown = 90;
+		Projectile.usesIDStaticNPCImmunity = true;
+	}
+	public override void OnSpawn(IEntitySource source) {
+		Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
+		Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
+	}
+	public override void AI() {
+		if (Projectile.ai[1] == 0) {
+			Projectile.ai[1] = 1;
+			Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(-15));
+		}
+		if (++Projectile.ai[0] >= 10) {
+			Projectile.ai[1] *= -1;
+			Projectile.ai[0] = 0;
+		}
+		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[1] * 3));
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+		if (Projectile.spriteDirection == -1) {
+			Projectile.rotation += MathHelper.PiOver2;
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		int type = (int)Projectile.ai[2];
+		Main.instance.LoadProjectile(Type);
+		Main.instance.LoadItem(type);
+		Texture2D texture = TextureAssets.Item[type].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
+		SpriteEffects effect = SpriteEffects.None;
+		if (Projectile.spriteDirection == -1) {
+			effect = SpriteEffects.FlipHorizontally;
+		}
+		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
+		return false;
+	}
+}
+public class TridentEnchantmentProjectile_Fish2 : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Bass);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 360;
+		Projectile.penetrate = -1;
+		Projectile.usesIDStaticNPCImmunity = true;
+		Projectile.idStaticNPCHitCooldown = 90;
+		Projectile.tileCollide = false;
+	}
+	public override void OnSpawn(IEntitySource source) {
+		Projectile.ai[2] = Main.rand.Next(new int[] { ItemID.Trout, ItemID.Tuna });
+	}
+	public override void AI() {
+		if (++Projectile.ai[0] < 30) {
+			Projectile.velocity.Y -= .5f;
+		}
+		else {
+			Projectile.velocity.Y += .5f;
+		}
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		int type = (int)Projectile.ai[2];
+		Main.instance.LoadProjectile(Type);
+		Main.instance.LoadItem(type);
+		Texture2D texture = TextureAssets.Item[type].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = Projectile.position - Main.screenPosition + origin;
+		SpriteEffects effect = SpriteEffects.None;
+		if (Projectile.direction == -1) {
+			effect = SpriteEffects.FlipHorizontally;
+		}
+		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
+		return false;
 	}
 }

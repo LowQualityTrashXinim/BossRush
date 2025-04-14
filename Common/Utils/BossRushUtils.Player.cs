@@ -9,10 +9,15 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using BossRush.Common.Global;
-using System.Collections;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		/// <summary>
+		/// Basically the same as getting <code>player.GetModPlayer<![CDATA[<]]>PlayerStatsHandle<![CDATA[>]]>()</code>
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static PlayerStatsHandle ModPlayerStats(this Player player) => player.GetModPlayer<PlayerStatsHandle>();
 		/// <summary>
 		/// This check if player health/life is above x%
 		/// </summary>

@@ -3,8 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.Systems;
-using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 
@@ -88,7 +86,7 @@ public class LeatherWhip : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlandWhip;
 	}
-	public override void Update(Player player) {
+	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.10f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.10f;
 		player.GetDamage(DamageClass.Summon).Base += 1;
@@ -101,8 +99,7 @@ public class Snapthorn : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ThornWhip;
 	}
-
-	public override void Update(Player player) {
+	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.15f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.15f;
 		player.GetDamage(DamageClass.Summon).Base += 2;
@@ -123,8 +120,7 @@ public class SpinalTap : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BoneWhip;
 	}
-
-	public override void Update(Player player) {
+	public override void Update(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.whipRangeMultiplier += 0.2f;
 		player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.2f;
 		player.GetDamage(DamageClass.Summon).Base += 3;

@@ -337,6 +337,8 @@ Mods: {
 			Enchantment_ShortSwordProjectile.DisplayName: Enchantment_ Short Sword Projectile
 			ChannelShortSword.DisplayName: Channel Short Sword
 			PlasmaGrenade.DisplayName: Plasma Grenade
+			TridentEnchantmentProjectile_Fish1.DisplayName: Trident Enchantment Projectile_ Fish1
+			TridentEnchantmentProjectile_Fish2.DisplayName: Trident Enchantment Projectile_ Fish2
 		}
 
 		NPCs: {
