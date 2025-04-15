@@ -3,6 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Perks;
 class WorldEssence : ModItem {
@@ -50,6 +51,28 @@ class LuckEssence : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		if (player.ItemAnimationJustStarted) {
+			PerkPlayer modplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+			List<int> listOfPerk = new List<int>();
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
+				listOfPerk.Add(i);
+			}
+			int perkType = Main.rand.Next(listOfPerk);
+			UniversalSystem.AddPerk(perkType);
+			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
+		}
 		uiSystemInstance.ActivatePerkUI(PerkUIState.GamblerState);
 		return true;
 	}

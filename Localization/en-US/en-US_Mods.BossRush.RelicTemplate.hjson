@@ -68,7 +68,7 @@ SkillDurationTemplate: {
 	Description: Increases the duration of the [c/{0}:{1}] skill by [c/{0}:{2}] seconds
 }
 
-SkillActivateTemplate: {
+SkillActivatationTemplate: {
 	DisplayName: "[c/{0}:{1}] Conditioning"
 	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
 }
