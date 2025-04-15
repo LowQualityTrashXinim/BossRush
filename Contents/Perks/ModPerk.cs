@@ -507,7 +507,7 @@ namespace BossRush.Contents.Perks {
 			return base.ModifyToolTip();
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1 + StackAmount(player));
 		}
 	}
 	public class BlessingOfEvasive : Perk {

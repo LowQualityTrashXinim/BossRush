@@ -527,6 +527,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.SummonNonCritDmg:
 				Summon_NonCritDmg = Summon_NonCritDmg.CombineWith(StatMod);
 				break;
+			case PlayerStats.LootDropIncrease:
+				ChestLoot.DropModifier = ChestLoot.DropModifier.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
