@@ -27,7 +27,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			//Attempt to fix item size using texture asset
-			if (Main.ActiveWorldFileData.Name != null && entity.IsAWeapon()) {
+			if (entity.IsAWeapon()) {
 				Asset<Texture2D> texture = TextureAssets.Item[entity.type];
 				if (texture != null) {
 					if (texture.State == AssetState.Loaded) {

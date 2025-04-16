@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.Mutation;
 public class Vampirism : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
@@ -16,7 +16,7 @@ public class Vampirism : ModMutation {
 	}
 }
 public class ChaoticTransportation : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
@@ -27,7 +27,7 @@ public class ChaoticTransportation : ModMutation {
 	}
 }
 public class TouchOfGrim : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
@@ -45,7 +45,7 @@ public class GrimTouch : ModBuff {
 	}
 }
 public class ProjectileResistance : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
@@ -53,7 +53,7 @@ public class ProjectileResistance : ModMutation {
 	}
 }
 public class ItemResistance : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
@@ -61,7 +61,7 @@ public class ItemResistance : ModMutation {
 	}
 }
 public class BreakItem : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
@@ -87,16 +87,21 @@ public class LifeStruckDebuff : ModBuff {
 	}
 }
 public class Tanky : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
 		npc.lifeMax *= 3;
 		npc.life = npc.lifeMax;
 		npc.defense *= 3;
+		base.OnSpawn(npc, source);
 	}
 }
 public class Masochsit : ModMutation {
-	public override void SetDefaults(NPC npc) {
+	public override void SetStaticDefaults() {
 		NewGamePlus = true;
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
 		npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .5f;
 		npc.defense *= 2;
 	}
@@ -138,5 +143,33 @@ public class Slimy_Debuff : ModBuff {
 		stathandle.AddStatsToPlayer(PlayerStats.CritDamage, .55f);
 		stathandle.AddStatsToPlayer(PlayerStats.RegenHP, .55f);
 		stathandle.AddStatsToPlayer(PlayerStats.Defense, Base: 2);
+	}
+}
+public class Elite : ModMutation {
+	public override void OnSpawn(NPC npc, IEntitySource source) {
+		npc.lifeMax = npc.lifeMax + (int)(npc.lifeMax * .5f);
+		npc.life = npc.lifeMax;
+		npc.damage = npc.damage + (int)(npc.damage * .2f);
+		npc.defense += 10;
+	}
+	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .1f) {
+			modifiers.FinalDamage *= 0;
+		}
+	}
+	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .1f) {
+			modifiers.FinalDamage *= 0;
+		}
+	}
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= .01f) {
+			npc.Heal((int)(npc.lifeMax * .2f));
+		}
+	}
+	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= .01f) {
+			npc.Heal((int)(npc.lifeMax * .2f));
+		}
 	}
 }

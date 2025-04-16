@@ -2384,6 +2384,11 @@ Mods: {
 				DisplayName: Transmute Tablet
 				Tooltip: ""
 			}
+
+			ScrollOfHellspawn: {
+				DisplayName: Scroll Of Hellspawn
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

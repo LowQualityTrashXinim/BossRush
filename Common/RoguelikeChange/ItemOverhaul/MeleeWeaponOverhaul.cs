@@ -747,7 +747,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 
 		public override bool CanUseItem(Item item) {
-			if (!Player.ItemAnimationActive) {
+			if (!Player.ItemAnimationActive && item.type == Player.HeldItem.type) {
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 				swordLength = item.Size.Length() * 0.5f * Player.GetAdjustedItemScale(item);
 				float baseAngle = PlayerToMouseDirection.ToRotation();
