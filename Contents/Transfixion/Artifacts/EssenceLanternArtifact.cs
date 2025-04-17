@@ -118,6 +118,7 @@ public class EssenceOfWeakness : EssenceBuff {
 	}
 }
 public class NPC_Weakness : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff();
 	}
