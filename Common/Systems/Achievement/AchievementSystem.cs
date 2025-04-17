@@ -411,7 +411,7 @@ public class AchievementUI : UIState {
 		for (int i = 0; i < btn_Achievement.Count; i++) {
 			AchievementButton btn = btn_Achievement[i];
 			if (lib_achievement.Count - 1 < i) {
-				btn.achievementname = string.Empty;
+				btn.SetAchievement(string.Empty);
 				txt_Achievement[i].SetText("");
 				continue;
 			}
@@ -701,6 +701,7 @@ public class AchievementButton : UIImageButton {
 		SetAchievement(achievementName);
 		achieved = ModContent.Request<Texture2D>(BossRushTexture.CommonTextureStringPattern + "UI/complete");
 		Lock = ModContent.Request<Texture2D>(BossRushTexture.Lock);
+		SetVisibility(1, 1);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		AchievementUI.ActiveAchievement = achievementname;

@@ -1,6 +1,8 @@
 ﻿using BossRush.Contents.Perks;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -17,10 +19,10 @@ namespace BossRush.Common.Systems.ObjectSystem;
 public class ObjectSystem : ModSystem {
 	public const int MaxObjects = 1000;
 	public static ModObject[] Objects = new ModObject[MaxObjects];
-	public static List<ModObject> ModObjectSample = new();
+	private static readonly List<ModObject> ModObjectSample = new();
 	public static int TotalCount => ModObjectSample.Count;
 	public static ModObject GetModObject(int type) {
-		return type >= 0 && type < ModObjectSample.Count ? ModObjectSample[type] : null;
+		return type >= 0 && type < ModObjectSample.Count ? ModObjectSample[type].Clone() : null;
 	}
 	public static int Register(ModObject obj) {
 		ModTypeLookup<ModObject>.Register(obj);
@@ -35,7 +37,7 @@ public class ObjectSystem : ModSystem {
 			ModObjectSample[i].Unload();
 		}
 		Objects = null;
-		ModObjectSample = null;
+		ModObjectSample.Clear();
 	}
 	public override void PostSetupContent() {
 		for (int i = 0; i < ModObjectSample.Count; i++) {
@@ -81,6 +83,13 @@ public class ObjectSystem : ModSystem {
 /// This system is not to be confused with particle system, as this system is not uses to be as such
 /// </summary>
 public class ModObject : Entity, IModType, ILoadable {
+	public ModObject() {
+		whoAmI = -1;
+		timeLeft = 3600;
+		rotation = 0;
+		velocity = Vector2.Zero;
+		position = Vector2.Zero;
+	}
 	/// <summary>
 	/// Existing time of a object, default at 60s<br/>
 	/// Note : the <see cref="AI"/> will still run at timeleft hitting 0 for 1 tick
@@ -111,6 +120,7 @@ public class ModObject : Entity, IModType, ILoadable {
 		obj.active = true;
 		obj.position = position - obj.Size * .5f;
 		obj.velocity = velocity;
+		obj.whoAmI = whoAmI;
 		return obj;
 	}
 	public static int GetModObjectType<T>() where T : ModObject {
@@ -157,5 +167,14 @@ public class ModObject : Entity, IModType, ILoadable {
 	}
 
 	public void Unload() {
+	}
+	public ModObject Clone() {
+		ModObject clone = (ModObject)MemberwiseClone();
+		clone.whoAmI = -1;
+		clone.timeLeft = 3600;
+		clone.rotation = 0;
+		clone.velocity = Vector2.Zero;
+		clone.position = Vector2.Zero;
+		return clone;
 	}
 }

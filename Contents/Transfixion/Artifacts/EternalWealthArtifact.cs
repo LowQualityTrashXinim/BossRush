@@ -6,6 +6,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +18,9 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		public override bool CanBeSelected(Player player) => AchievementSystem.IsAchieved("TokenOfGreed");
 	}
 	class EternalWealthPlayer : ModPlayer {
+		public override void OnEnterWorld() {
+			Array.Fill(objs, null);
+		}
 		bool EternalWealth = false;
 
 		int timer = 0;
@@ -34,12 +38,19 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				timer = BossRushUtils.CountDown(timer);
 				if (timer <= 0) {
 					counterOldPos = BossRushUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
-					objs[counterOldPos] = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
-					timer = 600;
+					if (objs[counterOldPos] != null && objs[counterOldPos].active) {
+						objs[counterOldPos].Kill();
+					}
+					ModObject obj = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
+					objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
+					timer = 120;
 				}
 				float distance = 500;
 				foreach (EternalWealth_ModObject obj in objs) {
 					if (obj == null) {
+						continue;
+					}
+					if (!obj.active) {
 						continue;
 					}
 					if (Player.Center.IsCloseToPosition(obj.position, distance)) {
@@ -56,7 +67,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 	}
 	public class EternalWealth_ModObject : ModObject {
 		public override void SetDefaults() {
-			timeLeft = 600;
+			timeLeft = 3600;
 		}
 		public override void AI() {
 			float distance = 500;
