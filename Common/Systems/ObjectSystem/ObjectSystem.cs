@@ -15,7 +15,7 @@ namespace BossRush.Common.Systems.ObjectSystem;
 /// For more detail on what Object class can do, check the actual object class
 /// </summary>
 public class ObjectSystem : ModSystem {
-	public const int MaxObjects = 100;
+	public const int MaxObjects = 1000;
 	public static ModObject[] Objects = new ModObject[MaxObjects];
 	public static List<ModObject> ModObjectSample = new();
 	public static int TotalCount => ModObjectSample.Count;

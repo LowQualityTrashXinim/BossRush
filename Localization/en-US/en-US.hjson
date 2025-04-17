@@ -2584,29 +2584,37 @@ Mods: {
 
 			EssenceOfCalmness: {
 				DisplayName: Essence Of Calmness
-				Description: Decreases your crit damage by 50%
+				Description: 
+				'''
+				Increases your critical chance by 25%
+				Decreases your critical damage by 30%
+				'''
 			}
 
 			EssenceOfDrowsy: {
 				DisplayName: Essence Of Drowsy
 				Description:
 					'''
-					Decreases your movement speed by 44%
-					Decreases your attack speed by 24%
+					Increases your damage reduction by 15%
+					Decreases your movement speed by 14% and attack speed by 6%
 					'''
 			}
 
 			EssenceOfKindness: {
 				DisplayName: Essence Of Kindness
-				Description: Decreases your damage by 50%
+				Description: 
+				'''
+				Increases healing effectiveness by 25% and immunity frame by 35%
+				Decreases your damage by 12% and your critical chance by 10%
+				'''
 			}
 
 			EssenceOfRage: {
 				DisplayName: Essence Of Rage
 				Description:
 					'''
-					Increases your crit chance by 10%
-					Increases your crit damage by 35%
+					Increases your critical chance by 5% and critical damage by 15%
+					Decreases your defense by 10
 					'''
 			}
 
@@ -2614,24 +2622,37 @@ Mods: {
 				DisplayName: Essence Of Rejuvenate
 				Description:
 					'''
-					Increases your life regen by 67%
+					Increases your life regen by 27%
 					When this buff end, heal you for 100 hp
+					Decreases your damage by 12%
 					'''
 			}
 
 			EssenceOfSwift: {
 				DisplayName: Essence Of Swift
-				Description: Increases your movement speed by 34% and attack speed by 14%
+				Description: 
+				'''
+				Increases your movement speed by 14% and attack speed by 8%
+				Decreases your critical chance by 10
+				'''
 			}
 
 			EssenceOfTitan: {
 				DisplayName: Essence Of Titan
-				Description: Increases your defense by 20%
+				Description: 
+				'''
+				Increases your defense by 15
+				Decreases your damage by 10%
+				'''
 			}
 
 			EssenceOfWeakness: {
 				DisplayName: Essence Of Weakness
-				Description: Decreases your defense by 20
+				Description: 
+				'''
+				Your attack inflict weakness onto enemy
+				Decreases your defense by 10, damage by 10% and critical damage by 30%
+				'''
 			}
 
 			EssenceOfWither: {
@@ -2640,8 +2661,12 @@ Mods: {
 			}
 
 			EssenceOfWrath: {
-				DisplayName: Wrath
-				Description: Increases your damage by 20%
+				DisplayName: Essence Of Wrath
+				Description: 
+				'''
+				Increases your damage by 12%
+				Decreases your defense by 10
+				'''
 			}
 
 			LifeForce: {

@@ -206,12 +206,11 @@ EssenceLanternArtifact: {
 		'''
 		"Enable new world perspective"
 		[c/9b9c76:Neutral effect] :
-			= Weapon damage type become generic
-			= Sometime spawn Essence Orb on hitting enemy
+			= Your attack spawn essence orb every 10s
 		[c/ffff00:Positive effect] :
-			+ Some essence orb have positive effect
+			+ Essence orb have positive effect and negative effect
 		[c/ab3e43:Negative effect] : 
-			- Some essence orb have negative effect
+			- Essence of Wither orb are present which are hamrful
 		'''
 }
 

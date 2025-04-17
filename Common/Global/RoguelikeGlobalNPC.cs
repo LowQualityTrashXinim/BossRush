@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.General;
+using BossRush.Contents.Transfixion.Artifacts;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -173,6 +174,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {
+		if (npc.HasBuff<NPC_Weakness>()) {
+			modifiers.SourceDamage -= .5f;
+		}
 		if (npc.boss) {
 			modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .1f);
 			if (EliteBoss) {
