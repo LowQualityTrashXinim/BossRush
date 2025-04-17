@@ -39,7 +39,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				if (timer <= 0) {
 					counterOldPos = BossRushUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
 					if (objs[counterOldPos] != null && objs[counterOldPos].active) {
-						objs[counterOldPos].Kill();
+						ObjectSystem.Objects[objs[counterOldPos].whoAmI].Kill();
 					}
 					ModObject obj = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
 					objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
@@ -67,7 +67,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 	}
 	public class EternalWealth_ModObject : ModObject {
 		public override void SetDefaults() {
-			timeLeft = 3600;
+			timeLeft = 3000;
 		}
 		public override void AI() {
 			float distance = 500;
