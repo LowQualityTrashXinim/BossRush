@@ -10,7 +10,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
-	public class AcherMasteryTemplate : RelicTemplate {
+	public class ArcherMasteryTemplate : RelicTemplate {
 		public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.RangeDMG;
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 			float tierValue = 1 + .07f * (relic.RelicTier - 1);

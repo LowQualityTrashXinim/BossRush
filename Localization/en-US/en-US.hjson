@@ -339,6 +339,11 @@ Mods: {
 			PlasmaGrenade.DisplayName: Plasma Grenade
 			TridentEnchantmentProjectile_Fish1.DisplayName: Trident Enchantment Projectile_ Fish1
 			TridentEnchantmentProjectile_Fish2.DisplayName: Trident Enchantment Projectile_ Fish2
+			BaseHostileSpear.DisplayName: Base Hostile Spear
+			HostileBoomStick.DisplayName: Hostile Boom Stick
+			GiantSnowBall.DisplayName: Giant Snow Ball
+			OrbitProjectile.DisplayName: Orbit Projectile
+			TheOrbitProjectile.DisplayName: The Orbit Projectile
 		}
 
 		NPCs: {
@@ -2388,6 +2393,35 @@ Mods: {
 			ScrollOfHellspawn: {
 				DisplayName: Scroll Of Hellspawn
 				Tooltip: ""
+			}
+
+			TwilightNight: {
+				DisplayName: Twilight Night
+				Tooltip: ""
+			}
+
+			BasicLauncher: {
+				DisplayName: Basic Launcher
+				Tooltip: ""
+			}
+
+			SnowballCannonMK2: {
+				DisplayName: Snowball Cannon MK2
+				Tooltip: 
+				'''
+				After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
+				Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
+				'''
+			}
+
+			TheOrbit: {
+				DisplayName: The Orbit
+				Tooltip:
+					'''
+					Throw out the disk that have flaming mace orbit around it
+					After 4th throw, the next throw will release 3 flaming mace orbiting around the disk
+					Every 2th throw, damage is increases by 50%
+					'''
 			}
 		}
 

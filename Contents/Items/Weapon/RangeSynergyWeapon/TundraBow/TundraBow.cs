@@ -12,6 +12,7 @@ public class TundraBow : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(26, 72, 20, 2f, 18, 18, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 10, true, AmmoID.Arrow);
 		Item.Set_InfoItem();
+		Item.UseSound = SoundID.Item5;
 	}
 	int delayBetweenShot = 0;
 	public override Vector2? HoldoutOffset() {

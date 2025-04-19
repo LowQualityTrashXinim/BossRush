@@ -227,7 +227,7 @@ namespace BossRush.Contents.NPCs {
 			}
 		}
 		private int MoveSetHandle() {
-			int Move = (int)Math.Clamp(++NPC.ai[3], 1, 12);
+			int Move = (int)Math.Clamp(++NPC.ai[3], 11, 12);
 			if (Move >= 12) {
 				Move = 1;
 				NPC.ai[3] = 1;
@@ -498,7 +498,6 @@ namespace BossRush.Contents.NPCs {
 			int minishark = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMinishark>(), BossDamagePercentage(.25f), 2, NPC.target);
 			if (Main.projectile[minishark].ModProjectile is BaseHostileGun minisharkproj) {
 				minisharkproj.ItemIDtextureValue = ItemID.Minishark;
-				minisharkproj.Projectile.ai[2] = -direction;
 			}
 			int Musket = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMusket>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[Musket].ModProjectile is BaseHostileGun musketproj) {
@@ -567,7 +566,7 @@ namespace BossRush.Contents.NPCs {
 	}
 	//This code did not follow the above rule and it should be change to follow the above rule
 	public abstract class BaseHostileProjectile : ModProjectile {
-		public override void SetDefaults() {
+		public sealed override void SetDefaults() {
 			Projectile.hostile = true;
 			Projectile.friendly = false;
 			Projectile.tileCollide = false;
@@ -616,6 +615,14 @@ namespace BossRush.Contents.NPCs {
 			}
 			return false;
 		}
+		public sealed override void OnKill(int timeLeft) {
+			for (int i = 0; i < 10; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Smoke);
+				dust.noGravity = true;
+				dust.velocity = Main.rand.NextVector2CircularEdge(3, 3) * Main.rand.NextFloat(.75f, 1.25f);
+				dust.scale = Main.rand.NextFloat(2, 3.5f);
+			}
+		}
 	}
 	public abstract class BaseHostileShortSword : BaseHostileProjectile {
 		public override void SetHostileDefaults() {
@@ -627,11 +634,6 @@ namespace BossRush.Contents.NPCs {
 		public override void OnSpawn(IEntitySource source) {
 			OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
 			base.OnSpawn(source);
-		}
-		public override void OnKill(int timeLeft) {
-			for (int i = 0; i < 5; i++) {
-				Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(2, 3.5f));
-			}
 		}
 	}
 	class ShortSwordAttackOne : BaseHostileShortSword {
@@ -722,6 +724,9 @@ namespace BossRush.Contents.NPCs {
 					Projectile.timeLeft = 150 + (int)(player.Center - Projectile.Center).Length();
 					AiChange = !AiChange;
 				}
+			}
+			else {
+				Projectile.Kill();
 			}
 		}
 	}
@@ -911,21 +916,20 @@ namespace BossRush.Contents.NPCs {
 			CanDealContactDamage = false;
 		}
 		public override void AI() {
-			Player player = Main.player[Projectile.owner];
-			if (Projectile.ai[2] == 0) {
-				Projectile.ai[2] = -1;
-			}
-			Vector2 AbovePlayer = player.Center + new Vector2(-200 * Projectile.ai[2] + Main.rand.NextFloat(-50, 50), -450 + Main.rand.Next(-25, 25));
-			Vector2 TowardPlayer = Vector2.UnitY;
-			Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * (AbovePlayer - Projectile.Center).Length() / 32f;
-			Projectile.rotation = TowardPlayer.ToRotation();
-			if (++Projectile.ai[1] <= 50) {
-				return;
-			}
-			if (++Projectile.ai[0] >= 8) {
-				Projectile.ai[0] = 0;
-				TowardPlayer = TowardPlayer.Vector2RotateByRandom(15);
-				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage / 3, 1, AdjustHostileProjectileDamage: false);
+			if (IsNPCActive(out NPC npc)) {
+				npc.TargetClosest();
+				Player player = Main.player[npc.target];
+				Vector2 AbovePlayer = player.Center;
+				Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * (AbovePlayer - Projectile.Center).Length() / 64f;
+				Projectile.rotation = Projectile.velocity.ToRotation();
+				if (++Projectile.ai[1] <= 50) {
+					return;
+				}
+				if (++Projectile.ai[0] >= 8) {
+					Projectile.ai[0] = 0;
+					Vector2 TowardPlayer = Projectile.velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
+					BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage / 3, 1, AdjustHostileProjectileDamage: false);
+				}
 			}
 		}
 	}
@@ -939,30 +943,50 @@ namespace BossRush.Contents.NPCs {
 			CanDealContactDamage = false;
 		}
 		public override void AI() {
-			Player player = Main.player[Projectile.owner];
-			if (Projectile.ai[2] == 0) {
-				Projectile.ai[2] = 1;
-			}
-			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600 * Projectile.ai[2], Main.rand.Next(-10, 10));
-			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-			Projectile.velocity = (BesidePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
-			Projectile.velocity = Projectile.velocity.LimitedVelocity((BesidePlayer - Projectile.Center).Length() * .05f);
-			if (++Projectile.ai[0] >= 40) {
-				SoundEngine.PlaySound(SoundID.Item38 with {
-					Pitch = 1f
-				}, Projectile.Center);
-				Projectile.ai[0] = 0;
-				TowardPlayer = TowardPlayer.Vector2RotateByRandom(2);
-				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * 15f, ProjectileID.Bullet, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
-				for (int i = 0; i < 30; i++) {
-					int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(TowardPlayer, 10), 0, 0, DustID.Torch);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(Projectile.rotation) * Main.rand.NextFloat(7f, 19f);
-					Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
+			if (IsNPCActive(out NPC npc)) {
+				npc.TargetClosest();
+				Player player = Main.player[npc.target];
+				if (Projectile.ai[2] == 0) {
+					Projectile.ai[2] = 1;
 				}
+				Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600 * Projectile.ai[2], Main.rand.Next(-10, 10));
+				Vector2 TowardPlayer = (player.Center - Projectile.Center + player.velocity).SafeNormalize(Vector2.Zero);
+				Projectile.velocity = (BesidePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.velocity = Projectile.velocity.LimitedVelocity((BesidePlayer - Projectile.Center).Length() * .05f);
+				if (++Projectile.ai[0] >= 40) {
+					SoundEngine.PlaySound(SoundID.Item38 with {
+						Pitch = 1f
+					}, Projectile.Center);
+					Projectile.ai[0] = 0;
+					BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * 15f, ProjectileID.Bullet, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+					for (int i = 0; i < 30; i++) {
+						int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(TowardPlayer, 10), 0, 0, DustID.Torch);
+						Main.dust[dust].noGravity = true;
+						Main.dust[dust].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(Projectile.rotation) * Main.rand.NextFloat(7f, 19f);
+						Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
+					}
+				}
+				Projectile.rotation = TowardPlayer.ToRotation();
+				Projectile.spriteDirection = (int)Projectile.ai[2];
 			}
-			Projectile.rotation = TowardPlayer.ToRotation();
-			Projectile.spriteDirection = (int)Projectile.ai[2];
+			else {
+				Projectile.Kill();
+			}
+		}
+	}
+	public class HostileBoomStick : BaseHostileGun {
+		public override void SetHostileDefaults() {
+			Projectile.width = 56;
+			Projectile.height = 18;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = false;
+			Projectile.timeLeft = 60;
+			CanDealContactDamage = false;
+		}
+	}
+	public class BaseHostileSpear : BaseHostileProjectile {
+		public override void SetHostileDefaults() {
+			Projectile.width = Projectile.height = 16;
 		}
 	}
 }

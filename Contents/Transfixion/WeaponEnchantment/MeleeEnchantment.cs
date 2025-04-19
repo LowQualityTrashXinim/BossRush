@@ -8,10 +8,8 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 using BossRush.Common.Global;
-using BossRush.Texture;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 

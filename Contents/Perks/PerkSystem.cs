@@ -18,7 +18,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
