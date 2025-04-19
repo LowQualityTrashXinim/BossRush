@@ -2407,11 +2407,11 @@ Mods: {
 
 			SnowballCannonMK2: {
 				DisplayName: Snowball Cannon MK2
-				Tooltip: 
-				'''
-				After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
-				Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
-				'''
+				Tooltip:
+					'''
+					After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
+					Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
+					'''
 			}
 
 			TheOrbit: {

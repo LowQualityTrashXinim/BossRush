@@ -90,7 +90,7 @@ public class OrbitProjectile : SynergyModProjectile {
 			Projectile.timeLeft += 360;
 		}
 		Projectile proj = Main.projectile[Projectile_WhoAmI];
-		Projectile.Center = proj.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(360f / Projectile.ai[1] * Projectile.ai[2] + Projectile.timeLeft * 5)) * 50;
+		Projectile.Center = proj.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(360f / Projectile.ai[1] * Projectile.ai[2] + Projectile.timeLeft * 10)) * 50;
 		if (!proj.active) {
 			Projectile.Kill();
 		}
