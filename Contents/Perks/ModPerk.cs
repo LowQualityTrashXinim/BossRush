@@ -485,7 +485,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 100 * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 50 * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.15f * StackAmount(player), Flat: 10);
 			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Flat: 2f * StackAmount(player));
 		}

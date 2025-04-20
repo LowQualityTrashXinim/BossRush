@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TheOrbit;
+//The orbit will linger around for a while before returning to player
 internal class TheOrbit : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(32, 32, 21, 4f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<TheOrbitProjectile>(), 16f, true);

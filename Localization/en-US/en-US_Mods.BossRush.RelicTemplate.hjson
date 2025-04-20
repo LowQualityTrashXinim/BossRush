@@ -117,3 +117,8 @@ MiniHeartStatuesTemplate: {
 	DisplayName: Mini heart statues
 	Description: Every [c/{3}:{2}s], heal you for [c/{0}:{1} hp]
 }
+
+PerfectStatusTemplate: {
+	DisplayName: Perfect Status
+	Description: While you have no buff or debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
+}

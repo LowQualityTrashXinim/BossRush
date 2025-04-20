@@ -49,7 +49,7 @@ namespace BossRush.Contents.Perks {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
 			if (perkplayer.perk_PotionCleanse && item.healLife > 0) {
 				foreach (int i in player.buffType) {
-					if (Main.debuff[i]) {
+					if (Main.debuff[i] && i != BuffID.PotionSickness) {
 						player.ClearBuff(i);
 
 					}

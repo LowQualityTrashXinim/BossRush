@@ -110,7 +110,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float AugmentationChance = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
-		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(1) > 0) {
+		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
@@ -387,7 +387,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatModifier.Default.Multiplicative, 2), MathF.Round(StatModifier.Default.Flat, 2), MathF.Round(StatModifier.Default.Base * singularBaseMultiplier, 2));
+		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
