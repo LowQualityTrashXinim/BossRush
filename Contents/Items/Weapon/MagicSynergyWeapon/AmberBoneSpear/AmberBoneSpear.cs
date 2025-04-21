@@ -141,7 +141,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 		public override void SetDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
-			Projectile.width = Projectile.height = 20;
+			Projectile.width = Projectile.height = 32;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.friendly = true;
 			Projectile.tileCollide = true;
@@ -161,7 +161,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 				if (rememberThisNPCPosition != Vector2.Zero) {
 					if (Projectile.timeLeft >= 100)
 						Projectile.timeLeft = 100;
-					Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 100f);
 					return;
 				}
 				var player = Main.player[Projectile.owner];

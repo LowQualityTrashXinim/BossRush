@@ -252,8 +252,9 @@ public class TransmutationUI : UIImage {
 	public int WhoAmI = -1;
 	public Texture2D textureDraw;
 	public Item item = new();
-
+	public int Timer = 0;
 	private Texture2D texture;
+	public int itemToShow = -1;
 	public TransmutationUI(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
 	}
@@ -308,8 +309,15 @@ public class TransmutationUI : UIImage {
 		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
 	}
 	public override void Update(GameTime gameTime) {
+		Timer = BossRushUtils.Safe_SwitchValue(Timer, 120);
 		base.Update(gameTime);
 		this.Disable_MouseItemUsesWhenHoverOverAUI();
+		if (Timer == 120) {
+			int cached = itemToShow;
+			while (itemToShow == cached) {
+				itemToShow = Main.rand.Next(new int[] { ItemID.SilverBroadsword, ItemID.SilverBow, ItemID.SapphireStaff, ItemID.FlinxStaff, ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves, ItemID.AvengerEmblem, ModContent.ItemType<Relic>() });
+			}
+		}
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		var drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
@@ -325,13 +333,26 @@ public class TransmutationUI : UIImage {
 				var origin = texture.Size() * .5f;
 				float scaling = ScaleCalculation(texture.Size());
 				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+
+				if (itemToShow != -1) {
+					Main.instance.LoadItem(itemToShow);
+					var tex = TextureAssets.Item[itemToShow].Value;
+					var origin2 = tex.Size() * .5f;
+					float scaling2 = ScaleCalculation(texture.Size());
+					spriteBatch.Draw(tex, drawpos, null, Color.Gray * .6f, 0, origin2, scaling2, SpriteEffects.None, 0);
+				}
 			}
 		}
 		catch (Exception ex) {
 			Main.NewText(ex.Message);
 		}
 	}
-	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
+	private float ScaleCalculation(Vector2 textureSize) {
+		Vector2 origin = texture.Size();
+		float length = origin.Length();
+		float length2 = textureSize.Length();
+		return length / (length2 * 3);
+	}
 }
 public class TransmutationUIConfirmButton : UIImageButton {
 	public TransmutationUIConfirmButton(Asset<Texture2D> texture) : base(texture) {

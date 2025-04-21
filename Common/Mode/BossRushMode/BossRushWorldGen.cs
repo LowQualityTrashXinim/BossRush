@@ -385,10 +385,10 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_CrimsonArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(6, 5, 150, 100));
 			//Generator.GenerateStructure(StringBuilder($"CrimsonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 2)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, Main.rand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
