@@ -549,6 +549,8 @@ public class PlayerStatsHandle : ModPlayer {
 		foreach (var item in ItemUsesToAttack.Values) {
 			packet.Write(item);
 		}
+		packet.Write(TransmutationPowerMaximum);
+		packet.Write(TransmutationPower);
 		packet.Send(toWho, fromWho);
 	}
 
@@ -566,6 +568,8 @@ public class PlayerStatsHandle : ModPlayer {
 			weapondps.Add(reader.ReadInt32());
 		}
 		ItemUsesToAttack = weapon.Zip(weapondps, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		TransmutationPowerMaximum = reader.ReadInt32();
+		TransmutationPower = reader.ReadInt32();
 	}
 
 	public override void CopyClientState(ModPlayer targetCopy) {
@@ -574,6 +578,8 @@ public class PlayerStatsHandle : ModPlayer {
 		clone.HitTakenCounter = HitTakenCounter;
 		clone.DmgTaken = DmgTaken;
 		clone.ItemUsesToAttack = ItemUsesToAttack;
+		clone.TransmutationPower = TransmutationPower;
+		clone.TransmutationPowerMaximum = TransmutationPowerMaximum;
 	}
 
 	public override void SendClientChanges(ModPlayer clientPlayer) {
@@ -581,14 +587,20 @@ public class PlayerStatsHandle : ModPlayer {
 		if (DPStracker != clone.DPStracker
 			|| HitTakenCounter != clone.HitTakenCounter
 			|| DmgTaken != clone.DmgTaken
-			|| ItemUsesToAttack != clone.ItemUsesToAttack) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+			|| ItemUsesToAttack != clone.ItemUsesToAttack
+			|| TransmutationPower != clone.TransmutationPower
+			|| TransmutationPowerMaximum != clone.TransmutationPowerMaximum) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
+	public int TransmutationPower = 0;
+	public int TransmutationPowerMaximum = 10;
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;
 		tag["DmgTaken"] = DmgTaken;
 		tag["WeaponUsesList"] = ItemUsesToAttack.Keys.ToList();
 		tag["DpsFromWeaponUses"] = ItemUsesToAttack.Values.ToList();
+		tag["TransmutationPowerMaximum"] = TransmutationPowerMaximum;
+		tag["TransmutationPower"] = TransmutationPower;
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
@@ -610,6 +622,12 @@ public class PlayerStatsHandle : ModPlayer {
 			if (ContentSamples.ItemsByType.ContainsKey(type)) {
 				ItemUsesToAttack.Remove(type);
 			}
+		}
+		if (tag.TryGet("TransmutationPowerMaximum", out int TransmutationPowerMaximumA)) {
+			TransmutationPowerMaximum = TransmutationPowerMaximumA;
+		}
+		if (tag.TryGet("TransmutationPower", out int TransmutationPowerA)) {
+			TransmutationPower = TransmutationPowerA;
 		}
 	}
 	public int EliteKillCount = 0;

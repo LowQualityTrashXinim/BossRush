@@ -6,6 +6,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using System.Collections.Generic;
+using System;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SnowballCannonMK2;
 //SnowballCannonMK2
@@ -19,7 +21,7 @@ internal class SnowballCannonMK2 : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting);
 	}
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(72, 26, 18, 3f, 14, 14, ItemUseStyleID.Shoot, ProjectileID.SnowBallFriendly, 12, true, AmmoID.Snowball);
+		Item.BossRushDefaultRange(86, 26, 18, 3f, 14, 14, ItemUseStyleID.Shoot, ProjectileID.SnowBallFriendly, 12, true, AmmoID.Snowball);
 		Item.UseSound = SoundID.Item11;
 	}
 	int counter = 0;
@@ -33,6 +35,9 @@ internal class SnowballCannonMK2 : SynergyModItem {
 		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
 			tooltips.Add(new(Mod, Set_TooltipName(ItemID.WandofFrosting), $"[i:{ItemID.WandofFrosting}] Increases the chance for ice bolt to shoot by 40%, giant snowball explode out frost spark on death"));
 		}
+	}
+	public override bool AltFunctionUse(Player player) {
+		return true;
 	}
 	public override float UseSpeedMultiplier(Player player) {
 		float speed = base.UseSpeedMultiplier(player);
@@ -49,8 +54,28 @@ internal class SnowballCannonMK2 : SynergyModItem {
 			counter = 0;
 		}
 	}
+	public override bool CanUseItem(Player player) {
+		if (player.altFunctionUse == 2) {
+			Item.noUseGraphic = true;
+			Item.UseSound = SoundID.Item1;
+			if (player.HasBuff<SnowballCannonMK2Projectile_CoolDown>()) {
+				return false;
+			}
+		}
+		else {
+			Item.noUseGraphic = false;
+			Item.UseSound = SoundID.Item11;
+		}
+		return base.CanUseItem(player);
+	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = true;
+		if (player.altFunctionUse == 2) {
+			CanShootItem = false;
+			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SnowballCannonMK2Projectile>(), (int)(damage * 1.5f), knockback, player.whoAmI);
+			player.AddBuff<SnowballCannonMK2Projectile_CoolDown>(BossRushUtils.ToSecond(1));
+			return;
+		}
 		int amount = 15;
 		float scalerMax = 1;
 		if (type == ModContent.ProjectileType<GiantSnowBall>()) {
@@ -75,6 +100,63 @@ internal class SnowballCannonMK2 : SynergyModItem {
 			.AddIngredient(ItemID.FlareGun)
 			.AddIngredient(ItemID.IceBlade)
 			.Register();
+	}
+}
+public class SnowballCannonMK2Projectile_CoolDown : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+}
+public class SnowballCannonMK2Projectile : SynergyModProjectile {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<SnowballCannonMK2>();
+	public override void SetDefaults() {
+		Projectile.width = 86;
+		Projectile.height = 28;
+		Projectile.friendly = true;
+		Projectile.tileCollide = true;
+		Projectile.timeLeft = 999;
+		Projectile.penetrate = -1;
+	}
+	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		for (int i = 0; i < 4; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.IceTorch);
+			dust.noGravity = true;
+			dust.position = BossRushUtils.NextPointOn2Vector2(player.Center, player.Center.PositionOFFSET((Projectile.rotation + (player.direction > 0 ? 0 : MathHelper.Pi)).ToRotationVector2(), 82)) + Main.rand.NextVector2Circular(8, 8);
+			dust.velocity = Vector2.Zero;
+			dust.scale = Main.rand.NextFloat(1, 1.5f);
+		}
+		if (Projectile.timeLeft > 20) {
+			Projectile.velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+			Projectile.ai[0] = Projectile.velocity.X;
+			Projectile.ai[1] = Projectile.velocity.Y;
+			Projectile.ai[2] = Projectile.velocity.X > 0 ? 1 : -1;
+			Projectile.timeLeft = 20;
+			for (int i = 0; i < 10; i++) {
+				Vector2 vel = Projectile.velocity.Vector2DistributeEvenlyPlus(10, 90, i) * 10;
+				Projectile.NewProjectile(Projectile.GetSource_FromAI(), player.Center.PositionOFFSET(vel, 50), vel, ProjectileID.IceBolt, (int)(Projectile.damage * .5f), Projectile.knockBack, player.whoAmI);
+			}
+		}
+		player.direction = (int)Projectile.ai[2];
+		Vector2 ve = new(Projectile.ai[0], Projectile.ai[1]);
+		//player.direction = ve.X > player.Center.X ? 1 : -1;
+		player.heldProj = Projectile.whoAmI;
+		float percentDone = Projectile.timeLeft / 20f;
+		percentDone = Math.Clamp(percentDone, 0, 1);
+		Projectile.spriteDirection = player.direction;
+		float baseAngle = ve.ToRotation();
+		float angle = MathHelper.ToRadians(145) * player.direction;
+		float start = baseAngle + angle;
+		float end = baseAngle - angle;
+		float currentAngle = MathHelper.Lerp(start, end, percentDone);
+		Projectile.rotation = currentAngle - MathHelper.PiOver4;
+		Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 5f;
+		Projectile.velocity.X = player.direction;
+		Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
+		player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+	}
+	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
+		BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], 86, 28);
 	}
 }
 public class GiantSnowBall : SynergyModProjectile {

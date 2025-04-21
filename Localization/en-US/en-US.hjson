@@ -344,6 +344,7 @@ Mods: {
 			GiantSnowBall.DisplayName: Giant Snow Ball
 			OrbitProjectile.DisplayName: Orbit Projectile
 			TheOrbitProjectile.DisplayName: The Orbit Projectile
+			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
 		}
 
 		NPCs: {
@@ -2343,11 +2344,11 @@ Mods: {
 
 			ReInitializeUI: {
 				DisplayName: ReInitialize UI
-				Tooltip: 
-				'''
-				Current UI to reintialize : Transmutation
-				Debug item, do not uses it unless you are the one working on this
-				'''
+				Tooltip:
+					'''
+					Current UI to reintialize : Transmutation
+					Debug item, do not uses it unless you are the one working on this
+					'''
 			}
 
 			PerkDebugShower: {
@@ -2415,6 +2416,7 @@ Mods: {
 					'''
 					After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
 					Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
+					Alt click to swing your gun like a sword dealing 50% more damage
 					'''
 			}
 
@@ -3020,6 +3022,11 @@ Mods: {
 			NPC_Weakness: {
 				DisplayName: N P C_ Weakness
 				Description: Mods.BossRush.Buffs.NPC_Weakness.Description
+			}
+
+			SnowballCannonMK2Projectile_CoolDown: {
+				DisplayName: Snowball Cannon M K2 Projectile_ Cool Down
+				Description: Mods.BossRush.Buffs.SnowballCannonMK2Projectile_CoolDown.Description
 			}
 		}
 

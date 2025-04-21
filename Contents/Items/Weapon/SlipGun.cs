@@ -35,7 +35,7 @@ internal class SlipGun : ModItem {
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
 		}
 		if (modplayer.Chamber != 0) {
-			SoundEngine.PlaySound(SoundID.Item38 with { Pitch = 1f });
+			SoundEngine.PlaySound(SoundID.Item38 with { Pitch = 1f - MathHelper.Lerp(0, 2, modplayer.Chamber / 6f) });
 			modplayer.Chamber = 0;
 		}
 		else {
@@ -57,9 +57,9 @@ internal class SlipGun : ModItem {
 		// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
 		Rectangle hitbox = frame;
 		hitbox.X += 12 + (int)(position.X - origin.X);
-		hitbox.Width -= 24;
+		hitbox.Width += -24;
 		hitbox.Y += 8 + (int)position.Y;
-		hitbox.Height -= 24;
+		hitbox.Height += -24;
 
 		// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
 		int left = hitbox.Left;

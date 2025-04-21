@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TheOrbit;
 //The orbit will linger around for a while before returning to player
@@ -15,12 +16,12 @@ internal class TheOrbit : SynergyModItem {
 	int counter = 0;
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
-		counter = BossRushUtils.Safe_SwitchValue(counter, 3);
 		int valid = 1;
 		if (counter == 3) {
 			valid = 3;
 		}
-		Projectile.NewProjectile(source, position, velocity, type, damage + (int)(counter % 2 == 1 ? damage * .5f : 0), knockback, player.whoAmI, valid);
+		Projectile.NewProjectile(source, position, velocity, type, damage + (int)(counter % 2 == 1 ? damage * .5f : 0), knockback, player.whoAmI, valid, counter % 2);
+		counter = BossRushUtils.Safe_SwitchValue(counter, 3);
 	}
 	public override bool CanUseItem(Player player) {
 		return player.ownedProjectileCounts[ModContent.ProjectileType<TheOrbitProjectile>()] < 1;
@@ -71,20 +72,25 @@ public class TheOrbitProjectile : SynergyModProjectile {
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 		Projectile.ai[2] = 1;
 	}
+	public override bool PreDraw(ref Color lightColor) {
+		if (Projectile.ai[1] == 1) {
+			Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+			Vector2 drawpos = Projectile.position - Main.screenPosition + origin;
+			Main.EntitySpriteDraw(texture, drawpos, null, new(255, 255, 255, 0), Projectile.rotation, origin, 1.3f, SpriteEffects.None);
+		}
+		return base.PreDraw(ref lightColor);
+	}
 }
 public class OrbitProjectile : SynergyModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.FlamingMace);
 	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
+		Projectile.width = Projectile.height = 16;
 		Projectile.friendly = true;
 		Projectile.tileCollide = false;
 		Projectile.timeLeft = 999;
 		Projectile.penetrate = -1;
 	}
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-		var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Torch);
-		dust.noGravity = true;
-		dust.position += Main.rand.NextVector2Circular(32, 32);
 		int Projectile_WhoAmI = (int)Projectile.ai[0];
 		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 10);
 		if (Projectile.timeLeft <= 100) {
@@ -92,6 +98,11 @@ public class OrbitProjectile : SynergyModProjectile {
 		}
 		Projectile proj = Main.projectile[Projectile_WhoAmI];
 		Projectile.Center = proj.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(360f / Projectile.ai[1] * Projectile.ai[2] + Projectile.timeLeft * 10)) * 50;
+		for (int i = 0; i < 10; i++) {
+			var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Torch);
+			dust.noGravity = true;
+			dust.position += Main.rand.NextVector2Circular(16, 16);
+		}
 		if (!proj.active) {
 			Projectile.Kill();
 		}

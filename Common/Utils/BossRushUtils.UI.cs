@@ -382,6 +382,7 @@ namespace BossRush {
 	}
 	public class ExitUI : UIImageButton {
 		public ExitUI(Asset<Texture2D> texture) : base(texture) {
+			SetVisibility(.7f, 1f);
 		}
 
 		public override void LeftClick(UIMouseEvent evt) {
@@ -391,7 +392,7 @@ namespace BossRush {
 			base.Draw(spriteBatch);
 			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.CrossSprite).Value;
 			CalculatedStyle rect = this.GetDimensions();
-			spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.White);
+			spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.Red);
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);

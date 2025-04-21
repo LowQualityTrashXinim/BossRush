@@ -255,6 +255,13 @@ public static class RelicTemplateLoader {
 	public static RelicTemplate GetTemplate(int type) {
 		return type >= 0 && type < _template.Count ? _template[type] : null;
 	}
+	/// <summary>
+	/// This will merge stats of relicItem 1 and relicItem 2 together<br/>
+	/// relicItem1 will remain while the relicItem2 will be turn to air
+	/// </summary>
+	/// <param name="relicItem1"></param>
+	/// <param name="relicItem2"></param>
+	/// <returns></returns>
 	public static bool MergeStat(Relic relicItem1, Relic relicItem2) {
 		relicItem1.GetRelicData(out List<int> type1, out List<PlayerStats> stat1, out List<StatModifier> value1);
 		relicItem2.GetRelicData(out List<int> type2, out List<PlayerStats> stat2, out List<StatModifier> value2);
