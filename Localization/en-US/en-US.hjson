@@ -345,6 +345,7 @@ Mods: {
 			OrbitProjectile.DisplayName: Orbit Projectile
 			TheOrbitProjectile.DisplayName: The Orbit Projectile
 			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
+			LauncherProjectile.DisplayName: Launcher Projectile
 		}
 
 		NPCs: {
@@ -2435,6 +2436,16 @@ Mods: {
 					Every 2th throw, damage is increases by 50%
 					'''
 			}
+
+			HandmadeLauncher: {
+				DisplayName: Handmade Launcher
+				Tooltip:
+					'''
+					Shoot out a shell that on direct contact with enemy deal double damage
+					Enemy hit by the shell directly get inflicted with Aftershock effect
+					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
+					'''
+			}
 		}
 
 		Buffs: {
@@ -3033,6 +3044,11 @@ Mods: {
 			SnowballCannonMK2Projectile_CoolDown: {
 				DisplayName: Snowball Cannon M K2 Projectile_ Cool Down
 				Description: Mods.BossRush.Buffs.SnowballCannonMK2Projectile_CoolDown.Description
+			}
+
+			Aftershock: {
+				DisplayName: Aftershock
+				Description: Mods.BossRush.Buffs.Aftershock.Description
 			}
 		}
 

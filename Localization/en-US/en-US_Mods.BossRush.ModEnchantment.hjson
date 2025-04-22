@@ -749,3 +749,14 @@ Trident.Description:
 	Hitting a enemy will call in fish to fly in hitting your enemy
 	Have 0.5s cool down when hitting with item and 2.5s cool down when hitting with projectile
 	'''
+StylistKilLaKillScissorsIWish.Description:
+	'''
+	Multiply melee damage by 1.11x
+	Multiply melee critical strike damage by 1.12x
+	Increases weapon size by 20%
+	'''
+Ruler.Description:
+	'''
+	Increases base damage of projectile depend on distance from target to player
+	Increases additive damage of melee item depend on distance from target to player
+	'''

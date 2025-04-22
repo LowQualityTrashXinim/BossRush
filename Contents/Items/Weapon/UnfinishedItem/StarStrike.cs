@@ -18,7 +18,6 @@ public class StarStrike : SynergyModItem {
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.Starfury)
-			.AddIngredient(ItemID.MagicMissile)
 			.AddIngredient(ItemID.ThunderSpear)
 			.Register();
 	}

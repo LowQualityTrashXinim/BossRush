@@ -163,7 +163,7 @@ public class BoneSword : ModEnchantment {
 			BoneExplosion(index, player, globalItem, target.Center, damageDone, proj.knockBack);
 		}
 	}
-	private void BoneExplosion(int index, Player player, EnchantmentGlobalItem globalItem, Vector2 position, int damage, float knockback) {
+	private static void BoneExplosion(int index, Player player, EnchantmentGlobalItem globalItem, Vector2 position, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0 && Main.rand.NextBool(4)) {
 			globalItem.Item_Counter1[index] = 60;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), position, Main.rand.NextVector2CircularEdge(10f, 10f), ProjectileID.Bone, damage, knockback, player.whoAmI);
@@ -1004,8 +1004,13 @@ public class Spear : ModEnchantment {
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		player.GetArmorPenetration(DamageClass.Melee) += 10;
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		for (int i = 0; i < 3; i++) {
 			Vector2 pos = target.Center.Add(Main.rand.Next(-40, 40), Main.rand.Next(450, 500));
 			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 6;
@@ -1013,6 +1018,10 @@ public class Spear : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0 || proj.type == ModContent.ProjectileType<SpearProjectile>()) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(3);
 		for (int i = 0; i < 3; i++) {
 			Vector2 pos = target.Center.Add(Main.rand.Next(-40, 40), Main.rand.Next(450, 500));
 			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 6;
@@ -1027,12 +1036,13 @@ public class SpearProjectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.timeLeft = 900;
 		Projectile.penetrate = 2;
+		Projectile.tileCollide = false;
 	}
 	public override bool? CanDamage() {
 		return Projectile.penetrate <= 1;
 	}
 	public override void AI() {
-		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
 		if (Projectile.velocity.Y < 14) {
 			Projectile.velocity.Y += .5f;
 		}
@@ -1170,5 +1180,32 @@ public class TridentEnchantmentProjectile_Fish2 : ModProjectile {
 		}
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, 1, effect);
 		return false;
+	}
+}
+
+public class StylistKilLaKillScissorsIWish : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.StylistKilLaKillScissorsIWish;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+		statplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, 1, 1.11f);
+		statplayer.AddStatsToPlayer(PlayerStats.MeleeCritDmg, 1, 1.12f);
+	}
+	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
+		scale += .2f;
+	}
+}
+public class Ruler : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Ruler;
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		float damageincreases = (target.Center - player.Center).Length();
+		modifiers.SourceDamage.Base += damageincreases * .1f;
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		float damageincreases = (target.Center - player.Center).Length();
+		modifiers.SourceDamage += damageincreases * .1f;
 	}
 }

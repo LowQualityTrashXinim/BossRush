@@ -171,6 +171,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
+	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	public UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
@@ -194,24 +195,85 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void AddAltar() {
+		Stopwatch watch = new();
+		watch.Start();
+		rect = GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 24);
+		string TemplatePath = "Template/WG_Template";
+		ushort tileID = TileID.Dirt;
+		ushort wallID = WallID.Dirt;
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 10), re, (x, y, t) => {
+					if (WorldGen.InWorld(x, y)) {
+						t.Tile_Type = tileID;
+						t.Tile_WallData = wallID;
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 10), re, (x, y, t) => {
+					if (WorldGen.InWorld(x, y)) {
+						t.Tile_Type = tileID;
+						t.Tile_WallData = wallID;
+						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+					}
+				}, Main.rand.Next(styles));
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		watch.Stop();
+		WatchTracker += watch.Elapsed;
+		//Biome.Add(BiomeAreaID.Forest);
 		ResetTemplate_GenerationValue();
+		Console.WriteLine("Time it took to generate whole world with template :" + WatchTracker.ToString());
+	}
+	public void ResetTemplate_GenerationValue() {
+		rect = new();
+		counter = OffSetPoint;
+		EmptySpaceRecorder.Clear();
+		count = -1;
+		IsUsingHorizontal = false;
+		offsetcount = 0;
+		additionaloffset = -1;
+		SpawnedShrine = false;
 	}
 	[Task]
 	public void Generate_TrialTest() {
-		Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
+		//Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
 	}
-	[Task]
-	public void GenerateSlimeZone() {
-		//rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
-		//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
-		//ResetTemplate_GenerationValue();
-	}
-	[Task]
-	public void GenerateFleshZone() {
-		//rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-		//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
-		//ResetTemplate_GenerationValue();
-	}
+	//[Task]
+	//public void GenerateSlimeZone() {
+	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
+	//	//ResetTemplate_GenerationValue();
+	//}
+	//[Task]
+	//public void GenerateFleshZone() {
+	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
+	//	//ResetTemplate_GenerationValue();
+	//}
+	/*
 	[Task]
 	public void Re_GenerateForest() {
 		Stopwatch watch = new();
@@ -941,16 +1003,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GenerationHelper.Safe_PlaceStructure($"Shrine/{shrineType}", new Rectangle(X, Y, width, height));
 		WorldGen.PlaceTile(X + width / 2, Y + height / 2, ModContent.TileType<SlimeBossAltar>());
 	}
-	public void ResetTemplate_GenerationValue() {
-		rect = new();
-		counter = OffSetPoint;
-		EmptySpaceRecorder.Clear();
-		count = -1;
-		IsUsingHorizontal = false;
-		offsetcount = 0;
-		additionaloffset = -1;
-		SpawnedShrine = false;
-	}
+
 	/// <summary>
 	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
 	/// Will automatically handle template placing and auto handle shrine
@@ -1019,7 +1072,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Biome.Add(BiomeID, new List<Rectangle> { rect });
 		}
 	}
-	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	/// <summary>
 	/// Use this when it is assumed that you already have the template pre saved in a file format
 	/// </summary>
@@ -1143,5 +1195,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//[Task]
 	//public void Final_CleanUp() {
 	//}
-
+	*/
 }
+
