@@ -13,7 +13,7 @@ public class HellFireArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -40,7 +40,7 @@ public class FireArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -67,7 +67,7 @@ public class FrostburnArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -94,7 +94,7 @@ public class Skill_UnholyArrow : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -121,7 +121,7 @@ public class Skill_BoneArrow : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 30 != 0) {
 			return;
@@ -143,7 +143,7 @@ public class Skill_HolyArrow : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -170,7 +170,7 @@ public class WoodenArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 5 != 0) {
 			return;
@@ -199,7 +199,7 @@ public class CholorophyteArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -226,7 +226,7 @@ public class CursedArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -253,7 +253,7 @@ public class IchorArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -280,7 +280,7 @@ public class JesterArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 20 != 0) {
 			return;
@@ -306,7 +306,7 @@ public class ChaosArrowRain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(7);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 5 != 0) {
 			return;
@@ -340,7 +340,7 @@ public class SpiritBurst : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(10);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (Main.rand.NextBool(10) || modplayer.Duration % 15 == 0) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 44));
@@ -356,7 +356,7 @@ public class Icicle : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 20 != 0) {
 			return;
@@ -388,7 +388,7 @@ public class FireBall : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(2);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -410,7 +410,7 @@ public class StarFury : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(20);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 90 != 0) {
 			return;
@@ -434,7 +434,7 @@ public class MeteorShower : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 5 != 0) {
 			return;
@@ -457,7 +457,7 @@ public class BulletStorm : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(19);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		Vector2 spawn = player.Center.Add(0, 1000);
 		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 14));
 		for (int i = 0; i < 3; i++) {
@@ -473,7 +473,7 @@ public class IceAge : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(19);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 50 != 0) {
 			return;
@@ -515,7 +515,7 @@ public class EnergyBolt : ModSkill {
 			modplayer.SkillDamageWhileActive += .1f;
 		}
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 10 != 0) {
 			return;
@@ -533,7 +533,7 @@ public class ElectricChain : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (modplayer.Duration % 50 != 0) {
 			return;
@@ -550,7 +550,7 @@ public class BulletHell : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
-	public override void Update(Player player) {
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		int weaponDamage = (int)(player.GetWeaponDamage(player.HeldItem) * .5f);
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(22) + weaponDamage;

@@ -247,3 +247,13 @@ SacrificialWormhole: {
 	DisplayName: Sacrificial Wormhole
 	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 50 damage and inflicting the 'Suffocation' debuff
 }
+
+DamageUp: {
+	DisplayName: Damage +
+	Description: Increase skill damage by 100%
+}
+
+GreaterDamageUp: {
+	DisplayName: Greater damage +
+	Description: Increase skill damage by 300%
+}

@@ -338,7 +338,13 @@ public class TransmutationUI : UIImage {
 					Main.instance.LoadItem(itemToShow);
 					var tex = TextureAssets.Item[itemToShow].Value;
 					var origin2 = tex.Size() * .5f;
-					float scaling2 = ScaleCalculation(texture.Size());
+					float scaling2;
+					if (itemToShow == ModContent.ItemType<Relic>()) {
+						scaling2 = .5f;
+					}
+					else {
+						scaling2 = ScaleCalculation(texture.Size());
+					}
 					spriteBatch.Draw(tex, drawpos, null, Color.Gray * .6f, 0, origin2, scaling2, SpriteEffects.None, 0);
 				}
 			}
@@ -349,9 +355,13 @@ public class TransmutationUI : UIImage {
 	}
 	private float ScaleCalculation(Vector2 textureSize) {
 		Vector2 origin = texture.Size();
+		float multiplier = 3;
+		if (origin.X <= textureSize.X && origin.Y <= textureSize.Y) {
+			multiplier = 1;
+		}
 		float length = origin.Length();
 		float length2 = textureSize.Length();
-		return length / (length2 * 3);
+		return length / (length2 * multiplier);
 	}
 }
 public class TransmutationUIConfirmButton : UIImageButton {

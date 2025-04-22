@@ -2387,17 +2387,23 @@ Mods: {
 
 			Mixmaster: {
 				DisplayName: Mixmaster
-				Tooltip: ""
+				Tooltip: A weapon of a ancient past
 			}
 
 			TransmuteTablet: {
 				DisplayName: Transmute Tablet
-				Tooltip: ""
+				Tooltip:
+					'''
+					[Transmutation]
+					This is where you can merge your relics, imprint your soul bind to your armor and much more !
+					Relics can be merged to have up to tier 4, merge relics together to create a even stronger relic
+					You can also transmute 2 items of the same rarity to exchange for another item of same rarity
+					'''
 			}
 
 			ScrollOfHellspawn: {
-				DisplayName: Scroll Of Hellspawn
-				Tooltip: ""
+				DisplayName: Scroll: Hellspawn
+				Tooltip: Summon a portal from underworld for demonic energy swept through
 			}
 
 			TwilightNight: {
