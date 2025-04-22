@@ -60,7 +60,6 @@ public class LauncherProjectile : SynergyModProjectile {
 				Projectile.velocity.Y += 1;
 			}
 		}
-		;
 		for (int i = 0; i < 2; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Torch);
 			dust.noGravity = true;

@@ -8,8 +8,10 @@ using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon.UnfinishedItem;
 public class StarStrike : SynergyModItem {
+	public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
 	/*
 	 * "Genshin ahh weapon"
+	 * Spear weapon
 	 * Every 3rd swing shoot out star bolts that chase down enemy
 	 * Hitting enemy with item trigger "name 1" for 5s ( 12s cool down )
 	 * During "name 1" your attack speed is increases by 20%

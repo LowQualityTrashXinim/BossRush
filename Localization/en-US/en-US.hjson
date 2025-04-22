@@ -346,6 +346,7 @@ Mods: {
 			TheOrbitProjectile.DisplayName: The Orbit Projectile
 			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
 			LauncherProjectile.DisplayName: Launcher Projectile
+			TwilightNightProjectile.DisplayName: Twilight Night Projectile
 		}
 
 		NPCs: {

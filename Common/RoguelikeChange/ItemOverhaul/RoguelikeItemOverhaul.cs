@@ -41,7 +41,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				entity.autoReuse = true;
 			}
 		}
-		private void VanillaBuff(Item item) {
+		private static void VanillaBuff(Item item) {
 			switch (item.type) {
 				case ItemID.Sandgun:
 					item.shoot = ModContent.ProjectileType<SandProjectile>();
@@ -304,7 +304,13 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					text));
 			}
 			else if (item.type == ItemID.CopperWatch) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", "Decreases the nearest NPC speed by 30%\nDecreases hostile projectile velocity by 30%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", 
+					"Decreases the nearest NPC speed by 30%" +
+					"\nDecreases hostile projectile velocity by 30%"));
+			}
+			else if(item.type == ItemID.GolemFist) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_GolemFist",
+					"On every 3rd hit on the same enemy, deal extra 150% damage and do a small sun explosion"));
 			}
 		}
 		public override void HoldItem(Item item, Player player) {

@@ -9,12 +9,17 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.General;
 using BossRush.Contents.Transfixion.Artifacts;
+using System.Collections.Generic;
+using Terraria.Audio;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 	public int HeatRay_Decay = 0;
 	public int HeatRay_HitCount = 0;
+
+	public int GolemFist_HitCount = 0;
+
 	public StatModifier StatDefense = new StatModifier();
 	public float Endurance = 0;
 	public bool DRFromFatalAttack = false;
@@ -213,6 +218,11 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.FinalDamage *= 1 - Endurance;
+		if (projectile.type == ProjectileID.GolemFist) {
+			if (++GolemFist_HitCount % 3 == 0) {
+				modifiers.SourceDamage += 1.5f;
+			}
+		}
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
@@ -241,6 +251,31 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		if (projectile.type == ProjectileID.HeatRay) {
 			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 100);
 			HeatRay_Decay = 30;
+		}
+		else if (projectile.type == ProjectileID.GolemFist) {
+			if (GolemFist_HitCount % 3 == 0) {
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.HeatRay);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2Circular(20, 20);
+					dust.scale += Main.rand.NextFloat();
+				}
+				for (int i = 0; i < 100; i++) {
+					Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.HeatRay);
+					dust.noGravity = true;
+					dust.velocity = Main.rand.NextVector2CircularEdge(25, 25);
+					dust.scale += Main.rand.NextFloat();
+				}
+				SoundEngine.PlaySound(SoundID.Item14, npc.Center);
+				npc.Center.LookForHostileNPC(out List<NPC> npclist, 150);
+				npc.TargetClosest();
+				Player player = Main.player[npc.target];
+				foreach (var target in npclist) {
+					if (target.whoAmI != npc.whoAmI) {
+						player.StrikeNPCDirect(target, target.CalculateHitInfo(hit.Damage, -1));
+					}
+				}
+			}
 		}
 		if (!npc.boss) {
 			return;
