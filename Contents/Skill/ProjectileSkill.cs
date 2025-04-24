@@ -458,6 +458,9 @@ public class BulletStorm : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		if(skillplayer.Duration % 3 != 0) {
+			return;
+		}
 		Vector2 spawn = player.Center.Add(0, 1000);
 		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 14));
 		for (int i = 0; i < 3; i++) {

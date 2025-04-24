@@ -57,21 +57,23 @@ namespace BossRush {
 			}
 			return false;
 		}
+		public static char ConvertNumbericValueToChar(int num) {
+			if(num < 0 || num > 255) {
+				return char.MinValue;
+			}
+			return (char)num;
+		}
 
 		public static Color ToColor(this Vector4 v) {
 			return new Color(v.X, v.Y, v.Z, v.W);
 		}
 
 		public static Color AddColor(this Color color, Color color2) {
-
 			return new Color(color.R + color2.R, color.G + color2.G, color.B + color2.B, color.A + color2.A);
-
 		}
 
 		public static Color DivideColor(this Color color, int number) {
-
 			return new Color(color.R / number, color.G / number, color.B / number, color.A / number);
-
 		}
 
 		public static void Push<T>(ref T[] array, T value) {

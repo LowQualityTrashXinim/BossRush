@@ -355,7 +355,7 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_TundraArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(11, 10, 150, 100));
 			//Generator.GenerateStructure(StringBuilder($"TundraArenaVar{1}"), rect.TopLeft().ToPoint16(), Mod);
 			ImageData arena = ImageStructureLoader.Get(
 				ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
@@ -372,9 +372,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.IceBlock);
-				}
-				else if (color.R == 240) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.BreakableIce);
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);

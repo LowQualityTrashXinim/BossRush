@@ -145,6 +145,21 @@ public class Slimy_Debuff : ModBuff {
 		stathandle.AddStatsToPlayer(PlayerStats.Defense, Base: 2);
 	}
 }
+public class FleshAutomaton : ModMutation {
+	public override bool MutationCondition(NPC npc, Player player) {
+		return false;
+	}
+	public override void OnSpawn(NPC npc, IEntitySource source) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().PositiveLifeRegen += 10;
+		npc.defense += 10;
+	}
+	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().PositiveLifeRegen += 1;
+	}
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().PositiveLifeRegen += 1;
+	}
+}
 public class Elite : ModMutation {
 	public override void OnSpawn(NPC npc, IEntitySource source) {
 		npc.lifeMax = npc.lifeMax + (int)(npc.lifeMax * .5f);

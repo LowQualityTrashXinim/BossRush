@@ -145,8 +145,8 @@ namespace BossRush.Common.Mode.Nightmare {
 			//if (Main.rand.NextBool(10))
 			//	target.AddBuff(BuffID.Suffocation, Main.rand.Next(1, 901));
 		}
-		private bool LifLowerOrEqualHalf(NPC npc) => npc.life <= npc.lifeMax * .5f;
-		private bool IsNPCLifeAbovePercentage(NPC npc, float percentage) => npc.life >= npc.lifeMax * percentage;
+		private static bool LifLowerOrEqualHalf(NPC npc) => npc.life <= npc.lifeMax * .5f;
+		private static bool IsNPCLifeAbovePercentage(NPC npc, float percentage) => npc.life >= npc.lifeMax * percentage;
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
 			if (NightmareSystem.IsANightmareWorld()) {
 				maxSpawns += 100;

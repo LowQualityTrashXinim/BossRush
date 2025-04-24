@@ -170,8 +170,20 @@ public partial class RogueLikeWorldGen : ModSystem {
 		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
 	}
 }
+public struct BiomeDataBundle {
+	public ushort tile = 0;
+	public ushort wall = 0;
+	public string FormatFile = "";
+	public BiomeDataBundle() {
+	}
+	public BiomeDataBundle(ushort t, ushort w, string file) {
+		tile = t;
+		wall = w;
+		FormatFile = file;
+	}
+}
 public partial class RogueLikeWorldGen : ITaskCollection {
-	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
+	public static GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	public UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
@@ -181,7 +193,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	bool IsUsingHorizontal = false;
 	int offsetcount = 0;
 	int additionaloffset = -1;
-	bool SpawnedShrine = false;
+	string[,] BiomeMapping = new string[24, 24];
 	[Task]
 	public void SetUp() {
 		WatchTracker = TimeSpan.Zero;
@@ -192,6 +204,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 		Main.spawnTileX = GridPart_X * 11;
 		Main.spawnTileY = GridPart_Y * 11;
+		for (int i = 0; i < BiomeMapping.Length; i++) {
+			for (int l = 0; l < BiomeMapping.Length; l++) {
+
+			}
+		}
 	}
 	[Task]
 	public void AddAltar() {
@@ -245,7 +262,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		WatchTracker += watch.Elapsed;
 		//Biome.Add(BiomeAreaID.Forest);
 		ResetTemplate_GenerationValue();
-		Console.WriteLine("Time it took to generate whole world with template :" + WatchTracker.ToString());
+		Mod.Logger.Info("Time it took to generate whole world with template :" + WatchTracker.ToString());
 	}
 	public void ResetTemplate_GenerationValue() {
 		rect = new();
@@ -255,7 +272,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		IsUsingHorizontal = false;
 		offsetcount = 0;
 		additionaloffset = -1;
-		SpawnedShrine = false;
 	}
 	[Task]
 	public void Generate_TrialTest() {

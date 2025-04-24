@@ -10,9 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -387,6 +389,7 @@ namespace BossRush {
 
 		public override void LeftClick(UIMouseEvent evt) {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			SoundEngine.PlaySound(SoundID.MenuClose);
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);

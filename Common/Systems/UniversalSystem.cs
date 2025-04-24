@@ -4,6 +4,8 @@ using System.IO;
 using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
+using Terraria.IO;
+using Terraria.Audio;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -30,11 +32,10 @@ using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.aDebugItem.UIdebug;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
-using BossRush.Contents.Items.aDebugItem.UIdebug;
-using Terraria.IO;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -852,7 +853,7 @@ public class WeaponDPSimage : UIImageButton {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-		if (itemtype <= 0) {
+		if (itemtype <= 0 || itemtype >= TextureAssets.Item.Length) {
 			return;
 		}
 		Texture2D originaltexture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
@@ -866,61 +867,105 @@ public class WeaponDPSimage : UIImageButton {
 }
 class UISystemMenu : UIState {
 	UIPanel panel;
-	UITextPanel<string> uitextpanel;
-	UIImageButton open_AchievmentUI;
-	bool SkillHover = false;
-	bool Achievement = false;
-	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 3f);
+	UIPanel Roguelike_Panel;
+	UIText RoguelikeText;
+	UIText open_AchievmentUI;
+	UIText open_WikiUI;
+	UIText exit_Menu;
 	public override void OnInitialize() {
+		Roguelike_Panel = new();
+		Roguelike_Panel.HAlign = .5f;
+		Roguelike_Panel.VAlign = .5f;
+		Roguelike_Panel.UISetWidthHeight(400, 400);
+		Append(Roguelike_Panel);
+
+		RoguelikeText = new("Roguelike menu");
+		RoguelikeText.HAlign = .5f;
+		Roguelike_Panel.Append(RoguelikeText);
+
 		panel = new UIPanel();
 		panel.HAlign = .5f;
-		panel.VAlign = .4f;
-		panel.UISetWidthHeight(360, 80);
-		Append(panel);
+		panel.VAlign = 1;
+		panel.Height.Percent = .9f;
+		panel.Width.Percent = 1f;
+		panel.MarginTop = RoguelikeText.Height.Pixels + 20;
+		Roguelike_Panel.Append(panel);
 
-		uitextpanel = new UITextPanel<string>(" ");
-		uitextpanel.HAlign = .5f;
-		uitextpanel.VAlign = .7f;
-		uitextpanel.UISetWidthHeight(450, 350);
-		Append(uitextpanel);
-
-		open_AchievmentUI = new(TextureAssets.InventoryBack);
-		open_AchievmentUI.UISetWidthHeight(52, 52);
-		open_AchievmentUI.VAlign = .4f;
-		open_AchievmentUI.HAlign = SetHAlign(2);
-		open_AchievmentUI.SetVisibility(1f, 67f);
+		open_AchievmentUI = new("Achievement", 1.5f);
 		open_AchievmentUI.OnLeftClick += Open_AchievmentUI_OnLeftClick;
 		open_AchievmentUI.OnUpdate += Open_AchievmentUI_OnUpdate;
-		Append(open_AchievmentUI);
+		open_AchievmentUI.OnMouseOver += Open_AchievmentUI_OnMouseOver;
+		open_AchievmentUI.HAlign = .5f;
+		panel.Append(open_AchievmentUI);
+
+		open_WikiUI = new("Synergy weapon library", 1.5f);
+		open_WikiUI.OnLeftClick += Open_WikiUI_OnLeftClick;
+		open_WikiUI.OnUpdate += Open_WikiUI_OnUpdate;
+		open_WikiUI.OnMouseOver += Open_WikiUI_OnMouseOver;
+		open_WikiUI.MarginTop = open_AchievmentUI.Height.Pixels + 40;
+		open_WikiUI.HAlign = .5f;
+		panel.Append(open_WikiUI);
+
+		exit_Menu = new("Back", 1.5f);
+		exit_Menu.OnLeftClick += Exit_Menu_OnLeftClick;
+		exit_Menu.OnUpdate += Exit_Menu_OnUpdate;
+		exit_Menu.OnMouseOver += Exit_Menu_OnMouseOver;
+		exit_Menu.HAlign = .5f;
+		exit_Menu.VAlign = 1f;
+		panel.Append(exit_Menu);
+	}
+
+	private void Exit_Menu_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuTick);
+	}
+
+	private void Exit_Menu_OnUpdate(UIElement affectedElement) {
+		affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
+		if (affectedElement.IsMouseHovering) {
+			exit_Menu.TextColor = Color.Yellow;
+		}
+		else {
+			exit_Menu.TextColor = Color.White;
+		}
+	}
+
+	private void Exit_Menu_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+
+	private void Open_WikiUI_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuTick);
+	}
+
+	private void Open_WikiUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+
+	}
+	private void Open_WikiUI_OnUpdate(UIElement affectedElement) {
+		affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
+		if (affectedElement.IsMouseHovering) {
+			open_WikiUI.TextColor = Color.Yellow;
+		}
+		else {
+			open_WikiUI.TextColor = Color.White;
+		}
+	}
+	private void Open_AchievmentUI_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuTick);
 	}
 
 	private void Open_AchievmentUI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
+		affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
 		if (affectedElement.IsMouseHovering) {
-			Achievement = true;
+			open_AchievmentUI.TextColor = Color.Yellow;
 		}
 		else {
-			Achievement = false;
+			open_AchievmentUI.TextColor = Color.White;
 		}
 	}
 	private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.MenuOpen);
 		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (SkillHover) {
-			Main.instance.MouseText("Skill inventory");
-			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
-		}
-		else if (Achievement) {
-			Main.instance.MouseText("Achievement menu");
-			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Achievement.Tooltip"));
-		}
-		else {
-			uitextpanel.SetText("");
-		}
 	}
 }
 public class TeleportUI : UIState {

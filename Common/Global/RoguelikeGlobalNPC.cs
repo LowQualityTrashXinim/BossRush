@@ -40,6 +40,8 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool IsAGhostEnemy = false;
 	public int BelongToWho = -1;
 	public bool CanDenyYouFromLoot = false;
+	public int PositiveLifeRegen = 0;
+	public int PositiveLifeRegenCount = 0;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
@@ -176,6 +178,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			else {
 				BelongToWho = -1;
 			}
+		}
+		if (++PositiveLifeRegenCount >= 60) {
+			PositiveLifeRegenCount = 0;
+			npc.life = Math.Clamp(npc.life + PositiveLifeRegen, 0, npc.lifeMax);
 		}
 	}
 	public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers) {

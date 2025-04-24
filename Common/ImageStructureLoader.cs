@@ -67,7 +67,7 @@ public class ImageStructureLoader : ILoadable {
 	public const string CrimsonArena = "CrimsonArena";
 	public const string CorruptionAreana = "CorruptionArena";
 	public const string DungeonAreana = "DungeonArena";
-	public const string TundraArena = "3x3TundraArena";
+	public const string TundraArena = "TundraArena";
 	public const string HallowArena = "3x3HallowArena";
 	public const string OceanArena = "3x3OceanArena";
 	public static string StringBuilder(string ArenaName, int Variant) => $"{ArenaName}{Variant}";
