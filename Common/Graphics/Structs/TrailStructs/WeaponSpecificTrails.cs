@@ -191,5 +191,6 @@ public struct StarTrailEmpowered {
 		//result.A /= 2;
 		return result;
 	}
+	
 	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(12, 0, progressOnStrip);
 }
