@@ -12,9 +12,9 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().infoUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().infoUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().infoUI.Activate();
 		}
 		return false;
 	}

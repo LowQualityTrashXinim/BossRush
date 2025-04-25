@@ -20,12 +20,8 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		int ShortStanding = 0;
 		int OnHitDelay = 0;
-		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-			base.ModifyMaxStats(out health, out mana);
-			if (Earth) {
-				health.Flat += 100;
-				health += .1f;
-			}
+		public override void UpdateEquips() {
+			PlayerStatsHandle.AddStatsToPlayer(Player, PlayerStats.MaxHP, 1.1f, Flat: 100);
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Earth) {

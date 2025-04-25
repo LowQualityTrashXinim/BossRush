@@ -319,6 +319,7 @@ namespace BossRush {
 		/// </summary>
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
+		public string HoverText = null;
 		public void SetPostTex(Asset<Texture2D> tex) {
 			postTex = tex;
 		}
@@ -330,6 +331,9 @@ namespace BossRush {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
+			if (HoverText != null) {
+				Main.instance.MouseText(HoverText);
+			}
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
