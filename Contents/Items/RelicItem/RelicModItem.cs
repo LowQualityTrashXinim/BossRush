@@ -226,7 +226,6 @@ public class Relic : ModItem {
 	}
 }
 public abstract class RelicTemplate : ModType {
-	public float EnergyCost = 0;
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
@@ -238,7 +237,6 @@ public abstract class RelicTemplate : ModType {
 		Type = RelicTemplateLoader.Register(this);
 	}
 	public virtual void OnSettingTemplate() { }
-	public virtual bool SelectCondition(Relic relic, Player player) => true;
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
 	public virtual PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.None;
@@ -257,6 +255,13 @@ public static class RelicTemplateLoader {
 	public static RelicTemplate GetTemplate(int type) {
 		return type >= 0 && type < _template.Count ? _template[type] : null;
 	}
+	/// <summary>
+	/// This will merge stats of relicItem 1 and relicItem 2 together<br/>
+	/// relicItem1 will remain while the relicItem2 will be turn to air
+	/// </summary>
+	/// <param name="relicItem1"></param>
+	/// <param name="relicItem2"></param>
+	/// <returns></returns>
 	public static bool MergeStat(Relic relicItem1, Relic relicItem2) {
 		relicItem1.GetRelicData(out List<int> type1, out List<PlayerStats> stat1, out List<StatModifier> value1);
 		relicItem2.GetRelicData(out List<int> type2, out List<PlayerStats> stat2, out List<StatModifier> value2);

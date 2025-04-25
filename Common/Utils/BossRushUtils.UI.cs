@@ -10,9 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -382,16 +384,18 @@ namespace BossRush {
 	}
 	public class ExitUI : UIImageButton {
 		public ExitUI(Asset<Texture2D> texture) : base(texture) {
+			SetVisibility(.7f, 1f);
 		}
 
 		public override void LeftClick(UIMouseEvent evt) {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			SoundEngine.PlaySound(SoundID.MenuClose);
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.CrossSprite).Value;
 			CalculatedStyle rect = this.GetDimensions();
-			spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.White);
+			spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.Red);
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);

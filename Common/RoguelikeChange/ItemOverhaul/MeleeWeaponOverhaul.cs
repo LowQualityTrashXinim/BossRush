@@ -666,7 +666,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				if (modplayer.ComboNumber == 1 && item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
-				if (SwordSlashTrail.averageColorByID.ContainsKey(item.type)) {
+				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type)) {
 					DrawSwordTrail(modplayer);
 				}
 			}
@@ -747,7 +747,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 
 		public override bool CanUseItem(Item item) {
-			if (!Player.ItemAnimationActive) {
+			if (!Player.ItemAnimationActive && item.type == Player.HeldItem.type) {
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 				swordLength = item.Size.Length() * 0.5f * Player.GetAdjustedItemScale(item);
 				float baseAngle = PlayerToMouseDirection.ToRotation();
@@ -804,7 +804,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 			}
 			//can't believe we have to do this
-			if(Player.ItemAnimationEndingOrEnded) {
+			if (Player.ItemAnimationEndingOrEnded) {
 				Array.Fill(swordTipPositions, Vector2.Zero);
 				Array.Fill(swordRotations, 0);
 			}

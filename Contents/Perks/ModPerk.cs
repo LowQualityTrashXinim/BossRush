@@ -42,7 +42,7 @@ namespace BossRush.Contents.Perks {
 			CanBeChoosen = false;
 		}
 		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<RelicContainer>());
+			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
 		}
 	}
 	public class MarkOfSpectre : Perk {
@@ -126,19 +126,6 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(target.width + 100, target.height + 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	//public class IllegalTrading : Perk {
-	//	public override void SetDefaults() {
-	//		CanBeStack = true;
-	//		StackLimit = 5;
-	//		CanBeChoosen = false;
-	//	}
-	//	public override void ResetEffect(Player player) {
-	//		player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount(player);
-	//	}
-	//	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-	//		damage -= .07f * StackAmount(player);
-	//	}
-	//}
 	public class BackUpMana : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
@@ -475,7 +462,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void OnChoose(Player player) {
-			if (StackAmount(player) <= 0) {
+			if (StackAmount(player) <= 1) {
 				player.QuickSpawnItem(player.GetSource_FromThis("Perk"), ModContent.ItemType<SynergyEnergy>());
 			}
 			base.OnChoose(player);
@@ -498,7 +485,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 100 * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 50 * StackAmount(player));
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.15f * StackAmount(player), Flat: 10);
 			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Flat: 2f * StackAmount(player));
 		}
@@ -520,7 +507,7 @@ namespace BossRush.Contents.Perks {
 			return base.ModifyToolTip();
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1 + StackAmount(player));
 		}
 	}
 	public class BlessingOfEvasive : Perk {

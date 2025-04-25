@@ -56,7 +56,7 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
 		private static int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
 			if (influence != -1) {
-				if (Main.rand.NextFloat() <= chance) {
+				if (Main.rand.NextFloat() <= chance && chance != 0) {
 					return influence;
 				}
 			}
@@ -419,6 +419,7 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual List<int> SafePostAddAcc() => new List<int>() { };
 
 		private void AddAcc(List<int> flag) {
+			Accessories.Clear();
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC)) {
 				Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
 			}
@@ -458,8 +459,8 @@ namespace BossRush.Contents.Items.Chest {
 						Accessories.Add(ItemID.PhilosophersStone);
 						break;
 				}
-				if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
 			}
+			if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
 		}
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
@@ -515,7 +516,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		public int GetAccessory() {
 			AddAcc(FlagNumAcc());
-			return Main.rand.NextFromCollection(Accessories);
+			return Main.rand.Next(Accessories);
 		}
 		/// <summary>
 		/// Return random potion
@@ -797,7 +798,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="weapon"></param>
 		/// <param name="AmountModifier"></param>
 		public static void AmmoForWeapon(Player player, int weapon, float AmountModifier = 1) {
-			LootBoxBase.AmmoForWeapon(BossRushModSystem.ListLootboxType.FirstOrDefault(), player, weapon, AmountModifier);
+			AmmoForWeapon(BossRushModSystem.ListLootboxType.FirstOrDefault(), player, weapon, AmountModifier);
 		}
 		/// <summary>
 		/// Automatically quick drop player ammo item accordingly to weapon ammo type
@@ -906,12 +907,21 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="type"></param>
 		/// <param name="player"></param>
 		public static void GetAccessories(int type, Player player, bool LostAccIncluded = false) {
-			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
-			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
-				acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
-			}
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			player.QuickSpawnItem(entitySource, Main.rand.NextFromCollection(acc));
+			//List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
+			//if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
+			//	acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
+			//}
+			//player.QuickSpawnItem(entitySource, Main.rand.Next(acc));
+			//Slightly smarter approach
+			int acc;
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
+				acc = Main.rand.NextFromHashSet(BossRushModSystem.VanillaAndLostAcc);
+			}
+			else {
+				acc = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
+			}
+			player.QuickSpawnItem(entitySource, acc);
 		}
 		/// <summary>
 		/// This function will automatically handle drop for you so no need to do it yourself
@@ -1052,7 +1062,7 @@ namespace BossRush.Contents.Items.Chest {
 		public HashSet<int> Request_AddSummon = new();
 		public HashSet<int> Request_AddMisc = new();
 		public int InfluenceableRNGselector = -1;
-		public float Chance_4RNGselector = 0;
+		public float Chance_4RNGselector { get; set; } = 0;
 
 		public int counterShow = 0;
 		public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
@@ -1066,15 +1076,15 @@ namespace BossRush.Contents.Items.Chest {
 		/// <summary>
 		/// Use this if it is a always update item
 		/// </summary>
-		public int WeaponAmountAddition = 0;
+		public int WeaponAmountAddition { get; set; } = 0;
 		/// <summary>
 		/// Use this if it is a always update item
 		/// </summary>
-		public int PotionTypeAmountAddition = 0;
+		public int PotionTypeAmountAddition { get; set; } = 0;
 		/// <summary>
 		/// Use this if it is a always update item
 		/// </summary>
-		public int PotionNumberAmountAddition = 0;
+		public int PotionNumberAmountAddition { get; set; } = 0;
 		//Do not touch this
 		public int weaponAmount;
 		public int potionTypeAmount;

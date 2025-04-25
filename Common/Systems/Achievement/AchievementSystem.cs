@@ -64,6 +64,7 @@ public class AchievementSystem : ModSystem {
 	}
 	public override void Load() {
 		// Loading achievements
+		On_Main.Main_Exiting += On_Main_Main_Exiting;
 		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(ModAchievement)))) {
 			var achievement = (ModAchievement)Activator.CreateInstance(type);
 			Achievements.Add(achievement);
@@ -84,7 +85,53 @@ public class AchievementSystem : ModSystem {
 		}
 	}
 
+	private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
+		var tag = new TagCompound();
+		foreach (var achievement in Achievements) {
+			if (achievement.Achieved) {
+				tag.Set(achievement.Name, 0);
+			}
+		}
+
+		if (!File.Exists(FilePath)) {
+			if (!Directory.Exists(DirectoryPath)) {
+				Directory.CreateDirectory(DirectoryPath);
+			}
+
+			File.Create(FilePath);
+		}
+		try {
+			TagIO.ToFile(tag, FilePath);
+		}
+		catch {
+
+		}
+	}
+
 	public override void Unload() {
+		// Saving achievements
+		var tag = new TagCompound();
+		foreach (var achievement in Achievements) {
+			if (achievement.Achieved) {
+				tag.Set(achievement.Name, 0);
+			}
+		}
+
+		if (!File.Exists(FilePath)) {
+			if (!Directory.Exists(DirectoryPath)) {
+				Directory.CreateDirectory(DirectoryPath);
+			}
+
+			File.Create(FilePath);
+		}
+		try {
+			TagIO.ToFile(tag, FilePath);
+		}
+		catch {
+
+		}
+	}
+	public override void OnModUnload() {
 		// Saving achievements
 		var tag = new TagCompound();
 		foreach (var achievement in Achievements) {
@@ -364,7 +411,7 @@ public class AchievementUI : UIState {
 		for (int i = 0; i < btn_Achievement.Count; i++) {
 			AchievementButton btn = btn_Achievement[i];
 			if (lib_achievement.Count - 1 < i) {
-				btn.achievementname = string.Empty;
+				btn.SetAchievement(string.Empty);
 				txt_Achievement[i].SetText("");
 				continue;
 			}
@@ -528,6 +575,12 @@ public class TagPanel : UITextPanel<string> {
 	}
 	public TagPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 }
 public class PageImage : UIImage {
 	public Asset<Texture2D> unselected;
@@ -648,6 +701,7 @@ public class AchievementButton : UIImageButton {
 		SetAchievement(achievementName);
 		achieved = ModContent.Request<Texture2D>(BossRushTexture.CommonTextureStringPattern + "UI/complete");
 		Lock = ModContent.Request<Texture2D>(BossRushTexture.Lock);
+		SetVisibility(1, 1);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		AchievementUI.ActiveAchievement = achievementname;

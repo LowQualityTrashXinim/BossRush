@@ -12,11 +12,21 @@ using BossRush.Common.Global;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		/// <summary>
+		/// Use this to assign the entity to global dust
+		/// </summary>
+		/// <param name="dust"></param>
+		/// <param name="entity"></param>
 		public static void Dust_BelongTo(this Dust dust, Entity entity) {
 			if (dust.active) {
 				RoguelikeGlobalDust.Dust[dust.dustIndex].entityToFollow = entity;
 			}
 		}
+		/// <summary>
+		/// Use this to get mod global dust 
+		/// </summary>
+		/// <param name="dust"></param>
+		/// <returns></returns>
 		public static Roguelike_Dust Dust_GetDust(this Dust dust) {
 			if (!dust.active) {
 				return null;
@@ -47,21 +57,23 @@ namespace BossRush {
 			}
 			return false;
 		}
+		public static char ConvertNumbericValueToChar(int num) {
+			if(num < 0 || num > 255) {
+				return char.MinValue;
+			}
+			return (char)num;
+		}
 
 		public static Color ToColor(this Vector4 v) {
 			return new Color(v.X, v.Y, v.Z, v.W);
 		}
 
 		public static Color AddColor(this Color color, Color color2) {
-
 			return new Color(color.R + color2.R, color.G + color2.G, color.B + color2.B, color.A + color2.A);
-
 		}
 
 		public static Color DivideColor(this Color color, int number) {
-
 			return new Color(color.R / number, color.G / number, color.B / number, color.A / number);
-
 		}
 
 		public static void Push<T>(ref T[] array, T value) {
@@ -271,8 +283,8 @@ namespace BossRush {
 		}
 		public static float OutBack(float t) => 1 - InBack(1 - t);
 		public static float InOutBack(float t) {
-			if (t < 0.5) return InBack(t * 2) * .5f;
-			return 1 - InBack((1 - t) * 2) * .5f;
+			if (t < 0.5) return InBack(t) * .5f;
+			return 1 - InBack((1 - t)) * .5f;
 		}
 		public static bool lineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 
@@ -391,6 +403,37 @@ namespace BossRush {
 			if (disXWidth * disXWidth + disYHeight * disYHeight < maxDistanceDouble)
 				return true;
 			return false;
+		}
+		/// <summary>
+		/// Allow for easy to uses everywhere draw progress line without the need of a texture file
+		/// </summary>
+		/// <param name="progress">The progress of the line</param>
+		/// <param name="maxprogress">The maximum progress of the line</param>
+		/// <param name="frame">the width and height of the frame which where progress line would be drawn</param>
+		/// <param name="position">The position of where the progress line would be drawn</param>
+		/// <param name="offsetX">the offset X for the line, usually you would want to take origin X of the frame and put it here for the line to be centered</param>
+		/// <param name="line">This include the extra offset of the line</param>
+		/// <param name="spriteBatch"><see cref="Main.spriteBatch"/> should be put here</param>
+		public static void DrawProgressLine(float progress, float maxprogress, Point frame, Point position, int offsetX, Rectangle line, SpriteBatch spriteBatch, Color colorA, Color colorB) {
+			float quotient = progress / maxprogress; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
+			quotient = Math.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
+
+			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
+			Rectangle hitbox = new(
+				line.X + position.X - offsetX
+				, line.Y + position.Y
+				, line.Width
+				, line.Height);
+
+			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
+			int left = hitbox.Left;
+			int right = hitbox.Right;
+			int steps = (int)((right - left) * quotient);
+			for (int i = 0; i < steps; i += 1) {
+				// float percent = (float)i / steps; // Alternate Gradient Approach
+				float percent = (float)i / (right - left);
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(colorA, colorB, percent));
+			}
 		}
 	}
 	/// <summary>

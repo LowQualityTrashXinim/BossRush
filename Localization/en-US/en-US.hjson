@@ -334,6 +334,19 @@ Mods: {
 			WoodProjectile.DisplayName: Wood Projectile
 			OnHitRangeP.DisplayName: On Hit Range P
 			PlasmaProjectile.DisplayName: Plasma Projectile
+			Enchantment_ShortSwordProjectile.DisplayName: Enchantment_ Short Sword Projectile
+			ChannelShortSword.DisplayName: Channel Short Sword
+			PlasmaGrenade.DisplayName: Plasma Grenade
+			TridentEnchantmentProjectile_Fish1.DisplayName: Trident Enchantment Projectile_ Fish1
+			TridentEnchantmentProjectile_Fish2.DisplayName: Trident Enchantment Projectile_ Fish2
+			BaseHostileSpear.DisplayName: Base Hostile Spear
+			HostileBoomStick.DisplayName: Hostile Boom Stick
+			GiantSnowBall.DisplayName: Giant Snow Ball
+			OrbitProjectile.DisplayName: Orbit Projectile
+			TheOrbitProjectile.DisplayName: The Orbit Projectile
+			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
+			LauncherProjectile.DisplayName: Launcher Projectile
+			TwilightNightProjectile.DisplayName: Twilight Night Projectile
 		}
 
 		NPCs: {
@@ -1918,7 +1931,7 @@ Mods: {
 
 			LuckEssence: {
 				DisplayName: Luck's Blessing
-				Tooltip: Grant a perk
+				Tooltip: Grant a random perk and a exclusive perk selection
 			}
 
 			WorldEssence: {
@@ -1967,6 +1980,9 @@ Mods: {
 					'''
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
+					Alt click to throw out a anti gravity plasma grenade
+					Shooting the plasma grenade will make it explode
+					Letting it collide or explode naturally will make it deal 1/3 of original damage
 					'''
 			}
 
@@ -2081,7 +2097,11 @@ Mods: {
 
 			StarWhip: {
 				DisplayName: Star Whip
-				Tooltip: ""
+				Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					{$CommonItemTooltip.Whips}
+					'''
 			}
 
 			SpecialSkillLootBox: {
@@ -2326,7 +2346,11 @@ Mods: {
 
 			ReInitializeUI: {
 				DisplayName: ReInitialize UI
-				Tooltip: Debug item, do not uses it unless you are the one working on this
+				Tooltip:
+					'''
+					Current UI to reintialize : Transmutation
+					Debug item, do not uses it unless you are the one working on this
+					'''
 			}
 
 			PerkDebugShower: {
@@ -2365,12 +2389,53 @@ Mods: {
 
 			Mixmaster: {
 				DisplayName: Mixmaster
-				Tooltip: ""
+				Tooltip: A weapon of a ancient past
 			}
 
 			TransmuteTablet: {
 				DisplayName: Transmute Tablet
+				Tooltip:
+					'''
+					[Transmutation]
+					This is where you can merge your relics, imprint your soul bind to your armor and much more !
+					Relics can be merged to have up to tier 4, merge relics together to create a even stronger relic
+					You can also transmute 2 items of the same rarity to exchange for another item of same rarity
+					'''
+			}
+
+			ScrollOfHellspawn: {
+				DisplayName: Scroll: Hellspawn
+				Tooltip: Summon a portal from underworld for demonic energy swept through
+			}
+
+			TwilightNight: {
+				DisplayName: Twilight Night
 				Tooltip: ""
+			}
+
+			BasicLauncher: {
+				DisplayName: Basic Launcher
+				Tooltip: ""
+			}
+
+			SnowballCannonMK2: {
+				DisplayName: Snowball Cannon MK2
+				Tooltip:
+					'''
+					After every 10th shot, shoot out a giant snowball that deal 300% of weapon damage
+					Ice bolt have 10% to be accompany with every shot, Ice bolt deal 125% weapon damage
+					Alt click to swing your gun like a sword dealing 50% more damage
+					'''
+			}
+
+			TheOrbit: {
+				DisplayName: The Orbit
+				Tooltip:
+					'''
+					Throw out the disk that have flaming mace orbit around it
+					After 4th throw, the next throw will release 3 flaming mace orbiting around the disk
+					Every 2th throw, damage is increases by 50%
+					'''
 			}
 
 			SharkToothNecklace: {
@@ -2439,6 +2504,17 @@ Mods: {
 			StingerNecklace: {
 				DisplayName: Stinger Necklace
 				Tooltip: ""
+			}
+		}
+
+			HandmadeLauncher: {
+				DisplayName: Handmade Launcher
+				Tooltip:
+					'''
+					Shoot out a shell that on direct contact with enemy deal double damage
+					Enemy hit by the shell directly get inflicted with Aftershock effect
+					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
+					'''
 			}
 		}
 
@@ -2635,29 +2711,37 @@ Mods: {
 
 			EssenceOfCalmness: {
 				DisplayName: Essence Of Calmness
-				Description: Decreases your crit damage by 50%
+				Description:
+					'''
+					Increases your critical chance by 25%
+					Decreases your critical damage by 30%
+					'''
 			}
 
 			EssenceOfDrowsy: {
 				DisplayName: Essence Of Drowsy
 				Description:
 					'''
-					Decreases your movement speed by 44%
-					Decreases your attack speed by 24%
+					Increases your damage reduction by 15%
+					Decreases your movement speed by 14% and attack speed by 6%
 					'''
 			}
 
 			EssenceOfKindness: {
 				DisplayName: Essence Of Kindness
-				Description: Decreases your damage by 50%
+				Description:
+					'''
+					Increases healing effectiveness by 25% and immunity frame by 35%
+					Decreases your damage by 12% and your critical chance by 10%
+					'''
 			}
 
 			EssenceOfRage: {
 				DisplayName: Essence Of Rage
 				Description:
 					'''
-					Increases your crit chance by 10%
-					Increases your crit damage by 35%
+					Increases your critical chance by 5% and critical damage by 15%
+					Decreases your defense by 10
 					'''
 			}
 
@@ -2665,24 +2749,37 @@ Mods: {
 				DisplayName: Essence Of Rejuvenate
 				Description:
 					'''
-					Increases your life regen by 67%
+					Increases your life regen by 27%
 					When this buff end, heal you for 100 hp
+					Decreases your damage by 12%
 					'''
 			}
 
 			EssenceOfSwift: {
 				DisplayName: Essence Of Swift
-				Description: Increases your movement speed by 34% and attack speed by 14%
+				Description:
+					'''
+					Increases your movement speed by 14% and attack speed by 8%
+					Decreases your critical chance by 10
+					'''
 			}
 
 			EssenceOfTitan: {
 				DisplayName: Essence Of Titan
-				Description: Increases your defense by 20%
+				Description:
+					'''
+					Increases your defense by 15
+					Decreases your damage by 10%
+					'''
 			}
 
 			EssenceOfWeakness: {
 				DisplayName: Essence Of Weakness
-				Description: Decreases your defense by 20
+				Description:
+					'''
+					Your attack inflict weakness onto enemy
+					Decreases your defense by 10, damage by 10% and critical damage by 30%
+					'''
 			}
 
 			EssenceOfWither: {
@@ -2691,8 +2788,12 @@ Mods: {
 			}
 
 			EssenceOfWrath: {
-				DisplayName: Wrath
-				Description: Increases your damage by 20%
+				DisplayName: Essence Of Wrath
+				Description:
+					'''
+					Increases your damage by 12%
+					Decreases your defense by 10
+					'''
 			}
 
 			LifeForce: {
@@ -3003,6 +3104,21 @@ Mods: {
 			TundraHypothermia: {
 				DisplayName: Tundra Hypothermia
 				Description: Mods.BossRush.Buffs.TundraHypothermia.Description
+			}
+
+			NPC_Weakness: {
+				DisplayName: N P C_ Weakness
+				Description: Mods.BossRush.Buffs.NPC_Weakness.Description
+			}
+
+			SnowballCannonMK2Projectile_CoolDown: {
+				DisplayName: Snowball Cannon M K2 Projectile_ Cool Down
+				Description: Mods.BossRush.Buffs.SnowballCannonMK2Projectile_CoolDown.Description
+			}
+
+			Aftershock: {
+				DisplayName: Aftershock
+				Description: Mods.BossRush.Buffs.Aftershock.Description
 			}
 		}
 

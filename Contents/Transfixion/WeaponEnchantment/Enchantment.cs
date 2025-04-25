@@ -49,7 +49,18 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 		//I couldn't figure out a way to implement WhoAmI type of stuff and can't even use globalItem to transfer the index over here to use, so I settle with this
 		public virtual void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
 		public virtual void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
-		public virtual void Update(Player player) { }
+		/// <summary>
+		/// Use this if you want the item effect to be active just by having in your inventory 
+		/// </summary>
+		/// <param name="player"></param>
+		public virtual void Update(int index,  Item item, EnchantmentGlobalItem globalItem, Player player) { }
+		/// <summary>
+		/// This shall make it so that it update when you held the item
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="item"></param>
+		/// <param name="globalItem"></param>
+		/// <param name="player"></param>
 		public virtual void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) { }
 		public virtual void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) { }
 		public virtual void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) { }

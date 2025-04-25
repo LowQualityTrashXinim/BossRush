@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using System.Linq;
+using BossRush.Common.Systems.ObjectSystem;
 
 namespace BossRush.Common.Systems.Mutation;
 public abstract class ModMutation : ModType {
@@ -15,8 +17,10 @@ public abstract class ModMutation : ModType {
 		SetStaticDefaults();
 		Type = ModMutationLoader.Register(this);
 	}
+	public static int GetMutationType<T>() where T : ModMutation {
+		return ModContent.GetInstance<T>().Type;
+	}
 	public virtual void OnSpawn(NPC npc, IEntitySource source) { }
-	public virtual void SetDefaults(NPC npc) { }
 	public virtual void PostAI(NPC npc) { }
 	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) { }
 	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) { }
@@ -42,5 +46,29 @@ public class MutationSystem : ModSystem {
 	public bool NewGamePlusMutation = false;
 	public override void PreUpdateNPCs() {
 		MutationChance = 0;
+	}
+	public override void Load() {
+		On_NPC.SetDefaults += On_NPC_SetDefaults;
+		list_mutationType = new();
+	}
+	public override void Unload() {
+		list_mutationType = null;
+	}
+	private static HashSet<int> list_mutationType = new();
+	/// <summary>
+	/// This method will store a mutation into a temporary list and then add them into the NPC<br/>
+	/// Add this before calling <see cref="NPC.NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/> or any alternative
+	/// </summary>
+	/// <param name="mutationType"></param>
+	public static void AddMutation(int mutationType) {
+		list_mutationType.Add(mutationType);
+	}
+	private void On_NPC_SetDefaults(On_NPC.orig_SetDefaults orig, NPC self, int Type, NPCSpawnParams spawnparams) {
+		orig(self, Type, spawnparams);
+		if (self.TryGetGlobalNPC(out NPCMutation global)) {
+			HashSet<ModMutation> mut = list_mutationType.Select(i => ModMutationLoader.GetMutation(i)).ToHashSet();
+			global.mutationList.AddRange(mut);
+		}
+		list_mutationType.Clear();
 	}
 }

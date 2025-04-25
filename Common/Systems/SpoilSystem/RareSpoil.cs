@@ -71,7 +71,7 @@ internal class RareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
-				player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.Next(BossRushModSystem.LostAccessories));
+				player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.NextFromHashSet(BossRushModSystem.LostAccessories));
 			}
 		}
 	}

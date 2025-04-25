@@ -25,7 +25,10 @@
 		public const string PingpongGradient = CommonTextureStringPattern + "PingpongGradient";
 		public const string LinesNoise = CommonTextureStringPattern + "LinesNoise";
 		public const string Gradient = CommonTextureStringPattern + "Gradient";
-
+		/// <summary>
+		/// Width : 16 | Height : 16
+		/// </summary>
+		public const string Boxes = CommonTextureStringPattern + "UI/Boxes";
 		public const string Page_StateSelected = CommonTextureStringPattern + "UI/page_selected";
 		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";

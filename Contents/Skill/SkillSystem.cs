@@ -81,11 +81,11 @@ public abstract class ModSkill : ModType {
 	/// Called upon pressed when the skill requirement is fullfilled 
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void OnTrigger(Player player, SkillHandlePlayer modplayer) { }
+	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer) { }
 	public virtual void OnEnded(Player player) { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ResetEffect(Player player) { }
-	public virtual void Update(Player player) { }
+	public virtual void Update(Player player, SkillHandlePlayer skillplayer) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
@@ -191,7 +191,7 @@ public class SkillHandlePlayer : ModPlayer {
 	/// Return false when skill slot can't no longer be increased
 	/// </returns>
 	public bool IncreasesSkillSlot() {
-		if (AvailableSkillActiveSlot <= SkillHolder1.Length) {
+		if (AvailableSkillActiveSlot < SkillHolder1.Length) {
 			AvailableSkillActiveSlot++;
 			return true;
 		}
@@ -475,8 +475,8 @@ public class SkillHandlePlayer : ModPlayer {
 			CoolDown = 0;
 		}
 		skilldamage = StatModifier.Default;
+		SkillDamageWhileActive = StatModifier.Default;
 		if (!Activate) {
-			SkillDamageWhileActive = StatModifier.Default;
 			return;
 		}
 		foreach (var skill in activeskill) {
@@ -488,7 +488,7 @@ public class SkillHandlePlayer : ModPlayer {
 			return;
 		}
 		foreach (var skill in activeskill) {
-			skill.Update(Player);
+			skill.Update(Player, this);
 		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

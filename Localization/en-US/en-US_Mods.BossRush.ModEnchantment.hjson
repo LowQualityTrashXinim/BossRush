@@ -237,53 +237,51 @@ NightsEdge.Description:
 	'''
 CopperShortSword.Description:
 	'''
-	Increases critical strike damage by 25%
+	Increases critical strike damage by 35% and critical strike chance by 5
 	Remove cool down effect of shortsword alt attack
-	Critical striking enemy have 50% chance to spawn a shortsword
+	Critical striking enemy have 50% chance to throw a shortsword
 	( Have 1s cool down )
 	'''
 TinShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword that deal 3x damage after each strike with 5s cool down
+	For each shortsword active increases critical strike damage by 25%
+	Shortsword form a ring around player depend on amount of shortsword enchantment
 	'''
 IronShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword that deal 3x damage after each strike with 5s cool down
+	For each shortsword active increases defenses by 3
+	Shortsword form a ring around player depend on amount of shortsword enchantment
 	'''
 LeadShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases debuff damage by 8%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 SilverShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Increases first strike damage by 40%
+	On first strike, throw out a silver shortsword toward that NPC
 	'''
 TungstenShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Increases base damage by 3
+	During your attack, every 0.4s pass throw out a weak shortsword
 	'''
 GoldShortSword.Description:
 	'''
-	Increases base damage by 2
-	Increases critical strike damage by 25%
-	Inflict Midas for 6 second upon critical hit via sword
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
+	Have 10% to inflict midas debuff
 	'''
 PlatinumShortSword.Description:
 	'''
-	Increases weapon base damage by 2
-	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Summon a shortsword after each strike with 5s cool down
+	For each shortsword active increases base damage by 1 and critical strike damage by 25%
+	Shortsword can hit enemy, upon hitting enemy lose above effect
 	'''
 Gladius.Description:
 	'''
@@ -610,11 +608,13 @@ FlowerOfFrost.Description:
 	'''
 BabyBirdStaff.Description:
 	'''
+	+8% summoner damage
 	Spawn elite baby bird to aid you during fight
 	Elite baby bird also shoot whatever you are shooting dealing 25% of original damage
 	'''
 BabySlimeStaff.Description:
 	'''
+	+12% summoner damage
 	Spawn spiked baby slime to aid you during fight
 	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
@@ -742,4 +742,21 @@ Spear.Description:
 	'''
 	Increases melee armor penetration by 10
 	Striking enemy have 5% chance to rain down bunch of spear from the sky
+	'''
+Trident.Description:
+	'''
+	+10% Melee critical strike chance and +24% Melee critical strike damage
+	Hitting a enemy will call in fish to fly in hitting your enemy
+	Have 0.5s cool down when hitting with item and 2.5s cool down when hitting with projectile
+	'''
+StylistKilLaKillScissorsIWish.Description:
+	'''
+	Multiply melee damage by 1.11x
+	Multiply melee critical strike damage by 1.12x
+	Increases weapon size by 20%
+	'''
+Ruler.Description:
+	'''
+	Increases base damage of projectile depend on distance from target to player
+	Increases additive damage of melee item depend on distance from target to player
 	'''

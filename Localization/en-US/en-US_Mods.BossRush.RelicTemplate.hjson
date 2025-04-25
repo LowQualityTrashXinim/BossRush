@@ -3,12 +3,12 @@ GenericTemplate: {
 	Description: Increases [c/{0}:{1}] by [c/{0}:{2}]
 }
 
-CombatV2Template: {
+CombatHighHPTemplate: {
 	DisplayName: Heart of [c/{0}:{1}]
 	Description: While health is above 90%, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
 
-CombatV3Template: {
+CombatLowHPTemplate: {
 	DisplayName: Critical [c/{0}:{1}]
 	Description: While health is below 45%, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
@@ -23,19 +23,19 @@ StrikeFullHPTemplate: {
 	Description: Increases first strike damage by [c/{0}:{1}]
 }
 
-HealthV2Template: {
+LowHealthTemplate: {
 	DisplayName: Endangered [c/{0}:{1}]
 	Description: While health is below 35%, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
 
-HealthV3Template: {
+DebuffedHealthTemplate: {
 	DisplayName: "[c/{0}:{1}] Sickness"
 	Description: While afflicted by a debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
 
-DebuffDamageIncreasesTemplate: {
-	DisplayName: Sickened System
-	Description: Increases damage by [c/{0}:{1}] against enemies afflicted by a debuff
+BattleMountTemplate: {
+	DisplayName: Battle ride
+	Description: Increases damage by [c/{0}:{1}] while on a mount
 }
 
 StaticDefeneseTemplate: {
@@ -68,12 +68,12 @@ SkillDurationTemplate: {
 	Description: Increases the duration of the [c/{0}:{1}] skill by [c/{0}:{2}] seconds
 }
 
-SkillActivateTemplate: {
+SkillActivationTemplate: {
 	DisplayName: "[c/{0}:{1}] Conditioning"
 	Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
 }
 
-DebuffTemplateV1: {
+TripleDebuffTemplate: {
 	DisplayName: Triple [c/{0}:{1}] Trouble
 	Description: While afflicted by at least 3 debuffs, increases [c/{0}:{1}] by [c/{0}:{2}]
 }
@@ -116,4 +116,9 @@ BlizzardTemplate: {
 MiniHeartStatuesTemplate: {
 	DisplayName: Mini heart statues
 	Description: Every [c/{3}:{2}s], heal you for [c/{0}:{1} hp]
+}
+
+PerfectStatusTemplate: {
+	DisplayName: Perfect Status
+	Description: While you have no buff or debuff, increases [c/{0}:{1}] by [c/{0}:{2}]
 }

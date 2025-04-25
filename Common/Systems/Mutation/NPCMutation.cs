@@ -20,6 +20,9 @@ internal class NPCMutation : GlobalNPC {
 		return base.AppliesToEntity(entity, lateInstantiation);
 	}
 	public override void OnSpawn(NPC npc, IEntitySource source) {
+		if (mutationList == null) {
+			mutationList = new();
+		}
 		if (Main.rand.NextFloat() <= ModContent.GetInstance<MutationSystem>().MutationChance) {
 			mutationList.Add(ModMutationLoader.GetMutation(Main.rand.Next(ModMutationLoader.TotalCount)));
 		}
@@ -30,11 +33,6 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void SetDefaults(NPC entity) {
-		if (mutationList != null) {
-			foreach (var mutation in mutationList) {
-				mutation.SetDefaults(entity);
-			}
-		}
 		return;
 		if (!Main.masterMode) {
 			return;

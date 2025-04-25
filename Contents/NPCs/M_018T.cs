@@ -68,7 +68,7 @@ internal class M_018T : ModNPC {
 	}
 	public override void AddShops() {
 		NPCShop shop = new NPCShop(Type, ShopName);
-		shop.Add(new Item(ModContent.ItemType<RelicContainer>()) { shopCustomPrice = Item.buyPrice(gold: 7) });
+		//shop.Add(new Item(ModContent.ItemType<RelicContainer>()) { shopCustomPrice = Item.buyPrice(gold: 7) });
 		shop.Add(new Item(ModContent.ItemType<WeaponLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 15) });
 		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 17) });
 		shop.Add(new Item(ModContent.ItemType<WorldEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });

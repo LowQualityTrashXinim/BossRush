@@ -1,10 +1,12 @@
 ﻿using BossRush.Common.Systems;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems.ObjectSystem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,52 +18,68 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		public override bool CanBeSelected(Player player) => AchievementSystem.IsAchieved("TokenOfGreed");
 	}
 	class EternalWealthPlayer : ModPlayer {
+		public override void OnEnterWorld() {
+			Array.Fill(objs, null);
+		}
 		bool EternalWealth = false;
 
 		int timer = 0;
-		Vector2[] oldPos = new Vector2[5];
+		ModObject[] objs = new ModObject[5];
 		int counterOldPos = 0;
-		int MidasInfection = 0;
+		public int MidasInfection = 0;
+		public bool Midas_IsInField = false;
 		public override void ResetEffects() {
 			EternalWealth = Player.HasArtifact<EternalWealthArtifact>();
+			Midas_IsInField = false;
 		}
-		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
 		public override void PostUpdate() {
 			if (EternalWealth) {
-				chestmodplayer.DropModifier *= 3;
+				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= 3;
 				timer = BossRushUtils.CountDown(timer);
 				if (timer <= 0) {
-					if (counterOldPos >= oldPos.Length - 1) {
-						counterOldPos = 0;
+					counterOldPos = BossRushUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);
+					if (objs[counterOldPos] != null && objs[counterOldPos].active) {
+						ObjectSystem.Objects[objs[counterOldPos].whoAmI].Kill();
 					}
-					else {
-						counterOldPos++;
-					}
-					oldPos[counterOldPos] = Player.Center;
-					timer = 600;
+					ModObject obj = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<EternalWealth_ModObject>());
+					objs[counterOldPos] = ObjectSystem.Objects[obj.whoAmI];
+					timer = 120;
 				}
 				float distance = 500;
-				bool IsInField = false;
-				foreach (Vector2 vec in oldPos) {
-					if (Player.Center.IsCloseToPosition(vec, distance)) {
-						IsInField = true;
+				foreach (EternalWealth_ModObject obj in objs) {
+					if (obj == null) {
+						continue;
+					}
+					if (!obj.active) {
+						continue;
+					}
+					if (Player.Center.IsCloseToPosition(obj.position, distance)) {
+						Midas_IsInField = true;
 						MidasInfection++;
 						if (MidasInfection >= 180)
 							Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
 					}
-					for (int i = 0; i < 25; i++) {
-						int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
-						Main.dust[dust].noGravity = true;
-						Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
-					}
-					for (int i = 0; i < 25; i++) {
-						int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(distance, distance), 0, 0, DustID.GoldCoin);
-						Main.dust[dust].noGravity = true;
-						Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
-					}
 				}
-				if (!IsInField)
+				if (!Midas_IsInField)
 					MidasInfection = BossRushUtils.CountDown(MidasInfection);
+			}
+		}
+	}
+	public class EternalWealth_ModObject : ModObject {
+		public override void SetDefaults() {
+			timeLeft = 3000;
+		}
+		public override void AI() {
+			float distance = 500;
+			for (int i = 0; i < 25; i++) {
+				int dust = Dust.NewDust(position + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
+			}
+			for (int i = 0; i < 25; i++) {
+				int dust = Dust.NewDust(position + Main.rand.NextVector2CircularEdge(distance, distance), 0, 0, DustID.GoldCoin);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
 			}
 		}
 	}

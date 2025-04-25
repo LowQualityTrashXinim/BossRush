@@ -110,7 +110,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float AugmentationChance = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
-		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(1) > 0) {
+		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
@@ -387,7 +387,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
@@ -400,6 +400,18 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.SummonDMG:
 				Player.GetDamage(DamageClass.Summon) = Player.GetDamage(DamageClass.Summon).CombineWith(StatMod);
+				break;
+			case PlayerStats.MeleeCritChance:
+				Player.GetCritChance(DamageClass.Melee) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Melee));
+				break;
+			case PlayerStats.RangeCritChance:
+				Player.GetCritChance(DamageClass.Ranged) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Ranged));
+				break;
+			case PlayerStats.MagicCritChance:
+				Player.GetCritChance(DamageClass.Magic) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Magic));
+				break;
+			case PlayerStats.SummonCritChance:
+				Player.GetCritChance(DamageClass.Summon) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Summon));
 				break;
 			case PlayerStats.MovementSpeed:
 				UpdateMovement = UpdateMovement.CombineWith(StatMod);
@@ -515,6 +527,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.SummonNonCritDmg:
 				Summon_NonCritDmg = Summon_NonCritDmg.CombineWith(StatMod);
 				break;
+			case PlayerStats.LootDropIncrease:
+				ChestLoot.DropModifier = ChestLoot.DropModifier.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -534,6 +549,8 @@ public class PlayerStatsHandle : ModPlayer {
 		foreach (var item in ItemUsesToAttack.Values) {
 			packet.Write(item);
 		}
+		packet.Write(TransmutationPowerMaximum);
+		packet.Write(TransmutationPower);
 		packet.Send(toWho, fromWho);
 	}
 
@@ -551,6 +568,8 @@ public class PlayerStatsHandle : ModPlayer {
 			weapondps.Add(reader.ReadInt32());
 		}
 		ItemUsesToAttack = weapon.Zip(weapondps, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		TransmutationPowerMaximum = reader.ReadInt32();
+		TransmutationPower = reader.ReadInt32();
 	}
 
 	public override void CopyClientState(ModPlayer targetCopy) {
@@ -559,6 +578,8 @@ public class PlayerStatsHandle : ModPlayer {
 		clone.HitTakenCounter = HitTakenCounter;
 		clone.DmgTaken = DmgTaken;
 		clone.ItemUsesToAttack = ItemUsesToAttack;
+		clone.TransmutationPower = TransmutationPower;
+		clone.TransmutationPowerMaximum = TransmutationPowerMaximum;
 	}
 
 	public override void SendClientChanges(ModPlayer clientPlayer) {
@@ -566,14 +587,20 @@ public class PlayerStatsHandle : ModPlayer {
 		if (DPStracker != clone.DPStracker
 			|| HitTakenCounter != clone.HitTakenCounter
 			|| DmgTaken != clone.DmgTaken
-			|| ItemUsesToAttack != clone.ItemUsesToAttack) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+			|| ItemUsesToAttack != clone.ItemUsesToAttack
+			|| TransmutationPower != clone.TransmutationPower
+			|| TransmutationPowerMaximum != clone.TransmutationPowerMaximum) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
+	public int TransmutationPower = 0;
+	public int TransmutationPowerMaximum = 10;
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;
 		tag["DmgTaken"] = DmgTaken;
 		tag["WeaponUsesList"] = ItemUsesToAttack.Keys.ToList();
 		tag["DpsFromWeaponUses"] = ItemUsesToAttack.Values.ToList();
+		tag["TransmutationPowerMaximum"] = TransmutationPowerMaximum;
+		tag["TransmutationPower"] = TransmutationPower;
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("DPStracker", out ulong DPStracker)) {
@@ -595,6 +622,12 @@ public class PlayerStatsHandle : ModPlayer {
 			if (ContentSamples.ItemsByType.ContainsKey(type)) {
 				ItemUsesToAttack.Remove(type);
 			}
+		}
+		if (tag.TryGet("TransmutationPowerMaximum", out int TransmutationPowerMaximumA)) {
+			TransmutationPowerMaximum = TransmutationPowerMaximumA;
+		}
+		if (tag.TryGet("TransmutationPower", out int TransmutationPowerA)) {
+			TransmutationPower = TransmutationPowerA;
 		}
 	}
 	public int EliteKillCount = 0;

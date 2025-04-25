@@ -18,7 +18,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -50,7 +49,7 @@ namespace BossRush.Contents.Perks {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
 			if (perkplayer.perk_PotionCleanse && item.healLife > 0) {
 				foreach (int i in player.buffType) {
-					if (Main.debuff[i]) {
+					if (Main.debuff[i] && i != BuffID.PotionSickness) {
 						player.ClearBuff(i);
 
 					}

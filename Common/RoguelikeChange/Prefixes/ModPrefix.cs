@@ -51,7 +51,7 @@ public class Cunning : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, PowerLevel * .07f);
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1 + PowerLevel * .07f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
 		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+14% critical damage") {
@@ -64,7 +64,7 @@ public class Stealthy : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, PowerLevel * .14f);
+		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage,1 + PowerLevel * .14f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
 		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+28% First strike damage") {

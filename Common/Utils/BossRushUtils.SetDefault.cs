@@ -183,12 +183,12 @@ namespace BossRush {
 			return false;
 		}
 		public static void Set_ShieldStats(this Item item, int health, float res) {
+			if (!BossRushModSystem.Shield.Contains(item.type)) {
+				BossRushModSystem.Shield.Add(item.type);
+			}
 			if (item.TryGetGlobalItem(out Shield_GlobalItem globalitem)) {
 				globalitem.ShieldPoint = health;
 				globalitem.ShieldRes = res;
-			}
-			if (!BossRushModSystem.Shield.Contains(item.type)) {
-				BossRushModSystem.Shield.Add(item.type);
 			}
 		}
 		/// <summary>

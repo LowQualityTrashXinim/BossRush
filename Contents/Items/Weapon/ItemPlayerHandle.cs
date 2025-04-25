@@ -517,7 +517,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		private int On_Player_QuickSpawnItem_IEntitySource_int_int(On_Player.orig_QuickSpawnItem_IEntitySource_int_int orig, Player self, IEntitySource source, int item, int stack) {
 			int whoamI = orig(self, source, item, stack);
-			if (whoamI < 0 && whoamI > Main.item.Length) {
+			if (whoamI < 0 && whoamI >= Main.item.Length) {
 				return whoamI;
 			}
 			Item worlditem = Main.item[whoamI];
@@ -527,7 +527,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		private int On_Player_QuickSpawnItem_IEntitySource_Item_int(On_Player.orig_QuickSpawnItem_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
 			int whoamI = orig(self, source, item, stack);
-			if (whoamI < 0 && whoamI > Main.item.Length) {
+			if (whoamI < 0 && whoamI >= Main.item.Length) {
 				return whoamI;
 			}
 			Item worlditem = Main.item[whoamI];

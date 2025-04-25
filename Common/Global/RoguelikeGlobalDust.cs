@@ -88,8 +88,16 @@ class RoguelikeGlobalDust : ModSystem {
 							modDust.OTEdistance = player.Center - modDust.orgPosition;
 						}
 					}
+					if (modDust.entityToFollow is Projectile projectile) {
+						if (modDust.OTEdistance == Vector2.Zero) {
+							modDust.OTEdistance = projectile.Center - modDust.orgPosition;
+						}
+					}
 					dustEntity.position = modDust.entityToFollow.Center + modDust.OTEdistance.Add(0, -modDust.gfxOffY);
 				}
+			}
+			if (modDust.AI != null) {
+				modDust.AI();
 			}
 		}
 	}

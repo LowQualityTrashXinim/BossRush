@@ -329,9 +329,9 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_BeeNest() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(15, 12, 2, 4);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(15, 12, 150, 100));
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.BeeNestArenaVar, 1)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.BeeNestArenaVar, Main.rand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -355,7 +355,7 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_TundraArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(11, 10, 150, 100));
 			//Generator.GenerateStructure(StringBuilder($"TundraArenaVar{1}"), rect.TopLeft().ToPoint16(), Mod);
 			ImageData arena = ImageStructureLoader.Get(
 				ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
@@ -373,9 +373,6 @@ namespace BossRush.Common.ChallengeMode {
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.IceBlock);
 				}
-				else if (color.R == 240) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.BreakableIce);
-				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 				}
@@ -385,10 +382,10 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_CrimsonArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(6, 5, 150, 100));
 			//Generator.GenerateStructure(StringBuilder($"CrimsonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 2)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, Main.rand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -418,7 +415,7 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_CorruptionArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(10, 5, 2, 4);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(10, 5, 150, 100));
 			ImageData arena = ImageStructureLoader.Get(
 				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, WorldGen.genRand.Next(1, 3))
 				);
@@ -483,10 +480,10 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_DungeonArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 2);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(13, 5, 150, 100));
 			//Generator.GenerateStructure(StringBuilder($"DungeonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, 1)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, Main.rand.Next(1, 3))
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -495,6 +492,7 @@ namespace BossRush.Common.ChallengeMode {
 					return;
 				}
 				GenerationHelper.FastRemoveTile(a, b);
+				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
 				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -503,12 +501,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-				}
-				if (color.G == 255 && color.R == 0) {
-					GenerationHelper.FastPlaceWall(a, b, WallID.PinkDungeon);
-				}
-				else {
-					GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
 				}
 			});
 			Room.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
@@ -548,9 +540,10 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_FleshArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-			//Generator.GenerateStructure(StringBuilder($"FleshArenaVar{1 + WorldGen.genRand.NextBool().ToInt()}"), rect.TopLeft().ToPoint16(), Mod);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArenaVar, 2));
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(new(7, 10, 150, 100));
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArena, Main.rand.Next(1, 3))
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -558,16 +551,16 @@ namespace BossRush.Common.ChallengeMode {
 					return;
 				}
 				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.G == 255) {
+				GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.FleshBlock);
 				}
-				else if (color.B == 255) {
+				else if (color.B == 255 && color.R == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 				}
-				GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
 			});
 			Room.Add(BiomeAreaID.FleshRealm, new List<Rectangle> { rect });
 		}

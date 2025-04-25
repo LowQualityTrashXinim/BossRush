@@ -13,6 +13,12 @@ using BossRush.Common.Global;
 namespace BossRush {
 	public static partial class BossRushUtils {
 		/// <summary>
+		/// Basically the same as getting <code>player.GetModPlayer<![CDATA[<]]>PlayerStatsHandle<![CDATA[>]]>()</code>
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static PlayerStatsHandle ModPlayerStats(this Player player) => player.GetModPlayer<PlayerStatsHandle>();
+		/// <summary>
 		/// This check if player health/life is above x%
 		/// </summary>
 		/// <param name="player"></param>
@@ -98,16 +104,34 @@ namespace BossRush {
 				//if (item.ModItem != null) {
 				//	continue;
 				//}
-				//Resetting only important stats
-				Item itemA = ContentSamples.ItemsByType[item.type];
-				item.damage = itemA.damage;
-				item.crit = itemA.crit;
-				item.ArmorPenetration = itemA.ArmorPenetration;
-				item.scale = itemA.scale;
-				item.useTime = itemA.useTime;
-				item.useAnimation = itemA.useAnimation;
-				item.shoot = itemA.shoot;
-				item.shootSpeed = itemA.shootSpeed;
+				//Item itemA = ContentSamples.ItemsByType[item.type];
+				//item.damage = itemA.damage;
+				//item.crit = itemA.crit;
+				//item.ArmorPenetration = itemA.ArmorPenetration;
+				//item.scale = itemA.scale;
+				//item.useTime = itemA.useTime;
+				//item.useAnimation = itemA.useAnimation;
+				//item.shoot = itemA.shoot;
+				//item.shootSpeed = itemA.shootSpeed;
+				int type = item.type;
+				if (ItemID.Sets.IsFood[type]) {
+					continue;
+				}
+				else if (type <= 1000) {
+					item.SetDefaults1(type);
+				}
+				else if (type <= 2001) {
+					item.SetDefaults2(type);
+				}
+				else if (type <= 3000) {
+					item.SetDefaults3(type);
+				}
+				else if (type <= 3989) {
+					item.SetDefaults4(type);
+				}
+				else {
+					item.SetDefaults5(type);
+				}
 				Set_ItemCriticalDamage(item, 0f);
 				foreach (var globalitem in item.Globals) {
 					if (globalitem == null || globalitem.Mod.Name != mod.Name) {
@@ -300,7 +324,11 @@ namespace BossRush {
 		MeleeNonCritDmg,
 		RangeNonCritDmg,
 		MagicNonCritDmg,
-		SummonNonCritDmg
+		SummonNonCritDmg,
+		MeleeCritChance,
+		RangeCritChance,
+		MagicCritChance,
+		SummonCritChance,
 		//Luck
 	}
 	public class DataStorer : ModSystem {
@@ -371,6 +399,11 @@ namespace BossRush {
 		public const float PLAYERARMLENGTH = 12f;
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
 		public Vector2 PlayerLastPositionBeforeAnimation = Vector2.Zero;
+		public int counterToFullPi = 0;
+		public override void PreUpdate() {
+			if (++counterToFullPi >= 360)
+				counterToFullPi = 0;
+		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				MouseLastPositionBeforeAnimation = Main.MouseWorld;

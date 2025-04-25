@@ -60,7 +60,7 @@ internal class ChaosModeSystem : ModSystem {
 			info.KnockBack += MathF.Round(Main.rand.NextFloat(-info.KnockBack + 1, info.KnockBack + 1), 2);
 			info.useTime += Main.rand.Next(-info.useTime + 1, info.useTime + 1);
 			info.useAnimation += Main.rand.Next(-info.useAnimation + 1, info.useAnimation + 1);
-			if (Main.rand.NextBool()) {
+			if (Main.rand.NextFloat() <= .8f) {
 				info.shoot = Main.rand.Next(ProjectileLoader.ProjectileCount);
 			}
 			info.shootSpeed += info.shootSpeed == 0 ? Main.rand.NextFloat(0, 50) : Main.rand.NextFloat(-info.shootSpeed + 1, info.shootSpeed);

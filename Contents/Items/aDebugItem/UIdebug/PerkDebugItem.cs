@@ -3,7 +3,6 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
-using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem.UIdebug;
 internal class PerkDebugItem : ModItem {

@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 			var player = Main.LocalPlayer;
 			var gamblePlayer = player.GetModPlayer<GamblePlayer>();
 			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Damage", "Damage multiply : " + gamblePlayer.GambleDamage + ""));
-			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Defense", "Defense multiply : " + gamblePlayer.GambleDef + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Defense", "Defense addition : " + gamblePlayer.GambleDef + ""));
 			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Speed", "Speed multiply : " + gamblePlayer.GambleSpeed + ""));
 			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Max life", "Max life multiply : " + gamblePlayer.GambleHP + ""));
 			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Life regen", "Life regenaration multiply : " + gamblePlayer.GambleLifeRegen + ""));

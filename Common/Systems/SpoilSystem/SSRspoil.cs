@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
 using Terraria.DataStructures;
+using BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SSRspoil {
@@ -54,11 +55,11 @@ internal class SSRspoil {
 			if (item.ModItem is Relic relic) {
 				if (Main.rand.NextBool(20)) {
 					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<GenericTemplate>(), 3);
-					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV2Template>(), 3);
-					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV3Template>(), 3);
+					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatLowHPTemplate>(), 3);
 					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV4Template>(), 3);
-					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<HealthV2Template>(), 3);
-					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<HealthV3Template>(), 3);
+					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<LowHealthTemplate>(), 3);
+					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatHighHPTemplate>(), 3);
+					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<DebuffedHealthTemplate>(), 3);
 				}
 				else {
 					for (int i = 0; i < 6; i++) {

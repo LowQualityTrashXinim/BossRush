@@ -155,7 +155,7 @@ ManaOverloaderArtifact: {
 		"Unlimited potential"
 		[c/ffff00:Positive effect] :
 			+ You constantly regen Mana regardless of mana regen cooldown
-			+ When getting hit, delete all of your mana to block incomming damage
+			+ When getting hit, deplete all of your mana to block incomming damage
 		[c/ab3e43:Negative effect] : 
 			- Damage dealt to you will be increases base on your mana
 		[c/9b9c76:Neutral effect] :
@@ -206,12 +206,11 @@ EssenceLanternArtifact: {
 		'''
 		"Enable new world perspective"
 		[c/9b9c76:Neutral effect] :
-			= Weapon damage type become generic
-			= Sometime spawn Essence Orb on hitting enemy
+			= Your attack spawn essence orb every 10s
 		[c/ffff00:Positive effect] :
-			+ Some essence orb have positive effect
+			+ Essence orb have positive effect and negative effect
 		[c/ab3e43:Negative effect] : 
-			- Some essence orb have negative effect
+			- Essence of Wither orb are present which are hamrful
 		'''
 }
 
