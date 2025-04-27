@@ -78,6 +78,7 @@ namespace BossRush.Common.Global {
 			}
 		}
 		public override void OnEnterWorld() {
+			BossRushUtils.Reflesh_GlobalItem(Mod, Player);
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}

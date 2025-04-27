@@ -208,9 +208,10 @@ namespace BossRush.Contents.Items.Toggle {
 		Roguelike_UIText artifact_text;
 		Roguelike_UIImageButton artifact_upgradebtn;
 		Roguelike_UIPanel artifactUpgradePanel;
+
 		public void ArtifactUpgradePanelAppend(Roguelike_UIPanel panel) {
 			artifactUpgradePanel = panel;
-			textpanel.Append(artifactUpgradePanel);
+			Append(artifactUpgradePanel);
 		}
 		public void ArtifactPage_Initialization(ref float marginForBtn) {
 			btn_Artifact = new UIImageButton(TextureAssets.InventoryBack);
@@ -249,15 +250,22 @@ namespace BossRush.Contents.Items.Toggle {
 
 			artifact_upgradebtn = new(TextureAssets.InventoryBack);
 			artifact_upgradebtn.UISetWidthHeight(52, 52);
-			artifact_upgradebtn.postTex = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAsEntity<PowerEnergy>());
 			artifact_upgradebtn.HAlign = 1f;
 			artifact_upgradebtn.Hide = true;
 			artifact_upgradebtn.SetVisibility(.76f, 1f);
 			artifact_upgradebtn.OnLeftClick += Artifact_upgradebtn_OnLeftClick;
 			artifactHeaderpanel.Append(artifact_upgradebtn);
+
+			artifactUpgradePanel = new();
+			artifactUpgradePanel.UISetWidthHeight(600, 600);
+			artifactUpgradePanel.HAlign = .5f;
+			artifactUpgradePanel.VAlign = .5f;
+			artifactUpgradePanel.Hide = true;
+			Append(artifactUpgradePanel);
 		}
 
 		private void Artifact_upgradebtn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+			artifactUpgradePanel.Hide = !artifactUpgradePanel.Hide;
 		}
 
 		private void Text_OnUpdate(UIElement affectedElement) {

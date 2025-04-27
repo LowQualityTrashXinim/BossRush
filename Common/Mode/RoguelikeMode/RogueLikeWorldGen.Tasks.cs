@@ -18,7 +18,10 @@ namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
 	HashSet<short> CurrentBiome = new HashSet<short>();
 }
-public class BiomeAreaID {
+/// <summary>
+/// short for Biome Arena ID 
+/// </summary>
+public class Bid {
 	public const short None = 0;
 	public const short Forest = 1;
 	public const short Jungle = 2;
@@ -38,6 +41,7 @@ public class BiomeAreaID {
 	public const short Hallow = 16;
 	public const short Ocean = 17;
 	public const short JungleTemple = 18;
+	public const short Space = 19;
 	public const short Advanced = 999;
 }
 
@@ -46,7 +50,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static TimeSpan WatchTracker = TimeSpan.Zero;
 	public override void OnModLoad() {
 		BiomeID = new();
-		FieldInfo[] field = typeof(BiomeAreaID).GetFields();
+		FieldInfo[] field = typeof(Bid).GetFields();
 		for (int i = 0; i < field.Length; i++) {
 			object? obj = field[i].GetValue(null);
 			if (obj == null) {
@@ -183,6 +187,12 @@ public struct BiomeDataBundle {
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
+	public static string ToC(int num) {
+		if (num < 0 || num >= char.MaxValue) {
+			return "" + char.MinValue;
+		}
+		return "" + (char)num;
+	}
 	public static GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	public UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
@@ -193,7 +203,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	bool IsUsingHorizontal = false;
 	int offsetcount = 0;
 	int additionaloffset = -1;
-	string[,] BiomeMapping = new string[24, 24];
+	public string[] BiomeMapping = new string[24 * 24];
+	public string GetStringDataBiomeMapping(int x, int y) => BiomeMapping[x + y * 24];
+	public int MapIndex(int x, int y) => x + y * 24;
 	[Task]
 	public void SetUp() {
 		WatchTracker = TimeSpan.Zero;
@@ -204,11 +216,16 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 		Main.spawnTileX = GridPart_X * 11;
 		Main.spawnTileY = GridPart_Y * 11;
-		for (int i = 0; i < BiomeMapping.Length; i++) {
-			for (int l = 0; l < BiomeMapping.Length; l++) {
+		//Initialize Space biome
+		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 14);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 3), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 4), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 5), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 6), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 7), 1);
 
-			}
-		}
 	}
 	[Task]
 	public void AddAltar() {
@@ -260,7 +277,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
-		//Biome.Add(BiomeAreaID.Forest);
+		//Biome.Add(Bid.Forest);
 		ResetTemplate_GenerationValue();
 		Mod.Logger.Info("Time it took to generate whole world with template :" + WatchTracker.ToString());
 	}
@@ -280,13 +297,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//[Task]
 	//public void GenerateSlimeZone() {
 	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
-	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, Bid.Slime);
 	//	//ResetTemplate_GenerationValue();
 	//}
 	//[Task]
 	//public void GenerateFleshZone() {
 	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, Bid.FleshRealm);
 	//	//ResetTemplate_GenerationValue();
 	//}
 	/*
@@ -353,7 +370,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
-		Biome.Add(BiomeAreaID.Forest, listrect);
+		Biome.Add(Bid.Forest, listrect);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
@@ -411,7 +428,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Dungeon, listrect);
+		Biome.Add(Bid.Dungeon, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -419,7 +436,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//[Task]
 	//public void Re_GenerateBeeHive() {
 	//	rect = GenerationHelper.GridPositionInTheWorld24x24(5, 8, 2, 2);
-	//	File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest);
+	//	File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, Bid.BeeNest);
 	//	ResetTemplate_GenerationValue();
 	//}
 	[Task]
@@ -485,7 +502,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Jungle, listrect);
+		Biome.Add(Bid.Jungle, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -556,7 +573,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Tundra, listrect);
+		Biome.Add(Bid.Tundra, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -625,7 +642,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Desert, listrect);
+		Biome.Add(Bid.Desert, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -694,7 +711,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Corruption, listrect);
+		Biome.Add(Bid.Corruption, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -764,7 +781,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Crimson, listrect);
+		Biome.Add(Bid.Crimson, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -831,7 +848,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Hallow, listrect);
+		Biome.Add(Bid.Hallow, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -896,7 +913,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.JungleTemple, listrect);
+		Biome.Add(Bid.JungleTemple, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -974,7 +991,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Ocean, listrect);
+		Biome.Add(Bid.Ocean, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 	}
@@ -1021,12 +1038,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 
 	/// <summary>
-	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
+	/// Use <see cref="Bid"/> for BiomeID<br/>
 	/// Will automatically handle template placing and auto handle shrine
 	/// </summary>
 	/// <param name="TileID"></param>
 	/// <param name="WallID"></param>
-	/// <param name="BiomeID">Use <see cref="BiomeAreaID"/> for BiomeID</param>
+	/// <param name="BiomeID">Use <see cref="Bid"/> for BiomeID</param>
 	public void Generate_Biome(ushort TileID, ushort WallID, short BiomeID, string ShrineType) {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			ImageData template;

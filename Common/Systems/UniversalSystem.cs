@@ -980,14 +980,14 @@ public class TeleportUI : UIState {
 
 		btn_List = new List<btn_Teleport>();
 		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
-			{ ItemID.SlimeCrown, BiomeAreaID.Slime },
-			{ ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm },
-			{ ItemID.WormFood, BiomeAreaID.Corruption },
-			{ ItemID.BloodySpine, BiomeAreaID.Crimson },
-			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
-			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
-			{ ItemID.DeerThing, BiomeAreaID.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), BiomeAreaID.Underground }
+			{ ItemID.SlimeCrown, Bid.Slime },
+			{ ItemID.SuspiciousLookingEye, Bid.FleshRealm },
+			{ ItemID.WormFood, Bid.Corruption },
+			{ ItemID.BloodySpine, Bid.Crimson },
+			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
+			{ ItemID.Abeemination, Bid.BeeNest },
+			{ ItemID.DeerThing, Bid.Tundra },
+			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underground }
 		};
 
 		for (int i = 0; i < stuffPreHM.Count; i++) {
@@ -1001,15 +1001,15 @@ public class TeleportUI : UIState {
 		}
 		if (Main.hardMode) {
 			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
-				{ ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalSkull, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalWorm, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalEye, BiomeAreaID.Hallow },
-				{ ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle },
-				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
-				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
-				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
-				{ ItemID.TruffleWorm, BiomeAreaID.Ocean }
+				{ ItemID.QueenSlimeCrystal, Bid.Hallow },
+				{ ItemID.MechanicalSkull, Bid.Hallow },
+				{ ItemID.MechanicalWorm, Bid.Hallow },
+				{ ItemID.MechanicalEye, Bid.Hallow },
+				{ ModContent.ItemType<PlanteraSpawn>(), Bid.Jungle },
+				{ ItemID.LihzahrdPowerCell, Bid.Jungle },
+				{ ModContent.ItemType<LunaticTablet>(), Bid.Dungeon },
+				{ ItemID.EmpressButterfly, Bid.Hallow },
+				{ ItemID.TruffleWorm, Bid.Ocean }
 			};
 			for (int i = 8; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
@@ -1028,14 +1028,14 @@ public class TeleportUI : UIState {
 		}
 		btn_List.Clear();
 		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
-			{ ItemID.SlimeCrown, BiomeAreaID.Slime },
-			{ ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm },
-			{ ItemID.WormFood, BiomeAreaID.Corruption },
-			{ ItemID.BloodySpine, BiomeAreaID.Crimson },
-			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
-			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
-			{ ItemID.DeerThing, BiomeAreaID.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), BiomeAreaID.Underground }
+			{ ItemID.SlimeCrown, Bid.Slime },
+			{ ItemID.SuspiciousLookingEye, Bid.FleshRealm },
+			{ ItemID.WormFood, Bid.Corruption },
+			{ ItemID.BloodySpine, Bid.Crimson },
+			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
+			{ ItemID.Abeemination, Bid.BeeNest },
+			{ ItemID.DeerThing, Bid.Tundra },
+			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underground }
 		};
 		for (int i = 0; i < stuffPreHM.Count; i++) {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
@@ -1048,15 +1048,15 @@ public class TeleportUI : UIState {
 		}
 		if (Main.hardMode) {
 			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
-				{ ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalSkull, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalWorm, BiomeAreaID.Hallow },
-				{ ItemID.MechanicalEye, BiomeAreaID.Hallow },
-				{ ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle },
-				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
-				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
-				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
-				{ ItemID.TruffleWorm, BiomeAreaID.Ocean }
+				{ ItemID.QueenSlimeCrystal, Bid.Hallow },
+				{ ItemID.MechanicalSkull, Bid.Hallow },
+				{ ItemID.MechanicalWorm, Bid.Hallow },
+				{ ItemID.MechanicalEye, Bid.Hallow },
+				{ ModContent.ItemType<PlanteraSpawn>(), Bid.Jungle },
+				{ ItemID.LihzahrdPowerCell, Bid.Jungle },
+				{ ModContent.ItemType<LunaticTablet>(), Bid.Dungeon },
+				{ ItemID.EmpressButterfly, Bid.Hallow },
+				{ ItemID.TruffleWorm, Bid.Ocean }
 			};
 			for (int i = 0; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuffHM.Count - 1));

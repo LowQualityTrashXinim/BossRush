@@ -21,7 +21,9 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		int ShortStanding = 0;
 		int OnHitDelay = 0;
 		public override void UpdateEquips() {
-			PlayerStatsHandle.AddStatsToPlayer(Player, PlayerStats.MaxHP, 1.1f, Flat: 100);
+			if (Earth) {
+				PlayerStatsHandle.AddStatsToPlayer(Player, PlayerStats.MaxHP, 1.1f, Flat: 100);
+			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Earth) {
