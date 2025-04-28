@@ -180,21 +180,7 @@ internal class UniversalSystem : ModSystem {
 	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
 	public override void Load() {
 		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
-		try {
-			if (File.Exists(FilePath)) {
-				var tag = TagIO.FromFile(FilePath);
-				FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
-				foreach (var field in fields) {
-					if (!tag.ContainsKey(field.Name)) {
-						continue;
-					}
-					field.SetValue(null, tag[field.Name]);
-				}
-			}
-		}
-		catch {
 
-		}
 
 
 		GivenBossSpawnItem = new();
@@ -235,24 +221,6 @@ internal class UniversalSystem : ModSystem {
 
 	public override void Unload() {
 		WeaponActionKey = null;
-		if (!File.Exists(FilePath)) {
-			if (!Directory.Exists(DirectoryPath)) {
-				Directory.CreateDirectory(DirectoryPath);
-			}
-
-			File.Create(FilePath);
-		}
-		try {
-			TagCompound tag = new();
-			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
-			foreach (var field in fields) {
-				tag.Set(field.Name, field.GetValue(null));
-			}
-			TagIO.ToFile(tag, FilePath);
-		}
-		catch {
-
-		}
 		InfoUI.InfoShowToItem = null;
 		GivenBossSpawnItem = null;
 

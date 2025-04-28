@@ -347,6 +347,7 @@ Mods: {
 			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
 			LauncherProjectile.DisplayName: Launcher Projectile
 			TwilightNightProjectile.DisplayName: Twilight Night Projectile
+			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
 		}
 
 		NPCs: {
@@ -2447,6 +2448,11 @@ Mods: {
 					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
 					'''
 			}
+
+			BottleOfUrine: {
+				DisplayName: Bottle Of Urine
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3050,6 +3056,11 @@ Mods: {
 			Aftershock: {
 				DisplayName: Aftershock
 				Description: Mods.BossRush.Buffs.Aftershock.Description
+			}
+
+			Urine_Debuff: {
+				DisplayName: Urine_ Debuff
+				Description: Mods.BossRush.Buffs.Urine_Debuff.Description
 			}
 		}
 

@@ -11,6 +11,7 @@ using BossRush.Common.General;
 using BossRush.Contents.Transfixion.Artifacts;
 using System.Collections.Generic;
 using Terraria.Audio;
+using BossRush.Contents.Items.Consumable;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -144,6 +145,15 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		foreach (var item in npcLoot.Get()) {
 			item.OnSuccess(rule);
 		}
+	}
+	public override Color? GetAlpha(NPC npc, Color drawColor) {
+		if (npc.HasBuff<Urine_Debuff>()) {
+			drawColor.R = 255;
+			drawColor.G = 255;
+			drawColor.B = 90;
+			return drawColor;
+		}
+		return base.GetAlpha(npc, drawColor);
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
