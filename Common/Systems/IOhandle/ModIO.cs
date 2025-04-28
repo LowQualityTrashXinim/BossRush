@@ -7,8 +7,16 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Systems.Achievement;
 
-namespace BossRush.Common.Systems.IOhandle;
-
+namespace BossRush.Common.Systems;
+public static class RoguelikeData {
+	public static int Lootbox_AmountOpen = 0;
+	public static int Run_Amount = 0;
+	public static int EliteKill = 0;
+	public static int Win_Streak = 0;
+	public static int Win_StreakRecord = 0;
+	public static int Lose_Streak = 0;
+	public static int Lose_StreakRecord = 0;
+}
 class ModIO : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
@@ -21,7 +29,8 @@ class ModIO : ModSystem {
 		try {
 			if (File.Exists(DataFilePath)) {
 				var tag = TagIO.FromFile(DataFilePath);
-				FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+				Type type = typeof(RoguelikeData);
+				FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 				foreach (var field in fields) {
 					if (!tag.ContainsKey(field.Name)) {
 						continue;
@@ -52,7 +61,8 @@ class ModIO : ModSystem {
 		}
 		try {
 			TagCompound tag = new();
-			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+			Type type = typeof(RoguelikeData);
+			FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 			foreach (var field in fields) {
 				tag.Set(field.Name, field.GetValue(null));
 			}
@@ -91,7 +101,8 @@ class ModIO : ModSystem {
 		}
 		try {
 			TagCompound tag = new();
-			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+			Type type = typeof(RoguelikeData);
+			FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 			foreach (var field in fields) {
 				tag.Set(field.Name, field.GetValue(null));
 			}

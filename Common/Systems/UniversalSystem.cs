@@ -38,11 +38,6 @@ using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 
 namespace BossRush.Common.Systems;
-public static class RoguelikeData {
-	public static int Lootbox_AmountOpen { get; set; }
-	public static int Run_Amount { get; set; }
-	public static int EliteKill { get; set; }
-}
 /// <summary>
 /// This not only include main stuff that make everything work but also contain some fixes to vanilla<br/>
 /// Also, very unholy class, do not look into it

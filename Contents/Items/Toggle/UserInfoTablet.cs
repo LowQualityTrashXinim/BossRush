@@ -466,6 +466,8 @@ namespace BossRush.Contents.Items.Toggle {
 						$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 						$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 						$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
+						$"\nRun amount : {RoguelikeData.Run_Amount}" +
+						$"\nLootbox opened: {RoguelikeData.Lootbox_AmountOpen}" +
 						$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
 					textpanel.SetText(line);
 					break;

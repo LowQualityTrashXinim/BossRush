@@ -2453,6 +2453,31 @@ Mods: {
 				DisplayName: Bottle Of Urine
 				Tooltip: ""
 			}
+
+			AcidRebirth: {
+				DisplayName: Acid Rebirth
+				Tooltip: ""
+			}
+
+			BrokenForecast: {
+				DisplayName: Broken Forecast
+				Tooltip: ""
+			}
+
+			DrainingVeil: {
+				DisplayName: Draining Veil
+				Tooltip: ""
+			}
+
+			HeartBreak: {
+				DisplayName: Heart Break
+				Tooltip: ""
+			}
+
+			Unforgiving: {
+				DisplayName: Unforgiving
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
