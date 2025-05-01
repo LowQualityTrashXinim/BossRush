@@ -3087,6 +3087,16 @@ Mods: {
 				DisplayName: Urine_ Debuff
 				Description: Mods.BossRush.Buffs.Urine_Debuff.Description
 			}
+
+			DiceRollBuff: {
+				DisplayName: Dice Roll Buff
+				Description: Mods.BossRush.Buffs.DiceRollBuff.Description
+			}
+
+			DiceRollDebuff: {
+				DisplayName: Dice Roll Debuff
+				Description: Mods.BossRush.Buffs.DiceRollDebuff.Description
+			}
 		}
 
 		Configs: {

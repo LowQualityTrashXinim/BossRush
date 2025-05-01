@@ -43,6 +43,7 @@ public class Bid {
 	public const short Ocean = 17;
 	public const short JungleTemple = 18;
 	public const short Space = 19;
+	public const short Caven = 20;
 	public const short Advanced = 999;
 }
 public struct BiomeDataBundle {
@@ -88,7 +89,9 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Dungeon, new(TileID.BlueDungeonBrick, WallID.BlueDungeon, "") },
 			{ Bid.Hallow, new(TileID.HallowedGrass, WallID.HallowedGrassUnsafe, "") },
 			{ Bid.Ocean, new(TileID.Coralstone, WallID.Sandstone, "") },
-			{ Bid.Ocean, new(TileID.Stone, WallID.ConfettiBlack, "") },
+			{ Bid.Space, new(TileID.Stone, WallID.ConfettiBlack, "") },
+			{ Bid.Caven, new(TileID.Stone, WallID.Stone, "") },
+			{ Bid.Underworld, new(TileID.Ash, WallID.None, "") },
 		};
 	}
 	public override void OnModUnload() {
@@ -350,15 +353,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(6, 21), 3);
 
 		//Initialize Underworl biome
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(8, 14), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(18, 14), 3);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 15), 13);
-		BiomeMapping[MapIndex(9, 16)] = ToC(Bid.Underworld);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(13, 16), 7);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(14, 17), 5);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(16, 18), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(16, 19), 2);
-		BiomeMapping[MapIndex(16, 20)] = ToC(Bid.Underworld);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(8, 14), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(18, 14), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(9, 15), 13);
+		BiomeMapping[MapIndex(9, 16)] = ToC(Bid.Caven);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(13, 16), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 17), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 18), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 19), 2);
+		BiomeMapping[MapIndex(16, 20)] = ToC(Bid.Caven);
 
 		//Initialize dungeon biome
 		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(10, 16), 3);
@@ -368,8 +371,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(14, 20), 2);
 
 		//Initialize crimson biome
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(11, 18), 2);
-		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(12, 18), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 9), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 4);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 13), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 14), 5);
 		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(20, 15), 4);
