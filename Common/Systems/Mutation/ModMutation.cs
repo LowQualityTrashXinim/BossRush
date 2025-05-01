@@ -66,7 +66,7 @@ public class MutationSystem : ModSystem {
 	private void On_NPC_SetDefaults(On_NPC.orig_SetDefaults orig, NPC self, int Type, NPCSpawnParams spawnparams) {
 		orig(self, Type, spawnparams);
 		if (self.TryGetGlobalNPC(out NPCMutation global)) {
-			HashSet<ModMutation> mut = list_mutationType.Select(i => ModMutationLoader.GetMutation(i)).ToHashSet();
+			HashSet<ModMutation> mut = list_mutationType.Select(ModMutationLoader.GetMutation).ToHashSet();
 			global.mutationList.AddRange(mut);
 		}
 		list_mutationType.Clear();

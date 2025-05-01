@@ -6,6 +6,9 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Projectiles;
+using BossRush.Common.Systems.Mutation;
 
 namespace BossRush.Contents.Skill;
 public class DamageUp : ModSkill {
@@ -298,7 +301,7 @@ public class AllOrNothing : ModSkill {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
 	}
 	public class AllOrNothingBuff : ModBuff {
-		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AllOrNothing>();
+		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff();
 		}
@@ -317,6 +320,106 @@ public class AllOrNothing : ModSkill {
 					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
 				}
 			}
+		}
+	}
+}
+public class CoinFlip : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 0;
+		Skill_Duration = 600;
+		Skill_CoolDown = BossRushUtils.ToMinute(.1f);
+		Skill_CanBeSelect = false;
+		Skill_Type = SkillTypeID.Skill_Stats;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+		if (Main.rand.NextBool()) {
+			int chanceDecider = Main.rand.Next(10);
+			//Positive effect
+		}
+		else {
+			int chanceDecider = Main.rand.Next(10);
+			//Negative effect
+		}
+	}
+}
+public class DiceRoll : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 0;
+		Skill_Duration = 600;
+		Skill_CoolDown = BossRushUtils.ToMinute(.1f);
+		Skill_CanBeSelect = false;
+		Skill_Type = SkillTypeID.Skill_Stats;
+	}
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+		int chance = Main.rand.Next(7);//0 , 1 , 2, 3, 4, 5
+		switch (chance) {
+			case 0:
+				Main.NewText("World smile upon your fate");
+				player.AddBuff<DiceRollBuff>(BossRushUtils.ToMinute(1));
+				break;
+			case 1:
+				Main.NewText("World smile upon your fate");
+				for (int i = 0; i < 32; i++) {
+					Projectile.NewProjectile(player.GetSource_FromThis("Skill"), player.Center, Vector2.One.Vector2DistributeEvenlyPlus(32, 360, i), ProjectileID.ShadowBeamFriendly, 100, 10, player.whoAmI);
+				}
+				break;
+			case 2:
+				Main.NewText("World smile upon your fate");
+				int amount = player.statLifeMax2 / 20 + 1;
+				for (int i = 0; i < amount; i++) {
+					Vector2 spawnPositionRandom = player.Center + Main.rand.NextVector2CircularEdge(400, 400) * Main.rand.NextFloat(.5f, 1.5f);
+					Item.NewItem(player.GetSource_FromThis("Skill"), spawnPositionRandom, ItemID.Heart);
+				}
+				break;
+			case 3:
+				Main.NewText("World smile with malice");
+				for (int i = 0; i < 20; i++) {
+					Projectile.NewProjectile(player.GetSource_FromThis("Skill"), player.Center + Vector2.One.Vector2DistributeEvenlyPlus(20, 360, i) * 600, Vector2.One.Vector2DistributeEvenlyPlus(32, 360, i), ModContent.ProjectileType<NegativeLifeProjectile>(), 0, 10, player.whoAmI);
+				}
+				break;
+			case 4:
+				Main.NewText("World smile with malice");
+				for (int i = 0; i < 10; i++) {
+					MutationSystem.AddMutation(ModMutation.GetMutationType<Tanky>());
+					NPC npc = NPC.NewNPCDirect(player.GetSource_FromThis("Skill"), player.Center + Vector2.One.Vector2DistributeEvenlyPlus(10, 360, i) * 600, NPCID.Ghost);
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().CanDenyYouFromLoot = true;
+				}
+				break;
+			case 5:
+				Main.NewText("World smile with malice");
+				player.AddBuff<DiceRollDebuff>(BossRushUtils.ToMinute(1));
+				break;
+			default:
+				Main.NewText("Error detection. Result to fall back method");
+				break;
+		}
+	}
+	public class DiceRollBuff : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff(true);
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AddStatsToPlayer(PlayerStats.PureDamage, 1.15f);
+			handle.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.15f);
+			handle.AddStatsToPlayer(PlayerStats.CritChance, 1.25f);
+			handle.AddStatsToPlayer(PlayerStats.Defense, 1.25f);
+			handle.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.85f);
+		}
+	}
+	public class DiceRollDebuff : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff(true);
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AddStatsToPlayer(PlayerStats.PureDamage, .85f);
+			handle.AddStatsToPlayer(PlayerStats.AttackSpeed, .85f);
+			handle.AddStatsToPlayer(PlayerStats.CritChance, .5f);
+			handle.AddStatsToPlayer(PlayerStats.Defense, .5f);
+			handle.AddStatsToPlayer(PlayerStats.MovementSpeed, .85f);
 		}
 	}
 }

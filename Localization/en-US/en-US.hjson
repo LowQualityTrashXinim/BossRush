@@ -1932,7 +1932,7 @@ Mods: {
 
 			LuckEssence: {
 				DisplayName: Luck's Blessing
-				Tooltip: Grant a random perk and a exclusive perk selection
+				Tooltip: Grant 1 extra random perk
 			}
 
 			WorldEssence: {

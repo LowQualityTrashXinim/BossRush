@@ -73,7 +73,6 @@ class LuckEssence : ModItem {
 			UniversalSystem.AddPerk(perkType);
 			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
-		uiSystemInstance.ActivatePerkUI(PerkUIState.GamblerState);
 		return true;
 	}
 }

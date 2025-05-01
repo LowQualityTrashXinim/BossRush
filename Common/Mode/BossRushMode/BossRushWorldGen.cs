@@ -48,7 +48,7 @@ namespace BossRush.Common.ChallengeMode {
 			if (IsInBiome(self, Bid.Tundra, Room)) {
 				self.ZoneSnow = true;
 			}
-			if (IsInBiome(self, Bid.Underground, Room)) {
+			if (IsInBiome(self, Bid.Underworld, Room)) {
 				self.ZoneUnderworldHeight = true;
 			}
 			if (IsInBiome(self, Bid.Jungle, Room)) {
@@ -154,7 +154,7 @@ namespace BossRush.Common.ChallengeMode {
 				mod.Logger.Error("Biome id doesn't exist in the dictionary");
 				return false;
 			}
-			if (BiomeID == Bid.Underground) {
+			if (BiomeID == Bid.Underworld) {
 				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
@@ -195,7 +195,7 @@ namespace BossRush.Common.ChallengeMode {
 				return false;
 			}
 			List<Rectangle> rect = Room[BiomeID];
-			if (BiomeID == Bid.Underground) {
+			if (BiomeID == Bid.Underworld) {
 				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
@@ -608,7 +608,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 			});
 
-			Room.Add(Bid.Underground, new List<Rectangle> { GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 3) });
+			Room.Add(Bid.Underworld, new List<Rectangle> { GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 3) });
 		}
 		[Task]
 		public void Readjust_Final() {

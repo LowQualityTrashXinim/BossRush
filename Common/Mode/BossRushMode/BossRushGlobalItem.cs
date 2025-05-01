@@ -58,7 +58,7 @@ internal class BossRushGlobalItem : GlobalItem {
 			return BossRushWorldGen.IsInBiome(player, Bid.Tundra, ModContent.GetInstance<BossRushWorldGen>().Room);
 		}
 		if (item.type == ModContent.ItemType<WallOfFleshSpawner>()) {
-			return BossRushWorldGen.IsInBiome(player, Bid.Underground, ModContent.GetInstance<BossRushWorldGen>().Room);
+			return BossRushWorldGen.IsInBiome(player, Bid.Underworld, ModContent.GetInstance<BossRushWorldGen>().Room);
 		}
 		return base.CanUseItem(item, player);
 	}

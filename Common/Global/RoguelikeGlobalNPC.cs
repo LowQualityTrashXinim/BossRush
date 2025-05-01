@@ -38,6 +38,10 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	/// Use this for permanent effect
 	/// </summary>
 	public float static_velocityMultiplier = 1;
+	/// <summary>
+	/// Set this to true if your NPC is a ghost NPC which can't be kill<br/>
+	/// Uses this along with <see cref="BelongToWho"/> to make it so that this NPC will die when the parent NPC is killed
+	/// </summary>
 	public bool IsAGhostEnemy = false;
 	public int BelongToWho = -1;
 	public bool CanDenyYouFromLoot = false;

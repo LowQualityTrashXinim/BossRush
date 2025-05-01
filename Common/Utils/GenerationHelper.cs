@@ -1,26 +1,17 @@
 ﻿using System;
 using Terraria;
+using System.IO;
+using System.Text;
 using Terraria.ID;
 using System.Linq;
+using Terraria.ModLoader;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.WorldGenOverhaul;
-using System.IO;
-using Terraria.ModLoader.IO;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using BossRush.Common.Systems.Achievement;
-using System.Text;
-using System.Diagnostics;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
-using BossRush.Common.RoguelikeChange.Prefixes;
-using System.Security.Permissions;
-using Terraria.ObjectData;
-using Terraria.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.Utils;
 
@@ -473,12 +464,6 @@ internal static partial class GenerationHelper {
 						tile.WallType = data.Tile_WallData;
 						if (data.Tile_WireData != 1) {
 							data.PlaceWire(holdX, holdY);
-						}
-					}
-					Point16 point = new(holdX, holdY);
-					if (TileEntity.ByPosition.ContainsKey(point)) {
-						if (TileEntity.ByPosition[point] != null) {
-							TileEntity.ByPosition[point].Update();
 						}
 					}
 				}

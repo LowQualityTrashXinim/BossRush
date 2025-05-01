@@ -950,7 +950,7 @@ public class TeleportUI : UIState {
 			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
 			{ ItemID.Abeemination, Bid.BeeNest },
 			{ ItemID.DeerThing, Bid.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underground }
+			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underworld }
 		};
 
 		for (int i = 0; i < stuffPreHM.Count; i++) {
@@ -998,7 +998,7 @@ public class TeleportUI : UIState {
 			{ ModContent.ItemType<CursedDoll>(), Bid.Dungeon },
 			{ ItemID.Abeemination, Bid.BeeNest },
 			{ ItemID.DeerThing, Bid.Tundra },
-			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underground }
+			{ ModContent.ItemType<WallOfFleshSpawner>(), Bid.Underworld }
 		};
 		for (int i = 0; i < stuffPreHM.Count; i++) {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));

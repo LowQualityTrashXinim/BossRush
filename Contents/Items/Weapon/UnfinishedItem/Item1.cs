@@ -8,10 +8,13 @@ using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon.UnfinishedItem;
 
+//Atlantic's Thurst
 class Item1 : SynergyModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
-	//public override void AddRecipes() {
-	//	CreateRecipe()
-	//		.Register();
-	//}
+	public override void AddRecipes() {
+		CreateRecipe()
+			.AddIngredient(ItemID.Trident)
+			.AddIngredient(ItemID.Swordfish)
+			.Register();
+	}
 }
