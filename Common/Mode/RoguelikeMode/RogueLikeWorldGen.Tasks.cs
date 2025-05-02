@@ -50,12 +50,14 @@ public struct BiomeDataBundle {
 	public ushort tile = 0;
 	public ushort wall = 0;
 	public string FormatFile = "";
+	public short Range = -1;
 	public BiomeDataBundle() {
 	}
-	public BiomeDataBundle(ushort t, ushort w, string file) {
+	public BiomeDataBundle(ushort t, ushort w, string file, short r = -1) {
 		tile = t;
 		wall = w;
 		FormatFile = file;
+		Range = r;
 	}
 }
 public partial class RogueLikeWorldGen : ModSystem {
@@ -89,7 +91,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Dungeon, new(TileID.BlueDungeonBrick, WallID.BlueDungeon, "Dungeon") },
 			{ Bid.Hallow, new(TileID.HallowedGrass, WallID.HallowedGrassUnsafe, "") },
 			{ Bid.Ocean, new(TileID.Coralstone, WallID.Sandstone, "") },
-			{ Bid.Space, new(TileID.Stone, WallID.None, "Space") },
+			{ Bid.Space, new(TileID.Stone, WallID.None, "Space", 18) },
 			{ Bid.Caven, new(TileID.Stone, WallID.Stone, "") },
 			{ Bid.Underworld, new(TileID.Ash, WallID.None, "") },
 			{ Bid.JungleTemple, new(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
@@ -427,7 +429,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					file = horizontal + Rand.Next(1, 10);
 				}
 				else {
-					file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, 10);
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, bundle.Range);
+					}
 				}
 				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
@@ -522,7 +529,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					file = vertical + Rand.Next(1, 10);
 				}
 				else {
-					file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, 10);
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, 10);
+					}
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
+					}
 				}
 				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
 					Console.WriteLine("Structure not found !");
