@@ -87,8 +87,26 @@ public partial class DebugWorld : ITaskCollection {
 		});
 	}
 	[Task]
+	public void GenerateSpaceTemplate_Horizontal() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 6, 64, 32));
+		int X = 0;
+		for (int i = 1; i < 10; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Space_Template" + "Horizontal" + i, new(re.X + X, re.Y, re.Width, re.Height));
+		}
+	}
+	[Task]
+	public void GenerateSpaceTemplate_Vertical() {
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 7, 32, 64));
+		int X = 0;
+		for (int i = 1; i < 10; i++) {
+			X = re.Width * i + 10 * i;
+			GenerationHelper.PlaceStructure("Template/WG_Space_Template" + "Vertical" + i, new(re.X + X, re.Y, re.Width, re.Height));
+		}
+	}
+	[Task]
 	public void GenerateTestStructure() {
-		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 6, 18, 8));
+		Rectangle re = GenerationHelper.GridPositionInTheWorld24x24(new(1, 8, 18, 8));
 		int X = 0;
 		for (int i = 1; i < 10; i++) {
 			X = re.Width * i + 10 * i;
