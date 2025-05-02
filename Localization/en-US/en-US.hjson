@@ -2478,6 +2478,11 @@ Mods: {
 				DisplayName: Unforgiving
 				Tooltip: ""
 			}
+
+			BundleOfGrenade: {
+				DisplayName: Bundle Of Grenade
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
