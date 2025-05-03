@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -99,13 +100,23 @@ internal class WeaponTicket : ModItem {
 					if (index != -1) {
 						if (Main.rand.NextBool()) {
 							type = RequestItem.ElementAt(index);
-							player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+							if (ContentSamples.ItemsByType[type].consumable) {
+								player.QuickSpawnItem(player.GetSource_OpenItem(Type), type, 350);
+							}
+							else {
+								player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+							}
 							LootBoxBase.AmmoForWeapon(player, type);
 							return true;
 						}
 					}
 					type = Main.rand.NextFromHashSet(RequestItem);
-					player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+					if (ContentSamples.ItemsByType[type].consumable) {
+						player.QuickSpawnItem(player.GetSource_OpenItem(Type), type, 350);
+					}
+					else {
+						player.QuickSpawnItem(player.GetSource_OpenItem(Type), type);
+					}
 					LootBoxBase.AmmoForWeapon(player, type);
 					return true;
 				}

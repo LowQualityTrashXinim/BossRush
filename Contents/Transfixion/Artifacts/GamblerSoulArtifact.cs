@@ -36,6 +36,9 @@ public class GamblerSoulPlayer : ModPlayer {
 		if (!GamblerSoul) {
 			return;
 		}
+		if (!Player.active) {
+			return;
+		}
 		SkillHandlePlayer skillplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		if (skillplayer.Activate &&
 			skillplayer.GetCurrentActiveSkillHolder().Contains(ModSkill.GetSkillType<CoinFlip>())
@@ -72,8 +75,20 @@ public class GamblerSoulPlayer : ModPlayer {
 			ConditionMet_ModifyHit = true;
 		}
 	}
-	public bool CheckCoolDown(int minute = 1, int second = 30) => UnstableTimer % BossRushUtils.ToMinute(minute) + BossRushUtils.ToSecond(second) == 0;
-	public bool CheckUnstableness(int minute = 1, int second = 0) => UnstableTimer % BossRushUtils.ToMinute(minute) + BossRushUtils.ToSecond(second) == 0 && UnstableTimer > 3601;
+	public bool CheckCoolDown(int minute = 1, int second = 30) {
+		int timer = BossRushUtils.ToMinute(minute) + BossRushUtils.ToSecond(second);
+		if (timer == 0) {
+			return false;
+		}
+		return UnstableTimer % timer == 0;
+	}
+	public bool CheckUnstableness(int minute = 1, int second = 0) {
+		int timer = BossRushUtils.ToMinute(minute) + BossRushUtils.ToSecond(second);
+		if (timer == 0) {
+			return UnstableTimer > 3601;
+		}
+		return UnstableTimer % timer == 0 && UnstableTimer > 3601;
+	}
 	bool ConditionMet_ItemDup = false;
 	bool ConditionMet_OnHit = false;
 	bool ConditionMet_ModifyHit = false;

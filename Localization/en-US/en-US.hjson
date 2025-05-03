@@ -2483,6 +2483,14 @@ Mods: {
 				DisplayName: Bundle Of Grenade
 				Tooltip: ""
 			}
+
+			BrokenDice: {
+				DisplayName: Broken Dice
+				Tooltip: 
+				'''
+				Dice of a dead god
+				'''
+			}
 		}
 
 		Buffs: {

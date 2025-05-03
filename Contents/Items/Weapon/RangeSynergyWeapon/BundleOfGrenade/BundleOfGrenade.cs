@@ -10,6 +10,7 @@ internal class BundleOfGrenade : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(30, 30, 40, 10f, 40, 40, ItemUseStyleID.Swing, ModContent.ProjectileType<FragmentGrenadeProjectile>(), 15, false);
 		Item.noUseGraphic = true;
+		Item.UseSound = SoundID.Item1;
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = Main.rand.Next(new int[] { ProjectileID.Grenade, ProjectileID.BouncyGrenade, ProjectileID.StickyGrenade, ProjectileID.ClusterGrenadeI, ProjectileID.GrenadeI, ModContent.ProjectileType<FragmentGrenadeProjectile>() });
