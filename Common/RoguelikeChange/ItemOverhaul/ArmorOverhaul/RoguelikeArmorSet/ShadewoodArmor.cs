@@ -16,18 +16,39 @@ public class ShadewoodHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodHelmet;
 		Add_Defense = 3;
+		AddTooltip = true;
+		ArmorName = "ShadewoodArmor";
+		TypeEquipment = Type_Head;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 1);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Base: 20);
 	}
 }
 public class ShadewoodBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodBreastplate;
 		Add_Defense = 3;
+		AddTooltip = true;
+		ArmorName = "ShadewoodArmor";
+		TypeEquipment = Type_Body;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 2);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Base: 30);
 	}
 }
 public class ShadewoodGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.ShadewoodGreaves;
 		Add_Defense = 3;
+		AddTooltip = true;
+		ArmorName = "ShadewoodArmor";
+		TypeEquipment = Type_Leg;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 1);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MovementSpeed, Additive: 1.15f);
 	}
 }
 public class ShadewoodArmorPlayer : PlayerArmorHandle {
@@ -38,7 +59,6 @@ public class ShadewoodArmorPlayer : PlayerArmorHandle {
 	public override void Armor_UpdateEquipsSet() {
 		ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
 		Player.statDefense += 7;
-		Player.moveSpeed += .15f;
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_ShadewoodArmor();

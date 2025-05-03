@@ -54,12 +54,13 @@ public class MythrilBeam : SynergyModProjectile {
 		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.SwordBeam];
 		Vector2 origin = texture.Size() * .5f;
 		if (!retargeting) {
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.Yellow, texture.Size() / 2f);
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, new(255, 255, 0, 50), Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
+			default(BeamTrail).Draw(Projectile, new(255, 255, 0, 50), texture.Size() / 2f - Main.screenPosition);
 		}
 		else {
-			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed, texture.Size() / 2f);
+			//R:199,G:21,B:133
+			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.Zero) * 10f - Main.screenPosition + origin * .5f, null, new(199, 21, 133, 50), Projectile.rotation + MathHelper.PiOver4, origin, 1f, SpriteEffects.None);
+			default(BeamTrail).Draw(Projectile, new(199, 21, 133, 50), -Main.screenPosition + texture.Size() / 2f);
 		}
 
 		return false;

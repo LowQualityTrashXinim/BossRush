@@ -95,9 +95,8 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 		public override void ScrollWheel(UIScrollWheelEvent evt) {
 			currentOffset -= MathF.Sign(evt.ScrollWheelValue);
 			currentOffset = Math.Clamp(currentOffset, 0, 1);
-
 			int offsetvalue = currentOffset * ARTIFACTS_PER_ROW;
-			int offsetlength = list_btnArtifact.Count - offsetvalue;
+			int offsetlength = list_artifactInOrder.Count - offsetvalue - 1;
 			for (int i = 0; i < list_btnArtifact.Count; i++) {
 				int arty = Math.Clamp(i + offsetvalue, 0, Artifact.ArtifactCount - 1);
 				list_btnArtifact[i].ChangeArtifactType(-1);
