@@ -13,12 +13,16 @@ using BossRush.Common.General;
 using System;
 using Terraria.Utilities;
 using System.Diagnostics;
+using System.Text;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
 	HashSet<short> CurrentBiome = new HashSet<short>();
 }
-public class BiomeAreaID {
+/// <summary>
+/// short for Biome Arena ID 
+/// </summary>
+public class Bid {
 	public const short None = 0;
 	public const short Forest = 1;
 	public const short Jungle = 2;
@@ -33,20 +37,36 @@ public class BiomeAreaID {
 	public const short Slime = 11;
 	public const short FleshRealm = 12;
 	public const short Beaches = 13;
-	public const short Underground = 14;
+	public const short Underworld = 14;
 	public const short BeeNest = 15;
 	public const short Hallow = 16;
 	public const short Ocean = 17;
 	public const short JungleTemple = 18;
+	public const short Space = 19;
+	public const short Caven = 20;
 	public const short Advanced = 999;
 }
-
+public struct BiomeDataBundle {
+	public ushort tile = 0;
+	public ushort wall = 0;
+	public string FormatFile = "";
+	public short Range = -1;
+	public BiomeDataBundle() {
+	}
+	public BiomeDataBundle(ushort t, ushort w, string file, short r = -1) {
+		tile = t;
+		wall = w;
+		FormatFile = file;
+		Range = r;
+	}
+}
 public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, string> BiomeID;
 	public static TimeSpan WatchTracker = TimeSpan.Zero;
+	public static Dictionary<short, BiomeDataBundle> dict_BiomeBundle = new();
 	public override void OnModLoad() {
 		BiomeID = new();
-		FieldInfo[] field = typeof(BiomeAreaID).GetFields();
+		FieldInfo[] field = typeof(Bid).GetFields();
 		for (int i = 0; i < field.Length; i++) {
 			object? obj = field[i].GetValue(null);
 			if (obj == null) {
@@ -60,10 +80,27 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 		Biome = new();
 		TrialArea = new();
+
+		dict_BiomeBundle = new() {
+			{ Bid.Forest, new(TileID.Dirt, WallID.Dirt, "") },
+			{ Bid.Jungle, new(TileID.Mud, WallID.Jungle, "") },
+			{ Bid.Tundra, new(TileID.SnowBlock, WallID.SnowWallUnsafe, "") },
+			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
+			{ Bid.Corruption, new(TileID.Ebonstone, WallID.EbonstoneUnsafe, "") },
+			{ Bid.Crimson, new(TileID.Crimstone, WallID.CrimstoneUnsafe, "") },
+			{ Bid.Dungeon, new(TileID.BlueDungeonBrick, WallID.BlueDungeon, "Dungeon") },
+			{ Bid.Hallow, new(TileID.HallowedGrass, WallID.HallowedGrassUnsafe, "") },
+			{ Bid.Ocean, new(TileID.Coralstone, WallID.Sandstone, "") },
+			{ Bid.Space, new(TileID.Stone, WallID.None, "Space", 18) },
+			{ Bid.Caven, new(TileID.Stone, WallID.Stone, "") },
+			{ Bid.Underworld, new(TileID.Ash, WallID.None, "") },
+			{ Bid.JungleTemple, new(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
+		};
 	}
 	public override void OnModUnload() {
 		BiomeID = null;
 		TrialArea = null;
+		dict_BiomeBundle = null;
 	}
 
 	public static int GridPart_X = Main.maxTilesX / 24;
@@ -170,19 +207,26 @@ public partial class RogueLikeWorldGen : ModSystem {
 		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
 	}
 }
-public struct BiomeDataBundle {
-	public ushort tile = 0;
-	public ushort wall = 0;
-	public string FormatFile = "";
-	public BiomeDataBundle() {
-	}
-	public BiomeDataBundle(ushort t, ushort w, string file) {
-		tile = t;
-		wall = w;
-		FormatFile = file;
-	}
-}
 public partial class RogueLikeWorldGen : ITaskCollection {
+	public static string ToC(int num) {
+		if (num < 0 || num >= char.MaxValue) {
+			return "" + char.MinValue;
+		}
+		return "" + (char)num;
+	}
+	public static string ToC(int[] num) {
+		if (num.Length < 1) {
+			return "" + char.MinValue;
+		}
+		StringBuilder builder = new();
+		for (int i = 0; i < num.Length; i++) {
+			if (num[i] < 0 || num[i] >= char.MaxValue) {
+				return "" + char.MinValue;
+			}
+			builder.Append(num[i]);
+		}
+		return builder.ToString();
+	}
 	public static GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	public UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
@@ -193,7 +237,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	bool IsUsingHorizontal = false;
 	int offsetcount = 0;
 	int additionaloffset = -1;
-	string[,] BiomeMapping = new string[24, 24];
+	public string[] BiomeMapping = new string[24 * 24];
+	public string GetStringDataBiomeMapping(int x, int y) {
+		x = Math.Clamp(x, 0, 23);
+		y = Math.Clamp(y, 0, 23);
+		string assign = BiomeMapping[x + y * 24];
+		if (assign == null) {
+			return " ";
+		}
+		return assign;
+	}
+	public int MapIndex(int x, int y) => x + y * 24;
 	[Task]
 	public void SetUp() {
 		WatchTracker = TimeSpan.Zero;
@@ -204,11 +258,146 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 		Main.spawnTileX = GridPart_X * 11;
 		Main.spawnTileY = GridPart_Y * 11;
-		for (int i = 0; i < BiomeMapping.Length; i++) {
-			for (int l = 0; l < BiomeMapping.Length; l++) {
 
-			}
-		}
+		Stopwatch watch = new();
+		watch.Start();
+		//Initialize Space biome
+		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 14);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 3), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 4), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 5), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 6), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 7), 1);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(11, 1), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(12, 2), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(13, 3), 3);
+
+		//Initialize jungle temple
+		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(7, 1), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 2), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 3), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.JungleTemple), MapIndex(6, 4), 4);
+
+		//Initialize Hallow biome
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 0), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(16, 1), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(17, 2), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(15, 3), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Hallow), MapIndex(20, 4), 4);
+
+		//Initialize Jungle biome
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(10, 4), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(6, 5), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 6), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(7, 7), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(8, 8), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Jungle), MapIndex(8, 9), 7);
+
+		//Initialize Desert biome
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(13, 4), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(14, 5), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(16, 6), 8);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(15, 7), 9);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(14, 8), 10);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(15, 9), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(20, 9), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Desert), MapIndex(22, 10), 2);
+
+		//Initialize Tundra biome
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(5, 6), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 7), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 8), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 9), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 10), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 11), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(2, 12), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(3, 13), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(4, 14), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(5, 15), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Tundra), MapIndex(7, 16), 2);
+
+		//Initialize Forest biome
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(8, 10), 10);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 11), 12);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(6, 12), 13);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(7, 13), 12);
+		Array.Fill(BiomeMapping, ToC(Bid.Forest), MapIndex(15, 14), 3);
+
+		//Initialize Ocean biome
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(4, 5), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(2, 6), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(1, 7), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 8), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 9), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 10), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 11), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 12), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 13), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 14), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 15), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 16), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 17), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 18), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(0, 19), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(1, 20), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Ocean), MapIndex(4, 21), 2);
+
+		//Initialize Corruption biome
+		BiomeMapping[MapIndex(2, 13)] = ToC(Bid.Corruption);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 14), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 15), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(2, 16), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(3, 17), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(4, 18), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(4, 19), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(5, 20), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Corruption), MapIndex(6, 21), 3);
+
+		//Initialize Caven biome
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(8, 14), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(18, 14), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(9, 15), 13);
+		BiomeMapping[MapIndex(9, 16)] = ToC(Bid.Caven);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(13, 16), 7);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(14, 17), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 18), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Caven), MapIndex(16, 19), 2);
+		BiomeMapping[MapIndex(16, 20)] = ToC(Bid.Caven);
+
+		//Initialize dungeon biome
+		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(10, 16), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(9, 17), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(10, 18), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(11, 19), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Dungeon), MapIndex(14, 20), 2);
+
+		//Initialize crimson biome
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 9), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 10), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 11), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 12), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(20, 13), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(21, 14), 3);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(22, 15), 2);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(20, 16), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(19, 17), 5);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 18), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(18, 19), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(17, 20), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Crimson), MapIndex(15, 21), 5);
+
+		//Initialize Underworld biome
+		BiomeMapping[MapIndex(0, 20)] = ToC(Bid.Underworld);
+		BiomeMapping[MapIndex(23, 20)] = ToC(Bid.Underworld);
+		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(10, 20), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(0, 21), 4);
+		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 21), 6);
+		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
+
+		watch.Stop();
+		Mod.Logger.Info(watch.ToString());
 	}
 	[Task]
 	public void AddAltar() {
@@ -218,6 +407,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		string TemplatePath = "Template/WG_Template";
 		ushort tileID = TileID.Dirt;
 		ushort wallID = WallID.Dirt;
+		string horizontal = TemplatePath + "Horizontal";
+		string vertical = TemplatePath + "Vertical";
+		string file = "";
+		BiomeDataBundle bundle = new();
+		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
+			bundle = value;
+		}
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
 				counter.X += 32;
@@ -228,27 +424,209 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 10), re, (x, y, t) => {
-					if (WorldGen.InWorld(x, y)) {
-						t.Tile_Type = tileID;
-						t.Tile_WallData = wallID;
-						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+
+				if (bundle.FormatFile == "") {
+					file = horizontal + Rand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, 10);
 					}
-				}, Main.rand.Next(styles));
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateHorizontal" + Rand.Next(1, bundle.Range);
+					}
+				}
+				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+					Console.WriteLine("Structure not found !");
+					continue;
+				}
+				int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+				switch (Rand.Next(styles)) {
+					case GenerateStyle.None:
+						for (int i = 0; i < datalist.Count; i++) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = 0; l < gdata.Count; l++) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipHorizon:
+						for (int i = 0; i < datalist.Count; i++) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = gdata.Count; l > 0; l--) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipVertical:
+						for (int i = datalist.Count - 1; i >= 0; i--) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = 0; l < gdata.Count; l++) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipBoth:
+						for (int i = datalist.Count - 1; i >= 0; i--) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = gdata.Count; l > 0; l--) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+				}
 			}
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 10), re, (x, y, t) => {
-					if (WorldGen.InWorld(x, y)) {
-						t.Tile_Type = tileID;
-						t.Tile_WallData = wallID;
-						GenerationHelper.Structure_PlaceTile(x, y, ref t);
+				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+				if (bundle.FormatFile == "") {
+					file = vertical + Rand.Next(1, 10);
+				}
+				else {
+					if (bundle.Range == -1) {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, 10);
 					}
-				}, Main.rand.Next(styles));
+					else {
+						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
+					}
+				}
+				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+					Console.WriteLine("Structure not found !");
+					continue;
+				}
+				int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+				switch (Rand.Next(styles)) {
+					case GenerateStyle.None:
+						for (int i = 0; i < datalist.Count; i++) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = 0; l < gdata.Count; l++) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipHorizon:
+						for (int i = 0; i < datalist.Count; i++) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = gdata.Count; l > 0; l--) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipVertical:
+						for (int i = datalist.Count - 1; i >= 0; i--) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = 0; l < gdata.Count; l++) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+					case GenerateStyle.FlipBoth:
+						for (int i = datalist.Count - 1; i >= 0; i--) {
+							GenPassData gdata = datalist[i];
+							TileData data = gdata.tileData;
+							data.Tile_Type = tileID;
+							data.Tile_WallData = wallID;
+							for (int l = gdata.Count; l > 0; l--) {
+								if (offsetY >= re.Height) {
+									offsetY = 0;
+									offsetX++;
+								}
+								holdX = X + offsetX; holdY = Y + offsetY;
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+								offsetY++;
+							}
+						}
+						break;
+				}
 			}
 			if (counter.X < rect.Width) {
 				counter.X += re.Width;
+				if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(GetStringDataBiomeMapping(counter.X / GridPart_X, counter.Y / GridPart_Y)[0]), out BiomeDataBundle value1)) {
+					bundle = value1;
+				}
+				tileID = bundle.tile;
+				wallID = bundle.wall;
 			}
 			else {
 				offsetcount++;
@@ -260,9 +638,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
-		//Biome.Add(BiomeAreaID.Forest);
+		//Biome.Add(Bid.Forest);
 		ResetTemplate_GenerationValue();
-		Mod.Logger.Info("Time it took to generate whole world with template :" + WatchTracker.ToString());
+		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
 	}
 	public void ResetTemplate_GenerationValue() {
 		rect = new();
@@ -280,13 +658,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//[Task]
 	//public void GenerateSlimeZone() {
 	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
-	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, Bid.Slime);
 	//	//ResetTemplate_GenerationValue();
 	//}
 	//[Task]
 	//public void GenerateFleshZone() {
 	//	//rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm);
+	//	//File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, Bid.FleshRealm);
 	//	//ResetTemplate_GenerationValue();
 	//}
 	/*
@@ -353,7 +731,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
-		Biome.Add(BiomeAreaID.Forest, listrect);
+		Biome.Add(Bid.Forest, listrect);
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
@@ -411,7 +789,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Dungeon, listrect);
+		Biome.Add(Bid.Dungeon, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -419,7 +797,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	//[Task]
 	//public void Re_GenerateBeeHive() {
 	//	rect = GenerationHelper.GridPositionInTheWorld24x24(5, 8, 2, 2);
-	//	File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, BiomeAreaID.BeeNest);
+	//	File_GenerateBiomeTemplate("Template/WG_Template", TileID.BeeHive, WallID.Hive, Bid.BeeNest);
 	//	ResetTemplate_GenerationValue();
 	//}
 	[Task]
@@ -485,7 +863,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Jungle, listrect);
+		Biome.Add(Bid.Jungle, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -556,7 +934,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Tundra, listrect);
+		Biome.Add(Bid.Tundra, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -625,7 +1003,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Desert, listrect);
+		Biome.Add(Bid.Desert, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -694,7 +1072,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Corruption, listrect);
+		Biome.Add(Bid.Corruption, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -764,7 +1142,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Crimson, listrect);
+		Biome.Add(Bid.Crimson, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -831,7 +1209,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Hallow, listrect);
+		Biome.Add(Bid.Hallow, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -896,7 +1274,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.JungleTemple, listrect);
+		Biome.Add(Bid.JungleTemple, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
@@ -974,7 +1352,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		Biome.Add(BiomeAreaID.Ocean, listrect);
+		Biome.Add(Bid.Ocean, listrect);
 		ResetTemplate_GenerationValue();
 		watch.Stop();
 	}
@@ -1021,12 +1399,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 
 	/// <summary>
-	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
+	/// Use <see cref="Bid"/> for BiomeID<br/>
 	/// Will automatically handle template placing and auto handle shrine
 	/// </summary>
 	/// <param name="TileID"></param>
 	/// <param name="WallID"></param>
-	/// <param name="BiomeID">Use <see cref="BiomeAreaID"/> for BiomeID</param>
+	/// <param name="BiomeID">Use <see cref="Bid"/> for BiomeID</param>
 	public void Generate_Biome(ushort TileID, ushort WallID, short BiomeID, string ShrineType) {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			ImageData template;

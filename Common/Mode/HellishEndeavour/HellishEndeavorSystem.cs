@@ -6,6 +6,7 @@ using BossRush.Common.Global;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using Terraria.Localization;
 
 namespace BossRush.Common.Mode.HellishEndeavour;
 internal class HellishEndeavorSystem : ModSystem {
@@ -36,9 +37,7 @@ public class HellishEndeavourPlayer : ModPlayer {
 	}
 	public override void OnHurt(Player.HurtInfo info) {
 		if (HellishEndeavorSystem.Hellish()) {
-			PlayerDeathReason reason = new PlayerDeathReason();
-			reason.SourceCustomReason = $"{Player.name} has fail the challenge";
-			Player.KillMe(reason, 9999999999, info.HitDirection);
+			Player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{Player.name} has fail the challenge")), 9999999999, info.HitDirection);
 			return;
 		}
 	}

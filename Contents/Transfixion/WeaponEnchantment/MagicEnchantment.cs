@@ -615,9 +615,17 @@ public class SkyFacture : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = 12;
-			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
-			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + Main.rand.NextFloat(100, 150), target.height + Main.rand.NextFloat(100, 150));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.SkyFracture, 22 + item.damage, item.knockBack, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ProjectileID.SkyFracture) {
+			globalItem.Item_Counter1[index] = 12;
+			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + Main.rand.NextFloat(100, 150), target.height + Main.rand.NextFloat(100, 150));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ProjectileID.SkyFracture, 22 + player.HeldItem.damage, player.HeldItem.knockBack, player.whoAmI);
 		}
 	}
 }
@@ -645,14 +653,14 @@ public class CrystalSerpent : ModEnchantment {
 		if (!proj.Check_ItemTypeSource(player.HeldItem.type) && globalItem.Item_Counter2[index] <= 0) {
 			return;
 		}
-		if (Main.rand.NextBool(10)) {
+		if (Main.rand.NextBool(10) && player.ownedProjectileCounts[ModContent.ProjectileType<CrystalSerpentProjectile>()] < 5) {
 			globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
 			Item item = player.HeldItem;
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(10) && globalItem.Item_Counter2[index] <= 0) {
+		if (Main.rand.NextBool(10) && globalItem.Item_Counter2[index] <= 0 && player.ownedProjectileCounts[ModContent.ProjectileType<CrystalSerpentProjectile>()] < 5) {
 			globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
 		}

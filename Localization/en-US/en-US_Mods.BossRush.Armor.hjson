@@ -79,21 +79,52 @@ RichMahoganyArmor: {
 		'''
 }
 
-ShadewoodArmor.SetBonus:
-	'''
-	Increase defense by 7 and movement speed by 15%
-	Striking an enemy creates a ring that deals 30 damage every 3 seconds, 
-	debuff enemies with ichor and heal you for 1hp
-	'''
-EbonwoodArmor.SetBonus:
-	'''
-	When in corruption biome :
-	Increase defense by 6
-	Increase movement speed by 35%
-	Increase damage by 5%
-	You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
-	'''
-
+ShadewoodArmor: {
+	Head:
+		'''
+		Increases life regeneration 1hp/s
+		+20 maximum health
+		'''
+	Body:
+		'''
+		Increases life regeneration 2hp/s
+		+30 maximum health
+		'''
+	Leg:
+		'''
+		Increases life regeneration 1hp/s
+		15% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defense by 7
+		Striking an enemy creates a ring that deals 30 damage every 3 seconds, 
+		debuff enemies with ichor and heal you for 1hp
+		'''
+}
+EbonwoodArmor: {
+	Head:
+		'''
+		5% damage
+		10% Critical damage
+		'''
+	Body:
+		'''
+		1.11x damage
+		12% Critical damage
+		'''
+	Leg:
+		'''
+		3% damage
+		8% Critical damage
+		17% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defense by 6, damage by 10% and movementspeed by 18%
+		You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
+		'''
+}
 AshwoodArmor: {
 	Head:
 		'''

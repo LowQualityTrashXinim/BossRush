@@ -96,8 +96,7 @@ public class WyvernWrathMainProjectile : SynergyModProjectile {
 		Main.dust[dust].noGravity = true;
 		Asset<Texture2D> texture = TextureAssets.Projectile[Type];
 		Main.instance.LoadProjectile(ProjectileID.SkyFracture);
-
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center - Main.screenPosition, new Rectangle(Projectile.frame * 38, 0, 38, 38), Color.Turquoise, Projectile.velocity.ToRotation() + MathHelper.PiOver4, new Vector2(38) / 2f, 1f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center - Main.screenPosition, new Rectangle(Projectile.frame * 38, 0, 38, 38), new(64, 224, 208, 0), Projectile.velocity.ToRotation() + MathHelper.PiOver4, new Vector2(38) / 2f, 1f, SpriteEffects.None);
 		default(WyvernTrailMain).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size * 0.5f);
 
 		return false;

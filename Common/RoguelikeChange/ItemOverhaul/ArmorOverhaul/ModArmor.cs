@@ -183,8 +183,8 @@ public abstract class ModArmorPiece : ModType {
 	/// <summary>
 	/// Uses this to add always update effect such as damage increases
 	/// </summary>
-	/// <param name="player"></param>
-	/// <param name="item"></param>
+	/// <param name="player">the player</param>
+	/// <param name="item">the equipped item</param>
 	public virtual void UpdateEquip(Player player, Item item) { }
 	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{ArmorName}.{TypeEquipment}");
 	protected override void Register() {

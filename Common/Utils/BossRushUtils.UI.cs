@@ -229,6 +229,10 @@ namespace BossRush {
 		public bool Hide = false;
 		public Roguelike_UITextPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			this.IgnoresMouseInteraction = Hide;
+		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (Hide) {
 				return;
@@ -264,6 +268,10 @@ namespace BossRush {
 	public class Roguelike_UIPanel : UIPanel {
 		public bool Hide = false;
 		public Roguelike_UIPanel() {
+		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			this.IgnoresMouseInteraction = Hide;
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (Hide) {
@@ -319,6 +327,7 @@ namespace BossRush {
 		/// </summary>
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
+		public string HoverText = null;
 		public void SetPostTex(Asset<Texture2D> tex) {
 			postTex = tex;
 		}
@@ -330,6 +339,9 @@ namespace BossRush {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
+			if (HoverText != null) {
+				Main.instance.MouseText(HoverText);
+			}
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {

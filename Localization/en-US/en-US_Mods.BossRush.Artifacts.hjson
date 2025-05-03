@@ -189,14 +189,28 @@ GamblerSoulArtifact: {
 	DisplayName: Gambler's Soul
 	Description:
 		'''
-		"Playing the RNG game"
+		"Do you want to taste luck ?"
 		[c/ffff00:Positive effect] :
-			+ Right at the start you gain option to choose 1 exclusive perk and get 1 free exclusive spell
-			+ Increases lootbox drop by 1
+			+ Grant you exclusive coin flip and dice roll skill
 		[c/ab3e43:Negative effect] : 
-			- Taken damage are increases by 20% ( Final damage )
+			- After 1 minute, not using coin flip or dice roll skill will unstable your character
+			Certain interaction may lead to death
 		[c/9b9c76:Neutral effect] :
 			= Damage variant increases from 15% to 65%
+		'''
+}
+
+SmallLootBoxArtifact: {
+	DisplayName: Small Lootbox
+	Description:
+		'''
+		"Start the game with more item, but at a cost"
+		[c/ffff00:Positive effect] :
+			+ Give you 1 perk and 1 extra spell
+			+ Increases lootbox drop by 1
+		[c/ab3e43:Negative effect] : 
+			- Taken damage are increases by 35% ( Final damage )
+			- Decreases your damage by 20%
 		'''
 }
 

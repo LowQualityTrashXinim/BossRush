@@ -430,7 +430,7 @@ namespace BossRush.Contents.Perks {
 			string Name = ModPerkLoader.GetPerk(Type).Name;
 			for (int i = Name.Length - 1; i > 0; i--) {
 				if (char.IsUpper(Name[i])) {
-					Name = Name.Substring(0, i) + " " + Name.Substring(i);
+					Name = string.Concat(Name.AsSpan(0, i), " ", Name.AsSpan(i));
 				}
 			}
 			return Name;

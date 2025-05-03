@@ -14,6 +14,21 @@ namespace BossRush.Contents.Projectiles {
 			Projectile.penetrate = 1;
 			Projectile.timeLeft = 60;
 		}
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			if (Projectile.Center.IsCloseToPosition(player.Center, 30)) {
+				if (player.statLife - 20 < 0) {
+					player.statLife = 1;
+				}
+				else {
+					player.statLife -= 20;
+				}
+				Projectile.Kill();
+			}
+		}
+		public override Color? GetAlpha(Color lightColor) {
+			return Color.Black;
+		}
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrail(lightColor);
 			return base.PreDraw(ref lightColor);

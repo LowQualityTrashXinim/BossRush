@@ -52,8 +52,6 @@ public abstract class ModAchievement {
 
 public class AchievementSystem : ModSystem {
 	public static readonly List<ModAchievement> Achievements = [];
-	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
-	private static string FilePath => Path.Join(DirectoryPath, "Achievements");
 	public static ModAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
 	public static ModAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
 	public static bool IsAchieved(string AchievementName) => GetAchievement(AchievementName).Achieved;
@@ -62,99 +60,6 @@ public class AchievementSystem : ModSystem {
 			item.SetStaticDefault();
 		}
 	}
-	public override void Load() {
-		// Loading achievements
-		On_Main.Main_Exiting += On_Main_Main_Exiting;
-		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(ModAchievement)))) {
-			var achievement = (ModAchievement)Activator.CreateInstance(type);
-			Achievements.Add(achievement);
-		}
-
-		try {
-			if (File.Exists(FilePath)) {
-				var tag = TagIO.FromFile(FilePath);
-				foreach (var achievement in Achievements) {
-					if (tag.ContainsKey(achievement.Name)) {
-						achievement.Achieved = true;
-					}
-				}
-			}
-		}
-		catch {
-
-		}
-	}
-
-	private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
-		var tag = new TagCompound();
-		foreach (var achievement in Achievements) {
-			if (achievement.Achieved) {
-				tag.Set(achievement.Name, 0);
-			}
-		}
-
-		if (!File.Exists(FilePath)) {
-			if (!Directory.Exists(DirectoryPath)) {
-				Directory.CreateDirectory(DirectoryPath);
-			}
-
-			File.Create(FilePath);
-		}
-		try {
-			TagIO.ToFile(tag, FilePath);
-		}
-		catch {
-
-		}
-	}
-
-	public override void Unload() {
-		// Saving achievements
-		var tag = new TagCompound();
-		foreach (var achievement in Achievements) {
-			if (achievement.Achieved) {
-				tag.Set(achievement.Name, 0);
-			}
-		}
-
-		if (!File.Exists(FilePath)) {
-			if (!Directory.Exists(DirectoryPath)) {
-				Directory.CreateDirectory(DirectoryPath);
-			}
-
-			File.Create(FilePath);
-		}
-		try {
-			TagIO.ToFile(tag, FilePath);
-		}
-		catch {
-
-		}
-	}
-	public override void OnModUnload() {
-		// Saving achievements
-		var tag = new TagCompound();
-		foreach (var achievement in Achievements) {
-			if (achievement.Achieved) {
-				tag.Set(achievement.Name, 0);
-			}
-		}
-
-		if (!File.Exists(FilePath)) {
-			if (!Directory.Exists(DirectoryPath)) {
-				Directory.CreateDirectory(DirectoryPath);
-			}
-
-			File.Create(FilePath);
-		}
-		try {
-			TagIO.ToFile(tag, FilePath);
-		}
-		catch {
-
-		}
-	}
-
 	public override void PostUpdateEverything() {
 		foreach (var achievement in Achievements) {
 			if (achievement.Condition()) {
@@ -479,22 +384,6 @@ public class AchievementUI : UIState {
 			btn.SetAchievement(achievement.Name);
 			txt_Achievement[i].SetText(achievement.DisplayName);
 		}
-	}
-
-	public override void ScrollWheel(UIScrollWheelEvent evt) {
-		//RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
-		//RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
-
-		//for (int i = 0; i < AchievementSystem.Achievements.Count; i++) {
-		//	if (i >= btn_Achievement.Count) {
-		//		break;
-		//	}
-		//	btn_Achievement[i].SetAchievement("");
-		//	if (i + RowOffSet >= AchievementSystem.Achievements.Count) {
-		//		continue;
-		//	}
-		//	btn_Achievement[i].SetAchievement(AchievementSystem.Achievements[i + RowOffSet].Name);
-		//}
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);

@@ -86,12 +86,6 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static char ConvertNumbericValueToChar(int num) {
-			if(num < 0 || num > 255) {
-				return char.MinValue;
-			}
-			return (char)num;
-		}
 
 		public static Color ToColor(this Vector4 v) {
 			return new Color(v.X, v.Y, v.Z, v.W);

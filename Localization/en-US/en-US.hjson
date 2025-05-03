@@ -347,8 +347,7 @@ Mods: {
 			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
 			LauncherProjectile.DisplayName: Launcher Projectile
 			TwilightNightProjectile.DisplayName: Twilight Night Projectile
-			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
-			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
+			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
 		}
 
 		NPCs: {
@@ -1937,7 +1936,7 @@ Mods: {
 
 			LuckEssence: {
 				DisplayName: Luck's Blessing
-				Tooltip: Grant a random perk and a exclusive perk selection
+				Tooltip: Grant 1 extra random perk
 			}
 
 			WorldEssence: {
@@ -2520,6 +2519,46 @@ Mods: {
 					Enemy hit by the shell directly get inflicted with Aftershock effect
 					After shock effect lower enemy defenses by 20 and reduce their velocity by 55%
 					'''
+			}
+
+			BottleOfUrine: {
+				DisplayName: Bottle Of Urine
+				Tooltip: ""
+			}
+
+			AcidRebirth: {
+				DisplayName: Acid Rebirth
+				Tooltip: ""
+			}
+
+			BrokenForecast: {
+				DisplayName: Broken Forecast
+				Tooltip: ""
+			}
+
+			DrainingVeil: {
+				DisplayName: Draining Veil
+				Tooltip: ""
+			}
+
+			HeartBreak: {
+				DisplayName: Heart Break
+				Tooltip: ""
+			}
+
+			Unforgiving: {
+				DisplayName: Unforgiving
+				Tooltip: ""
+			}
+
+			BundleOfGrenade: {
+				DisplayName: Bundle Of Grenade
+				Tooltip: ""
+			}
+
+			BrokenDice: {
+				DisplayName: Broken Dice
+				Tooltip: Dice of a dead god
 			}
 		}
 
@@ -3124,6 +3163,21 @@ Mods: {
 			Aftershock: {
 				DisplayName: Aftershock
 				Description: Mods.BossRush.Buffs.Aftershock.Description
+			}
+
+			Urine_Debuff: {
+				DisplayName: Urine_ Debuff
+				Description: Mods.BossRush.Buffs.Urine_Debuff.Description
+			}
+
+			DiceRollBuff: {
+				DisplayName: Dice Roll Buff
+				Description: Mods.BossRush.Buffs.DiceRollBuff.Description
+			}
+
+			DiceRollDebuff: {
+				DisplayName: Dice Roll Debuff
+				Description: Mods.BossRush.Buffs.DiceRollDebuff.Description
 			}
 		}
 

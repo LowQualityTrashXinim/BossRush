@@ -25,6 +25,7 @@ using BossRush.Common.Utils;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Common.General;
 using BossRush.Contents.Skill;
+using BossRush.Contents.Transfixion.Artifacts;
 
 namespace BossRush.Common.Global {
 	/// <summary>
@@ -78,6 +79,7 @@ namespace BossRush.Common.Global {
 			}
 		}
 		public override void OnEnterWorld() {
+			BossRushUtils.Reflesh_GlobalItem(Mod, Player);
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
@@ -240,6 +242,10 @@ namespace BossRush.Common.Global {
 				}
 				yield return new Item(ItemID.LifeCrystal, LifeCrystal);
 				yield return new Item(ItemID.ManaCrystal, ManaCrystal);
+				if(Player.HasArtifact<SmallLootBoxArtifact>()) {
+					yield return new Item(ModContent.ItemType<WorldEssence>());
+					yield return new Item(ModContent.ItemType<SkillLootBox>());
+				}
 			}
 		}
 		private void SpawnItem() {

@@ -35,30 +35,30 @@ namespace BossRush.Common.ChallengeMode {
 			if (tileSafely != null)
 				self.behindBackWall = tileSafely.WallType > 0;
 
-			if (IsInBiome(self, BiomeAreaID.Corruption, Room)) {
+			if (IsInBiome(self, Bid.Corruption, Room)) {
 				self.ZoneCorrupt = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
+			if (IsInBiome(self, Bid.Crimson, Room)) {
 				self.ZoneCrimson = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
+			if (IsInBiome(self, Bid.BeeNest, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
+			if (IsInBiome(self, Bid.Tundra, Room)) {
 				self.ZoneSnow = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
+			if (IsInBiome(self, Bid.Underworld, Room)) {
 				self.ZoneUnderworldHeight = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Jungle, Room)) {
+			if (IsInBiome(self, Bid.Jungle, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Hallow, Room)) {
+			if (IsInBiome(self, Bid.Hallow, Room)) {
 				self.ZoneHallow = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.Ocean, Room)) {
+			else if (IsInBiome(self, Bid.Ocean, Room)) {
 				self.ZoneBeach = true;
 			}
 			if (ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
@@ -154,7 +154,7 @@ namespace BossRush.Common.ChallengeMode {
 				mod.Logger.Error("Biome id doesn't exist in the dictionary");
 				return false;
 			}
-			if (BiomeID == BiomeAreaID.Underground) {
+			if (BiomeID == Bid.Underworld) {
 				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
@@ -195,7 +195,7 @@ namespace BossRush.Common.ChallengeMode {
 				return false;
 			}
 			List<Rectangle> rect = Room[BiomeID];
-			if (BiomeID == BiomeAreaID.Underground) {
+			if (BiomeID == Bid.Underworld) {
 				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
@@ -295,7 +295,7 @@ namespace BossRush.Common.ChallengeMode {
 			rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 2, 1));
 			Main.spawnTileX = rect.X + ((rect.Right - rect.X) / 2);
 			Main.spawnTileY = rect.Y + ((rect.Bottom - rect.Y) / 2);
-			Room.Add(BiomeAreaID.Forest, rectList);
+			Room.Add(Bid.Forest, rectList);
 		}
 		[Task]
 		public void Create_JungleArena() {
@@ -325,7 +325,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Jungle);
 			});
-			Room.Add(BiomeAreaID.Jungle, new List<Rectangle> { rect });
+			Room.Add(Bid.Jungle, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_BeeNest() {
@@ -351,7 +351,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Hive);
 			});
-			Room.Add(BiomeAreaID.BeeNest, new List<Rectangle> { rect });
+			Room.Add(Bid.BeeNest, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_TundraArena() {
@@ -378,7 +378,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.IceUnsafe);
 			});
-			Room.Add(BiomeAreaID.Tundra, new List<Rectangle> { rect });
+			Room.Add(Bid.Tundra, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_CrimsonArena() {
@@ -411,7 +411,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CrimsonUnsafe1);
 			});
-			Room.Add(BiomeAreaID.Crimson, new List<Rectangle> { rect });
+			Room.Add(Bid.Crimson, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_CorruptionArena() {
@@ -443,7 +443,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
-			Room.Add(BiomeAreaID.Corruption, new List<Rectangle> { rect });
+			Room.Add(Bid.Corruption, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_HallowArena() {
@@ -476,7 +476,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.HallowUnsafe1);
 			});
-			Room.Add(BiomeAreaID.Hallow, new List<Rectangle> { rect });
+			Room.Add(Bid.Hallow, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_DungeonArena() {
@@ -503,7 +503,7 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 				}
 			});
-			Room.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
+			Room.Add(Bid.Dungeon, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_SlimeArena() {
@@ -536,7 +536,7 @@ namespace BossRush.Common.ChallengeMode {
 			//string result = $"Generation time : {watch.Elapsed.ToString()}";
 			//Mod.Logger.Info(result);
 			//watch.Reset();
-			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+			Room.Add(Bid.Slime, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_FleshArena() {
@@ -562,7 +562,7 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 				}
 			});
-			Room.Add(BiomeAreaID.FleshRealm, new List<Rectangle> { rect });
+			Room.Add(Bid.FleshRealm, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_OceanArena() {
@@ -587,7 +587,7 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Sandstone);
 				}
 			});
-			Room.Add(BiomeAreaID.Ocean, new List<Rectangle> { rect });
+			Room.Add(Bid.Ocean, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_Hell() {
@@ -608,7 +608,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 			});
 
-			Room.Add(BiomeAreaID.Underground, new List<Rectangle> { GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 3) });
+			Room.Add(Bid.Underworld, new List<Rectangle> { GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 3) });
 		}
 		[Task]
 		public void Readjust_Final() {

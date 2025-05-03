@@ -114,77 +114,158 @@ namespace BossRush.Contents.Items.Toggle {
 	}
 	class InfoUI : UIState {
 		public static string InfoShowToItem = string.Empty;
+		UIPanel mainPanel;
 		UIPanel panel;
 		Roguelike_WrapTextUIPanel textpanel;
 		Roguelike_UITextPanel generalTextPanel;
 		Dictionary<Roguelike_UIText, int> textlist;
 		UIImageButton btn_Stats;
 		UIImageButton btn_ModStats;
-		UIImageButton btn_Artifact;
-		Info_ArtifactImage Info_artifact;
 		UIImageButton btn_Perks;
 		ExitUI btn_Exit;
 		int CurrentState = 0;
 		public List<Roguelike_Info> list_info = new();
 		public override void OnInitialize() {
-			textlist = new Dictionary<Roguelike_UIText, int>();
-			panel = new UIPanel();
-			panel.HAlign = .35f;
-			panel.VAlign = .5f;
-			panel.UISetWidthHeight(100, 450);
-			Append(panel);
+			GeneralPage_Initialization();
+
+			float marginTopForButton = 0;
+
+			//Normal stats
+			BasicStats_Initialization(ref marginTopForButton);
+
+			//Modded stats
+			ModdedStats_Initialization(ref marginTopForButton);
+
+			//Perk
+			PerkPage_Initialization(ref marginTopForButton);
+
+			//Artifact
+			ArtifactPage_Initialization(ref marginTopForButton);
+
+			btn_Exit = new ExitUI(TextureAssets.InventoryBack);
+			btn_Exit.HAlign = .5f;
+			btn_Exit.VAlign = 1;
+			btn_Exit.UISetWidthHeight(52, 52);
+			panel.Append(btn_Exit);
+		}
+		public void GeneralPage_Initialization() {
+			mainPanel = new();
+			mainPanel.HAlign = .5f;
+			mainPanel.VAlign = .5f;
+			mainPanel.UISetWidthHeight(700, 700);
+			Append(mainPanel);
 
 			textpanel = new Roguelike_WrapTextUIPanel("");
-			textpanel.HAlign = .53f;
+			textpanel.HAlign = 1;
 			textpanel.VAlign = .5f;
-			textpanel.UISetWidthHeight(550, 600);
-			Append(textpanel);
+			textpanel.Width.Pixels = 550;
+			textpanel.Height.Precent = 1;
+			mainPanel.Append(textpanel);
+
+			panel = new UIPanel();
+			panel.VAlign = .5f;
+			panel.Width.Pixels = 100;
+			panel.Height.Precent = 1;
+			mainPanel.Append(panel);
 
 			generalTextPanel = new Roguelike_UITextPanel("");
 			generalTextPanel.UISetWidthHeight(10, 10);
 			generalTextPanel.Hide = true;
-			Append(generalTextPanel);
-
+			mainPanel.Append(generalTextPanel);
+		}
+		public void BasicStats_Initialization(ref float marginForBtn) {
 			btn_Stats = new UIImageButton(TextureAssets.InventoryBack);
 			btn_Stats.HAlign = .5f;
-			btn_Stats.VAlign = .1f;
 			btn_Stats.UISetWidthHeight(52, 52);
+			marginForBtn += btn_Stats.Height.Pixels + 10;
 			btn_Stats.OnLeftClick += Btn_Stats_OnLeftClick;
 			btn_Stats.SetVisibility(1, 1);
 			panel.Append(btn_Stats);
-
+		}
+		public void ModdedStats_Initialization(ref float marginForBtn) {
 			btn_ModStats = new UIImageButton(TextureAssets.InventoryBack);
-			btn_ModStats.HAlign = .5f;
-			btn_ModStats.VAlign = MathHelper.Lerp(.1f, .9f, 1 / 4f);
-			btn_ModStats.OnLeftClick += Btn_ModStats_OnLeftClick;
 			btn_ModStats.UISetWidthHeight(52, 52);
+			btn_ModStats.HAlign = .5f;
+			btn_ModStats.MarginTop = marginForBtn;
+			marginForBtn += btn_ModStats.Height.Pixels + 10;
+			btn_ModStats.OnLeftClick += Btn_ModStats_OnLeftClick;
 			panel.Append(btn_ModStats);
+		}
+		public void PerkPage_Initialization(ref float marginForBtn) {
+			textlist = new Dictionary<Roguelike_UIText, int>();
+			btn_Perks = new UIImageButton(TextureAssets.InventoryBack);
+			btn_Perks.HAlign = .5f;
+			btn_Perks.UISetWidthHeight(52, 52);
+			btn_Perks.MarginTop = marginForBtn;
+			marginForBtn += btn_Perks.Height.Pixels + 10;
+			btn_Perks.OnLeftClick += Btn_Perks_OnLeftClick;
+			panel.Append(btn_Perks);
+		}
+		UIImageButton btn_Artifact;
+		Info_ArtifactImage Info_artifact;
+		Roguelike_WrapTextUIPanel artifactcustomtextpanel;
+		Roguelike_UIPanel artifactHeaderpanel;
+		Roguelike_UIText artifact_text;
+		Roguelike_UIImageButton artifact_upgradebtn;
+		Roguelike_UIPanel artifactUpgradePanel;
 
+		public void ArtifactUpgradePanelAppend(Roguelike_UIPanel panel) {
+			artifactUpgradePanel = panel;
+			Append(artifactUpgradePanel);
+		}
+		public void ArtifactPage_Initialization(ref float marginForBtn) {
 			btn_Artifact = new UIImageButton(TextureAssets.InventoryBack);
-			btn_Artifact.HAlign = .5f;
-			btn_Artifact.VAlign = MathHelper.Lerp(.1f, .9f, 2 / 4f);
 			btn_Artifact.UISetWidthHeight(52, 52);
+			btn_Artifact.HAlign = .5f;
+			btn_Artifact.MarginTop = marginForBtn;
+			marginForBtn += btn_Artifact.Height.Pixels + 10;
 			btn_Artifact.OnLeftClick += Btn_Artifact_OnLeftClick;
 			panel.Append(btn_Artifact);
 
+			artifactHeaderpanel = new();
+			artifactHeaderpanel.Width.Percent = 1f;
+			artifactHeaderpanel.Height.Pixels = 80;
+			artifactHeaderpanel.Hide = true;
+			textpanel.Append(artifactHeaderpanel);
+
+			artifactcustomtextpanel = new Roguelike_WrapTextUIPanel("");
+			artifactcustomtextpanel.VAlign = 1;
+			artifactcustomtextpanel.Width.Percent = 1;
+			artifactcustomtextpanel.Height.Precent = 1;
+			artifactcustomtextpanel.Height.Pixels -= artifactHeaderpanel.Height.Pixels + 10;
+			artifactcustomtextpanel.Hide = true;
+			artifactcustomtextpanel.DrawPanel = false;
+			textpanel.Append(artifactcustomtextpanel);
+
 			Info_artifact = new Info_ArtifactImage(TextureAssets.InventoryBack);
-			Info_artifact.HAlign = .38f;
-			Info_artifact.VAlign = .22f;
+			Info_artifact.VAlign = .5f;
 			Info_artifact.Hide = true;
-			Append(Info_artifact);
+			artifactHeaderpanel.Append(Info_artifact);
 
-			btn_Perks = new UIImageButton(TextureAssets.InventoryBack);
-			btn_Perks.HAlign = .5f;
-			btn_Perks.VAlign = MathHelper.Lerp(.1f, .9f, 3 / 4f);
-			btn_Perks.UISetWidthHeight(52, 52);
-			btn_Perks.OnLeftClick += Btn_Perks_OnLeftClick;
-			panel.Append(btn_Perks);
+			artifact_text = new("");
+			artifact_text.VAlign = .5f;
+			artifact_text.MarginLeft = Info_artifact.Width.Pixels + 10;
+			artifact_text.Hide = true;
+			artifactHeaderpanel.Append(artifact_text);
 
-			btn_Exit = new ExitUI(TextureAssets.InventoryBack);
-			btn_Exit.HAlign = .5f;
-			btn_Exit.VAlign = .9f;
-			btn_Exit.UISetWidthHeight(52, 52);
-			panel.Append(btn_Exit);
+			artifact_upgradebtn = new(TextureAssets.InventoryBack);
+			artifact_upgradebtn.UISetWidthHeight(52, 52);
+			artifact_upgradebtn.HAlign = 1f;
+			artifact_upgradebtn.Hide = true;
+			artifact_upgradebtn.SetVisibility(.76f, 1f);
+			artifact_upgradebtn.OnLeftClick += Artifact_upgradebtn_OnLeftClick;
+			artifactHeaderpanel.Append(artifact_upgradebtn);
+
+			artifactUpgradePanel = new();
+			artifactUpgradePanel.UISetWidthHeight(600, 600);
+			artifactUpgradePanel.HAlign = .5f;
+			artifactUpgradePanel.VAlign = .5f;
+			artifactUpgradePanel.Hide = true;
+			Append(artifactUpgradePanel);
+		}
+
+		private void Artifact_upgradebtn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+			artifactUpgradePanel.Hide = !artifactUpgradePanel.Hide;
 		}
 
 		private void Text_OnUpdate(UIElement affectedElement) {
@@ -199,54 +280,78 @@ namespace BossRush.Contents.Items.Toggle {
 				generalTextPanel.UISetPosition(Main.MouseScreen);
 			}
 		}
-
+		/// <summary>
+		/// Set true to hide item, related to artifact, otherwise false to show them
+		/// </summary>
+		/// <param name="sett"></param>
+		public void ArtifactPage_VisibilitySetting(bool sett = false) {
+			artifactHeaderpanel.Hide = sett;
+			Info_artifact.Hide = sett;
+			artifactcustomtextpanel.Hide = sett;
+			artifact_text.Hide = sett;
+			artifact_upgradebtn.Hide = sett;
+			if (artifactcustomtextpanel.Text == "") {
+				string line = "";
+				var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
+				line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
+				line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
+				artifactcustomtextpanel.SetText(line);
+			}
+			if (!sett) {
+				CurrentState = 2;
+				btn_Artifact.SetVisibility(1, 1);
+				textpanel.SetText("");
+			}
+			else {
+				btn_Artifact.SetVisibility(.7f, .6f);
+			}
+		}
 		private void Btn_Stats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			foreach (var item in textlist.Keys) {
 				item.Hide = true;
 			}
+			ArtifactPage_VisibilitySetting(true);
+
 			btn_Stats.SetVisibility(1, 1);
 			btn_ModStats.SetVisibility(.7f, .6f);
 			btn_Perks.SetVisibility(.7f, .6f);
-			btn_Artifact.SetVisibility(.7f, .6f);
 			CurrentState = 0;
-			Info_artifact.Hide = true;
 			generalTextPanel.Hide = true;
 		}
 		private void Btn_ModStats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			foreach (var item in textlist.Keys) {
 				item.Hide = true;
 			}
+			ArtifactPage_VisibilitySetting(true);
+
 			btn_ModStats.SetVisibility(1, 1);
 			btn_Stats.SetVisibility(.7f, .6f);
 			btn_Perks.SetVisibility(.7f, .6f);
-			btn_Artifact.SetVisibility(.7f, .6f);
 			CurrentState = 1;
-			Info_artifact.Hide = true;
 			generalTextPanel.Hide = true;
 		}
 		private void Btn_Artifact_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			foreach (var item in textlist.Keys) {
 				item.Hide = true;
 			}
-			btn_Artifact.SetVisibility(1, 1);
+			ArtifactPage_VisibilitySetting(false);
+
 			btn_ModStats.SetVisibility(.7f, .6f);
 			btn_Perks.SetVisibility(.7f, .6f);
 			btn_Stats.SetVisibility(.7f, .6f);
-			CurrentState = 2;
-			Info_artifact.Hide = false;
 			generalTextPanel.Hide = true;
 		}
 
 		private void Btn_Perks_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+			ArtifactPage_VisibilitySetting(true);
+
 			foreach (var item in textlist.Keys) {
 				item.Hide = false;
 			}
 			btn_Perks.SetVisibility(1, 1);
 			btn_ModStats.SetVisibility(.7f, .6f);
 			btn_Stats.SetVisibility(.7f, .6f);
-			btn_Artifact.SetVisibility(.7f, .6f);
 			CurrentState = 3;
-			Info_artifact.Hide = true;
 		}
 		public override void OnActivate() {
 			foreach (var item in textlist.Keys) {
@@ -361,6 +466,8 @@ namespace BossRush.Contents.Items.Toggle {
 						$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 						$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 						$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
+						$"\nRun amount : {RoguelikeData.Run_Amount}" +
+						$"\nLootbox opened: {RoguelikeData.Lootbox_AmountOpen}" +
 						$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
 					textpanel.SetText(line);
 					break;
@@ -368,10 +475,10 @@ namespace BossRush.Contents.Items.Toggle {
 					foreach (var item in list_info) {
 						item.Hide(true);
 					}
-					var artifactplayer = player.GetModPlayer<ArtifactPlayer>();
-					line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
-					line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
-					textpanel.SetText(line);
+					var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
+					artifact_text.SetText(Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName);
+					line = $"{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
+					artifactcustomtextpanel.SetText(line);
 					break;
 				case 3:
 					foreach (var item in list_info) {
