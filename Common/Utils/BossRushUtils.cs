@@ -9,9 +9,38 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.Global;
+using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+
+		public static float EaseInBounce(float x) {
+
+			const float n1 = 7.5625f;
+			const float d1 = 2.75f;
+
+			if (x < 1 / d1) {
+				return n1 * x * x;
+			}
+			else if (x < 2 / d1) {
+				return n1 * (x -= 1.5f / d1) * x + 0.75f;
+			}
+			else if (x < 2.5 / d1) {
+				return n1 * (x -= 2.25f / d1) * x + 0.9375f;
+			}
+			else {
+				return n1 * (x -= 2.625f / d1) * x + 0.984375f;
+			}
+		}
+		public static float EaseOutBounce(float x) {
+			return 1f - EaseInBounce(1f - x);
+		}
+		public static float ClampedLerp(this float from, float to, float value) {
+			return MathHelper.Lerp(from, to, MathHelper.Clamp(value, 0f, 1f));
+		}
+		public static Vector2 ClampedLerp(this Vector2 from, Vector2 to, float value) {
+			return Vector2.Lerp(from, to, MathHelper.Clamp(value, 0f, 1f));
+		}
 		/// <summary>
 		/// Use this to assign the entity to global dust
 		/// </summary>
@@ -488,4 +517,29 @@ namespace BossRush {
 		}
 
 	}
+	/// <summary>
+	/// idk what it returns, so keep that in mind 
+	/// </summary>
+	public class PlaceTileWithCheck : GenAction {
+		private ushort _type;
+		private int _style;
+
+		public PlaceTileWithCheck(ushort type, int style = 0)
+		{
+			_type = type;
+			_style = style;
+		}
+
+		public override bool Apply(Point origin, int x, int y, params object[] args)
+		{
+			if(WorldGen.TileEmpty(x,y))
+			{
+				WorldGen.PlaceTile(x, y, _type, mute: true, forced: false, -1, _style);
+				
+			}
+
+			return UnitApply(origin, x, y, args);
+		}
+	}
 }
+

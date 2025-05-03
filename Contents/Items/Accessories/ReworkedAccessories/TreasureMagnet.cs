@@ -7,11 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.ReworkedAccessories;
 public class TreasureMagnet : ItemReworker {
 
+	public override int VanillaItemType => ItemID.TreasureMagnet;
 	public override void UpdateEquip(Player player) {
 		player.luck += 0.1f;
 		player.GetModPlayer<ChestLootDropPlayer>().DropModifier += player.luck;

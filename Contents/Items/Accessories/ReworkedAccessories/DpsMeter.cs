@@ -19,4 +19,9 @@ public class DpsMeter : ItemReworker {
 
 	}
 
+	public override void UpdateInfoAccessory(Player player) {
+		// why is dpsMeter called dreamcatcher huuuuh???
+		player.accDreamCatcher = true;
+	}
+
 }

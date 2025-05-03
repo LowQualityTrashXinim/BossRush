@@ -347,6 +347,8 @@ Mods: {
 			SnowballCannonMK2Projectile.DisplayName: Snowball Cannon M K2 Projectile
 			LauncherProjectile.DisplayName: Launcher Projectile
 			TwilightNightProjectile.DisplayName: Twilight Night Projectile
+			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
+			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
 		}
 
 		NPCs: {
@@ -373,6 +375,10 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			KingSlimeMinionSpawner.DisplayName: King Slime Minion Spawner
+			KingSlimeMinion.DisplayName: King Slime Minion
+			KingSlimeCrown.DisplayName: King Slime Crown
 		}
 
 		Items: {
@@ -2505,7 +2511,6 @@ Mods: {
 				DisplayName: Stinger Necklace
 				Tooltip: ""
 			}
-		}
 
 			HandmadeLauncher: {
 				DisplayName: Handmade Launcher

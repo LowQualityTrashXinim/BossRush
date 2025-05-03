@@ -17,7 +17,9 @@ public class DepthMeter : ItemReworker {
 		player.GetModPlayer<DepthMeterPlayer>().depthMeter = true;
 	}
 
-	
+	public override void UpdateInfoAccessory(Player player) {
+		player.accDepthMeter++;
+	}
 }
 
 public class DepthMeterPlayer : ModPlayer 

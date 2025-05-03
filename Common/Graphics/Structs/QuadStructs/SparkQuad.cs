@@ -1,5 +1,6 @@
 ﻿using BossRush.Common.Graphics.Primitives;
 using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace BossRush.Common.Graphics.Structs.QuadStructs {
 	public struct SparkQuad {
@@ -15,6 +16,7 @@ namespace BossRush.Common.Graphics.Structs.QuadStructs {
 
 
 			QuadDrawer.Draw([position], [Color.White], [size], rotation, position);
+			Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 		}
 
