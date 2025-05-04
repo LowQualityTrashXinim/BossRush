@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
+using BossRush;
 
 namespace BossRush {
 	public static partial class BossRushUtils {

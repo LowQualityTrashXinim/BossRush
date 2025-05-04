@@ -374,6 +374,10 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			KingSlimeMinionSpawner.DisplayName: King Slime Minion Spawner
+			KingSlimeMinion.DisplayName: King Slime Minion
+			KingSlimeCrown.DisplayName: King Slime Crown
 		}
 
 		Items: {
@@ -2437,6 +2441,74 @@ Mods: {
 					After 4th throw, the next throw will release 3 flaming mace orbiting around the disk
 					Every 2th throw, damage is increases by 50%
 					'''
+			}
+
+			SharkToothNecklace: {
+				DisplayName: Shark Tooth Necklace
+				Tooltip:
+					'''
+					Gain +1.5% Total Damage per 1 Armor Penetration
+					+5 Armor Penetration
+					'''
+			}
+
+			ItemReworker: {
+				DisplayName: Item Reworker
+				Tooltip: ""
+			}
+
+			FeralClaw: {
+				DisplayName: Feral Claw
+				Tooltip:
+					'''
+					+5% Total Attack Speed
+					Gain Bonus Attack Speed (Up to 25%) based on Missing HP
+					'''
+			}
+
+			MechanicalLens: {
+				DisplayName: Mechanical Lens
+				Tooltip:
+					'''
+					Critical Strike Damage reduced By %15
+					Critical Strike Gained increased By 25%
+					Critical Strike Increased By 5%
+					Damage Variation Is less Randomized
+					'''
+			}
+
+			Toolbelt: {
+				DisplayName: Toolbelt
+				Tooltip: For Each Owned Nearby Minions Gain +4 Defense
+			}
+
+			TreasureMagnet: {
+				DisplayName: Treasure Magnet
+				Tooltip:
+					'''
+					defeating a boss while equipped grants your next Lootbox to drop extra weapons (weapons amount scales with luck)
+					Gain +0.05 Luck per boss killed while this accessory is equipped
+					'''
+			}
+
+			DepthMeter: {
+				DisplayName: Depth Meter
+				Tooltip: ""
+			}
+
+			DpsMeter: {
+				DisplayName: Dps Meter
+				Tooltip: ""
+			}
+
+			LuckyCoin: {
+				DisplayName: Lucky Coin
+				Tooltip: ""
+			}
+
+			StingerNecklace: {
+				DisplayName: Stinger Necklace
+				Tooltip: ""
 			}
 
 			HandmadeLauncher: {

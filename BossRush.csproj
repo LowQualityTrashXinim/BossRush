@@ -24,6 +24,7 @@
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Structures\SlimeArena1.txt" />
     <AdditionalFiles Remove="Assets\Structures\SlimeArena2.txt" />
+    <AdditionalFiles Remove="Common\Graphics\Shaders\RubyBoltEffect.fx" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
