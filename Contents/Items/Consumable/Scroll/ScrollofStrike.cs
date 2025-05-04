@@ -5,6 +5,9 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Scroll {
 	class ScrollofStrike : ModItem {
+		public override void SetStaticDefaults() {
+			BossRushModSystem.LootboxPotion.Add(Item);
+		}
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<StrikeSpell>(), BossRushUtils.ToMinute(1));
@@ -24,7 +27,7 @@ namespace BossRush.Contents.Items.Consumable.Scroll {
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (Player.HasBuff<StrikeSpell>()) {
 				Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<StrikeSpell>()));
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < 5; i++) {
 					Player.StrikeNPCDirect(target, hit);
 				}
 			}

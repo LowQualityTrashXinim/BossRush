@@ -5,6 +5,9 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfProtection : ModItem {
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToSecond(20));
@@ -15,9 +18,6 @@ public class ProtectionSpell : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Flat: 10);
 	}
 }
 public class ProtectionSpell_Player : ModPlayer {

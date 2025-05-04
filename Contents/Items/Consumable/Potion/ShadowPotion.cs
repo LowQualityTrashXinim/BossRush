@@ -21,7 +21,7 @@ public class ShadowBuff : ModBuff {
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.DodgeChance += 0.04f;
+		modplayer.DodgeChance += 0.12f;
 		modplayer.AddStatsToPlayer(PlayerStats.Iframe, 1.1f);
 	}
 }

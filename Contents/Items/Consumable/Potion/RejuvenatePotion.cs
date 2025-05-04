@@ -23,7 +23,7 @@ public class RejuvenatePotionBuff : ModBuff {
 	public override void Update(Player player, ref int buffIndex) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: 10);
 		if (player.buffTime[buffIndex] <= 0) {
-			player.Heal(200);
+			player.Heal(100);
 		}
 	}
 }
