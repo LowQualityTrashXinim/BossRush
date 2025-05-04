@@ -16,7 +16,7 @@ using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush {
-	public partial class BossRushUtils {
+	public static partial class BossRushUtils {
 		public static void BossRushSetDefaultBuff(this ModBuff buff) {
 			Main.debuff[buff.Type] = false;
 			Main.buffNoSave[buff.Type] = true;

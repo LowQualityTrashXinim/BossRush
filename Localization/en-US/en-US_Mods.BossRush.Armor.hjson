@@ -102,6 +102,7 @@ ShadewoodArmor: {
 		debuff enemies with ichor and heal you for 1hp
 		'''
 }
+
 EbonwoodArmor: {
 	Head:
 		'''
@@ -125,6 +126,7 @@ EbonwoodArmor: {
 		You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
 		'''
 }
+
 AshwoodArmor: {
 	Head:
 		'''

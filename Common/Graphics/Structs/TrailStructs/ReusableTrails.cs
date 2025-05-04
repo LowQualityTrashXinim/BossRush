@@ -30,7 +30,7 @@ public struct GenericTrail {
 		shader.apply();
 
 		// here we setup the strip, so basically the pos array, rot array, color delegate, width delegate, and the offset (like -Main.screenPosition)
-		_vertexStrip.PrepareStripWithProceduralPadding(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, GenericTrailSettings.offset, true);
+		_vertexStrip.PrepareStripWithProceduralPadding(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, GenericTrailSettings.offset - Main.screenPosition, true);
 		_vertexStrip.DrawTrail();
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}

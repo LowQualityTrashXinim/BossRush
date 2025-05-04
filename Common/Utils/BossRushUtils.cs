@@ -13,7 +13,6 @@ using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
-
 		public static float EaseInBounce(float x) {
 
 			const float n1 = 7.5625f;

@@ -102,7 +102,7 @@ public class CopperShortSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool() && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 60;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
 			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
 			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
@@ -114,7 +114,7 @@ public class CopperShortSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool() && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 60;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
 			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
 			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
@@ -284,7 +284,7 @@ public class TungstenShortSword : ModEnchantment {
 		if (player.ItemAnimationActive) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 			if (globalItem.Item_Counter1[index] <= 0) {
-				globalItem.Item_Counter1[index] = 24;
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 24);
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 5;
 				Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center + Main.rand.NextVector2Circular(20, 20), vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), (int)(item.damage * .34f), item.knockBack, player.whoAmI, ai2: ItemIDType);
 				proj.penetrate = 1;

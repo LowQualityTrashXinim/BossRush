@@ -28,14 +28,13 @@ Revolver.Description:
 	'''
 	Weapon that can shoot :
 	+ Have 1 in 5 chance to shoot out additional bullet dealing the same damage
-	For each hit dealt onto NPC, increases crit chance by and damage by 5% ( have 1s cool down )
+	For each hit dealt onto NPC, increases crit chance by and damage by 5% ( CD : 1s )
 	Getting hit will reset the buff
 	'''
 Minishark.Description:
 	'''
 	During item animation, weapon will shoot bullet toward cursor position
-	+ If player in their inventory have ammo then it will use that ammo
-	( trigger every 8 tick )
+	+ If player in their inventory have ammo then it will use that ammo ( CD : 8 frame )
 	Increases attack speed by 5%
 	'''
 TheUndertaker.Description:
@@ -62,118 +61,116 @@ WoodenSword.Description:
 	'''
 	Increases damage by 5
 	Increases weapon size by 20%
+	Decreases weapon enchantment cool down by 15%
 	'''
 AshWoodSword.Description:
 	'''
 	Increases damage by 1
-	Hitting a enemy create a sword rise from below 
-	( trigger every 1s )
+	Hitting a enemy create a sword rise from below ( CD : 1s )
 	'''
 BorealWoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
+	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 PalmWoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
+	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 RichMahoganySword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
+	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 ShadewoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
+	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 EbonwoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
+	Hitting a enemy create a sword that aim toward mouse ( CD : 1s )
 	'''
 CopperBroadsword.Description:
 	'''
 	Increases weapon size by 12%
-	Hitting a enemy have chance to create a electric strike
-	(Have 3s cool down)
+	Hitting a enemy have chance to create a electric strike ( CD : 3s )
 	Deal 34% more damage to electrify enemy
 	'''
 TinBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 IronBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 LeadBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 SilverBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 TungstenBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 GoldBroadsword.Description:
 	'''
 	Hitting a enemy will :
 	+ 25% chance to inflict enemy with Midas for 6s
-	+ Create a ghost sword to swing ( trigger every 0.75s  )
+	+ Create a ghost sword to swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 PlatinumBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s )
+	Hitting a enemy with will create a ghost sword that swing ( CD : 0.75s )
 	Increases weapon size by 10%
 	'''
 CactusSword.Description:
 	'''
-	Hitting a enemy on critical strike with a sword will shoot out a friendly rolling cactus 
+	Hitting a enemy on critical strike with a sword will shoot out a friendly rolling cactus ( CD : 3s )
 	+ Rolling cactus deal equal to 300% weapon damage 
-	( Can be trigger every 6 second )
 	'''
 EnchantedSword.Description:
 	'''
 	Increases melee item use speed by 10%
 	Weapon that can shoot :
-	+ Shoot out additional enchanted beam that deal 25% more damage ( trigger every 3 * item use time )
+	+ Shoot out additional enchanted beam that deal 25% more damage ( CD : 0.5s )
 	Weapon that can't shoot :
 	+ Upon hitting enemy will spawn enchanted beam that ignore tile collision around player
 	'''
 StarFury.Description:
 	'''
 	Weapon that can shoot :
-	+ Shoot down a Star that deal 50% more damage ( trigger every 3 * item use time )
+	+ Shoot down a Star that deal 50% more damage ( CD : 1s )
 	Weapon that can't shoot :
-	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( trigger every 1.5s)
+	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( CD : 1.5s )
 	'''
 IceBlade.Description:
 	'''
-	Weapon that can shoot will shoot additional ice bolt ( trigger every 3 * item use time )
+	Weapon that can shoot will shoot additional ice bolt ( CD : 0.5s )
 	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
 	While in snow biome, increases damage by 12% and critical strike chance by 3%
 	'''
 BatBat.Description:
 	'''
 	Increases player movement speed by 12% and jump boost by 30% when held the item 
-	On hitting enemy, heal for 1 HP ( trigger every 0.2s )
+	On hitting enemy, heal for 1 HP ( CD : 0.2s )
 	Have 1 in 10 chance to spawn a bat dealing 65% of original damage
 	'''
 BoneSword.Description:
@@ -184,9 +181,8 @@ BoneSword.Description:
 	'''
 BladedGlove.Description:
 	'''
-	Increases attack speed by 5%
-	Hitting a enemy with melee sword will strike them twice
-	( note : the second strike will never be critical and this effect trigger every 1s )
+	Increases attack speed by 5% and melee critical strike chance by 5%
+	Hitting a enemy with melee sword will strike them twice ( CD : 1s )
 	'''
 ZombieArm.Description:
 	'''
@@ -197,38 +193,32 @@ ZombieArm.Description:
 MandibleBlade.Description:
 	'''
 	Increases your damage by 10% while moving
-	Getting hit while holding the weapon will shoot out 3 Mandible Blade that will lock onto enemy
-	( trigger every 1s )
+	Getting hit while holding the weapon will shoot out 3 Mandible Blade that will lock onto enemy ( CD : 1s )
 	'''
 TentacleSpike.Description:
 	'''
 	Increases critical strike chance by 10 while in corruption night
-	Hitting a enemy will put a spike in them
-	( trigger every 1s )
+	Hitting a enemy will put a spike in them ( CD : 1s )
 	'''
 LightsBane.Description:
 	'''
 	Increases critical strike chance by 10 while in corruption night
-	Hitting enemy with projectile will create a dark slash at enemy position
-	( trigger every 3s )
-	Hitting enemy with sword will create a dark slash at enemy position
-	( trigger every 1s )
+	Hitting enemy with projectile will create a dark slash at enemy position ( CD : 3s )
+	Hitting enemy with sword will create a dark slash at enemy position ( CD : 1s )
 	'''
 BladeOfGrass.Description:
 	'''
-	Increases damage by 10% when in jungle
-	Have 50% chance to :
+	Increases damage by 1.2x when in jungle
+	Have 50% chance to either :
 	+ Shoot a leaf like Blade of Grass
 	+ Shoot a leaf straight toward cursor
 	( Leaf deal 45% of weapon damage )
 	'''
 Volcano.Description:
 	'''
-	Inflict On Fire onto target for 6s
-	Hitting a enemy with a projectile will force a explosion to nearby target 
-	( Note : deal 55% of weapon damage and can only be trigger every 4s )
-	Hitting a enemy with a sword will force a explosion to nearby target 
-	( Note : deal 55% of weapon damage and can only be trigger every 1s )
+	Inflict On Fire onto target for 2s
+	Hitting a enemy with a projectile will crete a explosion 55% weapon damage ( CD : 4s)
+	Hitting a enemy with a sword will create a explosion dealing 55% weapon damage( CD : 1s)
 	'''
 NightsEdge.Description:
 	'''
@@ -293,7 +283,7 @@ Katana.Description:
 	'''
 	Increases melee damage by 15%, weapon critical chance by 3%, 
 	critical damage by 20% and first strike damage by 35%
-	Hitting enemy with item will spawn a ghost katana that attack enemy
+	Hitting enemy with item will spawn a ghost katana that attack enemy ( CD : 0.25s )
 	'''
 WoodenBow.Description:
 	'''
@@ -347,50 +337,42 @@ PalmWoodBow.Description:
 CopperBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 TinBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 IronBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 LeadBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 SilverBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 TungstenBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 GoldBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 PlatinumBow.Description:
 	'''
 	Increases damage by 1
-	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
-	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	Hitting enemy with arrow will create a wooden arrow to shoot toward the enemy ( CD : 0.2s )
 	'''
 DemonBow.Description:
 	'''
@@ -402,7 +384,7 @@ DemonBow.Description:
 TendonBow.Description:
 	'''
 	When shoot, consumes 5 hps to increases damage by 35% 
-	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
+	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( CD : 1s )
 	Hitting any enemy 4 times will heal player for 1 hp ( Note : projectile that is a minion is not accepted )
 	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
@@ -429,13 +411,12 @@ SnowballCannon.Description:
 	'''
 Blowpipe.Description:
 	'''
-	Waiting for 4s will increases crit chance by 15%
+	Increases critical strike chance by 15% for your next shot ( CD : 4s )
 	Weapon that can shoot projectile will additionally shoot a seed that deal 35% of original damage
 	'''
 PainterPaintballGun.Description:
 	'''
-	Weapon that can shoot projectile will additionally shoot out arch of 3 paint projectile that deal 45% of original damage
-	( Note : trigger every 1s )
+	Shooting will be accompany with a arch of 3 paint projectile that deal 45% of original damage ( CD : 1s )
 	'''
 AmethystStaff.Description:
 	'''
@@ -470,13 +451,13 @@ RubyStaff.Description:
 	Increases mana cost by 20%
 	Convert your projectile into Ruby Bolt
 	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
-	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( can be trigger every 7s )
+	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( CD : 7s )
 	'''
 DiamondStaff.Description:
 	'''
 	Convert your projectile into Diamond Bolt
 	Your weapon have 17% chance to shoot out additional Diamond Bolt random location
-	When missing mana, Burst out 5 slow moving diamond bolt around you ( can be trigger every 4s )
+	When missing mana, Burst out 5 slow moving diamond bolt around you ( CD : 4s )
 	'''
 AmberStaff.Description:
 	'''
@@ -489,40 +470,36 @@ WandOfSparking.Description:
 	'''
 	Reduce mana cost by 10%
 	Projectile can inflict On Fire debuff for 3s
-	Projectile have 50% chance to shoot out additional fire spark upon hitting enemy
-	( note : The effect above ignore Fire Spark projectile and trigger every 1 second )
+	Projectile have 50% chance to shoot out additional fire spark upon hitting enemy ( CD : 1s )
 	'''
 WandOfFrosting.Description:
 	'''
 	Reduce mana cost by 10%
 	Projectile can inflict Frostburn debuff for 3s
-	Projectile have 50% chance to shoot out additional frost spark upon hitting enemy
-	( note : The effect above ignore Frost Spark projectile and trigger every 1 second )
+	Projectile have 50% chance to shoot out additional frost spark upon hitting enemy ( CD : 1s )
 	'''
 WaterBolt.Description:
 	'''
 	Reduce mana cost by 8%
-	Shoot out 3 short live water bolt ( trigger every 2s )
-	When a projectile hit a enemy spawn additional water bolt that short live at random position
-	( note : The effect above ignore Water Bolt projectile and trigger every 5 second )
+	Shoot out 3 short live water bolt ( CD : 2s )
+	When a projectile hit a enemy spawn additional water bolt that short live at random position ( CD : 5s )
 	'''
 DemonScythe.Description:
 	'''
 	Increases mana cost by 10% 
 	Increases universal damage by 1.1x
-	Shoot out 3 demon scythe ( trigger every 1s )
+	Shoot out 3 demon scythe ( CD : 1s )
 	'''
 BookOfSkulls.Description:
 	'''
 	Increases mana cost by 12% 
 	Have 1 in 3 chance to shoot out a skull
-	When missing mana, shoot out 5 skull ( trigger every 5s )
+	When missing mana, shoot out 5 skull ( CD : 5s )
 	'''
 ThunderStaff.Description:
 	'''
 	Reduce mana cost by 12%
-	Striking NPC will spawn a thunder staff bolt near NPC
-	( trigger every 0.2 second )
+	Striking NPC will spawn a thunder staff bolt near NPC ( CD : 0.2s )
 	'''
 ZapinatorGray.Description:
 	'''
@@ -548,20 +525,18 @@ BeeGun.Description:
 Vilethorn.Description:
 	'''
 	Reduce mana cost by 5%
-	Create vilethorn from the enemy on strike
-	( Can be trigger every 1s )
+	Create vilethorn from the enemy on strike ( CD : 1s )
 	'''
 CrimsonRod.Description:
 	'''
 	Reduce mana cost by 8%
-	Create blood rain that rain down above cursor
-	( Can be trigger every 0.12s )
+	Create blood rain that rain down above cursor ( CD : 0.12s )
 	'''
 MagicMissile.Description:
 	'''
 	Increases mana cost by 10%
 	Using weapon that can't shoot projectile will have following effect :
-	+ Shoot out magic missile behind player at the cost of 14 mana ( trigger cool down base on item animation time * 2 )
+	+ Shoot out magic missile behind player at the cost of 14 mana ( CD : 1.5s )
 	Using weapon that create projectile will have following effect :
 	+ Every 3rd shot will shoot out a magic missile at the cost of 14 mana
 	'''
@@ -598,7 +573,7 @@ CrystalSerpent.Description:
 	'''
 	Increases magic damage by 19% and increases mana cost by 15%
 	Have 10% to spawm a crystal serpant near enemy that stay for short while
-	Magical weapon will shoot crystal pulse
+	Shooting will also shoot crystal pulse projectile
 	'''
 FlowerOfFrost.Description:
 	'''
@@ -682,13 +657,13 @@ TheMeatball.Description:
 	'''
 	20% Melee damage and 5% critcal strike chance
 	Melee attacks inflict ichor
-	Shoot out deadly MeatBall every 1s on attack
+	Shoot out deadly MeatBall ( CD : 1s )
 	'''
 BallOHurt.Description:
 	'''
 	+20% melee damage and +5% critcal strike chance
 	True melee attacks inflict cursed flames debuff
-	Shoot out Ball of Hurt every 1s on attack
+	Shoot out Ball of Hurt ( CD : 1s )
 	'''
 SwordFish.Description:
 	'''
@@ -741,13 +716,14 @@ DeathSickle.Description:
 Spear.Description:
 	'''
 	Increases melee armor penetration by 10
-	Striking enemy have 5% chance to rain down bunch of spear from the sky
+	Striking enemy with item rain down bunch of spear from the sky ( CD : 1s )
+	Striking enemy with projectile rain down bunch of spear from the sky ( CD : 3s )
 	'''
 Trident.Description:
 	'''
 	+10% Melee critical strike chance and +24% Melee critical strike damage
-	Hitting a enemy will call in fish to fly in hitting your enemy
-	Have 0.5s cool down when hitting with item and 2.5s cool down when hitting with projectile
+	Hitting a enemy with item will call in fish to fly in hitting your enemy ( CD : 0.5s )
+	Hitting a enemy with projectile will call in fish to fly in hitting your enemy ( CD : 2s )
 	'''
 StylistKilLaKillScissorsIWish.Description:
 	'''

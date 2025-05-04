@@ -171,7 +171,7 @@ namespace BossRush.Contents.Items.Toggle {
 			generalTextPanel = new Roguelike_UITextPanel("");
 			generalTextPanel.UISetWidthHeight(10, 10);
 			generalTextPanel.Hide = true;
-			mainPanel.Append(generalTextPanel);
+			Append(generalTextPanel);
 		}
 		public void BasicStats_Initialization(ref float marginForBtn) {
 			btn_Stats = new UIImageButton(TextureAssets.InventoryBack);
@@ -277,7 +277,8 @@ namespace BossRush.Contents.Items.Toggle {
 				generalTextPanel.Hide = false;
 				int perkType = textlist[text];
 				generalTextPanel.SetText(ModPerkLoader.GetPerk(perkType).Description);
-				generalTextPanel.UISetPosition(Main.MouseScreen);
+				generalTextPanel.Left.Set(Main.MouseScreen.X, 0);
+				generalTextPanel.Top.Set(Main.MouseScreen.Y, 0);
 			}
 		}
 		/// <summary>

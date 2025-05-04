@@ -108,6 +108,10 @@ public class PlayerStatsHandle : ModPlayer {
 	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
 	/// </summary>
 	public float AugmentationChance = 0;
+	/// <summary>
+	/// Uses for enchantment cool down effect
+	/// </summary>
+	public StatModifier EnchantmentCoolDown = StatModifier.Default;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
@@ -320,6 +324,7 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
+		EnchantmentCoolDown = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -716,6 +721,11 @@ public class PlayerStatsHandle : ModPlayer {
 			default:
 				return DamageClass.Default;
 		}
+	}
+	public static int WE_CoolDown(Player player, int cooldown) {
+		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+		float newcooldown = handle.EnchantmentCoolDown.ApplyTo(cooldown);
+		return (int)Math.Max(Math.Ceiling(newcooldown), 0);
 	}
 	public Dictionary<string, ConditionApproved> SecondLife = new();
 	public static void SetSecondLifeCondition(Player player, string context, bool condition) {

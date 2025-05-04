@@ -127,7 +127,7 @@ public class RubyStaff : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(7);
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(7));
 		Vector2 TowardMouse = Main.MouseWorld - player.Center;
 		for (int i = 0; i < 3; i++) {
 			Vector2 vel = Vector2.UnitX.RotatedBy(TowardMouse.ToRotation()) * 10;
@@ -163,7 +163,7 @@ public class DiamondStaff : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(4);
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(4));
 		for (int i = 0; i < 5; i++) {
 			Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 2;
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.DiamondBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
@@ -266,7 +266,7 @@ public class WaterBolt : ModEnchantment {
 				int proj = Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.WaterBolt, damage, knockback, player.whoAmI);
 				Main.projectile[proj].timeLeft = BossRushUtils.ToSecond(3);
 			}
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(2);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(2));
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -277,7 +277,7 @@ public class WaterBolt : ModEnchantment {
 			player.Center + Main.rand.NextVector2Circular(700, 700),
 			Main.rand.NextVector2CircularEdge(4, 4), ProjectileID.WaterBolt, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 		Main.projectile[projectile].timeLeft = BossRushUtils.ToSecond(5);
-		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
+		globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(5));
 	}
 }
 public class DemonScythe : ModEnchantment {
@@ -298,7 +298,7 @@ public class DemonScythe : ModEnchantment {
 			for (int i = 0; i < 3; i++) {
 				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.DemonScythe, damage, knockback, player.whoAmI);
 			}
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(1));
 		}
 	}
 }
@@ -322,7 +322,7 @@ public class BookOfSkulls : ModEnchantment {
 	}
 	public override void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) {
 		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(5);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(5));
 			int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(item.damage);
 			for (int i = 0; i < 5; i++) {
 				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 5;
@@ -345,14 +345,14 @@ public class ThunderStaff : ModEnchantment {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(150, 150);
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, player.GetWeaponDamage(player.HeldItem), 4, player.whoAmI);
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(0.2f);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(0.2f));
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(150, 150);
 			Projectile.NewProjectile(player.GetSource_FromAI(), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, player.GetWeaponDamage(player.HeldItem), 4, player.whoAmI);
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(0.2f);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(0.2f));
 		}
 	}
 }
@@ -391,6 +391,9 @@ public class SpaceGun : ModEnchantment {
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (++globalItem.Item_Counter1[index] >= 3) {
+			if (!velocity.IsLimitReached(4)) {
+				velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+			}
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.GreenLaser, damage, knockback, player.whoAmI);
 			if (globalItem.Item_Counter1[index] >= 6) {
 				globalItem.Item_Counter1[index] = 0;
@@ -434,7 +437,7 @@ public class Vilethorn : ModEnchantment {
 			Vector2 velocity = Main.rand.NextVector2CircularEdge(17, 17);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornBase, player.GetWeaponDamage(item), 1f, player.whoAmI);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornTip, player.GetWeaponDamage(item), 1f, player.whoAmI);
-			globalItem.Item_Counter1[index] = 60;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -442,7 +445,7 @@ public class Vilethorn : ModEnchantment {
 			Vector2 velocity = Main.rand.NextVector2CircularEdge(17, 17);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornBase, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornTip, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
-			globalItem.Item_Counter1[index] = 60;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 		}
 	}
 }
@@ -454,7 +457,7 @@ public class CrimsonRod : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] <= 0) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld.Add(0, -500).PositionOFFSET(Vector2.UnitX, Main.rand.NextFloat(-30, 30)), Vector2.UnitY * Main.rand.NextFloat(4, 12), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
-			globalItem.Item_Counter1[index] = 9;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 9);
 		}
 	}
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
@@ -482,7 +485,7 @@ public class MagicMissile : ModEnchantment {
 			Vector2 vel = (Main.MouseWorld - positionBehindPlayer).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), positionBehindPlayer, vel, ProjectileID.MagicMissile, item.damage, item.knockBack, player.whoAmI);
 			Main.projectile[proj].tileCollide = false;
-			globalItem.Item_Counter2[index] = player.itemAnimationMax * 2;
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 90);
 		}
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -614,7 +617,7 @@ public class SkyFacture : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + Main.rand.NextFloat(100, 150), target.height + Main.rand.NextFloat(100, 150));
 			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.SkyFracture, 22 + item.damage, item.knockBack, player.whoAmI);
@@ -622,7 +625,7 @@ public class SkyFacture : ModEnchantment {
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ProjectileID.SkyFracture) {
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + Main.rand.NextFloat(100, 150), target.height + Main.rand.NextFloat(100, 150));
 			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ProjectileID.SkyFracture, 22 + player.HeldItem.damage, player.HeldItem.knockBack, player.whoAmI);
@@ -642,8 +645,8 @@ public class CrystalSerpent : ModEnchantment {
 		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (globalItem.Item_Counter1[index] <= 0 && item.DamageType == DamageClass.Magic) {
-			globalItem.Item_Counter1[index] = 42;
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 42);
 			Vector2 pos = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(40, 50), Main.rand.NextFloat(40, 50));
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(7, 9);
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ProjectileID.CrystalPulse, 30 + item.damage, item.knockBack, player.whoAmI);
@@ -654,14 +657,14 @@ public class CrystalSerpent : ModEnchantment {
 			return;
 		}
 		if (Main.rand.NextBool(10) && player.ownedProjectileCounts[ModContent.ProjectileType<CrystalSerpentProjectile>()] < 5) {
-			globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(5));
 			Item item = player.HeldItem;
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(10) && globalItem.Item_Counter2[index] <= 0 && player.ownedProjectileCounts[ModContent.ProjectileType<CrystalSerpentProjectile>()] < 5) {
-			globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(5));
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(300, 500), Main.rand.NextFloat(300, 500)), Vector2.Zero, ModContent.ProjectileType<CrystalSerpentProjectile>(), 30 + item.damage, item.knockBack, player.whoAmI);
 		}
 	}

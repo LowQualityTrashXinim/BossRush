@@ -348,6 +348,8 @@ Mods: {
 			LauncherProjectile.DisplayName: Launcher Projectile
 			TwilightNightProjectile.DisplayName: Twilight Night Projectile
 			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
+			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
+			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
 		}
 
 		NPCs: {
