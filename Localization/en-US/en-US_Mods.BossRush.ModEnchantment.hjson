@@ -414,10 +414,7 @@ Blowpipe.Description:
 	Increases critical strike chance by 15% for your next shot ( CD : 4s )
 	Weapon that can shoot projectile will additionally shoot a seed that deal 35% of original damage
 	'''
-PainterPaintballGun.Description:
-	'''
-	Shooting will be accompany with a arch of 3 paint projectile that deal 45% of original damage ( CD : 1s )
-	'''
+PainterPaintballGun.Description: Shooting will be accompany with a arch of 3 paint projectile that deal 45% of original damage ( CD : 1s )
 AmethystStaff.Description:
 	'''
 	Reduce mana cost by 15%

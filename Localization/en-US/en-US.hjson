@@ -2941,9 +2941,9 @@ Mods: {
 				Description: TODO: ADD DESCRIPTION
 			}
 
-			EnvasionSpell: {
-				DisplayName: Envasion Spell
-				Description: You have 50% to dodge an attack
+			EvasionSpell: {
+				DisplayName: Evasion Spell
+				Description: You have 100% to dodge an attack, dodging will remove the spell
 			}
 
 			MaterializeSpell: {

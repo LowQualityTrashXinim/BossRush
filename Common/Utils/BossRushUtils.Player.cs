@@ -329,6 +329,10 @@ namespace BossRush {
 		RangeCritChance,
 		MagicCritChance,
 		SummonCritChance,
+		MeleeAtkSpeed,
+		RangeAtkSpeed,
+		MagicAtkSpeed,
+		SummonAtkSpeed
 		//Luck
 	}
 	public class DataStorer : ModSystem {
