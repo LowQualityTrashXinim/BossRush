@@ -33,6 +33,8 @@ public class NPCReworker : GlobalNPC {
 		binaryWriter.Write(Counter2);
 		binaryWriter.Write(Counter3);
 		binaryWriter.Write(Counter4);
+		binaryWriter.Write(AIState);
+		binaryWriter.Write(NeedsNetUpdate);
 	}
 
 	public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader) {
@@ -43,6 +45,8 @@ public class NPCReworker : GlobalNPC {
 		Counter2 = binaryReader.ReadInt32();
 		Counter3 = binaryReader.ReadInt32();
 		Counter4 = binaryReader.ReadInt32();
+		AIState = binaryReader.ReadInt32();
+		NeedsNetUpdate = binaryReader.ReadBoolean();
 		
 	}
 
@@ -58,6 +62,8 @@ public class NPCReworker : GlobalNPC {
 	internal int Counter2 = 0;
 	internal int Counter3 = 0;
 	internal int Counter4 = 0;
+	internal int AIState = 0;
+	internal bool NeedsNetUpdate = false;
 	public override bool PreAI(NPC npc) {
 		npc.TargetClosest();
 		afterimages = false;
@@ -98,6 +104,14 @@ public class NPCReworker : GlobalNPC {
 		{
 			npc.EncourageDespawn(2);
 			npc.position.Y += 5;
+		}
+
+		if(NeedsNetUpdate)
+		{
+
+			npc.netUpdate = true;
+			NeedsNetUpdate = false;
+
 		}
 
 		Timer++;

@@ -14,6 +14,7 @@ using Terraria.WorldBuilding;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 
 namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses;
@@ -26,20 +27,23 @@ internal class KingSlime : NPCReworker {
 
 	Vector2 currentScale = Vector2.One;
 	Vector2 bouncyScale = new Vector2(2f, 0.8f);
-	AIState currentState = AIState.Idle;
 	bool firedRuby = false;
 	Vector2 crownPos = Vector2.One;
 	float distanceToTarget = 0;
 	bool lockedIn = false;
 	Vector2 targetDirectionPredicate = Vector2.Zero;
 	NPC crownNPC = null;
-	AIState state {
+	State state {
 
-		get { return currentState; }
+		get { return (State)AIState; }
 		set {
-			currentState = value;
-			switch (currentState) {
-				case AIState.Idle: {
+			AIState = (int)value;
+
+
+			switch ((State)AIState) {
+
+
+				case State.Idle: {
 						Timer = 0;
 						Delay = 0;
 						firedRuby = false;
@@ -51,14 +55,14 @@ internal class KingSlime : NPCReworker {
 
 								case 1: {
 
-										currentState = AIState.LaserRotate;
+										AIState = (int)State.LaserRotate;
 
 										break;
 									}
 
 								case 2: {
 
-										currentState = AIState.RubySpray;
+										AIState = (int)State.RubySpray;
 
 										break;
 									}
@@ -69,12 +73,14 @@ internal class KingSlime : NPCReworker {
 						}
 						else if (Main.rand.NextBool(7)) {
 
-							currentState = AIState.SlamJump;
-
+							AIState = (int)State.SlamJump;
 
 						}
+						NeedsNetUpdate = true;
 						break;
 					}
+
+				
 			}
 
 
@@ -82,7 +88,7 @@ internal class KingSlime : NPCReworker {
 
 	}
 
-	enum AIState {
+	enum State {
 
 		Idle,
 		SlamJump,
@@ -94,10 +100,29 @@ internal class KingSlime : NPCReworker {
 		LaserRotate,
 		bouncing
 	}
-
 	public override void OnKill(NPC npc) {
 		if (crownNPC != null)
 			crownNPC.active = false;
+
+		for(int i = 0; i < Main.maxTilesX; i++)
+		{
+			for(int j = 0; j < Main.maxTilesY; j++){
+
+				if(WorldGen.TileType(i,j) == ModContent.TileType<KingSlimeSludgeTile>())
+					WorldGen.KillTile(i,j);
+				
+				
+			}
+		
+		}
+
+		foreach(Projectile proj in Main.ActiveProjectiles)
+		{
+		
+			if(proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
+				proj.Kill();
+
+		}
 	}
 
 	public override void ReworkedAI(ref NPC npc, Player target) {
@@ -108,15 +133,15 @@ internal class KingSlime : NPCReworker {
 			npc.velocity.X = 0;
 
 		if (AntiCheeseSlashStuckCheck(npc))
-			state = AIState.SlamJump;
+			state = State.SlamJump;
 
 
 		if (Delay == 0)
 			switch (state) {
 
-				case AIState.Idle: {
+				case State.Idle: {
 						afterimages = true;
-						if (crownNPC == null && npc.life <= npc.lifeMax * 0.25f) {
+						if (crownNPC == null && npc.life <= npc.lifeMax * 0.4f) {
 
 							crownNPC = NPC.NewNPCDirect(npc.GetSource_FromAI(), crownPos, ModContent.NPCType<KingSlimeCrown>(), 0, ai2: npc.whoAmI);
 
@@ -126,12 +151,12 @@ internal class KingSlime : NPCReworker {
 
 						if (Timer >= 40) {
 
-							state = AIState.Jump;
+							state = State.Jump;
 
 						}
 
 						if (npc.velocity.Y != 0 && !npc.collideY) {
-							state = AIState.Jumping;
+							state = State.Jumping;
 
 						}
 
@@ -140,7 +165,7 @@ internal class KingSlime : NPCReworker {
 					}
 
 
-				case AIState.Jump: {
+				case State.Jump: {
 
 						currentScale = Vector2.One.ClampedLerp(new Vector2(1.5f, 0.7f), Counter / 15f);
 
@@ -163,11 +188,11 @@ internal class KingSlime : NPCReworker {
 						this.distanceToTarget = npc.Distance(npc.targetRect.Center());
 						Delay2 = 25;
 						npc.velocity = new Vector2(velocityX, -velocityY);
-						state = AIState.Jumping;
+						state = State.Jumping;
 						break;
 					}
 
-				case AIState.Jumping: {
+				case State.Jumping: {
 
 
 						currentScale.X = 1f + npc.velocity.Y * 0.025f;
@@ -195,7 +220,7 @@ internal class KingSlime : NPCReworker {
 							if (Counter2 >= 45) {
 								npc.velocity = new Vector2(0, 25);
 								npc.MaxFallSpeedMultiplier *= 5;
-								state = AIState.Slamming;
+								state = State.Slamming;
 								Counter2 = 0;
 								Counter3 = 0;
 								afterimages = true;
@@ -206,7 +231,7 @@ internal class KingSlime : NPCReworker {
 						}
 
 						if (npc.collideY && !justMovedAwayFromTheGround) {
-							state = AIState.Idle;
+							state = State.Idle;
 							Delay = 40;
 							if (Delay2 > 0)
 								npc.ai[0] = MathHelper.Clamp(npc.ai[0] += 1, 0, 5);
@@ -225,7 +250,7 @@ internal class KingSlime : NPCReworker {
 
 
 					}
-				case AIState.Slamming: {
+				case State.Slamming: {
 
 
 						currentScale.X = 1f - npc.velocity.Y * 0.025f;
@@ -235,7 +260,7 @@ internal class KingSlime : NPCReworker {
 
 
 						if (npc.collideY && !justMovedAwayFromTheGround) {
-							state = AIState.Idle;
+							state = State.Idle;
 							Delay = 40;
 							SlamSound(npc);
 
@@ -244,7 +269,7 @@ internal class KingSlime : NPCReworker {
 						this.distanceToTarget = npc.Distance(npc.targetRect.Center());
 
 						if (Counter >= 5 && npc.Center.X > npc.targetRect.Center.X - 16 && npc.Center.X < npc.targetRect.Center.X + 16)
-							state = AIState.Slamming;
+							state = State.Slamming;
 
 						break;
 
@@ -252,12 +277,12 @@ internal class KingSlime : NPCReworker {
 
 					}
 
-				case AIState.LaserRotate: {
+				case State.LaserRotate: {
 
 						Counter++;
 						npc.velocity.X = 0;
 						if (Counter >= 110 * 5) {
-							state = AIState.Jump;
+							state = State.Jump;
 							Counter = 0;
 							break;
 						}
@@ -265,8 +290,17 @@ internal class KingSlime : NPCReworker {
 						if (Counter % 110 == 0) {
 							Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
 
+
+							
 						}
 
+						if(Counter % 220 == 0)
+						{
+							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(7,-7);
+							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(-7,-7);
+
+						
+						}
 
 						currentScale = BossRushUtils.ClampedLerp(new Vector2(0.8f, 1), new Vector2(1.15f, 1), MathF.Cos(Counter * 0.1f) + 0.5f);
 
@@ -275,7 +309,7 @@ internal class KingSlime : NPCReworker {
 						break;
 					}
 
-				case AIState.RubySpray: {
+				case State.RubySpray: {
 
 						Counter++;
 
@@ -288,7 +322,7 @@ internal class KingSlime : NPCReworker {
 							if (Counter2 >= 100) {
 								Counter = 0;
 								Counter2 = 0;
-								state = AIState.Idle;
+								state = State.Idle;
 								break;
 							}
 
@@ -312,7 +346,7 @@ internal class KingSlime : NPCReworker {
 						}
 						break;
 					}
-				case AIState.SlamJump: {
+				case State.SlamJump: {
 						currentScale.X = 1f.ClampedLerp(2f, Counter / 100f);
 						currentScale.Y = 1f.ClampedLerp(0.5f, BossRushUtils.EaseOutBounce(Counter / 100f));
 						Counter++;
@@ -341,7 +375,7 @@ internal class KingSlime : NPCReworker {
 						if (npc.Center.Y + npc.height >= target.Bottom.Y && ((Counter >= 180 + 1000 / 40f - npc.Hitbox.Height / 40) && !WorldGen.TileEmpty(tilePos.X, tilePos.Y + 8))) {
 							npc.noTileCollide = false;
 							npc.noGravity = false;
-							state = AIState.Idle;
+							state = State.Idle;
 							Counter = 0;
 							Delay = 40;
 							for (int i = 0; i < 12; i++) {
@@ -360,7 +394,7 @@ internal class KingSlime : NPCReworker {
 					}
 
 			}
-		crownPos = npc.Center - new Vector2(-npc.velocity.X, (105 * (npc.scale)) * currentScale.Y - (npc.height / 2 * npc.scale));
+		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0,40,npc.scale - ((1 - npc.scale))))) * currentScale.Y);
 
 	}
 	// also dust cuz it makes sense to be here also
@@ -374,7 +408,7 @@ internal class KingSlime : NPCReworker {
 	}
 
 	public override bool? CanFallThroughPlatforms(NPC npc) {
-		return state != AIState.LaserRotate ? base.CanFallThroughPlatforms(npc) : false;
+		return state != State.LaserRotate ? base.CanFallThroughPlatforms(npc) : false;
 	}
 
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
@@ -386,7 +420,7 @@ internal class KingSlime : NPCReworker {
 		if (crownNPC == null)
 			Main.EntitySpriteDraw(TextureAssets.Extra[39].Value, crownPos - screenPos - new Vector2(0, 8), null, drawColor, npc.rotation, TextureAssets.Extra[39].Size() / 2f, 1f, SpriteEffects.None);
 
-		if (state == AIState.SlamJump && Counter >= 140 && Counter < 180) {
+		if (state == State.SlamJump && Counter >= 140 && Counter < 180) {
 
 			ShaderSettings shaderSettings = new ShaderSettings();
 			shaderSettings.image1 = TextureAssets.Extra[193];
@@ -407,7 +441,7 @@ internal class KingSlime : NPCReworker {
 	}
 
 	public bool AntiCheeseSlashStuckCheck(NPC npc) {
-		return npc.ai[0] == 5 && state == AIState.Idle;
+		return npc.ai[0] == 5 && state == State.Idle;
 	}
 
 	public override void OnHitNPC(NPC npc, NPC target, NPC.HitInfo hit) {
@@ -602,16 +636,7 @@ public class KingSlimeSludgeTile : ModTile {
 	}
 
 	public override void RandomUpdate(int i, int j) {
-
-
-
-
-		if (Main.rand.NextBool(4))
-			NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
-
-		else
-			WorldGen.KillTile(i, j);
-
+		NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
 
 
 	}
@@ -647,7 +672,11 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 		Point tilePos = Projectile.position.ToTileCoordinates();
 
 		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15))
+		{
 			Projectile.Kill();
+			Projectile.netUpdate = true;
+
+		}
 	}
 
 	public override bool? CanDamage() {
@@ -681,7 +710,7 @@ public class KingSlimePlayer : ModPlayer {
 		if (WorldGen.TileType(Player.Center.ToTileCoordinates().X, (Player.Hitbox.Bottom >> 4) - 1) == ModContent.TileType<KingSlimeSludgeTile>()) {
 
 
-			Player.velocity *= 0.91f;
+			Player.velocity *= 0.75f;
 
 
 		}
@@ -869,11 +898,13 @@ public class KingSlimeCrown : ModNPC {
 
 						}
 
-						if (Counter >= 260 && magnetSlime != null) {
-
-							magnetSlime.velocity = magnetSlime.DirectionTo(NPC.targetRect.Center()) * 30;
+						if(Counter >= 260 && magnetSlime != null)	
+						{
+						
+							magnetSlime.velocity = magnetSlime.DirectionTo(NPC.targetRect.Center()) * 15;
 							magnetSlime.noGravity = false;
 							magnetSlime.noTileCollide = false;
+							magnetSlime.ai[3] = 1;
 							magnetSlime = null;
 						}
 
@@ -909,9 +940,10 @@ public class KingSlimeCrown : ModNPC {
 						break;
 					}
 				case AIState.Charging: {
-						NPC.velocity *= 0.95f;
-						if (Counter == 15) {
-							NPC.velocity = NPC.DirectionTo(NPC.targetRect.Center()) * 30;
+						NPC.velocity *= 0.97f;
+						if (Counter == 15)
+						{
+							NPC.velocity = NPC.DirectionTo(NPC.targetRect.Center()) * 20;
 						}
 						if (Counter >= 100) {
 
@@ -931,8 +963,8 @@ public class KingSlimeCrown : ModNPC {
 									break;
 
 							}
-
-
+							NPC.netUpdate = true;
+							
 						}
 						Counter++;
 						break;
@@ -956,9 +988,7 @@ public class KingSlimeMinion : ModNPC {
 		NPC.CloneDefaults(NPCID.BlueSlime);
 		AnimationType = NPCID.BlueSlime;
 		AIType = NPCID.BlueSlime;
-	}
-	public override void OnSpawn(IEntitySource source) {
-		NPC.ai[3] = 1;
+		NPC.lifeMax = 50;
 	}
 	public override Color? GetAlpha(Color drawColor) {
 		return Color.CornflowerBlue;
@@ -977,5 +1007,9 @@ public class KingSlimeMinion : ModNPC {
 	// DOESNT WORK BECAUSE SLIME AI RED CODE WOOHOOO
 	public override bool? CanFallThroughPlatforms() {
 		return NPC.ai[3] == 1 ? false : base.CanFallThroughPlatforms();
+	}
+
+	public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
+		modifiers.SetMaxDamage((int)(NPC.lifeMax * 0.25f));
 	}
 }
