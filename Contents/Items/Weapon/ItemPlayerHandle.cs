@@ -280,7 +280,7 @@ namespace BossRush.Contents.Items.Weapon {
 			return base.PreDrawTooltip(item, lines, ref x, ref y);
 		}
 		public override bool? UseItem(Item item, Player player) {
-			if (AdvancedBuffItem) {
+			if (AdvancedBuffItem && !UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
 				player.AddBuff(ModContent.BuffType<Drawback>(), BossRushUtils.ToMinute(6));
 			}
 			return base.UseItem(item, player);

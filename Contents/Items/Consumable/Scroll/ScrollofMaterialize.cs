@@ -5,6 +5,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfMaterialize : ModItem {
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<MaterializeSpell>(), BossRushUtils.ToMinute(4));

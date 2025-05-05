@@ -348,6 +348,8 @@ Mods: {
 			LauncherProjectile.DisplayName: Launcher Projectile
 			TwilightNightProjectile.DisplayName: Twilight Night Projectile
 			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
+			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
+			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
 		}
 
 		NPCs: {
@@ -2000,29 +2002,9 @@ Mods: {
 				DisplayName: Shadow Potion
 				Tooltip:
 					'''
-					Give 4% to dodge a attack
+					Give 12% to dodge a attack
 					Increases invincibility frame duration by 10%
 					'''
-			}
-
-			ScrollofEvasive: {
-				DisplayName: Scroll of Evasive
-				Tooltip: Give user envasion spell
-			}
-
-			ScrollOfMaterialize: {
-				DisplayName: Scroll Of Materialize
-				Tooltip: Give user materialize spell
-			}
-
-			ScrollOfInvincibility: {
-				DisplayName: Scroll Of Invincibility
-				Tooltip: Give user invincibility spell
-			}
-
-			ScrollOfProtection: {
-				DisplayName: Scroll Of Protection
-				Tooltip: Give user protection spell
 			}
 
 			KeenPotion: {
@@ -2032,7 +2014,7 @@ Mods: {
 
 			RejuvenatePotion: {
 				DisplayName: Rejuvenate Potion
-				Tooltip: Increases life regeneration by 10, at the end of buff heal player for 200 health
+				Tooltip: Increases life regeneration by 10, at the end of buff heal player for 100 health
 			}
 
 			AltarItem: {
@@ -2276,11 +2258,6 @@ Mods: {
 					'''
 			}
 
-			ScrollofStrike: {
-				DisplayName: Scroll of Strike
-				Tooltip: Give user strike spell
-			}
-
 			DryadSoulItem: {
 				DisplayName: Dryad Soul Item
 				Tooltip: ""
@@ -2411,6 +2388,31 @@ Mods: {
 			ScrollOfHellspawn: {
 				DisplayName: Scroll: Hellspawn
 				Tooltip: Summon a portal from underworld for demonic energy swept through
+			}
+
+			ScrollofStrike: {
+				DisplayName: Scroll: Strike
+				Tooltip: Grant user strike spell
+			}
+
+			ScrollofEvasive: {
+				DisplayName: Scroll: Evasive
+				Tooltip: Grant user envasion spell
+			}
+
+			ScrollOfMaterialize: {
+				DisplayName: Scroll: Materialize
+				Tooltip: Grant user materialize spell
+			}
+
+			ScrollOfInvincibility: {
+				DisplayName: Scroll: Invincibility
+				Tooltip: Grant user invincibility spell
+			}
+
+			ScrollOfProtection: {
+				DisplayName: Scroll: Protection
+				Tooltip: Grant user protection spell
 			}
 
 			TwilightNight: {
@@ -2559,6 +2561,26 @@ Mods: {
 			BrokenDice: {
 				DisplayName: Broken Dice
 				Tooltip: Dice of a dead god
+			}
+
+			MagicPotion: {
+				DisplayName: Magic Potion
+				Tooltip: ""
+			}
+
+			MeleePotion: {
+				DisplayName: Melee Potion
+				Tooltip: ""
+			}
+
+			RangerPotion: {
+				DisplayName: Ranger Potion
+				Tooltip: ""
+			}
+
+			SummonPotion: {
+				DisplayName: Summon Potion
+				Tooltip: ""
 			}
 		}
 
@@ -2926,7 +2948,7 @@ Mods: {
 
 			ProtectionSpell: {
 				DisplayName: Protection Spell
-				Description: Increases your defenses by base 10 and 12%
+				Description: Grant absolute protection for 1 attack
 			}
 
 			LifeStealBuff: {
@@ -2939,9 +2961,9 @@ Mods: {
 				Description: TODO: ADD DESCRIPTION
 			}
 
-			EnvasionSpell: {
-				DisplayName: Envasion Spell
-				Description: You have 50% to dodge an attack
+			EvasionSpell: {
+				DisplayName: Evasion Spell
+				Description: You have 100% to dodge an attack, dodging will remove the spell
 			}
 
 			MaterializeSpell: {
@@ -3036,8 +3058,8 @@ Mods: {
 			}
 
 			TomahawkCD: {
-				DisplayName: Tomahawk C D
-				Description: Mods.BossRush.Buffs.TomahawkCD.Description
+				DisplayName: Tomahawk Cool down
+				Description: " "
 			}
 
 			Axe_BleedDebuff: {
@@ -3107,7 +3129,7 @@ Mods: {
 
 			StrikeSpell: {
 				DisplayName: Strike Spell
-				Description: Make your next attack do a additional 10 strikes
+				Description: Make your next attack do a additional 5 strikes
 			}
 
 			FairFrozenModbuff: {
@@ -3151,13 +3173,13 @@ Mods: {
 			}
 
 			NPC_Weakness: {
-				DisplayName: N P C_ Weakness
+				DisplayName: Weakness
 				Description: Mods.BossRush.Buffs.NPC_Weakness.Description
 			}
 
 			SnowballCannonMK2Projectile_CoolDown: {
-				DisplayName: Snowball Cannon M K2 Projectile_ Cool Down
-				Description: Mods.BossRush.Buffs.SnowballCannonMK2Projectile_CoolDown.Description
+				DisplayName: SnowballCannonMK2 Cool Down
+				Description: " "
 			}
 
 			Aftershock: {
@@ -3166,8 +3188,8 @@ Mods: {
 			}
 
 			Urine_Debuff: {
-				DisplayName: Urine_ Debuff
-				Description: Mods.BossRush.Buffs.Urine_Debuff.Description
+				DisplayName: Urine
+				Description: ew
 			}
 
 			DiceRollBuff: {
@@ -3178,6 +3200,26 @@ Mods: {
 			DiceRollDebuff: {
 				DisplayName: Dice Roll Debuff
 				Description: Mods.BossRush.Buffs.DiceRollDebuff.Description
+			}
+
+			Magic_Buff: {
+				DisplayName: Magic_ Buff
+				Description: Mods.BossRush.Buffs.Magic_Buff.Description
+			}
+
+			Melee_Buff: {
+				DisplayName: Melee_ Buff
+				Description: Mods.BossRush.Buffs.Melee_Buff.Description
+			}
+
+			Ranger_Buff: {
+				DisplayName: Ranger_ Buff
+				Description: Mods.BossRush.Buffs.Ranger_Buff.Description
+			}
+
+			Summon_Buff: {
+				DisplayName: Summon_ Buff
+				Description: Mods.BossRush.Buffs.Summon_Buff.Description
 			}
 		}
 

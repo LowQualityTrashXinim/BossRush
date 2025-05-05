@@ -5,9 +5,12 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfProtection : ModItem {
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToMinute(1.5f));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToSecond(20));
 		Item.Set_ItemIsRPG();
 	}
 }
@@ -16,8 +19,19 @@ public class ProtectionSpell : ModBuff {
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}
-	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Flat: 10);
+}
+public class ProtectionSpell_Player : ModPlayer {
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		if (Player.HasBuff<ProtectionSpell>()) {
+			modifiers.SetMaxDamage(1);
+			Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<ProtectionSpell>()));
+		}
+	}
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (Player.HasBuff<ProtectionSpell>()) {
+			modifiers.SetMaxDamage(1);
+			Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<ProtectionSpell>()));
+		}
 	}
 }
 

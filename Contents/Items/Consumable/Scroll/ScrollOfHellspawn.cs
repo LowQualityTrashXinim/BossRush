@@ -14,6 +14,9 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Consumable.Scroll;
 
 class ScrollOfHellspawn : ModItem {
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);

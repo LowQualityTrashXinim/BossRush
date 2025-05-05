@@ -5,6 +5,9 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfInvincibility : ModItem {
+	public override void SetStaticDefaults() {
+		BossRushModSystem.LootboxPotion.Add(Item);
+	}
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.Set_AdvancedBuffItem();
@@ -18,7 +21,6 @@ public class InvincibilitySpell : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Base: 10);
 		player.noFallDmg = true;
 	}
 }

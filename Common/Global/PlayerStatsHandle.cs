@@ -108,6 +108,10 @@ public class PlayerStatsHandle : ModPlayer {
 	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
 	/// </summary>
 	public float AugmentationChance = 0;
+	/// <summary>
+	/// Uses for enchantment cool down effect
+	/// </summary>
+	public StatModifier EnchantmentCoolDown = StatModifier.Default;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 && LifeSteal.ApplyTo(1) > 0) {
@@ -162,6 +166,10 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier Range_NonCritDmg = StatModifier.Default;
 	public StatModifier Magic_NonCritDmg = StatModifier.Default;
 	public StatModifier Summon_NonCritDmg = StatModifier.Default;
+	public StatModifier MeleeAtkSpeed = StatModifier.Default;
+	public StatModifier RangeAtkSpeed = StatModifier.Default;
+	public StatModifier MagicAtkSpeed = StatModifier.Default;
+	public StatModifier SummonAtkSpeed = StatModifier.Default;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		var item = Player.HeldItem;
 		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
@@ -290,6 +298,11 @@ public class PlayerStatsHandle : ModPlayer {
 		Magic_NonCritDmg = StatModifier.Default;
 		Summon_NonCritDmg = StatModifier.Default;
 
+		MeleeAtkSpeed = StatModifier.Default;
+		RangeAtkSpeed = StatModifier.Default;
+		MagicAtkSpeed = StatModifier.Default;
+		SummonAtkSpeed = StatModifier.Default;
+
 		UpdateFullHPDamage = StatModifier.Default;
 		UpdateMinion = StatModifier.Default;
 		UpdateSentry = StatModifier.Default;
@@ -320,6 +333,7 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
+		EnchantmentCoolDown = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -347,8 +361,21 @@ public class PlayerStatsHandle : ModPlayer {
 		EnergyRegenCountLimit = StatModifier.Default;
 	}
 	public override float UseSpeedMultiplier(Item item) {
-		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
-		return useSpeed;
+		float useSpeed = base.UseSpeedMultiplier(item);
+		StatModifier global = AttackSpeed;
+		if (item.DamageType == DamageClass.Melee) {
+			global = AttackSpeed.CombineWith(MeleeAtkSpeed);
+		}
+		else if (item.DamageType == DamageClass.Ranged) {
+			global = AttackSpeed.CombineWith(RangeAtkSpeed);
+		}
+		else if (item.DamageType == DamageClass.Magic) {
+			global = AttackSpeed.CombineWith(MagicAtkSpeed);
+		}
+		else if (item.DamageType == DamageClass.Summon) {
+			global = AttackSpeed.CombineWith(SummonAtkSpeed);
+		}
+		return MathF.Ceiling(global.ApplyTo(useSpeed));
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -716,6 +743,11 @@ public class PlayerStatsHandle : ModPlayer {
 			default:
 				return DamageClass.Default;
 		}
+	}
+	public static int WE_CoolDown(Player player, int cooldown) {
+		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+		float newcooldown = handle.EnchantmentCoolDown.ApplyTo(cooldown);
+		return (int)Math.Max(Math.Ceiling(newcooldown), 0);
 	}
 	public Dictionary<string, ConditionApproved> SecondLife = new();
 	public static void SetSecondLifeCondition(Player player, string context, bool condition) {

@@ -20,6 +20,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public bool Source_FromDeathScatterShot = false;
 	public bool IsFromMinion = false;
 	public bool IsFromRelic = false;
+	public bool IsFromBoss = false;
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
@@ -48,10 +49,15 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					IsFromMinion = true;
 				}
 				//Attempt to get item source from that minion
-				if(possibly.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
-					if(global.Source_ItemType != 0) {
+				if (possibly.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+					if (global.Source_ItemType != 0) {
 						Source_ItemType = global.Source_ItemType;
 					}
+				}
+			}
+			if (parent3.Entity is NPC npc) {
+				if (npc.boss) {
+					IsFromBoss = true;
 				}
 			}
 		}
@@ -98,6 +104,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				}
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
+		}
+	}
+	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
+		if (IsFromBoss) {
+			modifiers.FinalDamage.Flat += target.statManaMax2 * .1f;
 		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {

@@ -80,14 +80,14 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 				return;
 			}
 			globalItem.Item_Counter1[index] = Math.Clamp(globalItem.Item_Counter1[index] + 1, 0, 6);
-			globalItem.Item_Counter2[index] = 60;
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (globalItem.Item_Counter2[index] > 0) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = Math.Clamp(globalItem.Item_Counter1[index] + 1, 0, 6);
-			globalItem.Item_Counter2[index] = 60;
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 		}
 	}
 	public class Minishark : ModEnchantment {
@@ -109,7 +109,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 					}
 					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
 					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(item, ammoID), player.Center, vel * speed, type, damage, knockback, player.whoAmI);
-					globalItem.Item_Counter1[index] = 8;
+					globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 8);
 				}
 			}
 		}
@@ -351,7 +351,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -370,7 +370,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -389,7 +389,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -408,7 +408,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -427,7 +427,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -446,7 +446,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -465,7 +465,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -484,7 +484,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
-			globalItem.Item_Counter1[index] = 12;
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
 		}
@@ -526,7 +526,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity = vec;
 				}
-				globalItem.Item_Counter3[index] = BossRushUtils.ToSecond(3);
+				globalItem.Item_Counter3[index] = PlayerStatsHandle.WE_CoolDown(player,  BossRushUtils.ToSecond(3));
 			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
@@ -540,7 +540,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			}
 			if (globalItem.Item_Counter1[index] <= 0) {
 				target.AddBuff(BuffID.Ichor, 240);
-				globalItem.Item_Counter1[index] = 60;
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 12);
 				if (++globalItem.Item_Counter2[index] >= 5) {
 					player.Heal(1);
 					globalItem.Item_Counter2[index] = 0;
@@ -572,7 +572,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			}
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(4);
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(4));
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(3), ProjectileID.Seed, (int)(damage * .35f), knockback, player.whoAmI);
 		}
 	}
@@ -588,7 +588,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 				for (int i = 0; i < 3; i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(3, 30, i), ProjectileID.PainterPaintball, (int)(damage * .45f), knockback, player.whoAmI, 0, Main.rand.NextFloat());
 				}
-				globalItem.Item_Counter1[index] = 60;
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
 			}
 		}
 	}
@@ -762,7 +762,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
 				for (int i = 0; i < 15; i++) {
 					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
-					globalItem.Item_Counter1[index] = 5;
+					globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 5);
 				}
 		}
 
@@ -770,7 +770,7 @@ namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
 				for (int i = 0; i < 15; i++) {
 					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
-					globalItem.Item_Counter1[index] = 5;
+					globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 5);
 				}
 		}
 	}
