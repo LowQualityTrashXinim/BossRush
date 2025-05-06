@@ -52,6 +52,7 @@ public class ObjectSystem : ModSystem {
 			}
 			if (modobject.active) {
 				modobject.AI();
+				modobject.position += modobject.velocity;
 				if (modobject.timeLeft > 0) {
 					modobject.timeLeft--;
 				}

@@ -14,6 +14,9 @@ using Terraria.ModLoader.IO;
 using System.IO;
 using System.Linq;
 using Terraria.ID;
+using BossRush.Common.Systems.ObjectSystem;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Common.Global;
 /// <summary>
@@ -399,6 +402,9 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		if (listItem != null && listItem.Count > 0) {
 			int typeItem = listItem[0].type;
+			ModObject modobject = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<AccessoryVisualModObject>());
+			AccessoryVisualModObject accobject = (AccessoryVisualModObject)modobject;
+			accobject.AccType = typeItem;
 			listItem[0].TurnToAir();
 			listItem.RemoveAt(0);
 			Player.Heal(Player.statLifeMax2 / 2);
@@ -789,6 +795,30 @@ public class PlayerStatsHandle : ModPlayer {
 			}
 		}
 		return false;
+	}
+}
+public class AccessoryVisualModObject : ModObject {
+	public int AccType = -1;
+	public int alpha = 255;
+	public override void SetDefaults() {
+		timeLeft = 120;
+	}
+	public override void AI() {
+		velocity = -Vector2.UnitY * 2;
+		alpha = (int)MathHelper.Lerp(0, 255, timeLeft / 120f);
+	}
+	public override void Draw(SpriteBatch spritebatch) {
+		if (AccType < 0) {
+			return;
+		}
+		float opacity = alpha / 255f;
+		Main.instance.LoadItem(AccType);
+		Texture2D texture = TextureAssets.Item[AccType].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = position - Main.screenPosition + origin;
+		Color color = new Color(255, 255, 255 , 0) * opacity;
+		color.A = (byte)alpha;
+		spritebatch.Draw(texture, drawPos, null, color, 0, origin, 1f, SpriteEffects.None, 0);
 	}
 }
 /// <summary>

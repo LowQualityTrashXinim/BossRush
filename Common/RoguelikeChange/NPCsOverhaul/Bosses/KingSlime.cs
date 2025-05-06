@@ -14,7 +14,6 @@ using Terraria.WorldBuilding;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using BossRush.Contents.Items.Accessories.LostAccessories;
 
 
 namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses;
@@ -770,18 +769,18 @@ public class KingSlimeMinionSpawner : ModNPC {
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 
-		if (Duration == 160 || !NPC.active || Main.LocalPlayer.Center.Distance(NPC.Center) > 1000f)
-			return false;
+		//if (Duration == 160 || !NPC.active || Main.LocalPlayer.Center.Distance(NPC.Center) > 1000f)
+		//	return false;
 
-		var player = Main.player[NPC.FindClosestPlayer()];
-		float length = NPC.Distance(player.Center);
-		ShaderSettings shaderSettings = new ShaderSettings();
-		shaderSettings.image1 = TextureAssets.Extra[193];
-		shaderSettings.image2 = null;
-		shaderSettings.image3 = null;
-		shaderSettings.Color = Color.Cyan;
-		shaderSettings.shaderData = new Vector4(1f, length, 0, 0);
-		default(ColorIndicatorQuad).Draw(NPC.Center, player.DirectionFrom(NPC.Center).ToRotation(), new Vector2(length, 128), shaderSettings);
+		//var player = Main.player[NPC.FindClosestPlayer()];
+		//float length = NPC.Distance(player.Center);
+		//ShaderSettings shaderSettings = new ShaderSettings();
+		//shaderSettings.image1 = TextureAssets.Extra[193];
+		//shaderSettings.image2 = null;
+		//shaderSettings.image3 = null;
+		//shaderSettings.Color = Color.Cyan;
+		//shaderSettings.shaderData = new Vector4(1f, length, 0, 0);
+		//default(ColorIndicatorQuad).Draw(NPC.Center, player.DirectionFrom(NPC.Center).ToRotation(), new Vector2(length, 128), shaderSettings);
 		return false;
 	}
 
@@ -1003,6 +1002,18 @@ public class KingSlimeMinion : ModNPC {
 		if (NPC.collideY || NPC.collideX)
 			NPC.ai[3] = 0;
 		return isGettingYeeted;
+	}
+	public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit) {
+		NPC.ai[3] = 0;
 	}
 	// DOESNT WORK BECAUSE SLIME AI RED CODE WOOHOOO
 	public override bool? CanFallThroughPlatforms() {
