@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
 					Color.Yellow.Hex3(),
 			RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * tierValue),
 			RelicTemplateLoader.RelicValueToNumber(value.Base + value.Base * tierValue),
-			RelicTemplateLoader.RelicValueToPercentage((value.Additive * 2 - 1) + (value.Additive * 2 - 1) * tierValue),
+			RelicTemplateLoader.RelicValueToPercentage((value.Additive * 2 - 1) + (value.Additive - 1) * tierValue),
 		]);
 		}
 

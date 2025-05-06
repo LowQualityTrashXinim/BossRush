@@ -408,9 +408,9 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {Math.Round(player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100)}% Base : {player.GetTotalDamage(DamageClass.Generic).Base} Flat : {player.GetTotalDamage(DamageClass.Generic).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
+						list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
+						list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((player.GetModPlayer<PlayerStatsHandle>().UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[7].SetInfo($"{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
@@ -436,9 +436,9 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {chestplayer.DropModifier.ApplyTo(1)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}");
+						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().RandomizeChanceEnchantment)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}");
+						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().AugmentationChance)}");
 						for (int i = 0; i < list_info.Count; i++) {
 							float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
 							list_info[i].SetAlign(0, Y);
