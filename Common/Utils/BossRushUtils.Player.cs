@@ -92,6 +92,26 @@ namespace BossRush {
 			return item.Select(i => i.type).Contains(itemType);
 		}
 		/// <summary>
+		/// The following method attempt to return amount of current player buff<br/>
+		/// It will ignore pet, mount and minion buff
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static int BuffAmount(this Player player) {
+			int buffamount = player.buffType.Where(b => b != 0 && b != -1 && !Main.debuff[b] && !Main.vanityPet[b] && !Main.lightPet[b] && !BossRushModSystem.MinionPetMountBuff.Contains(b)).Count();
+			return buffamount;
+		}
+		/// <summary>
+		/// The following method attempt to return amount of current player debuff<br/>
+		/// It will ignore pet, mount and minion buff
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static int DeBuffAmount(this Player player) {
+			int buffamount = player.buffType.Where(b => b != 0 && b != -1 && Main.debuff[b]).Count();
+			return buffamount;
+		}
+		/// <summary>
 		/// Highly unstable, not recommend to uses unless you know what you are doing
 		/// </summary>
 		/// <param name="mod"></param>

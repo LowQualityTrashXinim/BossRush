@@ -12,6 +12,7 @@ using BossRush.Contents.Transfixion.Artifacts;
 using System.Collections.Generic;
 using Terraria.Audio;
 using BossRush.Contents.Items.Consumable;
+using BossRush.Contents.Perks.BlessingPerk;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -222,6 +223,15 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		modifiers.FinalDamage *= 1 - Endurance;
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
+			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
+			if (npc.HasBuff<StarRay>()) {
+				// Apply a flat bonus to every hit
+				modifiers.FlatBonusDamage += StarRay.TagDamage * projTagMultiplier;
+			}
+		}
+
+
 		if (npc.boss) {
 			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
 				modifiers.SetMaxDamage(1);

@@ -54,6 +54,7 @@ namespace BossRush {
 		public static List<Item> RPGItem { get; private set; }
 		public static List<int> ListLootboxType { get; private set; }
 		public static HashSet<Item> List_Weapon { get; private set; }
+		public static HashSet<int> MinionPetMountBuff { get; private set; }
 		/// <summary>
 		/// This is not handle automatically since this is for modded potion within the mod<br/>
 		/// Uses this if you want a potion of your to be added into lootbox potion pool or spoil potion pool
@@ -103,6 +104,7 @@ namespace BossRush {
 			List_Weapon = new();
 			LootboxPotion = new();
 			VanillaAndLostAcc = new();
+			MinionPetMountBuff = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -120,6 +122,7 @@ namespace BossRush {
 			List_Weapon = null;
 			LootboxPotion = null;
 			VanillaAndLostAcc = null;
+			MinionPetMountBuff = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
@@ -213,6 +216,11 @@ namespace BossRush {
 					}
 				}
 				if (item.IsAWeapon()) {
+					if (item.buffType != -1 && item.shoot != ProjectileID.None) {
+						if (ContentSamples.ProjectilesByType[item.shoot].minion) {
+							MinionPetMountBuff.Add(item.buffType);
+						}
+					}
 					List_Weapon.Add(item);
 					if (!WeaponRarityDB.ContainsKey(item.rare)) {
 						WeaponRarityDB.Add(item.rare, new List<int> { item.type });

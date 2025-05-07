@@ -155,7 +155,7 @@ AlchemistI: {
 
 AlchemistII: {
 	DisplayName: Alchemist II
-	Description: For each debuff/buff the enemy have, +3% damage
+	Description: For each debuff/buff you have, increases life regeneration by 1
 }
 
 Light: {

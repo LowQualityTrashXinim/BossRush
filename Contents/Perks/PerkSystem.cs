@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.Perks.BlessingPerk;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {

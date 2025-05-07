@@ -350,6 +350,7 @@ Mods: {
 			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
 			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
 			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
+			StarDustProjectile.DisplayName: Star Dust Projectile
 		}
 
 		NPCs: {
@@ -3220,6 +3221,11 @@ Mods: {
 			Summon_Buff: {
 				DisplayName: Summon_ Buff
 				Description: Mods.BossRush.Buffs.Summon_Buff.Description
+			}
+
+			StarRay: {
+				DisplayName: Star Ray
+				Description: Mods.BossRush.Buffs.StarRay.Description
 			}
 		}
 

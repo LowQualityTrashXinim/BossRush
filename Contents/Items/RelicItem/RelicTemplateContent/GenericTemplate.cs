@@ -4,6 +4,7 @@ using System;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Perks.BlessingPerk;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 public class GenericTemplate : RelicTemplate {

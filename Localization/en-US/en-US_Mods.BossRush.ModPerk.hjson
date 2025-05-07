@@ -245,6 +245,13 @@ BlessingOfStardust: {
 		+ For 2 minion/sentry slot you have, you gain 1 base damage
 		+ Increases your max minion slot and sentry slot by 1
 		'''
+	Description3:
+		'''
+		+ Your whip inflict Star gaze
+		+ For 2 minion/sentry slot you have, you gain 1 base damage
+		+ Increases your max minion slot and sentry slot by 1
+		+ Your whip attack may occassionally spawn stardust which home into enemy
+		'''
 }
 
 BlessingOfSynergy: {
