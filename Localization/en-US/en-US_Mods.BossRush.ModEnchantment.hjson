@@ -727,6 +727,7 @@ StylistKilLaKillScissorsIWish.Description:
 	Multiply melee damage by 1.11x
 	Multiply melee critical strike damage by 1.12x
 	Increases weapon size by 20%
+	Hitting enemey with item have 50% chance to do additional slash
 	'''
 Ruler.Description:
 	'''

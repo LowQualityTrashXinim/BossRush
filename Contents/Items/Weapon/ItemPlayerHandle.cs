@@ -196,7 +196,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool OverrideVanillaEffect = false;
 		public override void SetDefaults(Item entity) {
 		}
-		public float CriticalDamage = 0;
+		public float CriticalDamage;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (UniversalSystem.EnchantingState) {
 				return;

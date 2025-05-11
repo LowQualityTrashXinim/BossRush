@@ -141,10 +141,10 @@ public class BlessingOfStardust : Perk {
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (ProjectileID.Sets.IsAWhip[proj.type]) {
 			target.AddBuff(ModContent.BuffType<StarGaze>(), BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
-		}
-		if (Main.rand.NextBool(4)) {
-			Vector2 spawnPos = target.Center + Main.rand.NextVector2CircularEdge(target.width + 32, target.height + 32);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), spawnPos, Main.rand.NextVector2CircularEdge(4, 4), ModContent.ProjectileType<StarDustProjectile>(), (int)(hit.Damage * .55f), 1f, player.whoAmI);
+			if (Main.rand.NextBool(4) && StackAmount(player) >= 3) {
+				Vector2 spawnPos = target.Center + Main.rand.NextVector2CircularEdge(target.width + 32, target.height + 32);
+				Projectile.NewProjectile(player.GetSource_OnHit(target), spawnPos, Main.rand.NextVector2CircularEdge(4, 4), ModContent.ProjectileType<StarDustProjectile>(), (int)(hit.Damage * .55f), 1f, player.whoAmI);
+			}
 		}
 	}
 }

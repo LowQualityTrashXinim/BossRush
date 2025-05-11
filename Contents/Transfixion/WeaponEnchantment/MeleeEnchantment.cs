@@ -1198,6 +1198,13 @@ public class StylistKilLaKillScissorsIWish : ModEnchantment {
 	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
 		scale += .2f;
 	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool()) {
+			Vector2 spawnPosition = target.Center + Main.rand.NextVector2CircularEdge(target.width, target.height);
+			Vector2 velocityToward = (target.Center - spawnPosition).SafeNormalize(Vector2.Zero);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), spawnPosition, velocityToward, ModContent.ProjectileType<SimplePiercingProjectile>(), (int)(hit.Damage * .85f), 0, player.whoAmI, 3);
+		}
+	}
 }
 public class Ruler : ModEnchantment {
 	public override void SetDefaults() {

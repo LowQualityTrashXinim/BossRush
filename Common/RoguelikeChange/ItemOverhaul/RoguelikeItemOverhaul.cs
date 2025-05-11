@@ -304,11 +304,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					text));
 			}
 			else if (item.type == ItemID.CopperWatch) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", 
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch",
 					"Decreases the nearest NPC speed by 30%" +
 					"\nDecreases hostile projectile velocity by 30%"));
 			}
-			else if(item.type == ItemID.GolemFist) {
+			else if (item.type == ItemID.GolemFist) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_GolemFist",
 					"On every 3rd hit on the same enemy, deal extra 150% damage and do a small sun explosion"));
 			}

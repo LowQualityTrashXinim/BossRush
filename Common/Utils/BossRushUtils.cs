@@ -13,6 +13,53 @@ using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		//Taken from chatGPT
+		public static Color FakeHueShift(Color original, float hueShiftDegrees) {
+			float r = original.R / 255f;
+			float g = original.G / 255f;
+			float b = original.B / 255f;
+
+			// Step 3: Approximate hue angle from RGB — not exact HSV, but good for fake shifting
+			float angle = MathF.Atan2(g - b, r - g) * (180f / MathHelper.Pi);
+			if (angle < 0) angle += 360f;
+
+			// Step 4: Add hue offset
+			float newHue = (angle + hueShiftDegrees) % 360f;
+
+			// Step 1: Get grayscale (luminance) 
+			// Xinim note : I have verified that this a actual real thing, https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
+			// Turn out our eyes perceive color in weird way
+			float luminance = 0.299f * original.R + 0.587f * original.G + 0.114f * original.B;
+			Color gray = new Color((int)luminance, (int)luminance, (int)luminance, original.A);
+
+			// Step 2: Get RGB hue color from the hueShiftDegrees (approximate pure hue)
+			Color targetHue = HueToRGB(newHue);
+
+			// Step 3: Estimate original saturation (based on min/max channel spread)
+			float min = MathF.Min(original.R, MathF.Min(original.G, original.B)) / 255f;
+			float max = MathF.Max(original.R, MathF.Max(original.G, original.B)) / 255f;
+			float saturation = max - min;
+
+			// Step 4: Lerp from grayscale to target hue by saturation
+			return Color.Lerp(gray, targetHue, saturation);
+		}
+
+		// Converts hue (0–360) to an RGB color (pure hue, full saturation, mid brightness)
+		private static Color HueToRGB(float hue) {
+			float c = 1f;
+			float x = c * (1 - MathF.Abs((hue / 60f) % 2 - 1));
+			float r = 0, g = 0, b = 0;
+
+			if (hue < 60) { r = c; g = x; }
+			else if (hue < 120) { r = x; g = c; }
+			else if (hue < 180) { g = c; b = x; }
+			else if (hue < 240) { b = c; g = x; }
+			else if (hue < 300) { b = c; r = x; }
+			else { r = c; b = x; }
+
+			return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255));
+		}
+
 		public static float EaseInBounce(float x) {
 
 			const float n1 = 7.5625f;
@@ -57,7 +104,7 @@ namespace BossRush {
 		/// <returns></returns>
 		public static Roguelike_Dust Dust_GetDust(this Dust dust) {
 			if (!dust.active) {
-				return null;
+				return RoguelikeGlobalDust.DeadDust;
 			}
 			return RoguelikeGlobalDust.Dust[dust.dustIndex];
 		}
@@ -517,18 +564,15 @@ namespace BossRush {
 		private ushort _type;
 		private int _style;
 
-		public PlaceTileWithCheck(ushort type, int style = 0)
-		{
+		public PlaceTileWithCheck(ushort type, int style = 0) {
 			_type = type;
 			_style = style;
 		}
 
-		public override bool Apply(Point origin, int x, int y, params object[] args)
-		{
-			if(WorldGen.TileEmpty(x,y))
-			{
+		public override bool Apply(Point origin, int x, int y, params object[] args) {
+			if (WorldGen.TileEmpty(x, y)) {
 				WorldGen.PlaceTile(x, y, _type, mute: true, forced: false, -1, _style);
-				
+
 			}
 
 			return UnitApply(origin, x, y, args);

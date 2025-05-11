@@ -33,7 +33,8 @@ internal class WindShot : ModProjectile {
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		Projectile.DrawTrail(Color.White, .02f);
+		Color color = new(255, 255, 255, 0);
+		Projectile.DrawTrail(color, .02f);
 		return base.PreDraw(ref lightColor);
 	}
 }

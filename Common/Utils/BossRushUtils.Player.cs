@@ -37,6 +37,7 @@ namespace BossRush {
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.PlayerCurrentArtifact<T>(player);
 		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? -1 : 1;
+		public static int DirectionFromEntityAToEntityB(float A, float B) => A > B ? -1 : 1;
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
 		}
@@ -112,7 +113,8 @@ namespace BossRush {
 			return buffamount;
 		}
 		/// <summary>
-		/// Highly unstable, not recommend to uses unless you know what you are doing
+		/// <b>Highly unstable</b><br/><br/>
+		/// Will attempt to reflesh global item within the inventory
 		/// </summary>
 		/// <param name="mod"></param>
 		/// <param name="player"></param>
@@ -134,25 +136,30 @@ namespace BossRush {
 				//item.shoot = itemA.shoot;
 				//item.shootSpeed = itemA.shootSpeed;
 				int type = item.type;
+				Set_ItemCriticalDamage(item, 0f);
 				if (ItemID.Sets.IsFood[type]) {
 					continue;
 				}
-				else if (type <= 1000) {
-					item.SetDefaults1(type);
-				}
-				else if (type <= 2001) {
-					item.SetDefaults2(type);
-				}
-				else if (type <= 3000) {
-					item.SetDefaults3(type);
-				}
-				else if (type <= 3989) {
-					item.SetDefaults4(type);
+				if (item.ModItem != null) {
+					item.ModItem.SetDefaults();
 				}
 				else {
-					item.SetDefaults5(type);
+					if (type <= 1000) {
+						item.SetDefaults1(type);
+					}
+					else if (type <= 2001) {
+						item.SetDefaults2(type);
+					}
+					else if (type <= 3000) {
+						item.SetDefaults3(type);
+					}
+					else if (type <= 3989) {
+						item.SetDefaults4(type);
+					}
+					else {
+						item.SetDefaults5(type);
+					}
 				}
-				Set_ItemCriticalDamage(item, 0f);
 				foreach (var globalitem in item.Globals) {
 					if (globalitem == null || globalitem.Mod.Name != mod.Name) {
 						continue;

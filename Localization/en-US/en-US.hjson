@@ -351,6 +351,13 @@ Mods: {
 			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
 			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
 			StarDustProjectile.DisplayName: Star Dust Projectile
+			SlashStrikeProjectile.DisplayName: Slash Strike Projectile
+			SpearThurstProjectile.DisplayName: Spear Thurst Projectile
+			SimplePiercingProjectile.DisplayName: Simple Piercing Projectile
+			AcidArrow.DisplayName: Acid Arrow
+			FlameProjectile.DisplayName: Flame Projectile
+			Legacy_EnchantedCopperSwordP.DisplayName: Legacy_ Enchanted Copper Sword P
+			ToxicBubble.DisplayName: Toxic Bubble
 		}
 
 		NPCs: {
@@ -2583,6 +2590,27 @@ Mods: {
 				DisplayName: Summon Potion
 				Tooltip: ""
 			}
+
+			CorruptedRebirth: {
+				DisplayName: Corrupted Rebirth
+				Tooltip: ""
+			}
+
+			EnchantedCopperSword: {
+				DisplayName: Enchanted Copper Sword
+				Tooltip: A derserve forgotten
+			}
+
+			SniperRifle: {
+				DisplayName: Sniper Rifle
+				Tooltip:
+					'''
+					"A sniper rifle of a forgotten alternative timeline in a broken alternative universe"
+					Wait for 2s to charge your next shot
+					Charge shot increases damage by 2.0x, have 50% of instantly killing enemy
+					Charge shot explode enemy on hit inflicting Completely Shatter debuff
+					'''
+			}
 		}
 
 		Buffs: {
@@ -3226,6 +3254,16 @@ Mods: {
 			StarRay: {
 				DisplayName: Star Ray
 				Description: Mods.BossRush.Buffs.StarRay.Description
+			}
+
+			Acid: {
+				DisplayName: Acid
+				Description: Mods.BossRush.Buffs.Acid.Description
+			}
+
+			CompletelyShatter: {
+				DisplayName: Completely Shatter
+				Description: Mods.BossRush.Buffs.CompletelyShatter.Description
 			}
 		}
 

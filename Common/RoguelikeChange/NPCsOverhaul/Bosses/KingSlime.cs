@@ -79,7 +79,7 @@ internal class KingSlime : NPCReworker {
 						break;
 					}
 
-				
+
 			}
 
 
@@ -103,22 +103,20 @@ internal class KingSlime : NPCReworker {
 		if (crownNPC != null)
 			crownNPC.active = false;
 
-		for(int i = 0; i < Main.maxTilesX; i++)
-		{
-			for(int j = 0; j < Main.maxTilesY; j++){
+		for (int i = 0; i < Main.maxTilesX; i++) {
+			for (int j = 0; j < Main.maxTilesY; j++) {
 
-				if(WorldGen.TileType(i,j) == ModContent.TileType<KingSlimeSludgeTile>())
-					WorldGen.KillTile(i,j);
-				
-				
+				if (WorldGen.TileType(i, j) == ModContent.TileType<KingSlimeSludgeTile>())
+					WorldGen.KillTile(i, j);
+
+
 			}
-		
+
 		}
 
-		foreach(Projectile proj in Main.ActiveProjectiles)
-		{
-		
-			if(proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
+		foreach (Projectile proj in Main.ActiveProjectiles) {
+
+			if (proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
 				proj.Kill();
 
 		}
@@ -290,15 +288,14 @@ internal class KingSlime : NPCReworker {
 							Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
 
 
-							
+
 						}
 
-						if(Counter % 220 == 0)
-						{
-							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(7,-7);
-							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(-7,-7);
+						if (Counter % 220 == 0) {
+							NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(7, -7);
+							NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(-7, -7);
 
-						
+
 						}
 
 						currentScale = BossRushUtils.ClampedLerp(new Vector2(0.8f, 1), new Vector2(1.15f, 1), MathF.Cos(Counter * 0.1f) + 0.5f);
@@ -393,7 +390,7 @@ internal class KingSlime : NPCReworker {
 					}
 
 			}
-		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0,40,npc.scale - ((1 - npc.scale))))) * currentScale.Y);
+		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0, 40, npc.scale - ((1 - npc.scale))))) * currentScale.Y);
 
 	}
 	// also dust cuz it makes sense to be here also
@@ -670,8 +667,7 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 		Dust.NewDustPerfect(Projectile.position, DustID.t_Slime, newColor: Color.CornflowerBlue);
 		Point tilePos = Projectile.position.ToTileCoordinates();
 
-		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15))
-		{
+		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15)) {
 			Projectile.Kill();
 			Projectile.netUpdate = true;
 
@@ -897,9 +893,8 @@ public class KingSlimeCrown : ModNPC {
 
 						}
 
-						if(Counter >= 260 && magnetSlime != null)	
-						{
-						
+						if (Counter >= 260 && magnetSlime != null) {
+
 							magnetSlime.velocity = magnetSlime.DirectionTo(NPC.targetRect.Center()) * 15;
 							magnetSlime.noGravity = false;
 							magnetSlime.noTileCollide = false;
@@ -940,8 +935,7 @@ public class KingSlimeCrown : ModNPC {
 					}
 				case AIState.Charging: {
 						NPC.velocity *= 0.97f;
-						if (Counter == 15)
-						{
+						if (Counter == 15) {
 							NPC.velocity = NPC.DirectionTo(NPC.targetRect.Center()) * 20;
 						}
 						if (Counter >= 100) {
@@ -963,7 +957,7 @@ public class KingSlimeCrown : ModNPC {
 
 							}
 							NPC.netUpdate = true;
-							
+
 						}
 						Counter++;
 						break;
@@ -990,7 +984,9 @@ public class KingSlimeMinion : ModNPC {
 		NPC.lifeMax = 50;
 	}
 	public override Color? GetAlpha(Color drawColor) {
-		return Color.CornflowerBlue;
+		Color blend = Color.CornflowerBlue;
+		blend.A = 100;
+		return blend;
 	}
 	public override bool PreAI() {
 		bool isGettingYeeted = NPC.ai[3] != 1;
@@ -1018,9 +1014,5 @@ public class KingSlimeMinion : ModNPC {
 	// DOESNT WORK BECAUSE SLIME AI RED CODE WOOHOOO
 	public override bool? CanFallThroughPlatforms() {
 		return NPC.ai[3] == 1 ? false : base.CanFallThroughPlatforms();
-	}
-
-	public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
-		modifiers.SetMaxDamage((int)(NPC.lifeMax * 0.25f));
 	}
 }

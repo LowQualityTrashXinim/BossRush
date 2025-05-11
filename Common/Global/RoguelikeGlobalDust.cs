@@ -47,7 +47,8 @@ class RoguelikeGlobalDust : ModSystem {
 		//	}
 		//}
 	}
-
+	public static Roguelike_Dust DeadDust => ModContent.GetInstance<RoguelikeGlobalDust>().deaddust;
+	public Roguelike_Dust deaddust = new();
 	public static Roguelike_Dust[] Dust => ModContent.GetInstance<RoguelikeGlobalDust>().dust;
 	public Roguelike_Dust[] dust = new Roguelike_Dust[6001];
 	public override void PreUpdateDusts() {
@@ -93,7 +94,8 @@ class RoguelikeGlobalDust : ModSystem {
 							modDust.OTEdistance = projectile.Center - modDust.orgPosition;
 						}
 					}
-					dustEntity.position = modDust.entityToFollow.Center + modDust.OTEdistance.Add(0, -modDust.gfxOffY);
+					modDust.OTEdistance += modDust.Dust.velocity;
+					dustEntity.position = modDust.entityToFollow.Center + modDust.OTEdistance.Add(0, -modDust.gfxOffY) - modDust.entityToFollow.velocity;
 				}
 			}
 			if (modDust.AI != null) {
