@@ -254,14 +254,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			}
 			float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
 			//percentDone = BossRushUtils.InExpo(percentDone);
-			if (player.statMana >= ManaCost && !ProjectileAlreadyExist) {
+			if (player.statMana > ManaCost && !ProjectileAlreadyExist) {
 				if (!isAlreadySpinState) {
-					player.statMana = Math.Clamp(player.statMana - ManaCost, 0, player.statManaMax2);
+					player.CheckMana(ManaCost);
 				}
-				float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile + 1) * amount, 0, 1);
+				float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile + 1) * amount, 0, 1f);
 				if (percentDone >= percentageToPass) {
-					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center,
-						(Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType,
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), player.Center,
+						Vector2.One.Vector2DistributeEvenly(AltAttackAmountProjectile, 360, amount) * 4f, AltAttackProjectileType,
 						Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0, amount);
 					amount++;
 				}

@@ -1,25 +1,20 @@
-﻿using BossRush.Common.Global;
+﻿using Terraria;
 using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Potion;
 
-class RangerPotion : ModItem {
+class RangePotion : ModItem {
 	public override void SetStaticDefaults() {
 		BossRushModSystem.LootboxPotion.Add(Item);
 	}
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<Ranger_Buff>(), BossRushUtils.ToMinute(10));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<Range_Buff>(), BossRushUtils.ToMinute(10));
 	}
 }
-public class Ranger_Buff : ModBuff {
+public class Range_Buff : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();

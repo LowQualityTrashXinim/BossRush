@@ -97,7 +97,10 @@ namespace BossRush {
 			player.heldProj = projectile.whoAmI;
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			if (swing == -1) {
-				percentDone = 1 - percentDone;
+				percentDone = OutExpo(1 - percentDone, 11);
+			}
+			else {
+				percentDone = InExpo(percentDone, 11);
 			}
 			percentDone = Math.Clamp(percentDone, 0, 1);
 			projectile.spriteDirection = player.direction;
@@ -105,7 +108,7 @@ namespace BossRush {
 			float angle = MathHelper.ToRadians(baseAngle + swingdegree) * player.direction;
 			float start = baseAngle + angle;
 			float end = baseAngle - angle;
-			float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			projectile.rotation = currentAngle;
 			projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
 			projectile.velocity.X = player.direction;

@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			Projectile.velocity = (Projectile.Center - player.Center).SafeNormalize(Vector2.Zero) * 2f;
+			Projectile.velocity = Projectile.velocity * .98f;
 
 			for (int i = 0; i < 10; i++) {
 				int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2CircularEdge(200f, 200f), 0, 0, DustID.GemEmerald);

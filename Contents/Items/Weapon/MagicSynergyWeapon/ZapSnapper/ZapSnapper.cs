@@ -36,12 +36,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
 				int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
 				Main.projectile[proj].DamageType = DamageClass.Magic;
-				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3))
-					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3)) {
+					int projectile = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+					Main.projectile[projectile].extraUpdates += 3;
+				}
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
-				float[] variant = new float[] { };
+				float[] variant = Array.Empty<float>();
 				Array.Resize(ref variant, SoundID.Thunder.Variants.Length);
 				variant[0] = 1f;
 				SoundEngine.PlaySound(SoundID.Thunder with { Pitch = -1, MaxInstances = 5, VariantsWeights = variant.AsSpan() }, player.Center);

@@ -29,7 +29,7 @@ internal class SnowballCannonMK2 : SynergyModItem {
 		return new Vector2(-5, 0);
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Minishark)) {
 			tooltips.Add(new(Mod, Set_TooltipName(ItemID.Minishark), $"[i:{ItemID.Minishark}] Decreases shot requirement for giant snowball to 3, increases attack speed by 25%"));
 		}
 		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {

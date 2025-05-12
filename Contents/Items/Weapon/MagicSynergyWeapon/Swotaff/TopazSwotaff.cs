@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	public class TopazSwotaffProjectile : SwotaffProjectile {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TopazSwotaff>();
 		public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost) {
-			AltAttackAmountProjectile = 4;
+			AltAttackAmountProjectile = 10;
 			AltAttackProjectileType = ModContent.ProjectileType<TopazGemProjectile>();
 			NormalBoltProjectile = ProjectileID.TopazBolt;
 			DustType = DustID.GemTopaz;
@@ -39,20 +39,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.penetrate = 1;
 			Projectile.DamageType = DamageClass.Magic;
 		}
-		int cooktimer = 30;
+		int cooktimer = 0;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			Projectile.velocity -= Projectile.velocity * .05f;
-			if (cooktimer <= 0) {
+			Projectile.velocity -= Projectile.velocity * .025f;
+			if (++cooktimer > 30) {
+				cooktimer = 0;
 				Projectile.damage += 5;
 				for (int i = 0; i < 15; i++) {
-					int dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.GemTopaz);
+					int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemTopaz);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity = Main.rand.NextVector2Circular(2f, 2f);
 				}
-				cooktimer = 30;
-				return;
 			}
-			cooktimer--;
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);

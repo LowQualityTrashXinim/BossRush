@@ -3,7 +3,6 @@ using BossRush.Contents.Projectiles;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -61,11 +60,11 @@ public class ToxicBubble : SynergyModProjectile {
 		if (Projectile.alpha > 100) {
 			Projectile.alpha -= 5;
 		}
-		Color greeen = new(0, 255, 0, 0);
-		int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(Projectile.width, Projectile.height) * .46f, 0, 0, DustID.WhiteTorch, 0, 0, 0, greeen, Main.rand.NextFloat(1.5f, 1.72f));
-		Main.dust[dust].velocity = Vector2.Zero;
-		Main.dust[dust].noGravity = true;
-		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 25);
+		//Color greeen = new(0, 255, 0, 0);
+		//int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(Projectile.width, Projectile.height) * .46f, 0, 0, DustID.WhiteTorch, 0, 0, 0, greeen, Main.rand.NextFloat(1.5f, 1.72f));
+		//Main.dust[dust].velocity = Vector2.Zero;
+		//Main.dust[dust].noGravity = true;
+		Projectile.rotation = MathHelper.ToRadians(Projectile.timeLeft * 5);
 		if (targetTo == null) {
 			Projectile.ai[0] = 0;
 			Projectile.ai[1] = 0;
@@ -221,10 +220,12 @@ public class CorruptedRebirthBowObject : ModObject {
 				dust.color = greeen;
 			}
 		}
-		var proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), Center, vel * 10, ModContent.ProjectileType<FlameProjectile>(), player.GetWeaponDamage(item), item.knockBack, player.whoAmI, 0, 0);
-		if (proj.ModProjectile is FlameProjectile flame) {
-			flame.FlameColor = new(0, 255, 0, 0);
-			flame.DebuffType = BuffID.CursedInferno;
+		if (timeLeft % 4 == 0) {
+			var proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), Center, vel * 10, ModContent.ProjectileType<FlameProjectile>(), player.GetWeaponDamage(item), item.knockBack, player.whoAmI, 0, 0);
+			if (proj.ModProjectile is FlameProjectile flame) {
+				flame.FlameColor = new(0, 255, 0, 0);
+				flame.DebuffType = BuffID.CursedInferno;
+			}
 		}
 	}
 	public override void Draw(SpriteBatch spritebatch) {

@@ -59,7 +59,7 @@ internal class PulseRifle : SynergyModItem {
 		if (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ModContent.ProjectileType<PulseHomingProjectile>(), (int)(damage * 1.25f), knockback, player.whoAmI);
 		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) || Main.rand.NextBool(5) && SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) && (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle))) {
 			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ProjectileID.MagicMissile, (int)(damage), knockback, player.whoAmI);
 			Main.projectile[proj].penetrate = 1;
 		}
