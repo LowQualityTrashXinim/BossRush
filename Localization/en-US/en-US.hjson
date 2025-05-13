@@ -460,7 +460,13 @@ Mods: {
 			}
 
 			Merciless: {
-				Tooltip: You may now defend your lawn the way eagles intended
+				Tooltip:
+					'''
+					"You may now defend your lawn the way eagles intended"
+					Grants increased spread and damage during your second shot
+					Increases damage by 50% against enemy with over 80% or under 30% health
+					Completes a cycle by shotting a cannonball at 400% base damage
+					'''
 				DisplayName: Merciless
 			}
 
@@ -2568,22 +2574,22 @@ Mods: {
 
 			MagicPotion: {
 				DisplayName: Magic Potion
-				Tooltip: "Increases magic damage by 10%, critical chance by 10, critical damage 10%"
+				Tooltip: Increases magic damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			MeleePotion: {
 				DisplayName: Melee Potion
-				Tooltip: "Increases Melee damage by 10%, critical chance by 10, critical damage 10%"
+				Tooltip: Increases Melee damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			RangePotion: {
 				DisplayName: Range Potion
-				Tooltip: "Increases range damage by 10%, critical chance by 10, critical damage 10%"
+				Tooltip: Increases range damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			SummonPotion: {
 				DisplayName: Summon Potion
-				Tooltip: "Increases summon damage by 10%, critical chance by 10, critical damage 10%"
+				Tooltip: Increases summon damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			CorruptedRebirth: {

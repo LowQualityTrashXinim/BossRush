@@ -9,8 +9,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 	internal class DarkCactus : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BatScepter);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BladeofGrass);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BatScepter, $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BladeofGrass, $"[i:{ItemID.BladeofGrass}] Increase weapon size by 50% and shoot out leaf blade");
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(58, 78, 29, 5f, 60, 20, ItemUseStyleID.Swing, true);
@@ -27,12 +27,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				meleeItem.SwingType = BossRushUseStyle.Poke;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {
-				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BatScepter", $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
-				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BladeOfGrass", $"[i:{ItemID.BladeofGrass}] Increase weapon size by 50% and shoot out leaf blade"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.BatScepter);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.BladeofGrass);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {

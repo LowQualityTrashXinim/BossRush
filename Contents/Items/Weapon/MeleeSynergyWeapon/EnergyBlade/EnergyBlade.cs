@@ -13,8 +13,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 		public override void Synergy_SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code1);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code2);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code1, $"[i:{ItemID.Code1}] Unlock 1st Energy Blade ability");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code2, $"[i:{ItemID.Code2}] Unlock 2nd Energy Blade ability");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMeleeCustomProjectile(64, 62, 21, 0, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<EnergyBladeProjectile>(), true);
@@ -24,12 +24,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 			Item.UseSound = SoundID.Item1;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
-				tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code1", $"[i:{ItemID.Code1}] Unlock 1st Energy Blade ability"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
-				tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code2", $"[i:{ItemID.Code2}] Unlock 2nd Energy Blade ability"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Code1);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Code2);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {

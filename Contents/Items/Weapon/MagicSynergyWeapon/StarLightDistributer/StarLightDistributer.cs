@@ -8,8 +8,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer {
 	internal class StarLightDistributer : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.StarCannon);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Shoot out magic missle");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.StarCannon, $"[i:{ItemID.StarCannon}] Create shooting star at your position");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(45, 24, 16, 2f, 16, 16, ItemUseStyleID.Shoot, ProjectileID.GreenLaser, 10, 8, true);
@@ -18,12 +18,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 			Item.UseSound = SoundID.Item12;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (BossRushUtils.Player_MeteoriteArmorSet(Main.LocalPlayer))
-				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MeteorArmor", $"[i:{ItemID.MeteorHelmet}][i:{ItemID.MeteorSuit}][i:{ItemID.MeteorLeggings}]Attack now cost 0 mana"));
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile))
-				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.MagicMissile}] Shoot out magic missle"));
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.StarCannon))
-				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.StarCannon}] Create shooting star at your position"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.MagicMissile);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.StarCannon);
 		}
 		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
 			if (BossRushUtils.Player_MeteoriteArmorSet(player)) {

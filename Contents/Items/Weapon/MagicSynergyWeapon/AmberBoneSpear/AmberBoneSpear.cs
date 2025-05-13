@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 	public class AmberBoneSpear : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AntlionClaw);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AntlionClaw, $"[i:{ItemID.AntlionClaw}] Your spear attack sometime will shoot out mandible blade, hitting enemies with your spear will spawn a mandible blade immediately");
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(42, 42, 30, 5, 20, 20, ItemUseStyleID.Shoot, true);
@@ -19,8 +19,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw))
-				tooltips.Add(new TooltipLine(Mod, "AmberBoneSpear_MandibleBlade", $"[i:{ItemID.AntlionClaw}] Your spear attack sometime will shoot out mandible blade, hitting enemies with your spear will spawn a mandible blade immediately"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.AntlionClaw);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {

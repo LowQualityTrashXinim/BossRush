@@ -8,9 +8,9 @@ using System.Collections.Generic;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 	class BurningPassion : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ChainKnife);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting, $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture, $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ChainKnife, $"[i:{ItemID.ChainKnife}] Massively reduce alt attack cool down");
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(74, 74, 25, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
@@ -26,16 +26,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			return player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] < 1;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
-				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
-				tooltips.Add(new TooltipLine(Mod, "SkyFracture", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ChainKnife)) {
-				tooltips.Add(new TooltipLine(Mod, "ChainKnife", $"[i:{ItemID.ChainKnife}] Massively reduce alt attack cool down"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WandofFrosting);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.SkyFracture);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.ChainKnife);
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			if (player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown == 1)

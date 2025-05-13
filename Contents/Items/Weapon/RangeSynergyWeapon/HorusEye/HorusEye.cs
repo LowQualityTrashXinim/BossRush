@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 /// </summary>
 internal class HorusEye : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PrincessWeapon);
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PrincessWeapon, $"[i:{ItemID.PrincessWeapon}] Shoot out a powerful bolt that will knock you back slightly");
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(45, 120, 23, 7f, 26, 26, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
@@ -31,9 +31,7 @@ internal class HorusEye : SynergyModItem {
 		return new Vector2(-33, 5f);
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PrincessWeapon)) {
-			tooltips.Add(new(Mod, "HorusEye_ResonanceScepter", $"[i:{ItemID.PrincessWeapon}] Shoot out a powerful bolt that will knock you back slightly"));
-		}
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.PrincessWeapon);
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		position = position.PositionOFFSET(velocity, 70);
@@ -69,7 +67,7 @@ internal class HorusEye : SynergyModItem {
 public class HorusEyePlayer : ModPlayer {
 	public int ShieldCharge = 0;
 	public override void ResetEffects() {
-		if(Player.HeldItem.type != ModContent.ItemType<HorusEye>()) {
+		if (Player.HeldItem.type != ModContent.ItemType<HorusEye>()) {
 			ShieldCharge = 0;
 		}
 	}

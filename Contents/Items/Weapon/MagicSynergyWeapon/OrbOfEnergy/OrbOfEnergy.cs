@@ -9,18 +9,16 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy {
 	internal class OrbOfEnergy : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BookofSkulls);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DD2LightningAuraT1Popper);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BookofSkulls, $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DD2LightningAuraT1Popper, $"[i:{ItemID.DD2LightningAuraT1Popper}] Energy lighting are much more deadly");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(1, 1, 100, 10, 5, 5, ItemUseStyleID.HoldUp, ModContent.ProjectileType<OrbOfEnergyBolt>(), 5, 20, true);
 			Item.UseSound = SoundID.Item94 with { Pitch = 1 };
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BookofSkulls))
-				tooltips.Add(new TooltipLine(Mod, "OrbOfEnergy_BookOfSkulls", $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy"));
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.DD2LightningAuraT1Popper))
-				tooltips.Add(new TooltipLine(Mod, "OrbOfEnergy_DD2LightningAuraT1Popper", $"[i:{ItemID.DD2LightningAuraT1Popper}] Energy lighting are much more deadly"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.BookofSkulls);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.DD2LightningAuraT1Popper);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 20);

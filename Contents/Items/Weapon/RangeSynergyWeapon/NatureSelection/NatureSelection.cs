@@ -1,6 +1,7 @@
 ﻿using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -9,7 +10,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 	internal class NatureSelection : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Check_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>());
+			SynergyBonus_System.Add_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>(),
+				$"[i:{ModContent.ItemType<NatureCrystal>()}] Spawn out heart and star at random position fly toward enemy");
 		}
 		static int counter = 0;
 		public override void SetDefaults() {
@@ -18,7 +20,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item5;
 		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ModContent.ItemType<NatureCrystal>());
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>())) {

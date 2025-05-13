@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 	internal class MagicGrenade : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Grenade's explosion will be accompany by magical bolt that explode shortly after");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(10, 10, 75, 3f, 45, 45, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
@@ -20,8 +20,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Item.value = Item.buyPrice(gold: 50);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile))
-				tooltips.Add(new TooltipLine(Mod, "MagicGrenade_MagicMissle", $"[i:{ItemID.MagicMissile}] Grenade's explosion will be accompany by magical bolt that explode shortly after"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.MagicMissile);
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

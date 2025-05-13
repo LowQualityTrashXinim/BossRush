@@ -17,8 +17,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SnowballCannonMK2;
 //Alt attack to do melee attack, melee attack will shoot out Ice bolt
 internal class SnowballCannonMK2 : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Minishark);
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting);
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Minishark, $"[i:{ItemID.Minishark}] Decreases shot requirement for giant snowball to 3, increases attack speed by 25%");
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting, $"[i:{ItemID.WandofFrosting}] Increases the chance for ice bolt to shoot by 40%, giant snowball explode out frost spark on death");
 	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(86, 26, 18, 3f, 14, 14, ItemUseStyleID.Shoot, ProjectileID.SnowBallFriendly, 12, true, AmmoID.Snowball);
@@ -29,12 +29,8 @@ internal class SnowballCannonMK2 : SynergyModItem {
 		return new Vector2(-5, 0);
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Minishark)) {
-			tooltips.Add(new(Mod, Set_TooltipName(ItemID.Minishark), $"[i:{ItemID.Minishark}] Decreases shot requirement for giant snowball to 3, increases attack speed by 25%"));
-		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
-			tooltips.Add(new(Mod, Set_TooltipName(ItemID.WandofFrosting), $"[i:{ItemID.WandofFrosting}] Increases the chance for ice bolt to shoot by 40%, giant snowball explode out frost spark on death"));
-		}
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Minishark);
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WandofFrosting);
 	}
 	public override bool AltFunctionUse(Player player) {
 		return true;

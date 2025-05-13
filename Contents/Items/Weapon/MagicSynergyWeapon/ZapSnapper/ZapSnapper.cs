@@ -11,8 +11,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 	public class ZapSnapper : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain, $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff, $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(56, 16, 12, 2f, 50, 50, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
@@ -22,10 +22,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			Item.UseSound = SoundID.Item9;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain))
-				tooltips.Add(new TooltipLine(Mod, "ZapSnapper_WeatherPain", $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot"));
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff))
-				tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WeatherPain);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.ThunderStaff);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 30);

@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	public abstract class SwotaffGemItem : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Spear);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Spear, $"[i:{ItemID.Spear}] Shoot out additional swotaff that shoot toward your cursor");
 		}
 		public virtual void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 20;
@@ -31,9 +31,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Item.noUseGraphic = true;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Spear)) {
-				tooltips.Add(new(Mod, "Swotaff_Spear", $"[i:{ItemID.Spear}] Shoot out additional swotaff that shoot toward your cursor"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Spear);
 		}
 		public override float UseSpeedMultiplier(Player player) {
 			if (player.altFunctionUse == 2) {

@@ -10,8 +10,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 	class EnchantedOreSword : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Starfury);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Starfury, $"[i:{ItemID.Starfury}] Shortsword will leave a trail of star");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword, $"[i:{ItemID.EnchantedSword}] Your short sword attack will be randomized");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 17, 6f, 36, 36, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
@@ -25,12 +25,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		}
 		int count = -1;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Starfury)) {
-				tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Starfury}] Shortsword will leave a trail of star"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedSword)) {
-				tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_EnchantedSword", $"[i:{ItemID.EnchantedSword}] you shoot out additional shortsword attack of random"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.Starfury);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.EnchantedSword);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (count < TerrariaArrayID.EnchantedOreSwordProjectile.Length - 1) {

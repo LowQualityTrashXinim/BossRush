@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BundleOfGrenade;
 internal class BundleOfGrenade : SynergyModItem {
@@ -14,6 +15,16 @@ internal class BundleOfGrenade : SynergyModItem {
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = Main.rand.Next(new int[] { ProjectileID.Grenade, ProjectileID.BouncyGrenade, ProjectileID.StickyGrenade, ProjectileID.ClusterGrenadeI, ProjectileID.GrenadeI, ModContent.ProjectileType<FragmentGrenadeProjectile>() });
+	}
+	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+		int amount = Main.rand.Next(0, 3) * 2;
+		if (amount < 1) {
+			return;
+		}
+		for (int i = 0; i < amount; i++) {
+			Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(amount, Main.rand.NextFloat(30, 40), i) * Main.rand.NextFloat(.67f, 1f), type, damage, knockback, player.whoAmI);
+		}
 	}
 	public override void AddRecipes() {
 		CreateRecipe()
