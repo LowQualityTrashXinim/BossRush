@@ -816,7 +816,7 @@ public class AccessoryVisualModObject : ModObject {
 		Texture2D texture = TextureAssets.Item[AccType].Value;
 		Vector2 origin = texture.Size() * .5f;
 		Vector2 drawPos = position - Main.screenPosition + origin;
-		Color color = new Color(255, 255, 255 , 0) * opacity;
+		Color color = new Color(255, 255, 255, 0) * opacity;
 		color.A = (byte)alpha;
 		spritebatch.Draw(texture, drawPos, null, color, 0, origin, 1f, SpriteEffects.None, 0);
 	}
@@ -961,15 +961,15 @@ public class PlayerStatsHandleSystem : ModSystem {
 		origNew = null;
 		return proj;
 	}
-	private Projectile Copy_NewProjectile(Projectile projectile) {
+	private Projectile Copy_NewProjectile(Projectile projectile, string extraContext) {
 		if (origDirect != null) {
-			return origDirect(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2]);
+			return origDirect(projectile.GetSource_FromThis(extraContext), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2]);
 		}
 		else if (origNew != null) {
-			return Main.projectile[origNew(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+			return Main.projectile[origNew(projectile.GetSource_FromThis(extraContext), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
 		}
 		else if (origOld != null) {
-			return Main.projectile[origOld(projectile.GetSource_FromThis(), projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+			return Main.projectile[origOld(projectile.GetSource_FromThis(extraContext), projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
 		}
 		else {
 			return null;
@@ -978,21 +978,30 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void Extra_SpecialMechanic(Player player, Projectile projectile) {
 		bool Scatter = player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
+		RoguelikeGlobalProjectile globalhandle;
+		if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+			globalhandle = global;
+		}
+		else {
+			return;
+		}
+		if (globalhandle.IsASubProjectile) {
+			return;
+		}
 		if (Scatter) {
-			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+			globalhandle.OnKill_ScatterShot += 2;
 		}
 		var handle = player.GetModPlayer<PlayerStatsHandle>();
 		int shootExtra = handle.request_ShootExtra;
 		int shootSpread = handle.request_ShootSpreadExtra;
 		float angleSpread = handle.request_AngleSpread;
 		float angleChange = handle.request_VelocityChange;
-		handle.Reset_ShootRequest();
 		if (!projectile.Check_ItemTypeSource(player.HeldItem.type)) {
 			return;
 		}
 		if (shootExtra > 0) {
 			for (int i = 0; i < shootExtra; i++) {
-				var proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile, "subProj");
 				if (proj == null) {
 					break;
 				}
@@ -1004,7 +1013,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		}
 		if (shootSpread > 1) {
 			for (int i = 0; i < shootSpread; i++) {
-				var proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile, "subProj");
 				if (proj == null) {
 					break;
 				}

@@ -24,6 +24,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
+	/// <summary>
+	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
+	/// <b>Return true if it is from duplication</b>
+	/// </summary>
+	public bool IsASubProjectile = false;
 	public int InitialTimeLeft { get; private set; } = 0;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
@@ -53,6 +58,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					if (global.Source_ItemType != 0) {
 						Source_ItemType = global.Source_ItemType;
 					}
+				}
+			}
+			if(parent3.Context != null) {
+				if(parent3.Context == "subProj") {
+					IsASubProjectile = true;
 				}
 			}
 			if (parent3.Entity is NPC npc) {

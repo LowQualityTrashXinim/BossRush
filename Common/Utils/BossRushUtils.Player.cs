@@ -431,6 +431,16 @@ namespace BossRush {
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
 		public Vector2 PlayerLastPositionBeforeAnimation = Vector2.Zero;
 		public int counterToFullPi = 0;
+		public bool CurrentHoveringOverChest = false;
+		public override void ResetEffects() {
+			if (!Player.active) {
+				return;
+			}
+			Point point = Main.MouseWorld.ToTileCoordinates();
+			if (WorldGen.InWorld(point.X, point.Y)) {
+				CurrentHoveringOverChest = Main.tile[point.X, point.Y].TileType == TileID.Containers || Main.tile[point.X, point.Y].TileType == TileID.Containers2;
+			}
+		}
 		public override void PreUpdate() {
 			if (++counterToFullPi >= 360)
 				counterToFullPi = 0;

@@ -23,7 +23,6 @@ using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
-using StructureHelper.Content.GUI;
 
 namespace BossRush.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -50,7 +49,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public static void Add_SynergyBonus(int SynergyItemID, int ItemID, string tooltip = "") {
 			if (Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
-				if (Dictionary_SynergyBonus[SynergyItemID].Where(b => b.ItemID == ItemID).Any()) {
+				if (Dictionary_SynergyBonus[SynergyItemID].Select(b => b.ItemID).ToArray().Contains(ItemID)) {
 					return;
 				}
 				Dictionary_SynergyBonus[SynergyItemID].Add(new(ItemID, tooltip));
@@ -69,31 +68,39 @@ namespace BossRush.Contents.Items.Weapon {
 			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
 				return false;
 			}
-			if (!Dictionary_SynergyBonus[SynergyItemID].Where(b => b.ItemID == ItemID).Any()) {
-				return false;
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				SynergyBonus bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				if (bonus.ItemID == ItemID) {
+					return bonus.Active;
+				}
 			}
-			return Dictionary_SynergyBonus[SynergyItemID][ItemID].Active;
+			return false;
 		}
-		public static string Get_SynergyBonusTooltip(int SynergyItemID, int ItemID) {
+		public static string Get_SynergyBonusTooltip(int SynergyItemID, int itemID) {
 			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
 				return "Synergy item not found !";
 			}
-			if (!Dictionary_SynergyBonus[SynergyItemID].Where(b => b.ItemID == ItemID).Any()) {
-				return "Synergy bonus item not found !";
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				SynergyBonus bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				if (bonus.ItemID == itemID) {
+					return bonus.Tooltip;
+				}
 			}
-			return Dictionary_SynergyBonus[SynergyItemID][ItemID].Tooltip;
+			return "Synergy bonus item not found !";
 		}
-		public static void Write_SynergyTooltip(ref List<TooltipLine> lines, SynergyModItem moditem, int ItemID) {
+		public static void Write_SynergyTooltip(ref List<TooltipLine> lines, SynergyModItem moditem, int itemID) {
 			int SynergyItemID = moditem.Type;
 			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
 				return;
 			}
-			if (!Dictionary_SynergyBonus[SynergyItemID].Where(b => b.ItemID == ItemID).Any()) {
-				return;
+			SynergyBonus bonus = new();
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				if (Dictionary_SynergyBonus[SynergyItemID][i].ItemID == itemID) {
+					bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				}
 			}
-			SynergyBonus bonus = Dictionary_SynergyBonus[SynergyItemID][ItemID];
 			if (bonus.Active)
-				lines.Add(new(moditem.Mod, moditem.Set_TooltipName(ItemID), bonus.Tooltip));
+				lines.Add(new(moditem.Mod, moditem.Set_TooltipName(itemID), bonus.Tooltip));
 		}
 
 		public bool GodAreEnraged = false;
@@ -244,6 +251,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.ModItem == null) {
 				return true;
 			}
+			//Prevent possible conflict, basically hardcoding to make it so that it only work for item belong to this mod
 			if (item.ModItem.Mod != Mod) {
 				return true;
 			}
