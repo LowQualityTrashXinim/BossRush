@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="StructureHelper">
-      <HintPath>Assets\StructureHelper.dll</HintPath>
+      <HintPath>..\ModAssemblies\StructureHelper_v3.0.1.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

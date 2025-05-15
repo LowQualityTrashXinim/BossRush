@@ -1,4 +1,4 @@
 displayName = Roguelike Terraria unstable
 author = Xinim
 version = 0.5.5
-weakReference = StructureHelper
+modReferences  = StructureHelper@3.0
