@@ -80,18 +80,10 @@ namespace BossRush.Contents.NPCs {
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PowerEnergy>()));
 		}
 		public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment) {
-			float adjustment = 1;
-			if (Main.expertMode)
-				adjustment = 2;
-			else if (Main.masterMode)
-				adjustment = 3;
-			else
-				adjustment = 1;
-
-			NPC.lifeMax = (int)(54000 / adjustment);
+			NPC.lifeMax = (int)(54000);
 			NPC.life = NPC.lifeMax;
-			NPC.damage = (int)(150 / adjustment);
-			NPC.defense = (int)(50 / adjustment);
+			NPC.damage = (int)(150);
+			NPC.defense = (int)(50);
 		}
 		public int BossDamagePercentage(float percentage) => (int)Math.Ceiling(NPC.damage * percentage);
 		//Use NPC.ai[0] to delay attack
@@ -99,35 +91,33 @@ namespace BossRush.Contents.NPCs {
 		//Use NPC.ai[2] for calculation
 		//Use NPC.ai[3] to do movement
 		bool AlreadySaidThat = false;
+		int dialogNumber = 0;
+		int dialogCD = 0;
 		bool BeforeAttack = true;
 		bool CanTrackPlayer = false;
 		public override void AI() {
 			if (BeforeAttack) {
-				if (NPC.ai[0] == 0) {
-					BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "Hmm..");
-					NPC.ai[0] = 1;
+				if (--dialogCD > 0) {
+					return;
 				}
-				else if (NPC.ai[1] == 0) {
-					if (NPC.ai[0] > 120) {
-						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "Thy see... thou seek the treasure");
-						NPC.ai[1] = 1;
-					}
-					else {
-						NPC.ai[0]++;
-					}
-				}
-				else if (NPC.ai[2] == 0) {
-					if (NPC.ai[1] > 120) {
-						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "Very well, prove thy worthiness");
-						NPC.ai[2] = 1;
+				string dialog = "";
+				switch (dialogNumber) {
+					case 0:
+						dialog = "Hmm..";
+						break;
+					case 1:
+						dialog = "You seek the world vault ?";
+						break;
+					case 2:
+						dialog = "Very well, then show what you are made of !";
 						BeforeAttack = false;
 						NPC.dontTakeDamage = false;
 						ResetEverything(120);
-					}
-					else {
-						NPC.ai[1]++;
-					}
+						break;
 				}
+				dialogCD = 120;
+				dialogNumber++;
+				BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, dialog);
 				return;
 			}
 			Player player = Main.player[NPC.target];
@@ -482,7 +472,16 @@ namespace BossRush.Contents.NPCs {
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
 			NPC.ai[2]++;
 		}
+		int gunCounter = 0;
 		private void ShootGun(Player player) {
+			if (++gunCounter >= 30) {
+				gunCounter = 0;
+				int boomStick = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, (NPC.Center - player.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<HostileBoomStick>(), NPC.damage, 2, NPC.target);
+				if (Main.projectile[boomStick].ModProjectile is BaseHostileGun hostileGun) {
+					hostileGun.ItemIDtextureValue = ItemID.Boomstick;
+					hostileGun.SetNPCOwner(NPC.whoAmI);
+				}
+			}
 			Vector2 positionAbovePlayer = Main.player[NPC.target].Center + new Vector2(0, -350);
 			NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
 			if (BossDelayAttack(BossRushUtils.ToSecond(5), 0, 0)) {
@@ -498,11 +497,13 @@ namespace BossRush.Contents.NPCs {
 			int minishark = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMinishark>(), BossDamagePercentage(.25f), 2, NPC.target);
 			if (Main.projectile[minishark].ModProjectile is BaseHostileGun minisharkproj) {
 				minisharkproj.ItemIDtextureValue = ItemID.Minishark;
+				minisharkproj.SetNPCOwner(NPC.whoAmI);
 			}
 			int Musket = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMusket>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[Musket].ModProjectile is BaseHostileGun musketproj) {
 				musketproj.ItemIDtextureValue = ItemID.Musket;
 				Main.projectile[Musket].ai[2] = direction;
+				musketproj.SetNPCOwner(NPC.whoAmI);
 			}
 			CanTrackPlayer = false;
 			NPC.ai[2]++;
@@ -512,19 +513,19 @@ namespace BossRush.Contents.NPCs {
 			if (NPC.velocity == Vector2.Zero) {
 				return base.PreDraw(spriteBatch, screenPos, drawColor);
 			}
-			Texture2D texture = TextureAssets.Npc[NPC.type].Value;
-			Vector2 origin = NPC.Size * .5f;
-			Vector2 drawPos = NPC.Center - screenPos - origin;
-			for (int i = 0; i < 4; i++) {
-				spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(255, 0, 0, 50));
-				spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(0, 0, 255, 50));
-				if (i == 0 || i == 2) {
-					spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(255, 0, 0, 50));
-				}
-				else {
-					spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(0, 0, 255, 50));
-				}
-			}
+			//Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+			//Vector2 origin = NPC.Size * .5f;
+			//Vector2 drawPos = NPC.Center - screenPos - origin;
+			//for (int i = 0; i < 4; i++) {
+			//	spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(255, 0, 0, 50));
+			//	spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(0, 0, 255, 50));
+			//	if (i == 0 || i == 2) {
+			//		spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(255, 0, 0, 50));
+			//	}
+			//	else {
+			//		spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(0, 0, 255, 50));
+			//	}
+			//}
 			return base.PreDraw(spriteBatch, screenPos, drawColor);
 		}
 		Vector2 lastPlayerPosition = Vector2.Zero;
@@ -582,7 +583,7 @@ namespace BossRush.Contents.NPCs {
 		}
 		public bool IsNPCActive(out NPC npc) {
 			npc = null;
-			if (NPC_WhoAmI < 0 && NPC_WhoAmI > 255) {
+			if (NPC_WhoAmI < 0 || NPC_WhoAmI > 255) {
 				return false;
 			}
 			npc = Main.npc[NPC_WhoAmI];
@@ -895,9 +896,6 @@ namespace BossRush.Contents.NPCs {
 			}
 		}
 	}
-	public abstract class BaseHostileSpecialBow : ModProjectile {
-
-	}
 	public abstract class BaseHostileGun : BaseHostileProjectile {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void PreDrawDraw(Texture2D texture, Vector2 drawPos, Vector2 origin, ref Color lightColor, out bool DrawOrigin) {
@@ -918,17 +916,20 @@ namespace BossRush.Contents.NPCs {
 		public override void AI() {
 			if (IsNPCActive(out NPC npc)) {
 				npc.TargetClosest();
+				if (Projectile.ai[2] == 0) {
+					Projectile.ai[2] = Main.rand.NextBool().ToDirectionInt();
+				}
 				Player player = Main.player[npc.target];
-				Vector2 AbovePlayer = player.Center;
-				Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * (AbovePlayer - Projectile.Center).Length() / 64f;
-				Projectile.rotation = Projectile.velocity.ToRotation();
-				if (++Projectile.ai[1] <= 50) {
+				float rotation = MathHelper.ToRadians(Projectile.timeLeft * 3 * Projectile.ai[2]);
+				Vector2 TowardPlayer = rotation.ToRotationVector2();
+				Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (player.Center - Projectile.Center).Length() / 128f;
+				Projectile.rotation = rotation;
+				if (++Projectile.ai[1] <= 40) {
 					return;
 				}
 				if (++Projectile.ai[0] >= 8) {
 					Projectile.ai[0] = 0;
-					Vector2 TowardPlayer = Projectile.velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
-					BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage / 3, 1, AdjustHostileProjectileDamage: false);
+					BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer.Vector2RotateByRandom(7) * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage / 3, 1, AdjustHostileProjectileDamage: false);
 				}
 			}
 		}
@@ -983,10 +984,39 @@ namespace BossRush.Contents.NPCs {
 			Projectile.timeLeft = 60;
 			CanDealContactDamage = false;
 		}
-	}
-	public class BaseHostileSpear : BaseHostileProjectile {
-		public override void SetHostileDefaults() {
-			Projectile.width = Projectile.height = 16;
+		public override void AI() {
+			if (IsNPCActive(out NPC npc)) {
+				npc.TargetClosest();
+				Player player = Main.player[npc.target];
+				Projectile.velocity *= .9f;
+				Vector2 TowardPlayer = (player.Center - Projectile.Center + player.velocity).SafeNormalize(Vector2.Zero);
+				Projectile.rotation = TowardPlayer.ToRotation();
+				if (Projectile.timeLeft < 30 && Projectile.ai[0] == 0) {
+					Projectile.ai[0]++;
+					Projectile.velocity = -TowardPlayer * 10f;
+					Projectile.alpha += 255 / 30;
+					SoundEngine.PlaySound(SoundID.Item38 with {
+						Pitch = 1f
+					}, Projectile.Center);
+					for (int i = 0; i < 4; i++) {
+						BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer.Vector2RotateByRandom(30) * 12f * Main.rand.NextFloat(.5f, 1f), ProjectileID.Bullet, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
+					}
+					for (int i = 0; i < 15; i++) {
+						int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(TowardPlayer, 10), 0, 0, DustID.Torch);
+						Main.dust[dust].noGravity = true;
+						Main.dust[dust].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(Projectile.rotation) * Main.rand.NextFloat(4f, 11f);
+						Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
+					}
+				}
+			}
+			else {
+				Projectile.Kill();
+			}
+		}
+		public class BaseHostileSpear : BaseHostileProjectile {
+			public override void SetHostileDefaults() {
+				Projectile.width = Projectile.height = 16;
+			}
 		}
 	}
 }

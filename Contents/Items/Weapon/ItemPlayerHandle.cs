@@ -30,6 +30,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool Active;
 		public string Tooltip = "";
 
+		public SynergyBonus(int id) {
+			ItemID = id;
+		}
 		public SynergyBonus(int id, string tooltip) {
 			ItemID = id;
 			Tooltip = tooltip;
@@ -341,10 +344,30 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void Synergy_ModifyWeaponDamage(Player player, ref StatModifier damage) { }
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
-			base.HoldItem(player);
-			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-			if (modplayer.SynergyBonusBlock) {
-				return;
+			string internalItemName = Item.ModItem.Name;
+			List<SynergyBonus> listBonus = SynergyBonus_System.Dictionary_SynergyBonus[Type];
+			if (!RoguelikeData.SynergyProgressTracker.ContainsKey(internalItemName)) {
+				RoguelikeData.SynergyProgressTracker.Add(internalItemName, new());
+				foreach (SynergyBonus bonus in listBonus) {
+					SynergyBonus defaultBonus = new(bonus.ItemID);
+					RoguelikeData.SynergyProgressTracker[internalItemName].Add(defaultBonus);
+				}
+			}
+			else {
+				if (RoguelikeData.SynergyProgressTracker[internalItemName].Count != listBonus.Count) {
+					RoguelikeData.SynergyProgressTracker[internalItemName].Clear();
+					foreach (SynergyBonus bonus in listBonus) {
+						SynergyBonus defaultBonus = new(bonus.ItemID);
+						RoguelikeData.SynergyProgressTracker[internalItemName].Add(defaultBonus);
+					}
+				}
+				for (int i = 0; i < listBonus.Count; i++) {
+					if (listBonus[i].Active) {
+						SynergyBonus bonus = listBonus[i];
+						bonus.Tooltip = "";
+						RoguelikeData.SynergyProgressTracker[internalItemName][i] = bonus;
+					}
+				}
 			}
 		}
 		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -422,8 +445,8 @@ namespace BossRush.Contents.Items.Weapon {
 			if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1) {
 				return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 			}
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
+			Main.instance.LoadItem(Type);
+			Texture2D texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);

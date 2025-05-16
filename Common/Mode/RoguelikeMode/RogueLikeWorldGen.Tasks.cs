@@ -26,9 +26,15 @@ public class PlayerBiome : ModPlayer {
 		}
 		CurrentBiome.Clear();
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
-		Point position = Player.position.ToWorldCoordinates().ToPoint();
+		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
 		int WorldIndex = gen.MapIndex(position.X, position.Y);
+		if(WorldIndex >= gen.BiomeMapping.Length) {
+			return;
+		}
 		string zone = gen.BiomeMapping[WorldIndex];
+		if (zone == null) {
+			return;
+		}
 		for (int i = 0; i < zone.Length; i++) {
 			short biomeID = RogueLikeWorldGen.CharToBid(gen.BiomeMapping[WorldIndex], i);
 			CurrentBiome.Add(biomeID);
@@ -60,6 +66,7 @@ public class Bid {
 	public const short JungleTemple = 18;
 	public const short Space = 19;
 	public const short Caven = 20;
+	//These are biome ignore char value, do not uses this in general biome mapping
 	public const short ShrineOfOffering = 998;
 	public const short Advanced = 999;
 }

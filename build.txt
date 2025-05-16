@@ -1,4 +1,4 @@
-displayName = Roguelike Terraria unstable
+displayName = Roguelike Terraria Unstable Alpha
 author = Xinim
-version = 0.5.5
+version = 0.5.6
 modReferences  = StructureHelper@3.0
