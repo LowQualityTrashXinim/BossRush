@@ -931,6 +931,11 @@ class UISystemMenu : UIState {
 		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
 	}
 }
+public class SynergyMenuUI : UIState {
+	public UIPanel mainPanel;
+	public UIPanel headerPanel;
+	public UIPanel footerPanel;
+}
 public class TeleportUI : UIState {
 	public List<btn_Teleport> btn_List;
 	public UITextPanel<string> panel;
