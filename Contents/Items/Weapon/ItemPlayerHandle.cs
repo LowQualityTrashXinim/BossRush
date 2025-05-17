@@ -345,6 +345,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
 			string internalItemName = Item.ModItem.Name;
+			if (!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(Type)) {
+				return;
+			}
 			List<SynergyBonus> listBonus = SynergyBonus_System.Dictionary_SynergyBonus[Type];
 			if (!RoguelikeData.SynergyProgressTracker.ContainsKey(internalItemName)) {
 				RoguelikeData.SynergyProgressTracker.Add(internalItemName, new());

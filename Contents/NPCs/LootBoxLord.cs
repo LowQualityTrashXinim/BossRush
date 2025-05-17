@@ -95,29 +95,33 @@ namespace BossRush.Contents.NPCs {
 		int dialogCD = 0;
 		bool BeforeAttack = true;
 		bool CanTrackPlayer = false;
+		public void Dialog() {
+			if (--dialogCD > 0) {
+				return;
+			}
+			string dialog = "";
+			switch (dialogNumber) {
+				case 0:
+					dialog = "Hmm..";
+					break;
+				case 1:
+					dialog = "You seek the world vault ?";
+					break;
+				case 2:
+					dialog = "Very well, then show what you are made of !";
+					BeforeAttack = false;
+					NPC.dontTakeDamage = false;
+					ResetEverything(120);
+					break;
+			}
+			dialogCD = 120;
+			dialogNumber++;
+			BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, dialog);
+		}
+
 		public override void AI() {
 			if (BeforeAttack) {
-				if (--dialogCD > 0) {
-					return;
-				}
-				string dialog = "";
-				switch (dialogNumber) {
-					case 0:
-						dialog = "Hmm..";
-						break;
-					case 1:
-						dialog = "You seek the world vault ?";
-						break;
-					case 2:
-						dialog = "Very well, then show what you are made of !";
-						BeforeAttack = false;
-						NPC.dontTakeDamage = false;
-						ResetEverything(120);
-						break;
-				}
-				dialogCD = 120;
-				dialogNumber++;
-				BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, dialog);
+				Dialog();
 				return;
 			}
 			Player player = Main.player[NPC.target];
@@ -217,7 +221,7 @@ namespace BossRush.Contents.NPCs {
 			}
 		}
 		private int MoveSetHandle() {
-			int Move = (int)Math.Clamp(++NPC.ai[3], 11, 12);
+			int Move = (int)Math.Clamp(++NPC.ai[3], 0, 12);
 			if (Move >= 12) {
 				Move = 1;
 				NPC.ai[3] = 1;
@@ -482,8 +486,6 @@ namespace BossRush.Contents.NPCs {
 					hostileGun.SetNPCOwner(NPC.whoAmI);
 				}
 			}
-			Vector2 positionAbovePlayer = Main.player[NPC.target].Center + new Vector2(0, -350);
-			NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
 			if (BossDelayAttack(BossRushUtils.ToSecond(5), 0, 0)) {
 				return;
 			}
@@ -834,7 +836,7 @@ namespace BossRush.Contents.NPCs {
 			Player player = Main.player[Projectile.owner];
 			if (Projectile.timeLeft > 150)
 				Projectile.timeLeft = 150;
-			Vector2 vel = (new Vector2(player.Center.X + Main.rand.Next(-100, 100), 0) - new Vector2(Projectile.Center.X, 0)).SafeNormalize(Vector2.Zero);
+			Vector2 vel = (new Vector2(player.Center.X + Main.rand.Next(-100, 100), 0) - new Vector2(Projectile.Center.X, player.Center.Y - 500)).SafeNormalize(Vector2.Zero);
 			Projectile.velocity += vel;
 			if (++Projectile.ai[0] >= 30) {
 				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 15, ProjectileID.WoodenArrowHostile, Projectile.damage, 1, AdjustHostileProjectileDamage: false);
@@ -931,6 +933,9 @@ namespace BossRush.Contents.NPCs {
 					Projectile.ai[0] = 0;
 					BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, TowardPlayer.Vector2RotateByRandom(7) * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage / 3, 1, AdjustHostileProjectileDamage: false);
 				}
+			}
+			else {
+				Projectile.Kill();
 			}
 		}
 	}

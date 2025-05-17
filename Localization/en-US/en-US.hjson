@@ -2612,6 +2612,11 @@ Mods: {
 					Charge shot explode enemy on hit inflicting Completely Shatter debuff
 					'''
 			}
+
+			AchievementResetter: {
+				DisplayName: Achievement Resetter
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

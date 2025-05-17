@@ -29,7 +29,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
-using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
@@ -167,16 +166,13 @@ internal class UniversalSystem : ModSystem {
 	public InfoUI infoUI;
 	public AchievementUI achievementUI;
 	public StructureUI structUI;
+	public SynergyMenuWikiUI synergyWikiMenu;
 
 	public static bool EnchantingState = false;
-	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
-	private static string FilePath => Path.Join(DirectoryPath, "Data");
 	public static ModKeybind WeaponActionKey { get; private set; }
 	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
 	public override void Load() {
 		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
-
-
 
 		GivenBossSpawnItem = new();
 		//UI stuff
@@ -198,6 +194,7 @@ internal class UniversalSystem : ModSystem {
 			achievementUI = new();
 			structUI = new();
 			spoilUI = new();
+			synergyWikiMenu = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -237,6 +234,7 @@ internal class UniversalSystem : ModSystem {
 		achievementUI = null;
 		structUI = null;
 		spoilUI = null;
+		synergyWikiMenu = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
@@ -323,6 +321,10 @@ internal class UniversalSystem : ModSystem {
 		}
 	}
 	public static bool CanEnchantmentBeAccess() => LuckDepartment(CHECK_WWEAPONENCHANT) && !Check_TotalRNG();
+	public void ActivateSynergyWikiMenu() {
+		DeactivateUI();
+		user2ndInterface.SetState(synergyWikiMenu);
+	}
 	public void ActivateStructureSaverUI() {
 		DeactivateUI();
 		user2ndInterface.SetState(structUI);
@@ -826,7 +828,7 @@ public class WeaponDPSimage : UIImageButton {
 		float scale = ScaleCalculation(originaltexture.Size(), texture.Size());
 		spriteBatch.Draw(texture, drawpos, null, new Color(255, 255, 255), 0, origin, scale, SpriteEffects.None, 0);
 	}
-	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
+	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
 class UISystemMenu : UIState {
 	UIPanel panel;
@@ -931,10 +933,34 @@ class UISystemMenu : UIState {
 		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
 	}
 }
-public class SynergyMenuUI : UIState {
+public class SynergyMenuWikiUI : UIState {
 	public UIPanel mainPanel;
 	public UIPanel headerPanel;
 	public UIPanel footerPanel;
+	public ExitUI exit;
+	public override void OnInitialize() {
+		mainPanel = new();
+		mainPanel.UISetWidthHeight(500, 500);
+		mainPanel.HAlign = .5f;
+		mainPanel.VAlign = .5f;
+		Append(mainPanel);
+
+		headerPanel = new();
+		headerPanel.Width.Percent = 1;
+		headerPanel.Height.Pixels = 60;
+		mainPanel.Append(headerPanel);
+
+		footerPanel = new();
+		footerPanel.VAlign = 1;
+		footerPanel.Width.Percent = 1;
+		footerPanel.Height.Pixels = 60;
+		mainPanel.Append(footerPanel);
+
+		exit = new(TextureAssets.InventoryBack);
+		exit.HAlign = 1f;
+		exit.VAlign = .5f;
+		headerPanel.Append(exit);
+	}
 }
 public class TeleportUI : UIState {
 	public List<btn_Teleport> btn_List;
@@ -1079,24 +1105,5 @@ public class btn_Teleport : UIImageButton {
 				Main.instance.MouseText("");
 			}
 		}
-	}
-}
-public enum InputType {
-	text,
-	integer,
-	number
-}
-public class CursesButtonMenu : UIImageButton {
-	public CursesButtonMenu(Asset<Texture2D> texture) : base(texture) {
-	}
-}
-public class CurseState : UIState {
-	UIPanel panel;
-	List<Roguelike_UIText> textlist;
-	List<ModCurse> cursesLib;
-	public override void OnInitialize() {
-		panel = new();
-		textlist = new();
-		cursesLib = new();
 	}
 }
