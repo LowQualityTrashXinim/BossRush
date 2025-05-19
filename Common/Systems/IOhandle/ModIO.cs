@@ -9,7 +9,7 @@ using BossRush.Common.Systems.Achievement;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
 
-namespace BossRush.Common.Systems;
+namespace BossRush.Common.Systems.IOhandle;
 public static class RoguelikeData {
 	public static int Lootbox_AmountOpen = 0;
 	public static int Run_Amount = 0;
@@ -40,8 +40,8 @@ class ModIO : ModSystem {
 		try {
 			if (File.Exists(DataFilePath)) {
 				var tag = TagIO.FromFile(DataFilePath);
-				Type type = typeof(RoguelikeData);
-				FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
+				var type = typeof(RoguelikeData);
+				var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 				foreach (var field in fields) {
 					if (!tag.ContainsKey(field.Name)) {
 						object obj = field.GetValue(null);
@@ -85,8 +85,8 @@ class ModIO : ModSystem {
 		}
 		try {
 			TagCompound tag = new();
-			Type type = typeof(RoguelikeData);
-			FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
+			var type = typeof(RoguelikeData);
+			var fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
 			foreach (var field in fields) {
 				object objValue = field.GetValue(null);
 				if (objValue is Dictionary<string, List<SynergyBonus>> bonus) {

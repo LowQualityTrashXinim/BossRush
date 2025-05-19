@@ -8,63 +8,6 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Remove="Common\Graphics\Shaders\Compiler\**" />
-    <AdditionalFiles Remove="Contents\Items\Weapon\DupeSynergy\**" />
-    <AdditionalFiles Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
-    <Compile Remove="Common\Graphics\Shaders\Compiler\**" />
-    <Compile Remove="Contents\Items\Weapon\DupeSynergy\**" />
-    <Compile Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
-    <EmbeddedResource Remove="Common\Graphics\Shaders\Compiler\**" />
-    <EmbeddedResource Remove="Contents\Items\Weapon\DupeSynergy\**" />
-    <EmbeddedResource Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
-    <None Remove="Common\Graphics\Shaders\Compiler\**" />
-    <None Remove="Contents\Items\Weapon\DupeSynergy\**" />
-    <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Remove="Assets\Structures\SlimeArena1.txt" />
-    <AdditionalFiles Remove="Assets\Structures\SlimeArena2.txt" />
-    <AdditionalFiles Remove="Common\Graphics\Shaders\RubyBoltEffect.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
-    <None Remove="Assets\Images\Trials\TrialRoomTemplate1.png" />
-    <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
-    <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
-    <None Remove="Contents\Projectiles\SunflowerProjectile.png" />
-    <None Remove="Contents\Projectiles\SunItem.png" />
-    <None Remove="Contents\Transfixion\Artifacts\BootsOfSpeedManipulationArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\HeartOfEarthArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\MagicalCardDeckArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\SkillIssuedArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\TokenOfGreedArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\TokenofPrideArtifact.png" />
-    <None Remove="Contents\Transfixion\Artifacts\VampirismCrystalArtifact.png" />
-    <None Remove="Contents\Items\TransmuteTablet.png" />
-    <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
-    <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\MythrilBeamSword\MythrilBeamSword.png" />
-    <None Remove="Contents\Items\Weapon\NotSynergyWeapon\OldFlamingWoodSword.png" />
-    <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\HeavenSmg\angelicSMG.png" />
-    <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\HeavenSmg\angelicSMGheld.png" />
-    <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\Horus'sEye.png" />
-    <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\WinterFlame\WinterFlame.png" />
-    <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhip.png" />
-    <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhipProj.png" />
-    <None Remove="Common\Graphics\Shaders\FlameBall.fx" />
-    <None Remove="Common\Graphics\Shaders\FlameEffect.fx" />
-    <None Remove="Contents\Items\Weapon\UnfinishedItem\Item2.png" />
-    <None Remove="Localization\en-US\en-US_Mods.BossRush.SoulBound.hjson" />
-    <None Remove="Texture\EmptyCard.png" />
-    <None Remove="Texture\ExampleFrame.png" />
-    <None Remove="Texture\FourStar.png" />
-    <None Remove="Texture\StructureHelper_Box.png" />
-    <None Remove="Texture\StructureHelper_corner.png" />
-    <None Remove="Texture\roguelikePerlinNoise.png" />
-    <None Remove="Texture\UI\DiamondBolt.png" />
-    <None Remove="Texture\UI\lock.png" />
-    <None Remove="Texture\UI\StructureHelper_Box2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>

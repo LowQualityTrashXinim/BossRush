@@ -23,6 +23,7 @@ using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using BossRush.Common.Systems.IOhandle;
 
 namespace BossRush.Contents.Items.Weapon {
 	public struct SynergyBonus {

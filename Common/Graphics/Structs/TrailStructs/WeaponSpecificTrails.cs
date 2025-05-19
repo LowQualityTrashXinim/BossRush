@@ -11,11 +11,10 @@ using Terraria.Graphics.Shaders;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria;
-using BossRush.Common.Graphics;
 using Terraria.GameContent;
 using BossRush.Common.Graphics.Primitives;
 
-namespace BossRush.Common.Graphics.TrailStructs;
+namespace BossRush.Common.Graphics.Structs.TrailStructs;
 public struct WyvernTrailMain {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	private static ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
@@ -33,7 +32,7 @@ public struct WyvernTrailMain {
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -65,7 +64,7 @@ public struct WyvernTrailMini {
 
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -74,7 +73,7 @@ public struct WyvernTrailMini {
 public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Projectile projectile, Color color, Vector2 offset) {
-		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["TrailEffect"];
+		var shader = EffectsLoader.shaderHandlers["TrailEffect"];
 		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
@@ -86,7 +85,7 @@ public struct BeamTrail {
 
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -108,7 +107,7 @@ public struct FlameThrowerFrost {
 
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -135,7 +134,7 @@ public struct FlameThrowerFire {
 
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -165,7 +164,7 @@ public struct StarTrail {
 
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}
@@ -187,7 +186,7 @@ public struct StarTrailEmpowered {
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}
 	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		var result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
 		//result.A /= 2;
 		return result;
 	}

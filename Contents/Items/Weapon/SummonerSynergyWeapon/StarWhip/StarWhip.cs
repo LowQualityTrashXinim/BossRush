@@ -11,8 +11,8 @@ using Terraria.DataStructures;
 using BossRush.Texture;
 using ReLogic.Content;
 using Terraria.Audio;
-using BossRush.Common.Graphics.TrailStructs;
 using Terraria.Localization;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {

@@ -8,7 +8,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Graphics.Structs.TrailStructs;
-using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.WyvernWrath;
 public class WyvernWrath : SynergyModItem {

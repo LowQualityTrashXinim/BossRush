@@ -18,7 +18,7 @@ public class EbonwoodHelmet : ModArmorPiece {
 		PieceID = ItemID.EbonwoodHelmet;
 		Add_Defense = 2;
 		AddTooltip = true;
-		ArmorName = "ShadewoodArmor";
+		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Head;
 	}
 	public override void UpdateEquip(Player player, Item item) {
@@ -32,7 +32,7 @@ public class EbonwoodBreastplate : ModArmorPiece {
 		PieceID = ItemID.EbonwoodBreastplate;
 		Add_Defense = 2;
 		AddTooltip = true;
-		ArmorName = "ShadewoodArmor";
+		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Body;
 	}
 	public override void UpdateEquip(Player player, Item item) {
@@ -46,7 +46,7 @@ public class EbonwoodGreaves : ModArmorPiece {
 		PieceID = ItemID.EbonwoodGreaves;
 		Add_Defense = 2;
 		AddTooltip = true;
-		ArmorName = "ShadewoodArmor";
+		ArmorName = "EbonwoodArmor";
 		TypeEquipment = Type_Leg;
 	}
 	public override void UpdateEquip(Player player, Item item) {

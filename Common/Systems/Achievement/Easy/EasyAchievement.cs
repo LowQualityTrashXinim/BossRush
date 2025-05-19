@@ -1,5 +1,6 @@
 ﻿using BossRush.Common.Global;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems.IOhandle;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.Artifacts;
 using Microsoft.Xna.Framework.Graphics;

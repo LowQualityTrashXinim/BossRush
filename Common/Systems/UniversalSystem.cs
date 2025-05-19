@@ -1,40 +1,41 @@
-﻿using System;
-using Terraria;
-using System.IO;
-using Terraria.UI;
-using Terraria.ID;
-using System.Linq;
-using Terraria.IO;
-using Terraria.Audio;
-using ReLogic.Content;
-using BossRush.Texture;
-using System.Reflection;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.Localization;
-using Terraria.ModLoader.IO;
-using BossRush.Contents.NPCs;
-using BossRush.Common.Global;
-using BossRush.Contents.Perks;
-using Microsoft.Xna.Framework;
-using BossRush.Contents.Skill;
+﻿using BossRush.Common.ChallengeMode;
 using BossRush.Common.General;
-using System.Collections.Generic;
-using BossRush.Common.ChallengeMode;
-using Microsoft.Xna.Framework.Input;
-using BossRush.Contents.Items.Toggle;
-using Terraria.GameContent.UI.States;
-using BossRush.Common.WorldGenOverhaul;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
-using BossRush.Common.Systems.Achievement;
-using BossRush.Common.Systems.SpoilSystem;
+using BossRush.Common.Global;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Contents.Items.Consumable.Spawner;
-using BossRush.Contents.Items.aDebugItem.UIdebug;
+using BossRush.Common.Systems.Achievement;
+using BossRush.Common.Systems.IOhandle;
+using BossRush.Common.Systems.SpoilSystem;
+using BossRush.Common.WorldGenOverhaul;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
+using BossRush.Contents.Items.aDebugItem.UIdebug;
+using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.NPCs;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Skill;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Texture;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Terraria;
+using Terraria.Achievements;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.GameContent.UI.States;
+using Terraria.ID;
+using Terraria.IO;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using Terraria.UI;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -835,7 +836,7 @@ class UISystemMenu : UIState {
 	UIPanel Roguelike_Panel;
 	UIText RoguelikeText;
 	UIText open_AchievmentUI;
-	UIText open_WikiUI;
+	UIText open_SynergyWikiUI;
 	UIText exit_Menu;
 	public override void OnInitialize() {
 		Roguelike_Panel = new();
@@ -863,13 +864,13 @@ class UISystemMenu : UIState {
 		open_AchievmentUI.HAlign = .5f;
 		panel.Append(open_AchievmentUI);
 
-		open_WikiUI = new("Synergy weapon library", 1.5f);
-		open_WikiUI.OnLeftClick += Open_WikiUI_OnLeftClick;
-		open_WikiUI.OnUpdate += Open_WikiUI_OnUpdate;
-		open_WikiUI.OnMouseOver += Open_WikiUI_OnMouseOver;
-		open_WikiUI.MarginTop = open_AchievmentUI.Height.Pixels + 40;
-		open_WikiUI.HAlign = .5f;
-		panel.Append(open_WikiUI);
+		open_SynergyWikiUI = new("Synergy weapon library", 1.5f);
+		open_SynergyWikiUI.OnLeftClick += Open_WikiUI_OnLeftClick;
+		open_SynergyWikiUI.OnUpdate += Open_WikiUI_OnUpdate;
+		open_SynergyWikiUI.OnMouseOver += Open_WikiUI_OnMouseOver;
+		open_SynergyWikiUI.MarginTop = open_AchievmentUI.Height.Pixels + 40;
+		open_SynergyWikiUI.HAlign = .5f;
+		panel.Append(open_SynergyWikiUI);
 
 		exit_Menu = new("Back", 1.5f);
 		exit_Menu.OnLeftClick += Exit_Menu_OnLeftClick;
@@ -904,15 +905,15 @@ class UISystemMenu : UIState {
 	}
 
 	private void Open_WikiUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-
+		ModContent.GetInstance<UniversalSystem>().ActivateSynergyWikiMenu();
 	}
 	private void Open_WikiUI_OnUpdate(UIElement affectedElement) {
 		affectedElement.Disable_MouseItemUsesWhenHoverOverAUI();
 		if (affectedElement.IsMouseHovering) {
-			open_WikiUI.TextColor = Color.Yellow;
+			open_SynergyWikiUI.TextColor = Color.Yellow;
 		}
 		else {
-			open_WikiUI.TextColor = Color.White;
+			open_SynergyWikiUI.TextColor = Color.White;
 		}
 	}
 	private void Open_AchievmentUI_OnMouseOver(UIMouseEvent evt, UIElement listeningElement) {
@@ -933,33 +934,197 @@ class UISystemMenu : UIState {
 		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
 	}
 }
+public class SynergyButton : Roguelike_UIImageButton {
+	public string SynergyInternalName = "";
+	public int InteralItemID = 0;
+	public SynergyButton(Asset<Texture2D> texture) : base(texture) {
+		SetVisibility(.67f, 1f);
+		//InteralItemID = BossRushModSystem.SynergyItem.FirstOrDefault(s => s.ModItem.Name == SynergyInternalName).type;
+	}
+	public void SetSynergyItem(string synergyName) {
+		SynergyInternalName = synergyName;
+		if (!string.IsNullOrEmpty(synergyName)) {
+			InteralItemID = BossRushModSystem.SynergyItem.Where(s => s.ModItem.Name == synergyName).FirstOrDefault().type;
+		}
+	}
+	public override void DrawImage(SpriteBatch spriteBatch) {
+		if (InteralItemID >= TextureAssets.Item.Length || string.IsNullOrEmpty(SynergyInternalName)) {
+			return;
+		}
+		if(IsMouseHovering) {
+			Main.instance.MouseText(SynergyInternalName);
+		}
+		if (InteralItemID == 0 && !string.IsNullOrEmpty(SynergyInternalName)) {
+			InteralItemID = BossRushModSystem.SynergyItem.Where(s => s.ModItem.Name == SynergyInternalName).FirstOrDefault().type;
+		}
+		Main.instance.LoadItem(InteralItemID);
+		Texture2D item = TextureAssets.Item[InteralItemID].Value;
+		Vector2 origin = item.Size() * .5f;
+		Vector2 drawPos = this.GetInnerDimensions().Position() + new Vector2(26, 26);
+		float scale;
+		if (origin.X < 27 && origin.Y < 27) {
+			scale = .8f;
+		}
+		else {
+			scale = ScaleCalculation(new(52, 52), item.Size() * 2f);
+		}
+		spriteBatch.Draw(item, drawPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
+	}
+	private static float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length());
+}
 public class SynergyMenuWikiUI : UIState {
+	public UIPanel holderPanel;
 	public UIPanel mainPanel;
 	public UIPanel headerPanel;
 	public UIPanel footerPanel;
 	public ExitUI exit;
+	Roguelike_UIImageButton buttonLeft;
+	Roguelike_UIImageButton buttonRight;
+	List<PageImage> pagnitation = new();
+	int pageIndex = 0;
+	int maxPage = 1;
+	int Row = 5;
+	int Line = 5;
+	List<SynergyButton> synegybuttonList = new();
+	public string CurrentlySelectedSynergyWeapon = "";
+	public void SetPageIndex(int index) {
+		pageIndex = Math.Clamp(index, 0, maxPage);
+	}
 	public override void OnInitialize() {
+		synegybuttonList = new();
+
+		holderPanel = new();
+		holderPanel.UISetWidthHeight(500, 500);
+		holderPanel.HAlign = .5f;
+		holderPanel.VAlign = .5f;
+		Append(holderPanel);
+
 		mainPanel = new();
-		mainPanel.UISetWidthHeight(500, 500);
+		mainPanel.Width.Percent = 1;
+		mainPanel.Height.Percent = .7f;
 		mainPanel.HAlign = .5f;
 		mainPanel.VAlign = .5f;
-		Append(mainPanel);
+		holderPanel.Append(mainPanel);
 
 		headerPanel = new();
 		headerPanel.Width.Percent = 1;
 		headerPanel.Height.Pixels = 60;
-		mainPanel.Append(headerPanel);
+		headerPanel.PaddingTop = 5;
+		headerPanel.PaddingBottom = 5;
+		holderPanel.Append(headerPanel);
 
 		footerPanel = new();
 		footerPanel.VAlign = 1;
 		footerPanel.Width.Percent = 1;
 		footerPanel.Height.Pixels = 60;
-		mainPanel.Append(footerPanel);
+		footerPanel.PaddingTop = 5;
+		footerPanel.PaddingBottom = 5;
+		holderPanel.Append(footerPanel);
 
 		exit = new(TextureAssets.InventoryBack);
 		exit.HAlign = 1f;
 		exit.VAlign = .5f;
 		headerPanel.Append(exit);
+
+		buttonLeft = new(TextureAssets.InventoryBack);
+		buttonLeft.SetVisibility(.67f, 1f);
+		buttonLeft.VAlign = .5f;
+		buttonLeft.postTex = ModContent.Request<Texture2D>(BossRushTexture.Arrow_Left);
+		buttonLeft.OnLeftClick += ButtonLeft_OnLeftClick;
+		footerPanel.Append(buttonLeft);
+
+		buttonRight = new(TextureAssets.InventoryBack);
+		buttonRight.SetVisibility(.67f, 1f);
+		buttonRight.VAlign = .5f;
+		buttonRight.HAlign = 1f;
+		buttonRight.OnLeftClick += ButtonRight_OnLeftClick;
+		buttonRight.postTex = ModContent.Request<Texture2D>(BossRushTexture.Arrow_Right);
+		footerPanel.Append(buttonRight);
+
+		maxPage =  (int)Math.Ceiling(BossRushModSystem.SynergyItem.Count / (float)(Line * Row));
+
+		for (int i = 0; i < Line; i++) {
+			for (int j = 0; j < Row; j++) {
+				SynergyButton btn = new(TextureAssets.InventoryBack);
+				int index = Line * i + j;
+				if (index < BossRushModSystem.SynergyItem.Count) {
+					btn.SynergyInternalName = BossRushModSystem.SynergyItem[index].ModItem.Name;
+				}
+				btn.HAlign = j / (Row - 1f);
+				btn.VAlign = i / (Line - 1f);
+				synegybuttonList.Add(btn);
+				mainPanel.Append(btn);
+			}
+		}
+
+		if (maxPage <= 1) {
+			return;
+		}
+		for (int i = 0; i < maxPage; i++) {
+			PageImage img = new(TextureAssets.InventoryBack);
+			if (maxPage == 1) {
+				img.HAlign = .5f;
+			}
+			else {
+				img.HAlign = MathHelper.Lerp(.1f, .9f, i / (maxPage - 1f));
+			}
+			img.VAlign = .5f;
+			img.OnLeftClick += Img_OnLeftClick;
+			pagnitation.Add(img);
+			footerPanel.Append(img);
+		}
+	}
+
+	private void Img_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SetPageIndex(pagnitation.Select(el => el.UniqueId).ToList().IndexOf(listeningElement.UniqueId));
+		RefleshSelectionUIBaseOnPageIndex();
+	}
+
+	private void ButtonRight_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (pageIndex < maxPage) {
+			pageIndex++;
+		}
+		RefleshSelectionUIBaseOnPageIndex();
+	}
+
+	private void ButtonLeft_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (pageIndex > 0) {
+			pageIndex--;
+		}
+		RefleshSelectionUIBaseOnPageIndex();
+	}
+
+	public void RefleshSelectionUIBaseOnPageIndex() {
+		if (pageIndex > maxPage || pageIndex < 0 || maxPage <= 1) {
+			return;
+		}
+		int maxcount = BossRushModSystem.SynergyItem.Count;
+		int startingPoint = Line * Row * pageIndex;
+		for (int i = 0; i < Line; i++) {
+			for (int j = 0; j < Row; j++) {
+				string name = "";
+				int index = Line * i + j + startingPoint;
+				if (index < BossRushModSystem.SynergyItem.Count) {
+					name = BossRushModSystem.SynergyItem[index].ModItem.Name;
+				}
+				SynergyButton btn = synegybuttonList[Line * i + j];
+				if (index >= maxcount) {
+					btn.SetSynergyItem(string.Empty);
+					continue;
+				}
+				btn.SetSynergyItem(name);
+			}
+		}
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		for (int i = 0; i < pagnitation.Count; i++) {
+			var item = pagnitation[i];
+			item.toggled = i == pageIndex;
+			if (item.IsMouseHovering) {
+				Main.instance.MouseText("page " + (i + 1).ToString());
+			}
+		}
 	}
 }
 public class TeleportUI : UIState {

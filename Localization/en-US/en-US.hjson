@@ -2342,11 +2342,7 @@ Mods: {
 
 			ReInitializeUI: {
 				DisplayName: ReInitialize UI
-				Tooltip:
-					'''
-					Current UI to reintialize : Transmutation
-					Debug item, do not uses it unless you are the one working on this
-					'''
+				Tooltip: Debug item, do not uses it unless you are the one working on this
 			}
 
 			PerkDebugShower: {

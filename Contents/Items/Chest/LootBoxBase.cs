@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Consumable.Potion;
 using Steamworks;
+using BossRush.Common.Systems.IOhandle;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -720,8 +721,10 @@ namespace BossRush.Contents.Items.Chest {
 			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
-				rng = RNGManage(player);
-				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				if (rng == 0) {
+					rng = RNGManage(player);
+					rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				}
 				switch (rng) {
 					case 0:
 						continue;

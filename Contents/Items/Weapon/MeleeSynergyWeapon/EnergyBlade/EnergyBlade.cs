@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 			if (Projectile.ai[0] == 2) {
 				return;
 			}
-			BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
+			BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data, 2);
 			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<EnergyBlade>(), ItemID.Code1)) {
 				float rotation = Projectile.rotation - (Projectile.spriteDirection > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2);
 				int energycode1 = Projectile.NewProjectile(Projectile.GetSource_FromAI(),

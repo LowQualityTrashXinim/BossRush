@@ -99,7 +99,7 @@ namespace BossRush {
 			if (swing == -1) {
 				percentDone = OutExpo(1 - percentDone, 11);
 			}
-			else {
+			else if (swing == 1) {
 				percentDone = InExpo(percentDone, 11);
 			}
 			percentDone = Math.Clamp(percentDone, 0, 1);

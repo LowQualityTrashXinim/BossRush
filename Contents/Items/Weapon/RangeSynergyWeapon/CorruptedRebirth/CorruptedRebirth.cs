@@ -220,6 +220,9 @@ public class CorruptedRebirthBowObject : ModObject {
 				dust.color = greeen;
 			}
 		}
+		if (timeLeft % 6 == 0) {
+			SoundEngine.PlaySound(SoundID.Item42, position);
+		}
 		if (timeLeft % 4 == 0) {
 			var proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), Center, vel * 10, ModContent.ProjectileType<FlameProjectile>(), player.GetWeaponDamage(item), item.knockBack, player.whoAmI, 0, 0);
 			if (proj.ModProjectile is FlameProjectile flame) {
