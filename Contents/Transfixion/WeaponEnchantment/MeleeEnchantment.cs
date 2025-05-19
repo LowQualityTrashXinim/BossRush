@@ -968,7 +968,7 @@ public class Umbrella : ModEnchantment {
 		}
 	}
 }
-public class TragicEmbrella : ModEnchantment {
+public class TragicUmbrella : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TragicUmbrella;
 	}
@@ -1211,11 +1211,11 @@ public class Ruler : ModEnchantment {
 		ItemIDType = ItemID.Ruler;
 	}
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		float damageincreases = (target.Center - player.Center).Length();
+		float damageincreases = (target.Center - player.Center).Length() / 5f;
 		modifiers.SourceDamage.Base += damageincreases * .1f;
 	}
 	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		float damageincreases = (target.Center - player.Center).Length();
+		float damageincreases = (target.Center - player.Center).Length() / 5f;
 		modifiers.SourceDamage += damageincreases * .1f;
 	}
 }

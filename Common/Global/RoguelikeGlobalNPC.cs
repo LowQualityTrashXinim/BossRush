@@ -257,6 +257,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		HitCount++;
 		if (!npc.boss) {
 			return;
 		}
@@ -276,9 +277,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
-		HitCount++;
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		HitCount++;
 		if (projectile.type == ProjectileID.HeatRay) {
 			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 100);
 			HeatRay_Decay = 30;
@@ -327,7 +328,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
-		HitCount++;
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;

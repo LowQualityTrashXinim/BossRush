@@ -666,7 +666,7 @@ SwordFish.Description:
 	'''
 	Your attack ignore 5 point of defenses
 	Damage dealt have 1 in 10 chance to strike twice
-	If enemy are near, spawn out a sword fish that swim around
+	If enemy are near, spawn out a sword fish that swim to attack
 	'''
 TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
@@ -733,4 +733,10 @@ Ruler.Description:
 	'''
 	Increases base damage of projectile depend on distance from target to player
 	Increases additive damage of melee item depend on distance from target to player
+	'''
+OnyxBlaster.Description:
+	'''
+	Increases base range damage by 5
+	Override your shot to shoot Onyx beam
+	Have 1 in 5 chance to accompany your shot with a Onyx bolt deal 300% damage
 	'''

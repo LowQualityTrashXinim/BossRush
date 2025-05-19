@@ -20,7 +20,7 @@ namespace BossRush.Common.ChallengeMode {
 		public override void Unload() {
 		}
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
 				orig(self);
 				return;
 			}
