@@ -3267,6 +3267,16 @@ Mods: {
 				DisplayName: Completely Shatter
 				Description: Mods.BossRush.Buffs.CompletelyShatter.Description
 			}
+
+			DodgeJutsu: {
+				DisplayName: Dodge Jutsu
+				Description: Mods.BossRush.Buffs.DodgeJutsu.Description
+			}
+
+			DodgeJutsuCoolDown: {
+				DisplayName: Dodge Jutsu Cool Down
+				Description: Mods.BossRush.Buffs.DodgeJutsuCoolDown.Description
+			}
 		}
 
 		Configs: {

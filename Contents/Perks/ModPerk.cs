@@ -943,4 +943,16 @@ namespace BossRush.Contents.Perks {
 			return Main.LocalPlayer.inventory.Where(i => i.ModItem != null && i.ModItem is SynergyModItem).Any();
 		}
 	}
+	public class GlassCannon : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 999;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage *= 1 + StackAmount(player) * .25f;
+		}
+		public override void UpdateEquip(Player player) {
+			player.ModPlayerStats().CappedHealthAmount = 50;
+		}
+	}
 }

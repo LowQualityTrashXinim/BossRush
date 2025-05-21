@@ -484,6 +484,7 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 			if (item != null && item.type != ItemID.None) {
 				itemcached = item.Clone();
 				item.TurnToAir();
+				item = Main.mouseItem.Clone();
 				Main.mouseItem = itemcached;
 				player.inventory[58] = itemcached;
 			}

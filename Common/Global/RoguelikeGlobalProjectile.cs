@@ -60,8 +60,8 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					}
 				}
 			}
-			if(parent3.Context != null) {
-				if(parent3.Context == "subProj") {
+			if (parent3.Context != null) {
+				if (parent3.Context == "subProj") {
 					IsASubProjectile = true;
 				}
 			}
@@ -126,6 +126,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0
 			|| player.heldProj == projectile.owner
+			|| ProjectileID.Sets.SingleGrappleHook[projectile.type]
 			|| projectile.hostile
 			|| !projectile.friendly
 			|| projectile.minion
@@ -146,6 +147,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.PortalGunBolt
 			|| projectile.type == ProjectileID.PortalGunGate
 			|| projectile.type == ProjectileID.LightsBane
+			|| projectile.aiStyle == ProjAIStyleID.Hook
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
 			|| projectile.type == ModContent.ProjectileType<AngelicSmgHeld>()
 			|| projectile.type == ModContent.ProjectileType<MagicBullet>()//This is to prevent lag

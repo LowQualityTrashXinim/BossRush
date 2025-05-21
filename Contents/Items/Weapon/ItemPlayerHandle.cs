@@ -251,6 +251,13 @@ namespace BossRush.Contents.Items.Weapon {
 				NameLine.Text += " [Advanced]";
 			}
 		}
+		public override void PostUpdate(Item item) {
+			if(UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				if(item.type != ItemID.Heart && item.type != ItemID.Star) {
+					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
+				}
+			}
+		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			if (item.ModItem == null) {
 				return true;

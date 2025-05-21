@@ -28,7 +28,7 @@ public class PlayerBiome : ModPlayer {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
 		int WorldIndex = gen.MapIndex(position.X, position.Y);
-		if(WorldIndex >= gen.BiomeMapping.Length) {
+		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return;
 		}
 		string zone = gen.BiomeMapping[WorldIndex];
@@ -661,10 +661,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		IsUsingHorizontal = false;
 		offsetcount = 0;
 		additionaloffset = -1;
-	}
-	[Task]
-	public void Generate_TrialTest() {
-		//Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
+		BiomeZone.Clear();
 	}
 	[Task]
 	public void Generate_SmallForest() {
@@ -680,7 +677,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				StructureData data = Generator.GetStructureData("Assets/ShrineOfOffering", Mod);
 				Generator.GenerateStructure("Assets/ShrineOfOffering", new(i - data.width / 2, forestArea.Y + forestArea.Height / 2), Mod);
 				Rectangle zone = new Rectangle(i - data.width / 2, forestArea.Y + forestArea.Height / 2, data.width, data.height);
-				BiomeZone.Add(Bid.ShrineOfOffering, new() { zone });
+				//BiomeZone.Add(Bid.ShrineOfOffering, new() { zone });
 			}
 			for (int j = startingPoint; j < forestArea.Height + forestArea.Y; j++) {
 				if (MoveToNextX) {
@@ -695,6 +692,73 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
 		}
+	}
+	[Task]
+	public void Generate_TrialTest() {
+		List<Point> pointlist = new();
+		bool Available = false;
+		for (int i = 0; i < Main.maxTilesX; i++) {
+			for (int j = 0; j < Main.maxTilesY; j++) {
+				if (i > 100 && i < Main.maxTilesX - 100
+					&& j > 100 && j < Main.maxTilesY - 100) {
+					if (Rand.NextBool(2500)) {
+						Available = true;
+					}
+					else {
+						continue;
+					}
+					bool canplace = true;
+					foreach (var item in pointlist) {
+						Rectangle intersect = new(i - 50, j - 50, 50, 50);
+						Rectangle rect = new(Math.Clamp(item.X - 400, 0, Main.maxTilesX), Math.Clamp(item.Y - 400, 0, Main.maxTilesY), 400, 400);
+						if (rect.Intersects(intersect)) {
+							canplace = false;
+							break;
+						}
+					}
+					if (!canplace) {
+						continue;
+					}
+					Point position = new(i / GridPart_X, j / GridPart_Y);
+					int WorldIndex = MapIndex(position.X, position.Y);
+					if (WorldIndex >= BiomeMapping.Length) {
+						return;
+					}
+					string zone = BiomeMapping[WorldIndex];
+					if(zone == null) {
+						continue;
+					}
+					if (!ZoneToBeIgnored[0].Contains(i, j) && Available && !zone.Contains((char)Bid.JungleTemple)) {
+						Generate_Trial(i, j);
+						Available = false;
+						pointlist.Add(new(i, j));
+					}
+				}
+			}
+		}
+	}
+	public void Generate_Trial(int X, int Y) {
+		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");
+		template.EnumeratePixels((a, b, color) => {
+			if (a == 25 && b == 25) {
+				a += X;
+				b += Y;
+				GenerationHelper.FastRemoveTile(a, b);
+				WorldGen.PlaceTile(a, b, ModContent.TileType<StartTrialAltar_Template_1>());
+				GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+				return;
+			}
+			a += X;
+			b += Y;
+			GenerationHelper.FastRemoveTile(a, b);
+			if (color.R == 255 && color.B == 0 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
+			}
+			else if (color.R == 0 && color.B == 255 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+			}
+			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+		});
 	}
 	[Task]
 	public void FinalTask() {

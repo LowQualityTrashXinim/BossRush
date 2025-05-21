@@ -252,6 +252,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
 	public int EnergyRegen_Count = 0;
 	public int EnergyRegen_CountLimit = 60;
+	public int CappedHealthAmount = -1;
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
@@ -286,7 +287,13 @@ public class PlayerStatsHandle : ModPlayer {
 			TemporaryLife_CounterLimit = 0;
 		}
 
-		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
+		if (CappedHealthAmount == -1) {
+			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
+		}
+		else {
+			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, CappedHealthAmount);
+		}
+		CappedHealthAmount = -1;
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
 
 		UpdateCritDamage = StatModifier.Default;
@@ -378,7 +385,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else if (item.DamageType == DamageClass.Summon) {
 			global = AttackSpeed.CombineWith(SummonAtkSpeed);
 		}
-		return MathF.Ceiling(global.ApplyTo(useSpeed));
+		return MathF.Round(global.ApplyTo(useSpeed), 2);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -421,7 +428,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);

@@ -811,9 +811,19 @@ LegendaryWoodSword: {
 	DisplayName: Legendary Wood Sword
 	Description:
 		'''
-		Wood sword are strengthen
+		"Wood sword are strengthen"
 		+ Increases base damage by 20
 		+ Weapon size increases by 50%
 		+ After every 3 swing, throw out wood that deal 200% of weapon damage
+		'''
+}
+
+GlassCannon: {
+	DisplayName: Glass cannon
+	Description:
+		'''
+		"Paradise for mad pursuer"
+		+ Multiply your damage by 1.25x
+		+ Capped your maximum health at 50
 		'''
 }

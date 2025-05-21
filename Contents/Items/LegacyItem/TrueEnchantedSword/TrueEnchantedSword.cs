@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.RoguelikeChange;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -14,6 +15,10 @@ namespace BossRush.Contents.Items.LegacyItem.TrueEnchantedSword {
 			Item.rare = ItemRarityID.LightPurple;
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item1;
+
+			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul global)) {
+				global.SwingType = BossRushUseStyle.Swipe;
+			}
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			count++;

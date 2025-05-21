@@ -73,6 +73,7 @@ RichMahoganyArmor: {
 		'''
 	SetBonus:
 		'''
+		Increases maximum minion and sentry
 		Increase defense by 6 and movement speed by 30%
 		Increases damage of sharp leaf
 		Decreases standing requirement for dryad's blessing
@@ -337,11 +338,50 @@ GoldArmor: {
 	Leg: 5% chance to inflict Midas on hit
 }
 
+NinjaArmor: {
+	SetBonus:
+		'''
+		Grant complete dodge for 10s after attack ( CD : 20s )
+		During i-frame, increases critical strike chance by 50% and critical strike damage by 150%
+		'''
+	Head:
+		'''
+		3% Dodge chance
+		15% Critical strike damage
+		'''
+	Body:
+		'''
+		5% Dodge chance
+		5% Attack speed
+		'''
+	Leg:
+		'''
+		2% Dodge chance
+		5% Damage
+		'''
+}
+
+GladiatorArmor: {
+	SetBonus:
+		'''
+		10 defense
+		Strengthen pieces effect the lower your health is
+		'''
+	Head: 15% Critical strike damage
+	Body: 5% damage reduction
+	Leg:
+		'''
+		10% Movement speed
+		10% Jump boost
+		'''
+}
+
 PlatinumArmor: {
 	SetBonus:
 		'''
-		Getting hit reduce next incoming damage by 66% for 4s
-		And you spawn valuable gem when collected empowered your next attack
+		Getting hit :
+		Reduce next incoming damage by 66% for 4s
+		You spawn collectible gem that can be thrown into enemy
 		'''
 	Head: 4% damage
 	Body: 4% damage

@@ -1,8 +1,9 @@
-﻿using Terraria;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.LegacyItem.FrozenEnchantedSword {
 	public class FrozenEnchantedSword : ModItem {
@@ -15,6 +16,9 @@ namespace BossRush.Contents.Items.LegacyItem.FrozenEnchantedSword {
 			Item.shootSpeed = 15;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
+			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul global)) {
+				global.SwingType = BossRushUseStyle.Swipe;
+			}
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.IceBolt, damage, knockback, player.whoAmI);

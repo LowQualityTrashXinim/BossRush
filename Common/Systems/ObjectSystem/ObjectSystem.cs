@@ -77,6 +77,15 @@ public class ObjectSystem : ModSystem {
 		}
 		Main.spriteBatch.End();
 	}
+	public override void OnWorldUnload() {
+		for (int i = 0; i < Objects.Length; i++) {
+			ModObject modobject = Objects[i];
+			if (modobject == null) {
+				continue;
+			}
+			modobject.Kill();
+		}
+	}
 }
 /// <summary>
 /// This system is completely client side so using <see cref="Main.LocalPlayer"/> is completely valid<br/>
