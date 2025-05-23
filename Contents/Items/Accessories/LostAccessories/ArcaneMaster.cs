@@ -14,11 +14,8 @@ internal class ArcaneMaster : ModItem {
 	}
 	public override void UpdateEquip(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, Multiplicative: 1.5f);
-		player.manaCost -= .5f;
-		player.manaMagnet = true;
-		player.manaFlower = true;
-		player.starCloakItem_manaCloakOverrideItem = Item;
+		modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, Multiplicative: 1.1f);
+		player.manaCost -= .15f;
 	}
 }
 class ArcaneMasterPlayer : ModPlayer {
@@ -34,10 +31,10 @@ class ArcaneMasterPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .05f;
+		if (ArcaneMaster && item.DamageType == DamageClass.Magic) damage += ManaCostIncreases * .01f;
 	}
 	public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-		if (ArcaneMaster) mult += ManaCostIncreases * .1f;
+		if (ArcaneMaster) mult += ManaCostIncreases * .02f;
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (ArcaneMaster) ManaCostIncreases = Math.Clamp(ManaCostIncreases + 1, 0, 60);

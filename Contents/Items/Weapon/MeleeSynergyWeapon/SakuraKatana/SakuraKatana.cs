@@ -18,7 +18,7 @@ internal class SakuraKatana : SynergyModItem {
 		Item.BossRushSetDefault(48, 92, 48, 6f, 20, 20, ItemUseStyleID.Swing, true);
 		Item.DamageType = DamageClass.Melee;
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-			meleeItem.SwingType = BossRushUseStyle.Poke;
+			meleeItem.SwingType = BossRushUseStyle.Swipe2;
 		Item.UseSound = SoundID.Item1;
 		Item.Set_InfoItem();
 	}

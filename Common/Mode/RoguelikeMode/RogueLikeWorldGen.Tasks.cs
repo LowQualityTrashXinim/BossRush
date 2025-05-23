@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Text;
 using StructureHelper.Models;
 using StructureHelper.API;
+using Microsoft.Build.Tasks;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
@@ -694,44 +695,66 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
-	public void Generate_TrialTest() {
+	public void Generate_PostWorld() {
 		List<Point> pointlist = new();
-		bool Available = false;
+		Rectangle goldRoomSize = new(0, 0, 150, 150);
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				if (i > 100 && i < Main.maxTilesX - 100
 					&& j > 100 && j < Main.maxTilesY - 100) {
-					if (Rand.NextBool(2500)) {
-						Available = true;
+					//This is where we generate our gold room via code
+					if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
+						goldRoomSize.X = i;
+						goldRoomSize.Y = j;
+						pointlist.Add(new(i, j));
 					}
-					else {
-						continue;
+					else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
+						goldRoomSize.X = i;
+						goldRoomSize.Y = j;
+						pointlist.Add(new(i, j));
 					}
-					bool canplace = true;
-					foreach (var item in pointlist) {
-						Rectangle intersect = new(i - 50, j - 50, 50, 50);
-						Rectangle rect = new(Math.Clamp(item.X - 400, 0, Main.maxTilesX), Math.Clamp(item.Y - 400, 0, Main.maxTilesY), 400, 400);
-						if (rect.Intersects(intersect)) {
-							canplace = false;
-							break;
+					if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
+						if (goldRoomSize.Contains(i, j)) {
+							if (i == goldRoomSize.Left
+							|| j == goldRoomSize.Top
+							|| i == goldRoomSize.Right - 1
+							|| j == goldRoomSize.Bottom - 1) {
+								GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
+							}
+							else {
+								GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
+							}
+							if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
+								goldRoomSize.X = 0;
+								goldRoomSize.Y = 0;
+							}
 						}
 					}
-					if (!canplace) {
-						continue;
-					}
-					Point position = new(i / GridPart_X, j / GridPart_Y);
-					int WorldIndex = MapIndex(position.X, position.Y);
-					if (WorldIndex >= BiomeMapping.Length) {
-						return;
-					}
-					string zone = BiomeMapping[WorldIndex];
-					if(zone == null) {
-						continue;
-					}
-					if (!ZoneToBeIgnored[0].Contains(i, j) && Available && !zone.Contains((char)Bid.JungleTemple)) {
-						Generate_Trial(i, j);
-						Available = false;
-						pointlist.Add(new(i, j));
+					//This is the end of gold room generation
+					//This is trial generation
+					if (Rand.NextBool(7500)) {
+						bool canplace = true;
+						foreach (var item in pointlist) {
+							Rectangle intersect = new(i - 50, j - 50, 50, 50);
+							Rectangle rect = new(Math.Clamp(item.X - 400, 0, Main.maxTilesX), Math.Clamp(item.Y - 400, 0, Main.maxTilesY), 400, 400);
+							if (rect.Intersects(intersect)) {
+								canplace = false;
+								break;
+							}
+						}
+						if (canplace) {
+							Point position = new(i / GridPart_X, j / GridPart_Y);
+							int WorldIndex = MapIndex(position.X, position.Y);
+							string zone = BiomeMapping[WorldIndex];
+							if (zone != null) {
+								if (!ZoneToBeIgnored[0].Contains(i, j)
+									&& !zone.Contains((char)Bid.JungleTemple)
+									 && !zone.Contains((char)Bid.Dungeon)) {
+									Generate_Trial(i, j);
+									pointlist.Add(new(i, j));
+								}
+							}
+						}
 					}
 				}
 			}

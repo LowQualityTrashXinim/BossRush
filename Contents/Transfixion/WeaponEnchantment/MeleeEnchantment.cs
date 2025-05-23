@@ -286,7 +286,7 @@ public class LightsBane : ModEnchantment {
 		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] > 0) {
+		if (globalItem.Item_Counter1[index] > 0 && proj.minion) {
 			return;
 		}
 		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);

@@ -111,11 +111,6 @@ namespace BossRush {
 			item.mana = manaCost;
 			item.noMelee = true;
 		}
-		public enum MeleeStyle {
-			CheckVanillaSwingWithModded,
-			CheckOnlyModded,
-			CheckOnlyModdedWithoutDefault
-		}
 		public static void Set_InfoItem(this Item item, bool ExtraInfo = true) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.ExtraInfo = ExtraInfo;
@@ -191,6 +186,11 @@ namespace BossRush {
 				globalitem.ShieldRes = res;
 			}
 		}
+		public enum MeleeStyle {
+			CheckVanillaSwingWithModded,
+			CheckOnlyModded,
+			CheckOnlyModdedWithoutDefault
+		}
 		/// <summary>
 		/// Soon to be deprecated
 		/// </summary>
@@ -207,14 +207,22 @@ namespace BossRush {
 						return item.useStyle == ItemUseStyleID.Swing
 							|| meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
 							|| meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown
+							|| meleeItem.SwingType == BossRushUseStyle.Spin;
 					case MeleeStyle.CheckOnlyModded:
 						return meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
 							|| meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown
+							|| meleeItem.SwingType == BossRushUseStyle.Spin;
 					case MeleeStyle.CheckOnlyModdedWithoutDefault:
 						return meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
+							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown;
 					default:
 						Console.WriteLine("Fail to know what to check !");
 						return false;

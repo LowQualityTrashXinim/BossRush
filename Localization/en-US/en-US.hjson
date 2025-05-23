@@ -986,13 +986,12 @@ Mods: {
 				Tooltip:
 					'''
 					"A small ancient power left from god, said to be cursed"
-					Increases damage reduction by 15%
+					Increases damage reduction by 10%
 					Most projectiles can bounce off tile
 					Bouncing off a tile increase damage by 20%
-					Bouncing more than 10 times won't no longer increase damage
 					Bouncing off a tile will make the projectile disappear after 3s
 					'''
-				DisplayName: Bouncy Relic
+				DisplayName: Chalice of Royal Gel
 			}
 
 			TowerDestruction: {
@@ -1621,13 +1620,12 @@ Mods: {
 			}
 
 			ArcaneMaster: {
-				DisplayName: Arcane Master
+				DisplayName: Orb of arcane mastery
 				Tooltip:
 					'''
-					"The zenith of sage ideology"
-					Multiply magic damage by 1.5 and reduce mana cost by 50%
-					Inherit the following effect : mana flower, mana magnet, star cloak
-					Using a magic weapon will increases mana cost by 10% but increases weapon magic damage by 5%
+					"The zenith of sage ideology, well what used to be"
+					Multiply magic damage by 1.1x and reduce mana cost by 15%
+					Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
 					This have a capped at 60 and have 1s of decay
 					'''
 			}
@@ -2611,6 +2609,11 @@ Mods: {
 
 			AchievementResetter: {
 				DisplayName: Achievement Resetter
+				Tooltip: ""
+			}
+
+			ShatterSky: {
+				DisplayName: Shatter Sky
 				Tooltip: ""
 			}
 		}

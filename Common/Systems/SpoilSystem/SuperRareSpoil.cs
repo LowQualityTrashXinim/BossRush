@@ -85,7 +85,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
-			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, Main.rand.Next(1,5), 0);
+			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, Main.rand.Next(1, 5), 0);
 		}
 	}
 }

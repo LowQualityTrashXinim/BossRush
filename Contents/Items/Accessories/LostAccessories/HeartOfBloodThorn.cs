@@ -35,8 +35,8 @@ class BloodBurstPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ModContent.ItemType<HeartOfBloodThorn>()) {
-			Player.Heal(Main.rand.Next(3,7));
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ModContent.ItemType<HeartOfBloodThorn>() && Main.rand.NextBool(3)) {
+			Player.Heal(Main.rand.Next(3, 7));
 		}
 	}
 	public void BloodBurstAttack() {
@@ -44,7 +44,7 @@ class BloodBurstPlayer : ModPlayer {
 		Vector2 vecR = Vector2.One.Vector2RotateByRandom(90);
 		for (int i = 0; i < 6; i++) {
 			Vector2 vec = BossRushUtils.Vector2DistributeEvenly(vecR, 6, 360, i);
-			Projectile.NewProjectile(Player.GetSource_ItemUse(ContentSamples.ItemsByType[ModContent.ItemType<HeartOfBloodThorn>()].Clone()), Player.Center, vec, ProjectileID.SharpTears, damage, 3f, Player.whoAmI,0,Main.rand.NextFloat(.9f,1.1f));
+			Projectile.NewProjectile(Player.GetSource_ItemUse(ContentSamples.ItemsByType[ModContent.ItemType<HeartOfBloodThorn>()].Clone()), Player.Center, vec, ProjectileID.SharpTears, damage, 3f, Player.whoAmI, 0, Main.rand.NextFloat(.9f, 1.1f));
 		}
 	}
 }

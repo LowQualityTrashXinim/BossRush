@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 			Item.value = 1000000;
 		}
 		public override void UpdateEquip(Player player) {
-			player.endurance += .15f;
+			player.endurance += .1f;
 			player.GetModPlayer<PlayerRelic>().Bouncy = true;
 		}
 	}
@@ -32,7 +32,7 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 				if (projectile.velocity.X != oldVelocity.X) projectile.velocity.X = -oldVelocity.X;
 				if (projectile.velocity.Y != oldVelocity.Y) projectile.velocity.Y = -oldVelocity.Y;
 				if (projectile.timeLeft > 180) projectile.timeLeft = 180;
-				if (++counter > 10) return false;
+				if (++counter > 1) return false;
 				projectile.damage = (int)(projectile.damage * 1.2f);
 				return false;
 			}

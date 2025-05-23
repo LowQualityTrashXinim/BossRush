@@ -38,7 +38,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 						Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f, 200f);
 						Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
 						int typeChoose = l == 0 ? ProjectileID.StarCannonStar : ProjectileID.SkyFracture;
-						Projectile.NewProjectile(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
+						Projectile proj = Projectile.NewProjectileDirect(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
+						proj.tileCollide = false;
+						proj.timeLeft = 210;
 						if (!SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 							break;
 						}
