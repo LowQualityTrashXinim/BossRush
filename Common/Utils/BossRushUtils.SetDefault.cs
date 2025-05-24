@@ -210,19 +210,19 @@ namespace BossRush {
 							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
 							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
 							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown
-							|| meleeItem.SwingType == BossRushUseStyle.Spin;
+							|| meleeItem.SwingType == BossRushUseStyle.Spin
+							|| meleeItem.SwingType == BossRushUseStyle.Thrust;
 					case MeleeStyle.CheckOnlyModded:
 						return meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
 							|| meleeItem.SwingType == BossRushUseStyle.Swipe
 							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
 							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
 							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown
-							|| meleeItem.SwingType == BossRushUseStyle.Spin;
+							|| meleeItem.SwingType == BossRushUseStyle.Spin
+							|| meleeItem.SwingType == BossRushUseStyle.Thrust;
 					case MeleeStyle.CheckOnlyModdedWithoutDefault:
 						return meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Swipe2
-							|| meleeItem.SwingType == BossRushUseStyle.SwipeUp
-							|| meleeItem.SwingType == BossRushUseStyle.SwipeDown;
+							|| meleeItem.SwingType == BossRushUseStyle.Swipe2;
 					default:
 						Console.WriteLine("Fail to know what to check !");
 						return false;

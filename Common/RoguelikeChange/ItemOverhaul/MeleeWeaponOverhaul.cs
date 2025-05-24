@@ -19,6 +19,7 @@ using Steamworks;
 using BossRush.Texture;
 using BossRush.Common.Global;
 using System.Linq;
+using BossRush.Contents.Perks.WeaponUpgrade.Content;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -457,7 +458,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				BossRushUtilsPlayer utilsplayer = player.GetModPlayer<BossRushUtilsPlayer>();
 				if (SwingType == BossRushUseStyle.Spin) {
 					for (int i = 0; i <= laserline; i++) {
-						Vector2 point = player.Center + Vector2.One.Vector2DistributeEvenly(laserline, 360, i) * itemsize;
+						Vector2 point = player.Center + Vector2.One.Vector2DistributeEvenly(laserline, 360, i) * itemsize * .75f;
 						if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
 							return true;
 						}
@@ -548,21 +549,32 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case BossRushUseStyle.Spin:
 					CircleSwingAttack(player, CircleSwingAmount);
 					break;
+				case BossRushUseStyle.Thrust:
+					Thrust(player, modPlayer, OffsetThrust, DistanceThrust, SwingStrength);
+					break;
 				default:
 					break;
 			}
 		}
-		private static void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
-			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			Poke2(player, modPlayer, percentDone);
+		public float DistanceThrust = 30;
+		public float OffsetThrust = 0;
+		public bool HideSwingVisual = false;
+		private static void Thrust(Player player, MeleeOverhaulPlayer modPlayer, float offset = 0, float distance = 30, float swingStr = 11) {
+			float percentDone = 1 - player.itemAnimation / (float)player.itemAnimationMax;
+			if (player.itemAnimation <= player.itemAnimationMax / 2) {
+				percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+			}
+			percentDone = BossRushUtils.InOutExpo(percentDone, swingStr);
+			Poke2(player, modPlayer, percentDone, offset, distance);
 		}
-		private static void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone) {
+		private static void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone, float offset, float distance) {
 			float rotation = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation();
-			Vector2 poke = Vector2.SmoothStep(modPlayer.PlayerToMouseDirection * 30f, modPlayer.PlayerToMouseDirection, percentDone).RotatedBy(rotation);
-			player.itemRotation = modPlayer.PlayerToMouseDirection.ToRotation();
+			Vector2 tomouse = modPlayer.PlayerToMouseDirection;
+			Vector2 poke = Vector2.Lerp(tomouse.PositionOFFSET(tomouse, -offset), tomouse.PositionOFFSET(tomouse, distance), percentDone).RotatedBy(rotation);
+			player.itemRotation = tomouse.ToRotation();
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
-			player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
+			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, rotation - MathHelper.PiOver2 * player.direction);
+			player.itemLocation = player.Center + poke;
 		}
 		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 15f) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
@@ -574,11 +586,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			Swipe(start, end, percentDone, player, direct);
 		}
 		private static void CircleSwingAttack(Player player, float spinAmount = 1) {
-			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			float end = (MathHelper.TwoPi * spinAmount) * -player.direction;
-			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().ItemRotationBeforeSwitch;
-			float addition = baseAngle;
-			Swipe(addition, end + addition, BossRushUtils.InOutExpo(percentDone), player, 1);
+			float percentDone = 1 - player.itemAnimation / (float)player.itemAnimationMax;
+			float end = (MathHelper.TwoPi * spinAmount) * player.direction;
+			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation() + MathHelper.Pi;
+			Swipe(baseAngle, end + baseAngle, BossRushUtils.InOutExpo(percentDone), player, 1);
 		}
 		private static void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			bool directIsnegative = direct == -1;
@@ -611,7 +622,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			default(GenericTrail).Draw(trailShaderSettings,
 			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
 			(progress) => { return Color.White; });
-			BossRushUtils.DrawPrettyStarSparkle(1f, SpriteEffects.None, modplayer.swordTipPositions.ElementAt(modplayer.swordTipPositions.Length / 2) - Main.screenPosition, SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type], Color.White, 0f, 0.1f, 0f, 1f, 0f, 0, Vector2.One * 5, Vector2.One * 5);
 		}
 
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {
@@ -664,7 +674,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						}
 					}
 				}
-				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type)) {
+				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual) {
 					DrawSwordTrail(modplayer);
 				}
 			}
@@ -760,8 +770,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 							ComboHandleSystem();
 						}
 					}
-					ItemRotationBeforeSwitch = Player.itemRotation;
 				}
+				ItemRotationBeforeSwitch = Player.itemRotation;
 			}
 			//if (UniversalSystem.Check_RLOH()) {
 			//	if (item.IsAWeapon()) {
@@ -806,11 +816,18 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			if (Player.ItemAnimationActive) {
+				MeleeWeaponOverhaul overhaul = item.GetGlobalItem<MeleeWeaponOverhaul>();
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
 				float extraAdd = MathHelper.ToRadians(2) * Player.direction;
+				float customAddByXinim = startSwordSwingAngle;
+				if (overhaul.SwingType == BossRushUseStyle.Spin) {
+					if (Player.direction == -1) {
+						customAddByXinim += MathHelper.TwoPi;
+					}
+				}
+				float progressOne = MathHelper.Lerp(Player.compositeFrontArm.rotation, customAddByXinim - MathHelper.PiOver2, Player.itemAnimation / (float)Player.itemAnimationMax);
 				for (float i = 0; i < 30f; i++) {
 					//Slight clean up for your code
-					float progressOne = MathHelper.SmoothStep(Player.compositeFrontArm.rotation, startSwordSwingAngle - MathHelper.PiOver2, Player.itemAnimation / (float)Player.itemAnimationMax);
 					Vector2 dir = (MathHelper.Lerp(progressOne, Player.compositeFrontArm.rotation + extraAdd, i / 30f) + MathHelper.PiOver2).ToRotationVector2();
 					Vector2 insertPos = (swordLength) * (dir) + Player.Center;
 					BossRushUtils.Push(ref swordTipPositions, insertPos);
