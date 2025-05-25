@@ -359,6 +359,8 @@ Mods: {
 			Legacy_EnchantedCopperSwordP.DisplayName: Legacy_ Enchanted Copper Sword P
 			ToxicBubble.DisplayName: Toxic Bubble
 			ShatteredSkyProjectileHidden.DisplayName: Shattered Sky Projectile Hidden
+			SuperShurikenProjectile.DisplayName: Super Shuriken Projectile
+			AntiGravityShurikenProjectile.DisplayName: Anti Gravity Shuriken Projectile
 		}
 
 		NPCs: {
@@ -534,7 +536,7 @@ Mods: {
 			}
 
 			Gunmerang: {
-				Tooltip: "[WIP] Do pizzerias always come back too?"
+				Tooltip: Do pizzerias always come back too?
 				DisplayName: Gunmerang
 			}
 
@@ -696,7 +698,7 @@ Mods: {
 			}
 
 			BloodStar: {
-				Tooltip: "[WIP] It's bloody small, that's what! Shorty..."
+				Tooltip: It's bloody small, that's what! Shorty...
 				DisplayName: Bloodstar
 			}
 
@@ -1965,8 +1967,8 @@ Mods: {
 			}
 
 			OldFlamingWoodSword: {
-				DisplayName: Old Flaming Wood Sword
-				Tooltip: ""
+				DisplayName: Small Flaming Wood Sword
+				Tooltip: The youngest brother of fire aspect wood sword family
 			}
 
 			SkillGetter: {
@@ -2311,7 +2313,7 @@ Mods: {
 
 			BlueMinishark: {
 				DisplayName: Blue Minishark
-				Tooltip: ""
+				Tooltip: New and improve with a new coat of paint !
 			}
 
 			RelentlessAbomination: {
@@ -2612,6 +2614,16 @@ Mods: {
 			ShatteredSky: {
 				DisplayName: Shattered Sky
 				Tooltip: Weather forecasting today is going to be thunderous
+			}
+
+			SuperShuriken: {
+				DisplayName: Super Shuriken
+				Tooltip: ""
+			}
+
+			AntiGravityShuriken: {
+				DisplayName: Anti Gravity Shuriken
+				Tooltip: ""
 			}
 		}
 

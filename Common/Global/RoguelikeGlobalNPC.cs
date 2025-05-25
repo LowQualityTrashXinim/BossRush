@@ -11,9 +11,9 @@ using BossRush.Common.General;
 using BossRush.Contents.Transfixion.Artifacts;
 using System.Collections.Generic;
 using Terraria.Audio;
-using BossRush.Contents.Items.Consumable;
 using BossRush.Contents.Perks.BlessingPerk;
 using BossRush.Common.Systems.IOhandle;
+using BossRush.Contents.Items.Consumable.Throwable;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {

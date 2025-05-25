@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.NoneSynergy.FrozenEnchantedSword {
 	public class FrozenEnchantedSword : ModItem {
+		public override void SetStaticDefaults() {
+		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 40, 29, 7f, 15, 15, ItemUseStyleID.Swing, true);
 
@@ -24,11 +26,5 @@ namespace BossRush.Contents.Items.NoneSynergy.FrozenEnchantedSword {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.IceBolt, damage, knockback, player.whoAmI);
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
-		//public override void AddRecipes() {
-		//	CreateRecipe()
-		//		.AddIngredient(ItemID.EnchantedSword)
-		//		.AddIngredient(ItemID.IceBlade)
-		//		.Register();
-		//}
 	}
 }

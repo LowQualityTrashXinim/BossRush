@@ -17,7 +17,7 @@ internal class UnlimitedThrowable_GlobalItem : GlobalItem {
 	//This shit is so fuckery that idk how to properly implement it so eh, screw it
 	public override void SetDefaults(Item entity) {
 		if (UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.UnlimitedThrowable)) {
-			if (TerrariaArrayID.SpecialPreBoss.Contains(entity.type) || TerrariaArrayID.Special.Contains(entity.type)) {
+			if (TerrariaArrayID.SpecialPreBoss.Contains(entity.type) || TerrariaArrayID.Special.Contains(entity.type) || entity.IsAWeapon() && entity.consumable) {
 				entity.consumable = false;
 				entity.damage += 10;
 				entity.maxStack = 1;

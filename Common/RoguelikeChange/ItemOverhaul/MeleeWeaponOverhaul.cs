@@ -45,6 +45,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public float SwingStrength = 15f;
 		public float SwingDegree = 140;
 		/// <summary>
+		/// the higher the value, the less i-frame the attack will give
+		/// </summary>
+		public float IframeDivision = 1;
+		/// <summary>
 		/// A possible replacement for <see cref="BossRushUseStyle.Swipe2"/>
 		/// </summary>
 		public bool UseSwipeTwo = false;
@@ -460,6 +464,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					for (int i = 0; i <= laserline; i++) {
 						Vector2 point = player.Center + Vector2.One.Vector2DistributeEvenly(laserline, 360, i) * itemsize * .75f;
 						if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
+							target.immune[player.whoAmI] = (int)Math.Round(player.itemAnimationMax / CircleSwingAmount);
 							return true;
 						}
 					}
@@ -517,6 +522,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f + SpeedAdd;
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			return useSpeedMultiplierOnCombo;
+		}
+		public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
+			if (SwingType == BossRushUseStyle.Spin) {
+				modifiers.HitDirectionOverride = BossRushUtils.DirectionFromEntityAToEntityB(player.Center.X, target.Center.X);
+			}
 		}
 		public override bool CanUseItem(Item item, Player player) {
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
@@ -648,7 +658,22 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override void Load() {
 			On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += On_PlayerDrawLayers_DrawPlayer_RenderAllLayers;
 			On_Player.ApplyAttackCooldown += On_Player_ApplyAttackCooldown;
+			On_Player.SetMeleeHitCooldown += On_Player_SetMeleeHitCooldown;
 		}
+
+		private void On_Player_SetMeleeHitCooldown(On_Player.orig_SetMeleeHitCooldown orig, Player self, int npcIndex, int timeInFrames) {
+			Item item = self.HeldItem;
+			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul overhaul)) {
+				if (overhaul.SwingType == BossRushUseStyle.Spin) {
+					timeInFrames = (int)Math.Round(timeInFrames / Math.Clamp(overhaul.IframeDivision - 1 + overhaul.CircleSwingAmount, 1, int.MaxValue));
+				}
+				else {
+					timeInFrames = (int)Math.Round(timeInFrames / Math.Clamp(overhaul.IframeDivision, 1, int.MaxValue));
+				}
+			}
+			orig(self, npcIndex, timeInFrames);
+		}
+
 		private static void DrawSwordTrail(MeleeOverhaulPlayer modplayer) {
 			TrailShaderSettings trailShaderSettings = new TrailShaderSettings();
 			trailShaderSettings.oldPos = modplayer.swordTipPositions;

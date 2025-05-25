@@ -5,7 +5,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Consumable;
+namespace BossRush.Contents.Items.Consumable.Throwable;
 
 class BottleOfUrine : ModItem {
 	public override void SetDefaults() {
@@ -22,7 +22,7 @@ public class Urine_Debuff : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Ichor);
+		var dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Ichor);
 		dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.1f, .2f);
 	}
 }
@@ -48,11 +48,11 @@ public class BottleOfUrineProjectile : ModProjectile {
 	public override void OnKill(int timeLeft) {
 		SoundEngine.PlaySound(SoundID.Shatter, Projectile.Center);
 		for (int i = 0; i < 20; i++) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Glass);
+			var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Glass);
 			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.5f, 1.25f);
 		}
 		for (int i = 0; i < 10; i++) {
-			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Ichor);
+			var dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Ichor);
 			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.5f, 1.25f);
 		}
 	}

@@ -24,6 +24,7 @@ using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
 using BossRush.Common.Systems.IOhandle;
+using BossRush.Common.ChallengeMode;
 
 namespace BossRush.Contents.Items.Weapon {
 	public struct SynergyBonus {
@@ -252,7 +253,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override void PostUpdate(Item item) {
-			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
 				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
 					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
 				}
