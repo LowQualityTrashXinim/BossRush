@@ -358,6 +358,7 @@ Mods: {
 			FlameProjectile.DisplayName: Flame Projectile
 			Legacy_EnchantedCopperSwordP.DisplayName: Legacy_ Enchanted Copper Sword P
 			ToxicBubble.DisplayName: Toxic Bubble
+			ShatteredSkyProjectileHidden.DisplayName: Shattered Sky Projectile Hidden
 		}
 
 		NPCs: {
@@ -2352,9 +2353,10 @@ Mods: {
 				DisplayName: Tundra Bow
 				Tooltip:
 					'''
-					Your shot are accompany with a snowbal dealing 35% of weapon damage
-					Every 5th shot shoot a arch of snowball
+					Every 5th shot will shoot out a arch of snowball
 					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
+					Have 0.1% chance to cause a snow storm which last for 3s
+					During snow storm, Tundra bow will always shoot arch of snowball
 					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
 					'''
 				ExtraInfo:
@@ -2536,11 +2538,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			BrokenForecast: {
-				DisplayName: Broken Forecast
-				Tooltip: ""
-			}
-
 			DrainingVeil: {
 				DisplayName: Draining Veil
 				Tooltip: ""
@@ -2612,9 +2609,9 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ShatterSky: {
-				DisplayName: Shatter Sky
-				Tooltip: ""
+			ShatteredSky: {
+				DisplayName: Shattered Sky
+				Tooltip: Weather forecasting today is going to be thunderous
 			}
 		}
 

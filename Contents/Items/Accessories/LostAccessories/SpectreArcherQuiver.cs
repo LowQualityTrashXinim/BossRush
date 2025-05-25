@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Weapon.PureSynergyWeapon.Resolve;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class SpectreQuiver : ModItem {

@@ -518,6 +518,45 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			return useSpeedMultiplierOnCombo;
 		}
+		public override bool CanUseItem(Item item, Player player) {
+			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
+				return base.CanUseItem(item, player);
+			}
+			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
+			switch (SwingType) {
+				case BossRushUseStyle.Swipe:
+				case BossRushUseStyle.Swipe2:
+					switch (modPlayer.ComboNumber) {
+						case 0:
+							SwipeAttack(player, 1, SwingDegree, SwingStrength);
+							break;
+						case 1:
+							SwipeAttack(player, -1, SwingDegree, SwingStrength);
+							break;
+						case 2:
+							CircleSwingAttack(player);
+							break;
+					}
+					break;
+				case BossRushUseStyle.GenericSwingDownImprove:
+				case BossRushUseStyle.SwipeDown:
+					SwipeAttack(player, 1, SwingDegree, SwingStrength);
+					break;
+				case BossRushUseStyle.SwipeUp:
+					SwipeAttack(player, -1, SwingDegree, SwingStrength);
+					break;
+				case BossRushUseStyle.Spin:
+					CircleSwingAttack(player, CircleSwingAmount);
+					break;
+				case BossRushUseStyle.Thrust:
+					Thrust(player, modPlayer, OffsetThrust, DistanceThrust, SwingStrength);
+					break;
+				default:
+					break;
+			}
+			return base.CanUseItem(item, player);
+		}
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
 				return;
@@ -573,7 +612,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			Vector2 poke = Vector2.Lerp(tomouse.PositionOFFSET(tomouse, -offset), tomouse.PositionOFFSET(tomouse, distance), percentDone).RotatedBy(rotation);
 			player.itemRotation = tomouse.ToRotation();
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, rotation - MathHelper.PiOver2 * player.direction);
+			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, tomouse.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke;
 		}
 		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 15f) {
@@ -720,7 +759,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int CountDownToResetCombo = 0;
 		public float CustomItemRotation = 0;
 		public StatModifier DelayReuse = new();
-		public float ItemRotationBeforeSwitch = 0;
 		// sword trail fields
 		public Vector2[] swordTipPositions = new Vector2[30];
 		public float[] swordRotations = new float[30];
@@ -754,7 +792,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 
 		public override bool CanUseItem(Item item) {
 			if (!Player.ItemAnimationActive && item.type == Player.HeldItem.type) {
-				CustomItemRotation = 0;
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 				swordLength = item.Size.Length() * 0.5f * Player.GetAdjustedItemScale(item);
 				float baseAngle = PlayerToMouseDirection.ToRotation();
@@ -771,7 +808,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						}
 					}
 				}
-				ItemRotationBeforeSwitch = Player.itemRotation;
 			}
 			//if (UniversalSystem.Check_RLOH()) {
 			//	if (item.IsAWeapon()) {
@@ -838,6 +874,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (Player.ItemAnimationEndingOrEnded) {
 				Array.Fill(swordTipPositions, Vector2.Zero);
 				Array.Fill(swordRotations, 0);
+				startSwordSwingAngle = 0;
 			}
 		}
 	}

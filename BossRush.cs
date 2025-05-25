@@ -26,7 +26,7 @@ namespace BossRush {
 		}
 	}
 	public class BossRushModSystem : ModSystem {
-		public static bool[] IsFireBuff;
+		public static List<int> FireDeBuff;
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
 		public static bool[] AdvancedRPGItem;
@@ -105,6 +105,7 @@ namespace BossRush {
 			LootboxPotion = new();
 			VanillaAndLostAcc = new();
 			MinionPetMountBuff = new();
+			FireDeBuff = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -113,7 +114,7 @@ namespace BossRush {
 			TrinketAccessories = null;
 			ListLootboxType = null;
 			WeaponRarityDB = null;
-			IsFireBuff = null;
+			FireDeBuff = null;
 			IsPoisonBuff = null;
 			HeadArmorRarityDB = null;
 			BodyArmorRarityDB = null;
@@ -125,7 +126,7 @@ namespace BossRush {
 			MinionPetMountBuff = null;
 		}
 		public override void PostSetupContent() {
-			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
+			FireDeBuff.AddRange([BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno]);
 			IsPoisonBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.Poisoned, BuffID.Venom);
 			CanBeAffectByLastingVile = BuffID.Sets.Factory.CreateBoolSet(true, ModContent.BuffType<LastingVileBuff>());
 			AdvancedRPGItem = ItemID.Sets.Factory.CreateBoolSet();

@@ -252,8 +252,8 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override void PostUpdate(Item item) {
-			if(UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-				if(item.type != ItemID.Heart && item.type != ItemID.Star) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
 					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
 				}
 			}
