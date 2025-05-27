@@ -97,9 +97,6 @@ public class SakuraKatana_ModPlayer : ModPlayer {
 		SakuraArt = Math.Clamp(SakuraArt + 1, 0, 5);
 	}
 	public override void ResetEffects() {
-		if (!Player.IsHeldingModItem<SakuraKatana>()) {
-			return;
-		}
 		DelayHit = BossRushUtils.CountDown(DelayHit);
 		if (CherryBlossomAura_Duration > 0) {
 			CherryBlossomAura_Position += (Player.Center - CherryBlossomAura_Position).SafeNormalize(Vector2.Zero) * (Player.Center - CherryBlossomAura_Position).Length() / 64f;

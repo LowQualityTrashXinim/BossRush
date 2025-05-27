@@ -12,12 +12,13 @@ using Terraria.ModLoader;
 using static tModPorter.ProgressUpdate;
 using Humanizer;
 using BossRush.Common.Graphics.Structs.TrailStructs;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 public class WinterFlame : SynergyModItem {
 
 	public override void SetDefaults() {
-		
+
 		Item.CloneDefaults(ItemID.Flamethrower);
 		Item.useAnimation = 60;
 		Item.useTime = 10;
@@ -33,10 +34,10 @@ public class WinterFlame : SynergyModItem {
 	public override bool AltFunctionUse(Player player) => true;
 
 	public override Vector2? HoldoutOffset() {
-		return new Vector2(-5,0);
+		return new Vector2(-5, 0);
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-
+		SoundEngine.PlaySound(Item.UseSound, position);
 		if (player.altFunctionUse == 2) {
 			type = ModContent.ProjectileType<WinterFlamesProjV2>();
 			velocity *= 1.1f;
@@ -47,7 +48,7 @@ public class WinterFlame : SynergyModItem {
 		}
 		position += velocity.SafeNormalize(Vector2.UnitY) * 40;
 
-		Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(Item,Item.ammo), position, velocity, type, damage, knockback, player.whoAmI, 1);
+		Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(Item, Item.ammo), position, velocity, type, damage, knockback, player.whoAmI, 1);
 
 	}
 
@@ -60,8 +61,7 @@ public class WinterFlame : SynergyModItem {
 
 }
 
-public class WinterFlameProjectile : SynergyModProjectile 
-{
+public class WinterFlameProjectile : SynergyModProjectile {
 
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.Flames);
 	bool isFrost;
@@ -72,10 +72,10 @@ public class WinterFlameProjectile : SynergyModProjectile
 		get => (int)Projectile.ai[1];
 		set => Projectile.ai[1] = value;
 	}
-	Point flameTexutreSize = new Point(98,686);
+	Point flameTexutreSize = new Point(98, 686);
 
 
-	
+
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 30;
 		ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -109,7 +109,7 @@ public class WinterFlameProjectile : SynergyModProjectile
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 
 		if (isFrost)
-			npc.AddBuff(BuffID.OnFire3,60);
+			npc.AddBuff(BuffID.OnFire3, 60);
 		else
 			npc.AddBuff(BuffID.Frostburn2, 60);
 
@@ -120,16 +120,15 @@ public class WinterFlameProjectile : SynergyModProjectile
 	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 
 		Dust dust;
-		
+
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
-			for(int j = 0; j < 5; j++)
+			for (int j = 0; j < 5; j++)
 				if (isFrost) {
 					dust = Dust.NewDustDirect(Projectile.oldPos[i], 16, 16, DustID.InfernoFork, startingVelocity.X, startingVelocity.Y);
 					dust.noGravity = true;
 
 				}
-				else 
-				{
+				else {
 
 					dust = Dust.NewDustDirect(Projectile.oldPos[i], 16, 16, DustID.FrostHydra, startingVelocity.X, startingVelocity.Y);
 					dust.noGravity = true;
@@ -147,10 +146,10 @@ public class WinterFlameProjectile : SynergyModProjectile
 		//float scale = MathHelper.Clamp(MathHelper.Lerp(0f, 1f, coutner / maxCounter), 0f, 1f);
 		//Color flameColor = Color.Lerp(isFrost ? Color.OrangeRed : Color.DeepSkyBlue, Color.Lerp(isFrost ? Color.Orange : Color.CornflowerBlue, Color.Gray, (coutner - 60f) / maxCounter), coutner / maxCounter);
 
-	
+
 		//Main.EntitySpriteDraw(flameTexture.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 1 * 98, 98, 98), flameColor, Projectile.rotation, new Vector2(98) / 2f, scale, SpriteEffects.None);
 
-		
+
 
 		if (!isFrost)
 			default(FlameThrowerFrost).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size * 0.5f, coutner);
@@ -185,7 +184,7 @@ public class WinterFlameProjectile : SynergyModProjectile
 
 			}
 
-		if(flipped)
+		if (flipped)
 			Projectile.velocity = startingVelocity.RotatedBy(isFrost ? MathF.Sin((coutner + sinOffset) * 0.25f) / 2 * 1f : -MathF.Sin((coutner + sinOffset) * .25f) / 2 * 1f);
 		else
 			Projectile.velocity = startingVelocity.RotatedBy(isFrost ? -MathF.Sin((coutner + sinOffset) * 0.25f) / 2 * 1f : MathF.Sin((coutner + sinOffset) * .25f) / 2 * 1f);
@@ -196,8 +195,7 @@ public class WinterFlameProjectile : SynergyModProjectile
 
 }
 
-public class WinterFlamesProjV2 : SynergyModProjectile 
-{
+public class WinterFlamesProjV2 : SynergyModProjectile {
 
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.Flames);
 
@@ -234,7 +232,7 @@ public class WinterFlamesProjV2 : SynergyModProjectile
 
 	public override bool PreDraw(ref Color lightColor) {
 
-		default(FlameThrowerFire).Draw(Projectile.oldPos,Projectile.oldRot,Projectile.Size /2f,coutner, 120);
+		default(FlameThrowerFire).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size / 2f, coutner, 120);
 		default(FlameThrowerFrost).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size / 2f, coutner, 120);
 
 		return false;
@@ -245,7 +243,7 @@ public class WinterFlamesProjV2 : SynergyModProjectile
 	}
 
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		Projectile.NewProjectile(Projectile.GetSource_OnHit(npc),npc.Center,Vector2.Zero,ProjectileID.Flames,Projectile.damage / 3,0f,Projectile.owner);
+		Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, Vector2.Zero, ProjectileID.Flames, Projectile.damage / 3, 0f, Projectile.owner);
 		Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, Vector2.Zero, ProjectileID.Flames, Projectile.damage / 3, 0f, Projectile.owner, 1);
 
 	}
@@ -254,12 +252,10 @@ public class WinterFlamesProjV2 : SynergyModProjectile
 		return true;
 	}
 
-	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) 
-	{ 
+	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
-			for (int j = 0; j < 5; j++) 
-			{
-				var dust = Dust.NewDustDirect(Projectile.oldPos[i], 64 * j/5, 64 * j / 5, DustID.WhiteTorch, Projectile.velocity.X, Projectile.velocity.Y,0,Color.Pink);
+			for (int j = 0; j < 5; j++) {
+				var dust = Dust.NewDustDirect(Projectile.oldPos[i], 64 * j / 5, 64 * j / 5, DustID.WhiteTorch, Projectile.velocity.X, Projectile.velocity.Y, 0, Color.Pink);
 				dust.noGravity = true;
 
 			}

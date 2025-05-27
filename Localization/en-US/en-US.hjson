@@ -511,7 +511,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A British-American fusion cuisine!"
-					Right-Click improvises the gun into a knife which upon contact hypercharges your next shot
+					Alt-Click improvises the gun into a knife which upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -541,8 +541,12 @@ Mods: {
 			}
 
 			ForceOfEarth: {
-				Tooltip: The culmination of Mother Nature at your middle finger
 				DisplayName: Natural Disaster
+				Tooltip:
+					'''
+					The culmination of Mother Nature at your hand
+					Alt-attack to order the bow around you attack faster toward whatever your direction at
+					'''
 			}
 
 			DeathBySpark: {
@@ -693,7 +697,11 @@ Mods: {
 			}
 
 			BurningPassion: {
-				Tooltip: Nothing quite like a day in the life of Vlad the Impaler!
+				Tooltip:
+					'''
+					Nothing quite like a day in the life of Vlad the Impaler!
+					Alt-attack to thurst your passion toward your foes, you will receive no damage during thurst attack
+					'''
 				DisplayName: Burning Passion
 			}
 
@@ -740,7 +748,7 @@ Mods: {
 				Tooltip:
 					'''
 					"I'll cut to the chase - yeet that goddamn thing."
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 50 mana
 					'''
 				DisplayName: Amethyst Swotaff
 			}
@@ -749,7 +757,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Yeah, right! Just stick a blade atop a staff, what could possibly go wrong?"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 50 mana
 					'''
 				DisplayName: Topaz Swotaff
 			}
@@ -758,7 +766,7 @@ Mods: {
 				Tooltip:
 					'''
 					"... These sapphires are sentient."
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 75
 					'''
 				DisplayName: Sapphire Swotaff
 			}
@@ -767,7 +775,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Radiating a very green energy, suitable for all crystal girlies out there!"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 75 mana
 					'''
 				DisplayName: Emerald Swotaff
 			}
@@ -776,7 +784,7 @@ Mods: {
 				Tooltip:
 					'''
 					"So much raw, concentrated power... and for what?"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 100 mana
 					'''
 				DisplayName: Ruby Swotaff
 			}
@@ -785,7 +793,7 @@ Mods: {
 				Tooltip:
 					'''
 					"The pinnacle of purity, and the magnum opus of inflation!"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 100 mana
 					'''
 				DisplayName: Diamond Swotaff
 			}
@@ -1326,7 +1334,11 @@ Mods: {
 
 			AmberBoneSpear: {
 				DisplayName: Amber Bone Spear
-				Tooltip: ""
+				Tooltip:
+					'''
+					A ancient magic spear
+					Alt-attack to throw the magic spear toward your foes
+					'''
 			}
 
 			BuilderLootBox: {
@@ -2002,7 +2014,7 @@ Mods: {
 					'''
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
-					Alt click to throw out a anti gravity plasma grenade
+					Alt-attack to throw out a anti gravity plasma grenade
 					Shooting the plasma grenade will make it explode
 					Letting it collide or explode naturally will make it deal 1/3 of original damage
 					'''
@@ -2044,7 +2056,11 @@ Mods: {
 
 			AngelicSmg: {
 				DisplayName: Angelic Smg
-				Tooltip: Bring down heaven wrath with this smg
+				Tooltip:
+					'''
+					Bring down heaven wrath with this smg
+					Alt-attack to throw the gun toward heretic dealing 3x damage
+					'''
 			}
 
 			GlitchWorldEssence: {
@@ -2094,7 +2110,11 @@ Mods: {
 
 			WinterFlame: {
 				DisplayName: Winter Flame
-				Tooltip: Praise the red winter !
+				Tooltip:
+					'''
+					Praise the red winter !
+					Alt-attack to light your foes in burst of flame
+					'''
 			}
 
 			StarWhip: {
@@ -2168,12 +2188,12 @@ Mods: {
 
 			TheTwoEvil: {
 				DisplayName: The Two Evil
-				Tooltip: ""
+				Tooltip: Disgusting
 			}
 
 			BurningSky: {
 				DisplayName: Burning Sky
-				Tooltip: ""
+				Tooltip: Make them see and fear
 			}
 
 			SakuraKatana: {
@@ -2307,6 +2327,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Comeback is always good"
+					Every 6th shot you shot out a burst of 6 bullets
 					+10 critical strike chance and 25% attack speed when below 50% hp
 					'''
 			}
