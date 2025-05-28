@@ -7,6 +7,7 @@ using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -465,7 +465,6 @@ public class MoveableUIImage : UIImage {
 	public Vector2 position = Vector2.Zero;
 
 }
-
 public class WeaponEnchantmentUIslot : MoveableUIImage {
 	public int WhoAmI = -1;
 	public Texture2D textureDraw;

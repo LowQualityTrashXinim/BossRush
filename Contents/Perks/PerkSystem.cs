@@ -145,6 +145,8 @@ namespace BossRush.Contents.Perks {
 		public bool perk_ImprovedPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
+		public bool perk_DismantleWeapon = false;
+		public bool perk_EssenceExtraction = false;
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
 			PerkAmount = 4;
@@ -173,6 +175,8 @@ namespace BossRush.Contents.Perks {
 			perk_AlchemistPotion = false;
 			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
+			perk_DismantleWeapon = false;
+			perk_EssenceExtraction = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			foreach (int perk in perks.Keys) {

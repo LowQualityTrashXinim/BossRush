@@ -21,7 +21,6 @@ internal class SoulWoodSword : ModProjectile {
 	public float State { get => Projectile.ai[2]; set => Projectile.ai[2] = value; }
 	public int ItemIDtextureValue = ItemID.WoodenSword;
 	Vector2 directionTo = Vector2.Zero;
-	Player player;
 	float outrotation = 0;
 	int directionLooking = 1;
 	Vector2 oldCenter = Vector2.Zero;

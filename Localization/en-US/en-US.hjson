@@ -2646,6 +2646,11 @@ Mods: {
 				DisplayName: Anti Gravity Shuriken
 				Tooltip: ""
 			}
+
+			TestCustomLootDropItem: {
+				DisplayName: Test Custom Loot Drop Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

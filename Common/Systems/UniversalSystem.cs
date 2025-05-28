@@ -541,7 +541,11 @@ public class UniversalModPlayer : ModPlayer {
 		UniqueWorldID = tag.Get<string>("UniqueWorldID");
 	}
 }
-class DefaultUI : UIState {
+/// <summary>
+/// This is a always active UI, this act as the most basic form of UI where it will always be active<br/>
+/// To not to be confused with actual default UI, anything that should be always active regardless of UI should goes here
+/// </summary>
+public class DefaultUI : UIState {
 	Roguelike_ProgressUIBar energyBar;
 	Roguelike_ProgressUIBar energyCoolDownBar;
 	Roguelike_ProgressUIBar energyCostBar;
@@ -559,6 +563,8 @@ class DefaultUI : UIState {
 	private UITextBox totalDMG;
 	private UITextBox totalHitTaken;
 	private UITextBox dmgTaken;
+
+	private Roguelike_UIImage WeaponExtraction;
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		endofdemo_Main.Remove();
 		EndOfDemoPanel.Remove();
@@ -587,6 +593,7 @@ class DefaultUI : UIState {
 		timer.HAlign = .5f;
 		timer.VAlign = .02f;
 		timer.ShowInputTicker = false;
+		timer.TextHAlign = .5f;
 		Append(timer);
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

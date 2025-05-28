@@ -827,3 +827,17 @@ GlassCannon: {
 		+ Capped your maximum health at 50
 		'''
 }
+
+WeaponDismantle: {
+	DisplayName: Weapon Dismantle [WIP]
+	Description: Enable ability to dismantle weapon via divine hammer
+}
+
+EssenceExtraction: {
+	DisplayName: Essence Extraction [WIP]
+	Description:
+		'''
+		Enable ability to extract essence from weapon, destroying the weapon
+		Consume the essence of a weapon to temporary gain a power boost
+		'''
+}

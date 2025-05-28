@@ -37,13 +37,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public const int Thrust = 995;
 		public const int SwipeDown = 994;
 		public const int SwipeUp = 993;
-		public const int GenericSwingDownImprove = 990;
+		public const int RapidThurst = 992;
+		/// <summary>
+		/// This is the same as <see cref="SwipeDown"/> but fixed swing degree
+		/// </summary>
+		public const int GenericSwingDownImprove = 100;
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
 		public int SwingType = 0;
 		public float offset = 0;
 		public float SwingStrength = 15f;
 		public float SwingDegree = 140;
+		/// <summary>
+		/// use this if your swing type is <see cref="BossRushUseStyle.RapidThurst"/>
+		/// </summary>
+		public int ThrustAmount = 3;
 		/// <summary>
 		/// the higher the value, the less i-frame the attack will give
 		/// </summary>
@@ -62,80 +70,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BorealWoodSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalmWoodSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ShadewoodSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EbonwoodSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RichMahoganySword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WoodenSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CactusSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeeKeeper] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CopperBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TinBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IronBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LeadBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SilverBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TungstenBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GoldBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PlatinumBroadsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhaseblade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhasesaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurpleClubberfish] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.StylistKilLaKillScissorsIWish] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BladeofGrass] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FieryGreatsword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LightsBane] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.MythrilSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AdamantiteSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrichalcumSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TitaniumSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Excalibur] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TheHorsemansBlade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Bladetongue] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireDemonSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeamSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EnchantedSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Starfury] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.InfluxWaver] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteClaymore] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteSaber] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChristmasTreeSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CandyCaneSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Muramasa] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DyeTradersScimitar] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BloodButcherer] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Katana] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FalconBlade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BoneSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CobaltSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalladiumSword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IceBlade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BreakerBlade] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Frostbrand] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Cutlass] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Seedler] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireBetsySword] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ZombieArm] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BatBat] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TentacleSpike] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SlapHand] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Keybrand] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AntlionClaw] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.HamBat] = .45f;
-			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PsychoKnife] = .45f;
 		}
 		public override void SetDefaults(Item item) {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -144,193 +78,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.noMelee) {
 				return;
 			}
-			//switch (item.type) {
-			//	case ItemID.WoodenSword:
-			//	case ItemID.BorealWoodSword:
-			//	case ItemID.RichMahoganySword:
-			//	case ItemID.PalmWoodSword:
-			//	case ItemID.EbonwoodSword:
-			//	case ItemID.ShadewoodSword:
-			//	case ItemID.PearlwoodSword:
-			//	case ItemID.AshWoodSword:
-			//		item.width = item.height = 32;
-			//		break;
-			//	case ItemID.BluePhaseblade:
-			//	case ItemID.RedPhaseblade:
-			//	case ItemID.GreenPhaseblade:
-			//	case ItemID.PurplePhaseblade:
-			//	case ItemID.OrangePhaseblade:
-			//	case ItemID.YellowPhaseblade:
-			//	case ItemID.WhitePhaseblade:
-			//		item.width = item.height = 48;
-			//		break;
-			//	case ItemID.BluePhasesaber:
-			//	case ItemID.RedPhasesaber:
-			//	case ItemID.GreenPhasesaber:
-			//	case ItemID.PurplePhasesaber:
-			//	case ItemID.OrangePhasesaber:
-			//	case ItemID.YellowPhasesaber:
-			//	case ItemID.WhitePhasesaber:
-			//		item.width = item.height = 56;
-			//		break;
-			//	case ItemID.CopperBroadsword:
-			//	case ItemID.TinBroadsword:
-			//	case ItemID.LeadBroadsword:
-			//	case ItemID.IronBroadsword:
-			//	case ItemID.SilverBroadsword:
-			//	case ItemID.TungstenBroadsword:
-			//	case ItemID.GoldBroadsword:
-			//	case ItemID.PlatinumBroadsword:
-			//		item.width = item.height = 46;
-			//		break;
-			//	case ItemID.CobaltSword:
-			//		item.width = 56;
-			//		item.height = 58;
-			//		break;
-			//	case ItemID.PalladiumSword:
-			//		item.width = 50;
-			//		item.height = 60;
-			//		break;
-			//	case ItemID.MythrilSword:
-			//		item.width = item.height = 58;
-			//		break;
-			//	case ItemID.OrichalcumSword:
-			//		item.width = item.height = 54;
-			//		break;
-			//	case ItemID.AdamantiteSword:
-			//	case ItemID.TitaniumSword:
-			//		item.width = item.height = 60;
-			//		break;
-			//	case ItemID.Muramasa:
-			//		item.width = 50;
-			//		item.height = 64;
-			//		offset += 12;
-			//		break;
-			//	case ItemID.LightsBane:
-			//		item.width = item.height = 50;
-			//		break;
-			//	case ItemID.BloodButcherer:
-			//		item.width = 50;
-			//		item.height = 58;
-			//		break;
-			//	case ItemID.BladeofGrass:
-			//		item.width = item.height = 70;
-			//		break;
-			//	case ItemID.FieryGreatsword:
-			//		item.width = 84;
-			//		item.height = 84;
-			//		break;
-			//	case ItemID.TheHorsemansBlade:
-			//		item.width = item.height = 54;
-			//		break;
-			//	case ItemID.Frostbrand:
-			//		item.width = 50;
-			//		item.height = 58;
-			//		break;
-			//	case ItemID.CactusSword:
-			//		item.width = item.height = 48;
-			//		break;
-			//	case ItemID.BeamSword:
-			//		item.width = item.height = 52;
-			//		break;
-			//	case ItemID.Meowmere:
-			//		item.width = 50;
-			//		item.height = 58;
-			//		break;
-			//	case ItemID.Starfury:
-			//		item.width = item.height = 42;
-			//		break;
-			//	case ItemID.StarWrath:
-			//		item.width = 46;
-			//		item.height = 54;
-			//		break;
-			//	case ItemID.BatBat:
-			//		item.width = item.height = 52;
-			//		break;
-			//	case ItemID.TentacleSpike:
-			//		item.width = 44;
-			//		item.height = 40;
-			//		break;
-			//	case ItemID.InfluxWaver:
-			//		item.width = item.height = 50;
-			//		break;
-			//	case ItemID.Seedler:
-			//		item.width = 48;
-			//		item.height = 68;
-			//		break;
-			//	case ItemID.Keybrand:
-			//		item.width = 58;
-			//		item.height = 62;
-			//		break;
-			//	case ItemID.ChlorophyteSaber:
-			//		item.width += 10;
-			//		item.height += 10;
-			//		break;
-			//	case ItemID.BreakerBlade:
-			//		item.width = 80;
-			//		item.height = 92;
-			//		break;
-			//	case ItemID.BoneSword:
-			//		item.width = item.height = 50;
-			//		break;
-			//	case ItemID.ChlorophyteClaymore:
-			//		item.width = item.height = 68;
-			//		break;
-			//	case ItemID.Bladetongue:
-			//		item.width = item.height = 50;
-			//		break;
-			//	case ItemID.DyeTradersScimitar:
-			//		item.width = 40;
-			//		item.height = 48;
-			//		break;
-			//	case ItemID.BeeKeeper:
-			//		item.width = item.height = 44;
-			//		break;
-			//	case ItemID.EnchantedSword:
-			//		item.width = item.height = 34;
-			//		break;
-			//	case ItemID.ZombieArm:
-			//		item.width = 38;
-			//		item.height = 40;
-			//		break;
-			//	case ItemID.FalconBlade:
-			//		item.width = 36;
-			//		item.height = 40;
-			//		break;
-			//	case ItemID.Cutlass:
-			//		item.width = 40;
-			//		item.height = 48;
-			//		break;
-			//	case ItemID.CandyCaneSword:
-			//		item.width = 44;
-			//		item.height = 75;
-			//		break;
-			//	case ItemID.IceBlade:
-			//		item.width = 38;
-			//		item.height = 34;
-			//		break;
-			//	case ItemID.HamBat:
-			//		item.width = 44;
-			//		item.height = 40;
-			//		break;
-			//	case ItemID.DD2SquireBetsySword:
-			//		item.width = 66; item.height = 66;
-			//		break;
-			//	case ItemID.PurpleClubberfish:
-			//		item.width = item.height = 50;
-			//		break;
-			//	case ItemID.AntlionClaw:
-			//		item.width = item.height = 32;
-			//		break;
-			//	case ItemID.Katana:
-			//		item.width = 48;
-			//		item.height = 54;
-			//		break;
-			//	case ItemID.DD2SquireDemonSword:
-			//	case ItemID.ChristmasTreeSword:
-			//		item.width = item.height = 60;
-			//		break;
-			//}
 			switch (item.type) {
 				//Sword that have even end
 				//WoodSword

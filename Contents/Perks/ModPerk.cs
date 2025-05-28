@@ -21,6 +21,7 @@ using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Common.Global;
 using BossRush.Contents.Perks.BlessingPerk;
+using BossRush.Common.ChallengeMode;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -953,6 +954,26 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.ModPlayerStats().CappedHealthAmount = 50;
+		}
+	}
+	public class WeaponDismantle : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override bool SelectChoosing() {
+			return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
+		}
+	}
+	public class EssenceExtraction : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 999;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
 		}
 	}
 }

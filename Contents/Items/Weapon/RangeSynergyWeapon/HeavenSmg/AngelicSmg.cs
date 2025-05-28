@@ -278,7 +278,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Projectile.tileCollide = false;
 			isMiniProjectile = false;
 			projSpeed = 0f;
-			canDealDamage = false;
 		}
 		public override void OnSpawn(IEntitySource source) {
 			if (Projectile.ai[0] == 1)
@@ -286,7 +285,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		}
 		float maxProjSpeed = 15f;
 		float projSpeed = 0f;
-		bool canDealDamage = false;
 		public override bool? CanHitNPC(NPC target) => true;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
@@ -296,11 +294,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Projectile.Center.LookForHostileNPC(out NPC closestNPC, maxDetectRadius);
 			if (closestNPC == null || (Projectile.timeLeft > 570 && Projectile.ai[0] == 1)) {
 				accel = 1f;
-				canDealDamage = false;
 			}
 			else {
 				vel = closestNPC.Center - Projectile.Center;
-				canDealDamage = true;
 			}
 			vel.Normalize();
 			projSpeed += accel;
