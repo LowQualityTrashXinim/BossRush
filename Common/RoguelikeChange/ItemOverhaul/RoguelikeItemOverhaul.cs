@@ -478,13 +478,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			ItemThatSubsTo_MeleeOverhaul = null;
 		}
 		public static bool Optimized_CheckItem(Item item) {
-			if (BossRushUtils.CheckUseStyleMelee(item, BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				return true;
+			if (!UniversalSystem.Check_RLOH()) {
+				return false;
 			}
-			if (item.TryGetGlobalItem(out BattleAxeOverhaul axeItem)) {
-				switch (axeItem.UseStyleType) {
-					case BossRushUseStyle.DownChop:
-						return true;
+			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				if (meleeItem.SwingType != 0) {
+					return true;
 				}
 			}
 			return ItemThatSubsTo_MeleeOverhaul.Contains(item.type);

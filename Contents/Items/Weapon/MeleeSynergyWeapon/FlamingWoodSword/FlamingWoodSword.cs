@@ -20,7 +20,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword {
 			Item.shoot = ProjectileID.WandOfSparkingSpark;
 			Item.shootSpeed = 6;
 
-			Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.GenericSwingDownImprove;
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;
+			Item.GetGlobalItem<MeleeWeaponOverhaul>().UseSwipeTwo = true;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(BuffID.OnFire, 180);

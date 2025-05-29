@@ -31,7 +31,7 @@ namespace BossRush {
 			}
 			return NameSpace.Replace(".", "/") + "/" + altName;
 		}
-
+		public static float Scale_OuterTextureWithInnerTexture(Vector2 size1, Vector2 size2, float adjustment) => size1.Length() / size2.Length() * adjustment;
 		public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
 	}
 }

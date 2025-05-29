@@ -61,7 +61,7 @@ public class AugmentsWeapon : GlobalItem {
 	/// </summary>
 	/// <param name="player">The player</param>
 	/// <param name="item">The item</param>
-	/// <param name="limit">The limit amount of Augments can have on weapon</param>
+	/// <param name="limit">The limit amount of Augments can have on weapon by pure chance</param>
 	/// <param name="chance">the chance to add Augments</param>
 	/// <param name="decayable">disable the decay of custom chance</param>
 	public static void AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
@@ -95,12 +95,7 @@ public class AugmentsWeapon : GlobalItem {
 					augmentChance = AugmentsList[modAugments.Type];
 					AugmentsList.Remove(modAugments.Type);
 				}
-				if (limit <= -1) {
-					if (currentEmptySlot <= limit) {
-						break;
-					}
-				}
-				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + augmentChance && !passException) {
+				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + augmentChance && !passException || limit == 0) {
 					break;
 				}
 				if (weapon.AugmentsSlots[currentEmptySlot] == 0) {
@@ -110,6 +105,7 @@ public class AugmentsWeapon : GlobalItem {
 					passException = false;
 					weapon.AugmentsSlots[currentEmptySlot] = modAugments.Type;
 					modAugments = null;
+					limit--;
 				}
 				else {
 					currentEmptySlot++;
@@ -191,14 +187,14 @@ public abstract class ModAugments : ModType {
 }
 public class AugmentsPlayer : ModPlayer {
 	public List<Item> accItemUpdate = new();
-	public void SafeRequest_AddAugments(float chance, int limit, bool decayable) {
+	public void SafeRequest_AddAugments(float chance, int limit, bool? decayable) {
 		Request_ChanceAugments = chance;
 		Request_LimitAugments = limit;
 		Request_Decayable = decayable;
 	}
 	public float Request_ChanceAugments = 0;
-	public int Request_LimitAugments = 1;
-	public bool? Request_Decayable = false;
+	public int Request_LimitAugments = 0;
+	public bool? Request_Decayable = null;
 	/// <summary>
 	/// The amount of augmentation currently equipped
 	/// </summary>

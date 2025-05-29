@@ -288,35 +288,59 @@ namespace BossRush {
 	}
 	public class Roguelike_UIImage : UIImage {
 		public bool Hide = false;
+		public bool Highlight = false;
+		public Color OriginalColor = Color.White;
+		public Color HighlightColor = Color.White;
 		/// <summary>
 		/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
 		/// The drawing will be handle automatically
 		/// </summary>
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
-		public void SetPostTex(Asset<Texture2D> tex) {
+		bool _CustomWeirdDraw = false;
+		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false) {
 			postTex = tex;
+			_CustomWeirdDraw = CustomWeirdDraw;
 		}
 		public Roguelike_UIImage(Asset<Texture2D> texture) : base(texture) {
 			innerTex = texture.Value;
+			OriginalColor = Color;
 		}
-		public override void Update(GameTime gameTime) {
+		public override sealed void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
+			if (Highlight) {
+				Color = HighlightColor;
+			}
+			else {
+				Color = OriginalColor;
+			}
+			UpdateImage(gameTime);
 		}
+		public virtual void UpdateImage(GameTime gameTime) { }
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {
 				return;
 			}
+
 			base.Draw(spriteBatch);
 			DrawImage(spriteBatch);
 			if (postTex != null) {
-				Vector2 origin = postTex.Size() * .5f;
 				Vector2 origin2 = innerTex.Size() * .5f;
-				Vector2 drawpos = this.GetDimensions().Position() + postTex.Size() + origin2;
-				spriteBatch.Draw(postTex.Value, drawpos, null, new Color(255, 255, 255), 0, origin + origin2, 1f, SpriteEffects.None, 0);
+				Vector2 drawpos = this.GetInnerDimensions().Position();
+				Vector2 origin = postTex.Size() * .5f;
+				if (_CustomWeirdDraw) {
+					spriteBatch.End();
+					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+					spriteBatch.End();
+					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+				}
+				else {
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+				}
 			}
 		}
 	}
@@ -335,7 +359,7 @@ namespace BossRush {
 			innerTex = texture.Value;
 		}
 		public bool Hide = false;
-		public override void Update(GameTime gameTime) {
+		public override sealed void Update(GameTime gameTime) {
 			base.Update(gameTime);
 			this.IgnoresMouseInteraction = Hide;
 			this.Disable_MouseItemUsesWhenHoverOverAUI();
@@ -353,7 +377,7 @@ namespace BossRush {
 			if (postTex != null) {
 				Vector2 origin = postTex.Size() * .5f;
 				Vector2 origin2 = innerTex.Size() * .5f;
-				Vector2 drawpos = this.GetDimensions().Position() + origin2;
+				Vector2 drawpos = this.GetInnerDimensions().Position() + origin2;
 				spriteBatch.Draw(postTex.Value, drawpos, null, new Color(255, 255, 255), 0, origin, 1f, SpriteEffects.None, 0);
 			}
 		}

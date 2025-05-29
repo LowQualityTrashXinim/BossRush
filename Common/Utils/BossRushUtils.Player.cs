@@ -65,6 +65,7 @@ namespace BossRush {
 			player.head == ArmorIDs.Head.MeteorHelmet
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
+		public static bool IsThisArmorPiece(this Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
 		/// <summary>
 		/// Check whenever or not is this item a weapon or not
 		/// </summary>

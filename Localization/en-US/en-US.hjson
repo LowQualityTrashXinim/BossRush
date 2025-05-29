@@ -2072,9 +2072,9 @@ Mods: {
 				DisplayName: Divine Hammer
 				Tooltip:
 					'''
-					Enable ability to modify world's rule which enforce on weapon
-					enchant them with something new
-					Can also be used to increases weapon's stats
+					Enable ability to modify world's rule which enforce on weapon, accessory and armor
+					Make them into something more special
+					Can also be used to increases item's stats
 					'''
 				ExtraInfo:
 					'''

@@ -28,7 +28,6 @@ internal class RefinedUpgrade_GlobalItem : GlobalItem {
 			if (item.axe <= 0 || item.noMelee) {
 				return;
 			}
-			player.GetModPlayer<MeleeOverhaulPlayer>().DelayReuse -= .5f;
 		}
 	}
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) {

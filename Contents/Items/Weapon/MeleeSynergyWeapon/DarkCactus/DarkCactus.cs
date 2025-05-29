@@ -23,8 +23,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 
 			Item.UseSound = SoundID.Item1;
 
-			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-				meleeItem.SwingType = BossRushUseStyle.Swipe2;
+			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				meleeItem.SwingType = BossRushUseStyle.Swipe;
+				meleeItem.UseSwipeTwo = true;
+			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.BatScepter);

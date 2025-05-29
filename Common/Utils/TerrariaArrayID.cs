@@ -361,5 +361,8 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] FoodMaterrial = {
 			ItemID.Apple, ItemID.BloodOrange, ItemID.Apricot, ItemID.Banana, ItemID.BlackCurrant, ItemID.Cherry, ItemID.Elderberry, ItemID.Grapefruit, ItemID.Lemon, ItemID.Mango, ItemID.Peach, ItemID.Pineapple, ItemID.Plum, ItemID.Pomegranate, ItemID.Rambutan, ItemID.SpicyPepper, ItemID.Dragonfruit, ItemID.Starfruit, ItemID.Grapes
 		};
+		public readonly static int[] MossMaterial = {
+			ItemID.BlueMoss, ItemID.GreenMoss, ItemID.BrownMoss, ItemID.PurpleMoss, ItemID.RedMoss, ItemID.LavaMoss, ItemID.KryptonMoss, ItemID.ArgonMoss, ItemID.XenonMoss, ItemID.RainbowMoss, ItemID.VioletMoss
+		};
 	}
 }

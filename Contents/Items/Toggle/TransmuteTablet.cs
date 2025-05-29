@@ -407,23 +407,6 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			}
 			return verify;
 		}
-		if (item1.ModItem != null || item2.ModItem != null) {
-			BaseSoulBoundItem soul = null;
-			Item armor = null;
-			if (item1.ModItem is BaseSoulBoundItem soulbound) {
-				soul = soulbound;
-				armor = item2;
-			}
-			else if (item2.ModItem is BaseSoulBoundItem soulbound2) {
-				soul = soulbound2;
-				armor = item1;
-			}
-			if (armor != null && SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
-				SoulBoundGlobalItem.AddSoulBound(ref armor, soul.SoulBoundType);
-				soul.Item.TurnToAir();
-				return true;
-			}
-		}
 		float offsetchance = modplayer.Transmutation_SuccessChance;
 		if (modplayer.TransmutationPower > 0) {
 			modplayer.TransmutationPower--;

@@ -152,7 +152,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface userInterface;
 	internal UserInterface user2ndInterface;
 
-	public EnchantmentUIState Enchant_uiState;
+	public DivineHammerUIState DivineHammer_uiState;
 	public PerkUIState perkUIstate;
 	public SkillUI skillUIstate;
 	public DefaultUI defaultUI;
@@ -181,7 +181,7 @@ internal class UniversalSystem : ModSystem {
 		//UI stuff
 		if (!Main.dedServ) {
 			//Mod custom UI
-			Enchant_uiState = new();
+			DivineHammer_uiState = new();
 			perkUIstate = new();
 			skillUIstate = new();
 			defaultUI = new();
@@ -220,7 +220,7 @@ internal class UniversalSystem : ModSystem {
 		InfoUI.InfoShowToItem = null;
 		GivenBossSpawnItem = null;
 
-		Enchant_uiState = null;
+		DivineHammer_uiState = null;
 		perkUIstate = null;
 
 		skillUIstate = null;
@@ -344,7 +344,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public void ActivateEnchantmentUI() {
 		DeactivateUI();
-		user2ndInterface.SetState(Enchant_uiState);
+		user2ndInterface.SetState(DivineHammer_uiState);
 	}
 	public void ActivateTransmutationUI() {
 		DeactivateUI();
@@ -520,7 +520,7 @@ public class UniversalModPlayer : ModPlayer {
 			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");
 			Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
 			NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
-			uiSystemInstance.Enchant_uiState.weaponEnchantmentUIslot.DropItem(Player);
+			uiSystemInstance.DivineHammer_uiState.weaponEnchantmentUIslot.DropItem(Player);
 		}
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();

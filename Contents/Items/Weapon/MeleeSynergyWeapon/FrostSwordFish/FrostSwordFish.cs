@@ -18,8 +18,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish {
 			Item.scale += 0.25f;
 			Item.UseSound = SoundID.Item1;
 
-			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
-				meleeItem.SwingType = BossRushUseStyle.Swipe2;
+			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				meleeItem.SwingType = BossRushUseStyle.Swipe;
+				meleeItem.UseSwipeTwo = true;
+			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			base.ModifySynergyToolTips(ref tooltips, modplayer);

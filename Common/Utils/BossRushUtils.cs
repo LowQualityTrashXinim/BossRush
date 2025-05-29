@@ -59,7 +59,12 @@ namespace BossRush {
 
 			return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255));
 		}
-
+		public static Color ScaleRGB(this Color color, float scale) {
+			color.R = (byte)MathF.Round(color.R * scale);
+			color.B = (byte)MathF.Round(color.B * scale);
+			color.G = (byte)MathF.Round(color.G * scale);
+			return color;
+		}
 		public static float EaseInBounce(float x) {
 
 			const float n1 = 7.5625f;
