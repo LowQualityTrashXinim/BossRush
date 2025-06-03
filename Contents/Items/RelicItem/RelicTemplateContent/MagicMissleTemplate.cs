@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 public class MagicMissileTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		relicType = RelicType.Projectile;
 		DataStorer.AddContext("Relic_MagicMissile", new(
 			650,
 			Vector2.Zero,

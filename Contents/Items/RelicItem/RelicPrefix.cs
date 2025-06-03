@@ -29,7 +29,7 @@ public class RelicPrefixSystem : ModSystem {
 }
 public abstract class RelicPrefix : ModType {
 	public short Type;
-	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.BossRush.RelicPrefix.{Name}.Description");
+	public string Description => DisplayName + " : " + Language.GetTextValue($"Mods.BossRush.RelicPrefix.{Name}.Description");
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicPrefix.{Name}.DisplayName");
 	public string TextureString = "";
 	public static short GetRelicType<T>() where T : RelicPrefix {

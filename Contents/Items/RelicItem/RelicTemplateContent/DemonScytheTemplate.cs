@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 public class DemonScytheTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		relicType = RelicType.Projectile;
 		DataStorer.AddContext("Relic_DemonScythe", new(
 			600,
 			Vector2.Zero,
@@ -33,7 +34,7 @@ public class DemonScytheTemplate : RelicTemplate {
 				Color.MediumPurple.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -58,7 +59,7 @@ public class DemonScytheTemplate : RelicTemplate {
 				player.Center + Main.rand.NextVector2Circular(590, 590),
 				vel,
 				ProjectileID.DemonScythe,
-				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;

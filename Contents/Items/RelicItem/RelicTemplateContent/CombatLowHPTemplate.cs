@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
 	public class CombatLowHPTemplate : RelicTemplate {
+		public override void SetStaticDefaults() {
+			relicType = RelicType.Stat;
+		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			if (Main.rand.NextFloat() <= .25f) {
 				return Main.rand.Next([PlayerStats.CritChance, PlayerStats.AttackSpeed]);

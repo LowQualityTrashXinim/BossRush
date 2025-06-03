@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
 	public class MagicCostTemplate : RelicTemplate {
+		public override void SetStaticDefaults() {
+			relicType = RelicType.MultiStats;
+		}
 		public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.MagicDMG;
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 			float tierValue = .05f * (relic.RelicTier - 1);

@@ -8,6 +8,9 @@ using BossRush.Contents.Perks.BlessingPerk;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 public class GenericTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		var perkplayer = player.GetModPlayer<PerkPlayer>();
 		if (perkplayer.HasPerk<BlessingOfSolar>()) {

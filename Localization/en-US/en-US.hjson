@@ -1556,11 +1556,13 @@ Mods: {
 				Tooltip: ""
 				ExtraInfo:
 					'''
-					[Tier] : is how much effect your relic have
-					some relic's effect is affected by tier
+					[Tier] : is how much effect your relic currently have, tier affect relic effectiveness
 
-					[Passive active item] : having the item in your 
-					inventory will activate their effect
+					[Relic point] : this indicate how much relic of vary tier can be actived at all time
+					each relic tier of being active contribute to relic point
+
+					[Relic type] : relic have 3 types being [c/ff005a:Stat], [c/ffff00:Multistat] and [c/ff7500:Projectile]
+					These type are important to know which prefix effect can apply to the relic
 					'''
 			}
 

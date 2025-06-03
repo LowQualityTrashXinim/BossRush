@@ -621,24 +621,8 @@ public class TransmutationUIState : UIState {
 		if (btn_EnergyMode.Highlight) {
 			int totalEnergyCharge = GetEnergyFromEnergySlot();
 			string text = "";
-			if (energyItemslot1.item.type != 0) {
-				text += $"[[i:{energyItemslot1.item.type}] : {EnergyPoint(energyItemslot1.item.OriginalRarity)}] ";
-			}
-			if (energyItemslot2.item.type != 0) {
-				text += $"[[i:{energyItemslot2.item.type}] : {EnergyPoint(energyItemslot2.item.OriginalRarity)}] ";
-			}
-			if (energyItemslot3.item.type != 0) {
-				text += $"[[i:{energyItemslot3.item.type}] : {EnergyPoint(energyItemslot3.item.OriginalRarity)}] ";
-			}
-			if (energyItemslot4.item.type != 0) {
-				text += $"[[i:{energyItemslot4.item.type}] : {EnergyPoint(energyItemslot4.item.OriginalRarity)}] ";
-			}
-			if (modplayer.TransmutationPower < totalEnergyCharge) {
-				energyinfo.SetText("Insufficient energy\nRequired energy cost : " + totalEnergyCharge);
-			}
-			else {
-				energyinfo.SetText(text + "\nTotal ernergy charged : " + totalEnergyCharge);
-			}
+			energyinfo.SetText(text + "\nTotal energy charging : " + totalEnergyCharge);
+
 		}
 		else if (btn_ItemShift.Highlight) {
 			Item item = ItemShiftSlot.item;
@@ -690,6 +674,9 @@ public class TransmutationUIState : UIState {
 						mergeInfo.SetText("Merging energy cost : " + cost);
 					}
 				}
+			}
+			else {
+				mergeInfo.SetText("");
 			}
 		}
 	}

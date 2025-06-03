@@ -367,6 +367,7 @@ public class PlayerStatsHandle : ModPlayer {
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
 
 		RelicActivation = RelicPoint <= 10;
+		RelicPoint = 0;
 
 		EnergyRegen = StatModifier.Default;
 		EnergyRegenCount = StatModifier.Default;
@@ -433,7 +434,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
@@ -1019,7 +1020,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void Extra_SpecialMechanic(Player player, Projectile projectile) {
-		bool Scatter = player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
+		bool Scatter = false;
+		if (player.TryGetModPlayer(out PerkPlayer perk)) {
+			Scatter = perk.perk_ScatterShot;
+		}
 		RoguelikeGlobalProjectile globalhandle;
 		if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
 			globalhandle = global;
@@ -1033,7 +1037,13 @@ public class PlayerStatsHandleSystem : ModSystem {
 		if (Scatter) {
 			globalhandle.OnKill_ScatterShot += 2;
 		}
-		var handle = player.GetModPlayer<PlayerStatsHandle>();
+		PlayerStatsHandle handle = null;
+		if (player.TryGetModPlayer(out PlayerStatsHandle hand)) {
+			handle = hand;
+		}
+		else {
+			return;
+		}
 		int shootExtra = handle.request_ShootExtra;
 		int shootSpread = handle.request_ShootSpreadExtra;
 		float angleSpread = handle.request_AngleSpread;

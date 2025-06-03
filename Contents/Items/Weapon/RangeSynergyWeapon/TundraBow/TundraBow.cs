@@ -27,7 +27,7 @@ public class TundraBow : SynergyModItem {
 			chance = .001f;
 		}
 		else {
-			if (tundra.SnowStormCounter <= 0 && false) {
+			if (tundra.SnowStormCounter <= 0) {
 				chance += .001f;
 			}
 		}

@@ -9,6 +9,7 @@ namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 
 public class BlizzardTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		relicType = RelicType.Projectile;
 		DataStorer.AddContext("Relic_Blizzard", new(
 			650,
 			Vector2.Zero,

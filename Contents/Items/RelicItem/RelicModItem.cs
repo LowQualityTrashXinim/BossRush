@@ -1,16 +1,16 @@
-﻿using BossRush.Common.Global;
-using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
+using System.Linq;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -99,15 +99,20 @@ public class Relic : ModItem {
 	}
 	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+		int nameIndex = tooltips.FindIndex(t => t.Name == "ItemName");
+		if (nameIndex == -1) {
+			return;
+		}
+		TooltipLine NameLine = tooltips[nameIndex];
 		NameLine.Text = $"[Tier {TemplateCount}] {this.DisplayName}";
+		NameLine.OverrideColor = relicColor.MultiColor(5);
 		if (RelicPrefixedType != -1) {
 			RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
 			if (relicprefix != null) {
 				NameLine.Text = $"[Tier {TemplateCount}] {relicprefix.DisplayName} {this.DisplayName}";
+				tooltips.Insert(nameIndex + 1, new(Mod, "RelicPrefixDesc", $"~{{ {relicprefix.Description} }}~"));
 			}
 		}
-		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));
@@ -138,8 +143,25 @@ public class Relic : ModItem {
 				line += "\n";
 			}
 		}
+		var modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
-		tooltips.Add(new(Mod, "RelicItem", $"[Passive active item]") { OverrideColor = Main.DiscoColor });
+		TooltipLine relicPoint = new(Mod, "RelicItemPoint", $"[Relic point : {modplayer.RelicPoint}/10]");
+		string active = $"[favorite the item to activate relic]";
+		Color color = Color.Gray;
+		if (modplayer.RelicActivation) {
+			if (Item.favorited) {
+				active = $"[unfavorite the item to deacitvate relic]";
+				color = Main.DiscoColor;
+			}
+			relicPoint.OverrideColor = Color.Green;
+		}
+		else {
+			active = "[too much active relic at once !]";
+			relicPoint.OverrideColor = Color.Red;
+		}
+		tooltips.Add(new(Mod, "RelicItem", active) { OverrideColor = color });
+		tooltips.Add(relicPoint);
+
 	}
 	/// <summary>
 	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop
@@ -155,15 +177,6 @@ public class Relic : ModItem {
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (Item.favorited) {
-			modplayer.RelicPoint += RelicTier;
-		}
-		else {
-			return;
-		}
-		if (!modplayer.RelicActivation) {
-			return;
-		}
 		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
@@ -174,6 +187,15 @@ public class Relic : ModItem {
 			RelicTemplateLoader.GetTemplate(templatelist[0]).OnSettingTemplate();
 			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).StatCondition(this, player));
 			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(this, player, statlist[0]));
+		}
+		if (Item.favorited) {
+			modplayer.RelicPoint += Math.Clamp(RelicTier, 0, 4);
+		}
+		else {
+			return;
+		}
+		if (!modplayer.RelicActivation) {
+			return;
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
