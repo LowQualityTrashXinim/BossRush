@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Terraria.ID;
 using BossRush.Contents.Perks;
 using BossRush.Common.Utils;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Systems.TrialSystem;
 
@@ -16,6 +17,7 @@ public class TrialGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 }
 internal class TrialModSystem : ModSystem {
+	public int TrialActivationAmount = 0;
 	private static readonly List<ModTrial> _trial = new();
 	public static int TotalCount => _trial.Count;
 	public static int Register(ModTrial trial) {
@@ -36,12 +38,11 @@ internal class TrialModSystem : ModSystem {
 		ResetTrial();
 		Trial_NPC = null;
 	}
-	public override void PostDrawTiles() {
-		//Main.spriteBatch.Begin();
-
-
-
-		//Main.spriteBatch.End();
+	public override void SaveWorldData(TagCompound tag) {
+		tag["TrialActivationAmount"] = TrialActivationAmount;
+	}
+	public override void LoadWorldData(TagCompound tag) {
+		TrialActivationAmount = (int)tag["TrialActivationAmount"];
 	}
 	/// <summary>
 	/// Use this to activate a trial
@@ -51,6 +52,7 @@ internal class TrialModSystem : ModSystem {
 	public static void SetTrial(int TrialID, Vector2 activatePosition) {
 		Trial = GetTrial(Math.Clamp(TrialID, 0, TotalCount));
 		Trial_StartPos = activatePosition;
+		ModContent.GetInstance<TrialModSystem>().TrialActivationAmount++;
 	}
 	public override void PostUpdateInvasions() {
 		//Ensure trial will only start if trial data is not null
@@ -113,10 +115,6 @@ internal class TrialModSystem : ModSystem {
 		NextWave = 0;
 		CurrentWave = 0;
 		Trial_TotalRemainingNPCs = 0;
-		foreach (var item in emptyTile) {
-			GenerationHelper.FastRemoveTile(item.X, item.Y);
-		}
-		emptyTile.Clear();
 	}
 	private void TrialNPCManage() {
 		//Check if list Trial NPC is null or not, but wtf why we are doing this ?
@@ -180,7 +178,6 @@ internal class TrialModSystem : ModSystem {
 		}
 	}
 	private Rectangle Trial_ArenaSize = new();
-	private List<Point> emptyTile = new();
 	private void BattleTrialUpdate() {
 		//Manage trial NPC
 		//This won't actually do anything until Start trial method is run
@@ -193,33 +190,6 @@ internal class TrialModSystem : ModSystem {
 		}
 		if (NextWave > Trial.WaveAmount()) {
 			return;
-		}
-		//This is extra code to detect whenever a empty tile is spot during the border of the trial area
-		if (emptyTile.Count < 1) {
-			Point newpos;
-			for (int i = 0; i < Trial_ArenaSize.Width; i++) {
-				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
-				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
-					emptyTile.Add(newpos + new Point(i, 0));
-				}
-				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y + Trial_ArenaSize.Height - 1);
-				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
-					emptyTile.Add(newpos + new Point(i, 0));
-				}
-			}
-			for (int i = 0; i < Trial_ArenaSize.Height; i++) {
-				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
-				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
-					emptyTile.Add(newpos + new Point(0, i));
-				}
-				newpos = new(Trial_ArenaSize.X + Trial_ArenaSize.Width - 1, Trial_ArenaSize.Y);
-				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
-					emptyTile.Add(newpos + new Point(0, i));
-				}
-			}
-			foreach (var item in emptyTile) {
-				GenerationHelper.FastPlaceTile(item.X, item.Y, TileID.StoneSlab);
-			}
 		}
 	}
 }

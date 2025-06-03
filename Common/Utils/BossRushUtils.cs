@@ -154,7 +154,20 @@ namespace BossRush {
 			Array.Copy(array, 0, array, 1, array.Length - 1);
 			array[0] = value;
 		}
-
+		public static int FastDropItem(Item item, int fastCheckSlot = 0) {
+			Player player = Main.LocalPlayer;
+			if (item == null || item.type == 0)
+				return 0;
+			for (int i = fastCheckSlot; i < 50; i++) {
+				if (player.CanItemSlotAccept(player.inventory[i], item)) {
+					player.inventory[i] = item.Clone();
+					item.TurnToAir();
+					return i;
+				}
+			}
+			player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+			return 50;
+		}
 		public static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
 			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
@@ -478,6 +491,10 @@ namespace BossRush {
 				return true;
 			return false;
 		}
+		private static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
+			CullMode = CullMode.None,
+			ScissorTestEnable = true
+		};
 		/// <summary>
 		/// Allow for easy to uses everywhere draw progress line without the need of a texture file
 		/// </summary>
@@ -488,13 +505,13 @@ namespace BossRush {
 		/// <param name="offsetX">the offset X for the line, usually you would want to take origin X of the frame and put it here for the line to be centered</param>
 		/// <param name="line">This include the extra offset of the line</param>
 		/// <param name="spriteBatch"><see cref="Main.spriteBatch"/> should be put here</param>
-		public static void DrawProgressLine(float progress, float maxprogress, Point frame, Point position, int offsetX, Rectangle line, SpriteBatch spriteBatch, Color colorA, Color colorB) {
+		public static void DrawProgressLine(SpriteBatch spriteBatch, float progress, float maxprogress, Point position, Rectangle line, Color colorA, Color colorB, float curveValue = 0, float strengthCurve = 1) {
 			float quotient = progress / maxprogress; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
 			quotient = Math.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
 
 			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
 			Rectangle hitbox = new(
-				line.X + position.X - offsetX
+				line.X + position.X
 				, line.Y + position.Y
 				, line.Width
 				, line.Height);
@@ -502,11 +519,24 @@ namespace BossRush {
 			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
 			int left = hitbox.Left;
 			int right = hitbox.Right;
-			int steps = (int)((right - left) * quotient);
+			int length = right - left;
+			int steps = (int)(length * quotient);
+
+			curveValue = Math.Max(curveValue, 1);
+
 			for (int i = 0; i < steps; i += 1) {
+
+				float percentage = i / curveValue;
+				if (curveValue >= length - i) {
+					percentage = (length - i) / curveValue;
+				}
+
+				percentage = BossRushUtils.OutExpo(percentage, strengthCurve);
+				float percentageCurveClamp = Math.Clamp(percentage, 0, 1f);
+				int value = (int)Math.Ceiling(hitbox.Height * percentageCurveClamp);
 				// float percent = (float)i / steps; // Alternate Gradient Approach
-				float percent = (float)i / (right - left);
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(colorA, colorB, percent));
+				float percent = i / (float)length;
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y + (hitbox.Height - value) / 2, 1, value), Color.Lerp(colorA, colorB, percent));
 			}
 		}
 	}

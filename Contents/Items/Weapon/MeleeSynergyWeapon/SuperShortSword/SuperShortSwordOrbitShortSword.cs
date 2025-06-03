@@ -142,6 +142,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 			if (!player.ItemAnimationActive) Projectile.rotation = SafeDegree.ToRotation() + MathHelper.PiOver4;
 			Projectile.Center = RotatePosition;
 		}
+		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
+			SuperShortSwordPlayer supershortswordplayer = player.GetModPlayer<SuperShortSwordPlayer>();
+			if (!supershortswordplayer.SuperShortSword_IsHoldingDownRightMouse && supershortswordplayer.SuperShortSword_AttackType == 2) {
+				modifiers.SourceDamage *= 2;
+			}
+		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			if (!HasHitNPC) {
 				HitNPCPos = Projectile.Center;

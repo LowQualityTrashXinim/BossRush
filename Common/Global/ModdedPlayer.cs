@@ -90,7 +90,7 @@ namespace BossRush.Common.Global {
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {
-				Main.NewText("You have enter debug mode", Color.Red);
+				Main.NewText("You have entered debug mode", Color.Red);
 			}
 			//if (Main.ActiveWorldFileData.GameMode == 0) {
 			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");

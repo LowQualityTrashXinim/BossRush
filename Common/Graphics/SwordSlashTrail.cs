@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Contents.Items.NoneSynergy.GenericBlackSword;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -88,7 +89,7 @@ public class SwordSlashTrail : ModSystem {
 		B /= nonTransparentPixelsAmount;
 
 		//Slight small optimization by grouping both initialization of new struct and adding a new element into list into 1
-		averageColorByID.Add(id, new Color(R, G, B));
+		averageColorByID.TryAdd(id, new Color(R, G, B));
 
 	}
 }

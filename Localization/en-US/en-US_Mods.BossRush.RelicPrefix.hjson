@@ -1,0 +1,29 @@
+Hearty: {
+	DisplayName: Hearty
+	Description: Relic value effectiveness is scaled accordingly to player current health, Minimum of 0.8 and maximum of 1.2 multiplier
+}
+
+Arcane: {
+	DisplayName: Arcane
+	Description: Relic value effectiveness is scaled accordingly to player current mana, Minimum of 0.8 and maximum of 1.2 multiplier
+}
+
+Alpha: {
+	DisplayName: Alpha
+	Description: Increases the first stat value by by 1.5x
+}
+
+Zeta: {
+	DisplayName: Zeta
+	Description: Increases the last stat value by 1.5x
+}
+
+Omega: {
+	DisplayName: Omega
+	Description: Increases projectile relic effect damage by 20%
+}
+
+Phi: {
+	DisplayName: Phi
+	Description: Increases relic stats value effect effect by 20%
+}

@@ -1,43 +1,24 @@
-﻿using System;
+﻿using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using BossRush.Texture;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
-using System.Linq;
-using BossRush.Texture;
-using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
-	public const float chanceTier1 = .5f;
-	public const float chanceTier2 = .6f;
-	public const float chanceTier3 = .45f;
-	public const float chanceTier4 = .6f;
-	public static float GetTierChance(int tier) {
-		if (tier <= 0) {
-			return 0;
-		}
-		switch (tier) {
-			case 1:
-				return chanceTier1;
-			case 2:
-				return chanceTier2;
-			case 3:
-				return chanceTier3;
-			case 4:
-				return chanceTier4;
-			default:
-				return chanceTier4;
-		}
-	}
-	public override string Texture => BossRushTexture.ACCESSORIESSLOT;
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
 	List<StatModifier> valuelist = new List<StatModifier>();
 	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
+	public short RelicPrefixedType = -1;
 	public override void SetStaticDefaults() {
 		relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	}
@@ -46,6 +27,9 @@ public class Relic : ModItem {
 		Item.rare = ItemRarityID.Gray;
 		Item.value = Item.buyPrice(silver: 50);
 		Item.Set_InfoItem(true);
+		if (RelicPrefixedType == -1 && Main.rand.NextBool(3)) {
+			RelicPrefixedType = (short)Main.rand.Next(RelicPrefixSystem.TotalCount);
+		}
 	}
 	/// <summary>
 	/// Use this to add stats before the item automatic add stats
@@ -117,6 +101,12 @@ public class Relic : ModItem {
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
 		NameLine.Text = $"[Tier {TemplateCount}] {this.DisplayName}";
+		if (RelicPrefixedType != -1) {
+			RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+			if (relicprefix != null) {
+				NameLine.Text = $"[Tier {TemplateCount}] {relicprefix.DisplayName} {this.DisplayName}";
+			}
+		}
 		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
@@ -128,7 +118,14 @@ public class Relic : ModItem {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;
 			}
-			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
+			StatModifier value = valuelist[i];
+			if (RelicPrefixedType != -1) {
+				RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+				if (relicprefix != null) {
+					value = relicprefix.StatsModifier(Main.LocalPlayer, this, value, templatelist[i], i);
+				}
+			}
+			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], value);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -158,6 +155,15 @@ public class Relic : ModItem {
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if (Item.favorited) {
+			modplayer.RelicPoint += RelicTier;
+		}
+		else {
+			return;
+		}
+		if (!modplayer.RelicActivation) {
+			return;
+		}
 		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
@@ -171,7 +177,14 @@ public class Relic : ModItem {
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
-				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(this, modplayer, player, valuelist[i], statlist[i]);
+				StatModifier value = valuelist[i];
+				if (RelicPrefixedType != -1) {
+					RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+					if (relicprefix != null) {
+						value = relicprefix.StatsModifier(player, this, value, templatelist[i], i);
+					}
+				}
+				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(this, modplayer, player, value, statlist[i]);
 			}
 			else {
 				templatelist[i] = Main.rand.Next(RelicTemplateLoader.TotalCount);
@@ -180,6 +193,42 @@ public class Relic : ModItem {
 				valuelist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]);
 			}
 		}
+	}
+	public Color GetRelicTierColor(Color originalColor) {
+		Color overrideColor = originalColor;
+		switch (RelicTier) {
+			case 0:
+			case 1:
+				break;
+			case 2:
+				overrideColor = Color.Orange;
+				break;
+			case 3:
+				overrideColor = Color.Orchid;
+				break;
+			case 4:
+				overrideColor = Color.Cyan;
+				break;
+			default:
+				overrideColor = Main.DiscoColor;
+				break;
+		}
+		return overrideColor;
+	}
+	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+		if (RelicPrefixedType == -1) {
+			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+		RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+		if (relicprefix == null) {
+			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+		if (string.IsNullOrEmpty(relicprefix.TextureString)) {
+			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+		Texture2D texture = ModContent.Request<Texture2D>(relicprefix.TextureString).Value;
+		spriteBatch.Draw(texture, position, null, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
+		return false;
 	}
 	public void SetRelicData(List<int> type, List<PlayerStats> stat, List<StatModifier> value) {
 		templatelist = type;
@@ -218,12 +267,20 @@ public class Relic : ModItem {
 		tag.Add("templatetypeList", templatelist);
 		tag.Add("statList", statlist);
 		tag.Add("modifierList", valuelist);
+		tag.Add("RelicPrefixedType", RelicPrefixedType);
 	}
 	public override void LoadData(TagCompound tag) {
 		statlist = tag.Get<List<PlayerStats>>("statList");
 		templatelist = tag.Get<List<int>>("templatetypeList");
 		valuelist = tag.Get<List<StatModifier>>("modifierList");
+		RelicPrefixedType = tag.Get<short>("RelicPrefixedType");
 	}
+}
+public enum RelicType : byte {
+	None,
+	Stat,
+	MultiStats,
+	Projectile
 }
 public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {
@@ -232,6 +289,7 @@ public abstract class RelicTemplate : ModType {
 	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
+	public RelicType relicType = RelicType.None;
 	protected sealed override void Register() {
 		SetStaticDefaults();
 		Type = RelicTemplateLoader.Register(this);
@@ -240,9 +298,7 @@ public abstract class RelicTemplate : ModType {
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
 	public virtual PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.None;
-	public virtual void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-
-	}
+	public virtual void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) { }
 }
 public static class RelicTemplateLoader {
 	private static readonly List<RelicTemplate> _template = new();

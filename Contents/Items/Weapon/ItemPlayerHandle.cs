@@ -200,6 +200,14 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
 		public bool OverrideVanillaEffect = false;
+		public override void OnCreated(Item item, ItemCreationContext context) {
+			if (item.ModItem == null) {
+				return;
+			}
+			if (item.ModItem is SynergyModItem && context is RecipeItemCreationContext) {
+				LootBoxBase.AmmoForWeapon(Main.LocalPlayer, item.type);
+			}
+		}
 		public override void SetDefaults(Item entity) {
 		}
 		public float CriticalDamage;

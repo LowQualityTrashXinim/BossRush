@@ -361,6 +361,8 @@ Mods: {
 			ShatteredSkyProjectileHidden.DisplayName: Shattered Sky Projectile Hidden
 			SuperShurikenProjectile.DisplayName: Super Shuriken Projectile
 			AntiGravityShurikenProjectile.DisplayName: Anti Gravity Shuriken Projectile
+			GenericBlackSwordProjectileBlade.DisplayName: Generic Black Sword Projectile Blade
+			GenericBlackSwordSlash.DisplayName: Generic Black Sword Slash
 		}
 
 		NPCs: {
@@ -2085,6 +2087,15 @@ Mods: {
 
 					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
 					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
+
+					[Augmentation]
+					Empower your accessories with up to 5 randomly-assigned effects by red>sacrificing an item of similar rarity<red.
+					yellow>The cost for empowering increases with each successful augmentation.<yellow
+
+					[Soulbound]
+					Bind a soul into your armor, inheriting its proprieting.
+					Once activated, the soul will level up based on the total damage dealt with the armor piece equipped.
+					red>Once activated, you cannot dismantle a soul for later use.<red
 					'''
 			}
 
@@ -2650,6 +2661,11 @@ Mods: {
 			TestCustomLootDropItem: {
 				DisplayName: Test Custom Loot Drop Item
 				Tooltip: ""
+			}
+
+			GenericBlackSword: {
+				DisplayName: Generic Black Sword
+				Tooltip: "[Community Content Mod : Crossover Weapon]"
 			}
 		}
 

@@ -344,6 +344,7 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;
+		TransmutationModifier = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -365,11 +366,15 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
 
+		RelicActivation = RelicPoint <= 10;
 
 		EnergyRegen = StatModifier.Default;
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
+		TransmutationPowerMaximum = 1000;
 	}
+	public bool RelicActivation = true;
+	public int RelicPoint = 0;
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = base.UseSpeedMultiplier(item);
 		StatModifier global = AttackSpeed;
@@ -633,7 +638,37 @@ public class PlayerStatsHandle : ModPlayer {
 			|| TransmutationPowerMaximum != clone.TransmutationPowerMaximum) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
 	public int TransmutationPower = 0;
-	public int TransmutationPowerMaximum = 10;
+	public int TransmutationPowerMaximum = 1000;
+	public StatModifier TransmutationModifier = StatModifier.Default;
+	/// <summary>
+	/// This method take account of <see cref="TransmutationModifier"/> when adding power to energy bank of transmutation system
+	/// </summary>
+	/// <param name="power"></param>
+	public void Add_TransmutationPower(int power) {
+		if (power > 0) {
+			TransmutationPower += (int)Math.Ceiling(TransmutationModifier.ApplyTo(power));
+		}
+		else {
+			TransmutationPower += power;
+		}
+		TransmutationPower = Math.Clamp(TransmutationPower, 0, TransmutationPowerMaximum);
+	}
+	/// <summary>
+	/// This method directly modify without taking account of <see cref="TransmutationModifier"/><br/><br/>
+	/// 
+	/// This method will return true of false whenever or not modification is successful
+	/// </summary>
+	/// <param name="power"></param>
+	/// <returns>
+	/// Return true if modification is successful
+	/// </returns>
+	public bool Modify_TransmutationPower(int power) {
+		if (TransmutationPower + power > 0 && TransmutationPower + power < TransmutationPowerMaximum) {
+			TransmutationPower += power;
+			return true;
+		}
+		return false;
+	}
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;

@@ -547,7 +547,7 @@ public class DivineHammerUIState : UIState {
 			}
 			else {
 				if (Main.mouseItem.type != 0) {
-					Item cached = armorholderSlot.item.Clone();
+					Item cached = AccAugmentSlot.item.Clone();
 					AccAugmentSlot.item = Main.mouseItem.Clone();
 					Main.mouseItem = cached.Clone();
 					player.inventory[58] = cached.Clone();
@@ -898,31 +898,6 @@ public class WeaponEnchantmentUIslot : Roguelike_UIImage {
 		}
 	}
 	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / textureSize.Length();
-}
-public class ItemHolderSlot : Roguelike_UIImage {
-	private Texture2D texture;
-	public Item item = new Item(0);
-	public string Description = "";
-	public ItemHolderSlot(Asset<Texture2D> texture) : base(texture) {
-		this.texture = texture.Value;
-	}
-	public override void DrawImage(SpriteBatch spriteBatch) {
-		if (item == null) {
-			return;
-		}
-		if (item.type == 0) {
-			return;
-		}
-		if (!string.IsNullOrEmpty(Description)) {
-			UICommon.TooltipMouseText(Description);
-		}
-		Main.instance.LoadItem(item.type);
-		Texture2D itemtexture = TextureAssets.Item[item.type].Value;
-		Vector2 origin = itemtexture.Size() * .5f;
-		Vector2 FrameOrigin = texture.Size() * .5f;
-		Vector2 DrawPos = this.GetInnerDimensions().Position() + FrameOrigin;
-		spriteBatch.Draw(itemtexture, DrawPos, null, Color.White, 0, origin, BossRushUtils.Scale_OuterTextureWithInnerTexture(FrameOrigin, origin, .8f), SpriteEffects.None, 0);
-	}
 }
 public class ConfirmButton : Roguelike_UIImageButton {
 	public ConfirmButton(Asset<Texture2D> texture) : base(texture) {

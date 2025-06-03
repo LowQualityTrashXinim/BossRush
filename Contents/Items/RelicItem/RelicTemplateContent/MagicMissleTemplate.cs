@@ -38,7 +38,7 @@ public class MagicMissileTemplate : RelicTemplate {
 				Color.LightSkyBlue.Hex3(),
 				(Math.Round(cooldown / 60f, 2)).ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -58,7 +58,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			player.Center,
 			Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 			ProjectileID.MagicMissile,
-			(int)(value.Base * (1 + .1f * Tier + 1)),
+			(int)(value.Base * (1 + .1f * Tier + 1) * value.Multiplicative),
 			4 + .5f * Tier,
 			player.whoAmI);
 		proj.DamageType = dmgclass;

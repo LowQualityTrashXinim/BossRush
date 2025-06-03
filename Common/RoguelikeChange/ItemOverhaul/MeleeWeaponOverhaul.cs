@@ -546,9 +546,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override bool CanUseItem(Item item) {
-			if (!Player.ItemAnimationActive) {
+			if (!Player.ItemAnimationActive && item.type == Player.HeldItem.type) {
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
-				swordLength = item.Size.Length() * 0.5f * Player.GetAdjustedItemScale(item);
+				float scale = Player.GetAdjustedItemScale(item);
+				swordLength = item.Size.Length() * .5f * scale;
 				float baseAngle = PlayerToMouseDirection.ToRotation();
 				startSwordSwingAngle = MathHelper.TwoPi * baseAngle / MathHelper.TwoPi;
 				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {

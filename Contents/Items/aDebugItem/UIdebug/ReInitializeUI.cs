@@ -12,13 +12,13 @@ class ReInitializeUI : ModItem {
 		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : User info UI"));
+		tooltips.Add(new TooltipLine(Mod, "DebugUIInitializer", "Current UI to reintialize : Transmutation"));
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().infoUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().infoUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().infoUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
 		}
 		return false;
 	}
