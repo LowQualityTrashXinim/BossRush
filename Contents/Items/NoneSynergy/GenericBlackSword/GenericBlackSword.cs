@@ -40,6 +40,52 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 			int dust = Dust.NewDust(hitboxCenter, hitbox.Width, hitbox.Height, DustID.t_Granite, 0, 0, 0, Color.Black, Main.rand.NextFloat(1.25f, 1.75f));
 			Main.dust[dust].noGravity = true;
 		}
+		List<SpriteTracker> tracker = new();
+		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+			if (tracker == null) {
+				tracker = new();
+			}
+			if (tracker.Count <= 60) {
+				SpriteTracker track = new SpriteTracker();
+				track = new(Main.rand.NextVector2CircularEdge(1, 1) * Main.rand.NextFloat(.5f, 1f), MathHelper.ToRadians(Main.rand.Next(-20, 20)), Main.rand.Next(60, 90));
+				tracker.Add(track);
+			}
+			Texture2D texture = TextureAssets.Item[Type].Value;
+			for (int i = tracker.Count - 1; i >= 0; i--) {
+				SpriteTracker tr = tracker[i];
+				if (tr.position == Vector2.Zero) {
+					tr.position = position;
+				}
+				tr.position += tr.velocity;
+				tr.rotation += tr.rotationSp;
+				Color baseOnScale = drawColor;
+				baseOnScale.A = (byte)(baseOnScale.A * tr.scale * .25f);
+				spriteBatch.Draw(texture, tr.position, null, baseOnScale, tr.rotation, origin, tr.scale, SpriteEffects.None, 0);
+				tr.scale -= .01f;
+				if (--tr.TimeLeft <= 0 || tr.scale <= 0) {
+					tracker.RemoveAt(i);
+				}
+				else {
+					tracker[i] = tr;
+				}
+			}
+
+			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+	}
+	public struct SpriteTracker {
+		public Vector2 position = Vector2.Zero;
+		public Vector2 velocity = Vector2.Zero;
+		public float rotation = 0;
+		public float scale = 1;
+		public float rotationSp = 0;
+		public int TimeLeft = 0;
+
+		public SpriteTracker(Vector2 vel, float rotationSpeed, int time) {
+			velocity = vel;
+			rotationSp = rotationSpeed;
+			TimeLeft = time;
+		}
 	}
 
 	internal class GenericBlackSwordProjectileBlade : ModProjectile {
@@ -69,23 +115,27 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 			}
 		}
 		public override void AI() {
-			if (Projectile.timeLeft <= 100 && Projectile.ai[0] == 0) {
+			if (Projectile.timeLeft <= 100 && Projectile.ai[1] == 0) {
 				Projectile.timeLeft += 314 * 2;
 			}
 			var player = Main.player[Projectile.owner];
-			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO) {
+			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO && Projectile.ai[1] == 0) {
 				Projectile.ai[1] = 1;
+				Projectile.velocity = Vector2.Zero;
 			}
 			if (Projectile.ai[1] == 1) {
 				Projectile.Center.LookForHostileNPC(out NPC closestNPC, 1500);
 				if (++Projectile.ai[0] >= 150) {
-					if (closestNPC != null && Projectile.ai[0] == 0) {
-						Projectile.damage *= 5;
-						Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
-						Projectile.timeLeft = 100;
-						Projectile.ai[0]++;
+					if (closestNPC != null) {
+						if (Projectile.ai[0] == 150) {
+							Projectile.damage *= 5;
+							Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
+							Projectile.timeLeft = 400;
+						}
 					}
-
+					else {
+						Projectile.ai[0] = 150;
+					}
 					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 				}
 				else {
@@ -103,7 +153,7 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 				}
 
 				if (Main.rand.NextBool(3)) {
-					int dust = Dust.NewDust(Projectile.position, 10, 10, DustID.t_Granite, 0, 0, 0, Color.Black, Main.rand.NextFloat(.8f, 1f));
+					int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.t_Granite, 0, 0, 0, Color.Black, Main.rand.NextFloat(.8f, 1f));
 					Main.dust[dust].noGravity = true;
 				}
 
@@ -118,6 +168,11 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 			}
 			else {
 				target.immune[Projectile.owner] = 8;
+			}
+			for (int i = 0; i < 35; i++) {
+				var randomSpeed = Main.rand.NextVector2CircularEdge(10, 10);
+				int dust = Dust.NewDust(Projectile.position, 0, 0, DustID.t_Granite, randomSpeed.X, randomSpeed.Y, 0, Color.Black, 1.2f);
+				Main.dust[dust].noGravity = true;
 			}
 		}
 
@@ -212,19 +267,12 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 					int PostUpdateDamage = Player.HeldItem.damage;
 					YouGotHitLMAO = false;
 					for (int i = 0; i < 5; i++) {
-						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, new Vector2(1 + i, 0), ModContent.ProjectileType<GenericBlackSwordProjectileBlade>(), PostUpdateDamage, 0, Player.whoAmI, ai2: i);
+						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<GenericBlackSwordProjectileBlade>(), PostUpdateDamage, 0, Player.whoAmI, ai2: i);
 					}
 				}
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (proj.type == ModContent.ProjectileType<GenericBlackSwordProjectileBlade>()) {
-				for (int i = 0; i < 35; i++) {
-					var randomSpeed = Main.rand.NextVector2CircularEdge(10, 10);
-					int dust = Dust.NewDust(proj.position, 0, 0, DustID.t_Granite, randomSpeed.X, randomSpeed.Y, 0, Color.Black, 1.2f);
-					Main.dust[dust].noGravity = true;
-				}
-			}
 		}
 
 		public override void OnHurt(Player.HurtInfo info) {

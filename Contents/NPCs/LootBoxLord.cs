@@ -41,42 +41,42 @@ namespace BossRush.Contents.NPCs {
 			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			//for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreBoss[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.MeleePreEoC.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreEoC[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.MeleeEvilBoss.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleeEvilBoss[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.RangePreBoss.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreBoss[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.RangePreEoC.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreEoC[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.RangeSkele.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangeSkele[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.MagicPreBoss.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreBoss[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.MagicPreEoC.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreEoC[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.MagicSkele.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicSkele[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.SummonPreBoss.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonPreBoss[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.SummonerPreEoC.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonerPreEoC[i]));
-			//}
-			//for (int i = 0; i < TerrariaArrayID.SummonSkele.Length; i++) {
-			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonSkele[i]));
-			//}
+			for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreBoss[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.MeleePreEoC.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreEoC[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.MeleeEvilBoss.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleeEvilBoss[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.RangePreBoss.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreBoss[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.RangePreEoC.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreEoC[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.RangeSkele.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangeSkele[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.MagicPreBoss.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreBoss[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.MagicPreEoC.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreEoC[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.MagicSkele.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicSkele[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.SummonPreBoss.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonPreBoss[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.SummonerPreEoC.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonerPreEoC[i], 10));
+			}
+			for (int i = 0; i < TerrariaArrayID.SummonSkele.Length; i++) {
+				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonSkele[i], 10));
+			}
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PowerEnergy>()));
 		}
 		public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment) {
@@ -238,14 +238,6 @@ namespace BossRush.Contents.NPCs {
 			NPC.velocity = Vector2.Zero;
 		}
 		private void ShootShortSword() {
-			if (Main.expertMode || Main.masterMode) {
-				Expert_ShortSwordAttack();
-			}
-			else {
-				Normal_ShortSwordAttack();
-			}
-		}
-		private void Normal_ShortSwordAttack() {
 			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1, 30)) {
 				return;
 			}
@@ -254,20 +246,6 @@ namespace BossRush.Contents.NPCs {
 				BossDamagePercentage(.75f), 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
-			NPC.ai[2]++;
-		}
-		private void Expert_ShortSwordAttack() {
-			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1, 30)) {
-				return;
-			}
-			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
-			for (int i = 0; i < 2; i++) {
-				bool vecChange = i == 0;
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec * vecChange.ToDirectionInt(), ModContent.ProjectileType<ShortSwordAttackOne>(),
-					BossDamagePercentage(.75f), 2, NPC.target);
-				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
-					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
-			}
 			NPC.ai[2]++;
 		}
 		private void ShootShortSword2() {
@@ -290,7 +268,7 @@ namespace BossRush.Contents.NPCs {
 			Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
 			NPC.ai[2]++;
 		}
-		private void Normal_BroadSwordAttack1() {
+		private void ShootBroadSword() {
 			if (BossDelayAttack(30, 0, TerrariaArrayID.AllOreShortSword.Length - 1)) {
 				return;
 			}
@@ -302,28 +280,6 @@ namespace BossRush.Contents.NPCs {
 				swordProj.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)NPC.ai[2]];
 			}
 			NPC.ai[2]++;
-		}
-		private void Expert_BroadSwordAttack1() {
-			if (BossDelayAttack(30, 0, TerrariaArrayID.AllOreShortSword.Length - 1)) {
-				return;
-			}
-			for (int i = 0; i < 3; i++) {
-				Vector2 vec = Main.rand.NextVector2Circular(35, 35);
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), BossDamagePercentage(.85f), 2, NPC.target);
-				if (Main.projectile[proj].ModProjectile is SwordBroadAttackOne swordProj) {
-					swordProj.SetNPCOwner(NPC.whoAmI);
-					swordProj.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[(int)NPC.ai[2]];
-				}
-			}
-			NPC.ai[2]++;
-		}
-		private void ShootBroadSword() {
-			if (Main.expertMode || Main.masterMode) {
-				Expert_BroadSwordAttack1();
-			}
-			else {
-				Normal_BroadSwordAttack1();
-			}
 		}
 		private void ShootBroadSword2() {
 			NPC.ai[0] = 0;
@@ -515,19 +471,6 @@ namespace BossRush.Contents.NPCs {
 			if (NPC.velocity == Vector2.Zero) {
 				return base.PreDraw(spriteBatch, screenPos, drawColor);
 			}
-			//Texture2D texture = TextureAssets.Npc[NPC.type].Value;
-			//Vector2 origin = NPC.Size * .5f;
-			//Vector2 drawPos = NPC.Center - screenPos - origin;
-			//for (int i = 0; i < 4; i++) {
-			//	spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(255, 0, 0, 50));
-			//	spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(25, 25), new Color(0, 0, 255, 50));
-			//	if (i == 0 || i == 2) {
-			//		spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(255, 0, 0, 50));
-			//	}
-			//	else {
-			//		spriteBatch.Draw(texture, drawPos + Main.rand.NextVector2Circular(45, 45), new Color(0, 0, 255, 50));
-			//	}
-			//}
 			return base.PreDraw(spriteBatch, screenPos, drawColor);
 		}
 		Vector2 lastPlayerPosition = Vector2.Zero;

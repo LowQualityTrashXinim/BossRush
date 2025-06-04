@@ -407,7 +407,7 @@ public class TransmutationUIState : UIState {
 		rarity += 1;
 		float multiplier = 1f + extramultiplication;
 		if (Charging) {
-			multiplier -= .5f;
+			multiplier -= .25f;
 		}
 		int baseVal = 10;
 		return (int)Math.Ceiling((baseVal + 10 * (rarity * (.25f + .1f * rarity))) * multiplier);

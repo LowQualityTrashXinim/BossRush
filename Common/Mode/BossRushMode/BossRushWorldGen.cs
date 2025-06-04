@@ -123,6 +123,7 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Glowing Mushrooms and Jungle Plants")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
+				BossRushWorld = true;
 			}
 			else {
 				tasks.ForEach(g => g.Disable());

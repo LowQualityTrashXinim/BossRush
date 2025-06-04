@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 public class LegendaryWoodSword_GlobalItem : GlobalItem {
@@ -29,9 +30,9 @@ public class LegendaryWoodSword_GlobalItem : GlobalItem {
 }
 public class LegendaryWoodSword_ModPlayer : ModPlayer {
 	public int Counter = 0;
-	public override bool CanShoot(Item item) {
+	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!UpgradePlayer.Check_Upgrade(Player, WeaponUpgradeID.LegendaryWoodSword)) {
-			return base.CanShoot(item);
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		switch (item.type) {
 			case ItemID.WoodenSword:
@@ -42,12 +43,10 @@ public class LegendaryWoodSword_ModPlayer : ModPlayer {
 			case ItemID.EbonwoodSword:
 			case ItemID.ShadewoodSword:
 			case ItemID.PearlwoodSword:
-				if (Player.ItemAnimationJustStarted) {
-					Counter = BossRushUtils.Safe_SwitchValue(Counter, 3,1);
-				}
+				Counter = BossRushUtils.Safe_SwitchValue(Counter, 3, 1);
 				return Counter >= 3;
 		}
-		return base.CanShoot(item);
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		switch (item.type) {
