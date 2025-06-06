@@ -696,69 +696,67 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Generate_PostWorld() {
-		List<Point> pointlist = new();
 		Rectangle goldRoomSize = new(0, 0, 150, 150);
+		int trialLimit = 3;
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
-				if (i > 100 && i < Main.maxTilesX - 100
-					&& j > 100 && j < Main.maxTilesY - 100) {
-					//This is where we generate our gold room via code
-					if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
-						goldRoomSize.X = i;
-						goldRoomSize.Y = j;
-						pointlist.Add(new(i, j));
-					}
-					else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
-						goldRoomSize.X = i;
-						goldRoomSize.Y = j;
-						pointlist.Add(new(i, j));
-					}
-					if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
-						if (goldRoomSize.Contains(i, j)) {
-							if (i == goldRoomSize.Left
-							|| j == goldRoomSize.Top
-							|| i == goldRoomSize.Right - 1
-							|| j == goldRoomSize.Bottom - 1) {
-								GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
-							}
-							else {
-								GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
-							}
-							if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
-								goldRoomSize.X = 0;
-								goldRoomSize.Y = 0;
-							}
-						}
-					}
-					//This is the end of gold room generation
-					//This is trial generation
-					if (Rand.NextBool(7500)) {
-						bool canplace = true;
-						foreach (var item in pointlist) {
-							Rectangle intersect = new(i - 50, j - 50, 50, 50);
-							Rectangle rect = new(Math.Clamp(item.X - 400, 0, Main.maxTilesX), Math.Clamp(item.Y - 400, 0, Main.maxTilesY), 400, 400);
-							if (rect.Intersects(intersect)) {
-								canplace = false;
-								break;
-							}
-						}
-						if (canplace) {
-							Point position = new(i / GridPart_X, j / GridPart_Y);
-							int WorldIndex = MapIndex(position.X, position.Y);
-							string zone = BiomeMapping[WorldIndex];
-							if (zone != null) {
-								if (!ZoneToBeIgnored[0].Contains(i, j)
-									&& !zone.Contains((char)Bid.JungleTemple)
-									 && !zone.Contains((char)Bid.Dungeon)) {
-									Generate_Trial(i, j);
-									pointlist.Add(new(i, j));
-								}
+				if (CanGenerateGoldRoom(i, j)) {
+					continue;
+				}
+				//This is the end of gold room generation
+				//This is trial generation
+				if (Rand.NextBool(125000) && trialLimit > 0) {
+					bool canplace = true;
+					if (canplace) {
+						Point position = new(i / GridPart_X, j / GridPart_Y);
+						int WorldIndex = MapIndex(position.X, position.Y);
+						string zone = BiomeMapping[WorldIndex];
+						if (zone != null) {
+							if (!ZoneToBeIgnored[0].Contains(i, j)
+								&& !zone.Contains((char)Bid.JungleTemple)
+								 && !zone.Contains((char)Bid.Dungeon)) {
+								Generate_Trial(i, j);
+								trialLimit--;
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	Rectangle goldRoomSize = new(0, 0, 150, 150);
+	public bool CanGenerateGoldRoom(int i, int j) {
+		if (i > 100 && i < Main.maxTilesX - 100 && j > 100 && j < Main.maxTilesY - 100) {
+			//This is where we generate our gold room via code
+			if (i == Main.maxTilesX * .9f && j == Main.maxTilesY * .1f) {
+				goldRoomSize.X = i;
+				goldRoomSize.Y = j;
+			}
+			else if (i == Main.maxTilesX * .1f && j == Main.maxTilesY * .1f) {
+				goldRoomSize.X = i;
+				goldRoomSize.Y = j;
+			}
+			if (goldRoomSize.X != 0 && goldRoomSize.Y != 0) {
+				if (goldRoomSize.Contains(i, j)) {
+					if (i == goldRoomSize.Left
+					|| j == goldRoomSize.Top
+					|| i == goldRoomSize.Right - 1
+					|| j == goldRoomSize.Bottom - 1) {
+						GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
+					}
+					else {
+						GenerationHelper.FastPlaceTile(i, j, TileID.Gold);
+					}
+					if (i == goldRoomSize.Right - 1 && j == goldRoomSize.Bottom - 1) {
+						goldRoomSize.X = 0;
+						goldRoomSize.Y = 0;
+					}
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	public void Generate_Trial(int X, int Y) {
 		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");

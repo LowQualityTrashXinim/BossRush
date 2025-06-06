@@ -86,6 +86,7 @@ public abstract class ModSkill : ModType {
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ResetEffect(Player player) { }
 	public virtual void Update(Player player, SkillHandlePlayer skillplayer) { }
+	public virtual void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
@@ -483,6 +484,14 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
+		int[] skillHolder = GetCurrentActiveSkillHolder();
+		for (int i = 0; i < skillHolder.Length; i++) {
+			ModSkill skill = SkillModSystem.GetSkill(skillHolder[i]);
+			if (skill == null) {
+				continue;
+			}
+			skill.AlwaysUpdate(Player, this);
+		}
 		if (!Activate) {
 			return;
 		}

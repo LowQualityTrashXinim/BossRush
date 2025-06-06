@@ -363,6 +363,7 @@ Mods: {
 			AntiGravityShurikenProjectile.DisplayName: Anti Gravity Shuriken Projectile
 			GenericBlackSwordProjectileBlade.DisplayName: Generic Black Sword Projectile Blade
 			GenericBlackSwordSlash.DisplayName: Generic Black Sword Slash
+			SmartNeoDynamiteExplosion.DisplayName: Smart Neo Dynamite Explosion
 		}
 
 		NPCs: {
@@ -941,7 +942,7 @@ Mods: {
 					'''
 					"Your rage is what turns tides in battle"
 					Increase 5% damage, 5% critical strike chance and 25% maximum health
-					Grant a buff upon getting hit that increase 50% damage and critical strike chance
+					Grant a buff upon getting hit that increase 25% damage and critical strike chance
 					But shatter your defense and cut your life regen
 					The buff will reset its life time when you got hit again
 					'''
@@ -1928,7 +1929,7 @@ Mods: {
 					'''
 					Energy can regenerate slowly 1 energy/second
 					During skill activation, increases defense by 12 and damage by 22%
-					Decreases your maximum energy capacity by 100 but Increase energy recharge rate by 11%
+					Decreases your maximum energy capacity by 100 but increase energy recharge rate by 11%
 					'''
 			}
 
@@ -2668,6 +2669,11 @@ Mods: {
 			GenericBlackSword: {
 				DisplayName: Generic Black Sword
 				Tooltip: "[Community Content Mod : Crossover Weapon]"
+			}
+
+			SmartNeoDynamite: {
+				DisplayName: Smart Neo Dynamite
+				Tooltip: ""
 			}
 		}
 

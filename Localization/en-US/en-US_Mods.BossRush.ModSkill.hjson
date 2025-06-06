@@ -45,62 +45,62 @@ TranquilMind: {
 
 HellFireArrowRain: {
 	DisplayName: Hellborn Cascade
-	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
+	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each\nIncrease arrow damage by 10%
 }
 
 FireArrowRain: {
 	DisplayName: Firefall Rain
-	Description: Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
+	Description: Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each\nIncrease arrow damage by 10%
 }
 
 FrostburnArrowRain: {
 	DisplayName: Frosthail
-	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
+	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each\nIncrease arrow damage by 10%
 }
 
 Skill_BoneArrow: {
 	DisplayName: Bonefide Shower
-	Description: Casts a ring of 16 bone arrows, dealing 10 damage each
+	Description: Casts a ring of 16 bone arrows, dealing 10 damage each\nIncrease arrow damage by 10%
 }
 
 Skill_UnholyArrow: {
 	DisplayName: Demonic Shatter
-	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
+	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each\nIncrease arrow damage by 10%
 }
 
 Skill_HolyArrow: {
 	DisplayName: Blessed Flood
-	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
+	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each\nIncrease arrow damage by 10%
 }
 
 CholorophyteArrowRain: {
 	DisplayName: Leafspore Rainfall
-	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each
+	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each\nIncrease arrow damage by 10%
 }
 
 CursedArrowRain: {
 	DisplayName: Cursed Fanfare
-	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
+	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each\nIncrease arrow damage by 10%
 }
 
 IchorArrowRain: {
 	DisplayName: Golden Spread
-	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
+	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each\nIncrease arrow damage by 10%
 }
 
 JesterArrowRain: {
 	DisplayName: Circus Tricks
-	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
+	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each\nIncrease arrow damage by 10%
 }
 
 WoodenArrowRain: {
 	DisplayName: Tribal Ambush
-	Description: Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
+	Description: Casts an ambush of Arrows that phases through blocks, dealing 6 damage each\nIncrease arrow damage by 10%
 }
 
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
-	Description: Rain down random arrow each dealing damage range from 8 to 16
+	Description: Rain down random arrow each dealing damage range from 8 to 16\nIncrease arrow damage by 11%
 }
 
 Increases_3xDamage: {

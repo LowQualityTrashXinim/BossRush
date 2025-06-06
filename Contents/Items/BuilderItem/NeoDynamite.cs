@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -57,24 +58,25 @@ namespace BossRush.Contents.Items.BuilderItem {
 			}
 		}
 		public bool canKillTiles(int i, int j) {
-			if (Main.tile[i, j] != null) {
-				if (Main.tileDungeon[Main.tile[i, j].TileType]
-					|| Main.tile[i, j].TileType == 88
-					|| Main.tile[i, j].TileType == 21
-					|| Main.tile[i, j].TileType == 26
-					|| Main.tile[i, j].TileType == 107
-					|| Main.tile[i, j].TileType == 108
-					|| Main.tile[i, j].TileType == 111
-					|| Main.tile[i, j].TileType == 226
-					|| Main.tile[i, j].TileType == 237
-					|| Main.tile[i, j].TileType == 221
-					|| Main.tile[i, j].TileType == 222
-					|| Main.tile[i, j].TileType == 223
-					|| Main.tile[i, j].TileType == 211
-					|| Main.tile[i, j].TileType == 404) {
+			Tile tile = Main.tile[i, j];
+			if (tile != null) {
+				if (Main.tileDungeon[tile.TileType]
+					|| tile.TileType == 88
+					|| tile.TileType == 21
+					|| tile.TileType == 26
+					|| tile.TileType == 107
+					|| tile.TileType == 108
+					|| tile.TileType == 111
+					|| tile.TileType == 226
+					|| tile.TileType == 237
+					|| tile.TileType == 221
+					|| tile.TileType == 222
+					|| tile.TileType == 223
+					|| tile.TileType == 211
+					|| tile.TileType == 404) {
 					return false;
 				}
-				if (!Main.hardMode && Main.tile[i, j].TileType == 58) {
+				if (!Main.hardMode && tile.TileType == 58) {
 					return false;
 				}
 				if (!TileLoader.CanExplode(i, j)) {
@@ -126,6 +128,13 @@ namespace BossRush.Contents.Items.BuilderItem {
 			int minTileY = Projectile.position.Y > 0 ? (int)(Projectile.position.Y / 16f - explosionRadius) : 0;
 			int maxTileY = Projectile.position.Y < Main.maxTilesY ? (int)(Projectile.position.Y / 16f + explosionRadius) : Main.maxTilesY;
 
+			Player player = Main.player[Projectile.owner];
+			List<int> tileType = new();
+			foreach (var item in player.inventory) {
+				if (item.favorited && item.createTile != -1) {
+					tileType.Add(item.createTile);
+				}
+			}
 			for (int i = minTileX; i <= maxTileX; i++) {
 				for (int j = minTileY; j <= maxTileY; j++) {
 					Vector2 diff = new Vector2(i - Projectile.position.X / 16, j - Projectile.position.Y / 16);

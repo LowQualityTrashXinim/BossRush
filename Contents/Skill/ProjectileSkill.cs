@@ -32,6 +32,9 @@ public class HellFireArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class FireArrowRain : ModSkill {
 	public override void SetDefault() {
@@ -58,6 +61,9 @@ public class FireArrowRain : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
 	}
 }
 public class FrostburnArrowRain : ModSkill {
@@ -86,6 +92,9 @@ public class FrostburnArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class Skill_UnholyArrow : ModSkill {
 	public override void SetDefault() {
@@ -113,6 +122,9 @@ public class Skill_UnholyArrow : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class Skill_BoneArrow : ModSkill {
 	public override void SetDefault() {
@@ -134,6 +146,9 @@ public class Skill_BoneArrow : ModSkill {
 			Main.projectile[proj].tileCollide = false;
 			Main.projectile[proj].timeLeft = 180;
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
 	}
 }
 public class Skill_HolyArrow : ModSkill {
@@ -161,6 +176,9 @@ public class Skill_HolyArrow : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
 	}
 }
 public class WoodenArrowRain : ModSkill {
@@ -191,6 +209,9 @@ public class WoodenArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class CholorophyteArrowRain : ModSkill {
 	public override void SetDefault() {
@@ -217,6 +238,9 @@ public class CholorophyteArrowRain : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
 	}
 }
 public class CursedArrowRain : ModSkill {
@@ -245,6 +269,9 @@ public class CursedArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class IchorArrowRain : ModSkill {
 	public override void SetDefault() {
@@ -272,6 +299,9 @@ public class IchorArrowRain : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
+	}
 }
 public class JesterArrowRain : ModSkill {
 	public override void SetDefault() {
@@ -297,6 +327,9 @@ public class JesterArrowRain : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .1f;
 	}
 }
 public class ChaosArrowRain : ModSkill {
@@ -330,6 +363,9 @@ public class ChaosArrowRain : ModSkill {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
+	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		player.arrowDamage += .11f;
 	}
 }
 
@@ -458,7 +494,7 @@ public class BulletStorm : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
-		if(skillplayer.Duration % 3 != 0) {
+		if (skillplayer.Duration % 3 != 0) {
 			return;
 		}
 		Vector2 spawn = player.Center.Add(0, 1000);

@@ -362,6 +362,10 @@ public class TransmutationUIState : UIState {
 	}
 	private void EnergyItemslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Player player = Main.LocalPlayer;
+		Item item = Main.mouseItem;
+		if (!item.IsAWeapon() || !item.accessory || !item.IsThisArmorPiece()) {
+			return;
+		}
 		if (listeningElement.UniqueId == energyItemslot1.UniqueId) {
 			SimpleItemMouseExchange(player, ref energyItemslot1.item);
 		}
@@ -571,6 +575,9 @@ public class TransmutationUIState : UIState {
 	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Player player = Main.LocalPlayer;
 		Item item = Main.mouseItem;
+		if (item.type != ModContent.ItemType<Relic>()) {
+			return;
+		}
 		if (listeningElement.UniqueId == Relicslot1.UniqueId) {
 			SimpleItemMouseExchange(player, ref Relicslot1.item);
 		}
