@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -24,6 +25,8 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
+	public float CritDamage = 0;
+	public int EnergyRegainOnHit = 0;
 	/// <summary>
 	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
 	/// <b>Return true if it is from duplication</b>
@@ -102,7 +105,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Source_CustomContextInfo == "Skill_IceAge") {
+		if (Source_CustomContextInfo == "Skill" && projectile.type == ProjectileID.Blizzard) {
 			var player = Main.player[projectile.owner];
 			target.AddBuff(BuffID.Frozen, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 			target.Center.LookForHostileNPC(out var npclist, 75);
@@ -115,6 +118,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
 		}
+	}
+	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[projectile.owner];
+		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
+		modifiers.CritDamage += CritDamage;
 	}
 	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
 		if (IsFromBoss) {

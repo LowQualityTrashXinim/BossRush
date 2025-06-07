@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -18,14 +19,16 @@ public class HellFireArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 13));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(13);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.HellfireArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.HellfireArrow, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -33,7 +36,9 @@ public class HellFireArrowRain : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class FireArrowRain : ModSkill {
@@ -53,9 +58,11 @@ public class FireArrowRain : ModSkill {
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.FireArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.FireArrow, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -63,7 +70,9 @@ public class FireArrowRain : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class FrostburnArrowRain : ModSkill {
@@ -83,9 +92,11 @@ public class FrostburnArrowRain : ModSkill {
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.FrostburnArrow, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -93,7 +104,9 @@ public class FrostburnArrowRain : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class Skill_UnholyArrow : ModSkill {
@@ -113,9 +126,11 @@ public class Skill_UnholyArrow : ModSkill {
 		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
 		position.Y += 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, -Vector2.UnitY * Main.rand.NextFloat(12, 14), ProjectileID.UnholyArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 360;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.UnholyArrow, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Corruption, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -123,7 +138,9 @@ public class Skill_UnholyArrow : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class Skill_BoneArrow : ModSkill {
@@ -141,14 +158,18 @@ public class Skill_BoneArrow : ModSkill {
 		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 10));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		for (int i = 0; i < 16; i++) {
-			Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i).RotatedBy(MathHelper.ToRadians(modplayer.Duration)) * 16;
-			int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, vel, ProjectileID.BoneArrow, damage, knockback, player.whoAmI);
-			Main.projectile[proj].tileCollide = false;
-			Main.projectile[proj].timeLeft = 180;
+			Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i).RotatedBy(MathHelper.ToRadians(modplayer.Duration));
+			List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center, vel, 16f, ProjectileID.BoneArrow, damage, knockback);
+			foreach (var proj in projlist) {
+				proj.tileCollide = false;
+				proj.timeLeft = 180;
+			}
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class Skill_HolyArrow : ModSkill {
@@ -168,9 +189,11 @@ public class Skill_HolyArrow : ModSkill {
 		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.HolyArrow, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.UnitY, Main.rand.NextFloat(20, 24), ProjectileID.HolyArrow, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.AncientLight, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -178,7 +201,9 @@ public class Skill_HolyArrow : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class WoodenArrowRain : ModSkill {
@@ -198,11 +223,11 @@ public class WoodenArrowRain : ModSkill {
 		Vector2 position = player.Center;
 		position.Y -= 1000;
 		position.X += Main.rand.NextFloat(0, 2000) * -modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
-		Vector2 vel = Vector2.One * Main.rand.NextFloat(20, 24);
-		vel.X *= modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation;
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, vel, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-		Main.projectile[proj].tileCollide = false;
-		Main.projectile[proj].timeLeft = 180;
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), position, Vector2.One * modplayer.Skill_DirectionPlayerFaceBeforeSkillActivation, Main.rand.NextFloat(20, 24), ProjectileID.WoodenArrowFriendly, damage, knockback);
+		foreach (var proj in projlist) {
+			proj.tileCollide = false;
+			proj.timeLeft = 180;
+		}
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -210,7 +235,9 @@ public class WoodenArrowRain : ModSkill {
 		}
 	}
 	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
-		player.arrowDamage += .1f;
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 2;
+		player.arrowDamage += .05f;
 	}
 }
 public class CholorophyteArrowRain : ModSkill {
@@ -527,7 +554,7 @@ public class IceAge : ModSkill {
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 		}
 		Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * 14;
-		Projectile proj = Projectile.NewProjectileDirect(player.GetSource_Misc("Skill_IceAge"), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
+		Projectile proj = Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
 
 		proj.timeLeft = 120;
 		proj.penetrate = -1;
