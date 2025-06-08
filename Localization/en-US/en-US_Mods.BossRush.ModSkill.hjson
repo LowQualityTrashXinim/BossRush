@@ -45,68 +45,68 @@ TranquilMind: {
 
 HellFireArrowRain: {
 	DisplayName: Hellborn Cascade
-	Description: 
-	'''
-	Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 FireArrowRain: {
 	DisplayName: Firefall Rain
-	Description: '''
-	Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 FrostburnArrowRain: {
 	DisplayName: Frosthail
-	Description: 
-	'''
-	Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
-	'''
+	Description:
+		'''
+		Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_BoneArrow: {
 	DisplayName: Bonefide Shower
-	Description: 
-	'''
-	Casts a ring of 16 bone arrows, dealing 10 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts a ring of 16 bone arrows, dealing 10 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_UnholyArrow: {
 	DisplayName: Demonic Shatter
-	Description: 
-	'''
-	Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_HolyArrow: {
 	DisplayName: Blessed Flood
-	Description: 
-	'''
-	Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 CholorophyteArrowRain: {
@@ -131,14 +131,15 @@ JesterArrowRain: {
 
 WoodenArrowRain: {
 	DisplayName: Tribal Ambush
-	Description: 
-	'''
-	Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
-	10% projectile critical damage
-	2% projectile critical chance
-	5% arrow damage
-	'''
+	Description:
+		'''
+		Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
+
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
 	Description: Rain down random arrow each dealing damage range from 8 to 16\nIncrease arrow damage by 11%

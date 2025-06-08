@@ -364,6 +364,7 @@ Mods: {
 			GenericBlackSwordProjectileBlade.DisplayName: Generic Black Sword Projectile Blade
 			GenericBlackSwordSlash.DisplayName: Generic Black Sword Slash
 			SmartNeoDynamiteExplosion.DisplayName: Smart Neo Dynamite Explosion
+			StarWarSwordProjectile.DisplayName: Star War Sword Projectile
 		}
 
 		NPCs: {
