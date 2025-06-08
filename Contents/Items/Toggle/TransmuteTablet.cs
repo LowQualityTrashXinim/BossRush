@@ -363,20 +363,19 @@ public class TransmutationUIState : UIState {
 	private void EnergyItemslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Player player = Main.LocalPlayer;
 		Item item = Main.mouseItem;
-		if (!item.IsAWeapon() || !item.accessory || !item.IsThisArmorPiece()) {
-			return;
-		}
-		if (listeningElement.UniqueId == energyItemslot1.UniqueId) {
-			SimpleItemMouseExchange(player, ref energyItemslot1.item);
-		}
-		else if (listeningElement.UniqueId == energyItemslot2.UniqueId) {
-			SimpleItemMouseExchange(player, ref energyItemslot2.item);
-		}
-		else if (listeningElement.UniqueId == energyItemslot3.UniqueId) {
-			SimpleItemMouseExchange(player, ref energyItemslot3.item);
-		}
-		else if (listeningElement.UniqueId == energyItemslot4.UniqueId) {
-			SimpleItemMouseExchange(player, ref energyItemslot4.item);
+		if (item.IsAWeapon() || item.accessory || item.IsThisArmorPiece()) {
+			if (listeningElement.UniqueId == energyItemslot1.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot1.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot2.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot2.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot3.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot3.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot4.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot4.item);
+			}
 		}
 	}
 	private void btn_energy_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -486,9 +485,6 @@ public class TransmutationUIState : UIState {
 		Player player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == ItemShiftSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (item.type == 0) {
-				return;
-			}
 			SimpleItemMouseExchange(player, ref ItemShiftSlot.item);
 		}
 		else if (listeningElement.UniqueId == ItemResultSlotShift.UniqueId) {

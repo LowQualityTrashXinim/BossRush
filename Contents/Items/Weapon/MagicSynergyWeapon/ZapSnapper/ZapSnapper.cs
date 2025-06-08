@@ -32,7 +32,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			int amount = Main.rand.Next(20, 30);
 			for (int i = 0; i < amount; i++) {
 				Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
-				int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
+				int proj = Projectile.NewProjectile(source, position, newVec, type, damage, knockback, player.whoAmI);
 				Main.projectile[proj].DamageType = DamageClass.Magic;
 				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3)) {
 					int projectile = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);

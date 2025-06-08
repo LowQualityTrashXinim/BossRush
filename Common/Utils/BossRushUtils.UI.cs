@@ -296,11 +296,19 @@ namespace BossRush {
 			PostDraw(spriteBatch);
 		}
 	}
+	public struct PostTextDrawInfo {
+		public float Opacity = 1;
+		public bool Hide = false;
+		public PostTextDrawInfo(float opa) {
+			Opacity = opa;
+		}
+	}
 	public class Roguelike_UIImage : UIImage {
 		public bool Hide = false;
 		public bool Highlight = false;
 		public Color OriginalColor = Color.White;
 		public Color HighlightColor = Color.White;
+		public PostTextDrawInfo drawInfo = new PostTextDrawInfo();
 		/// <summary>
 		/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
 		/// The drawing will be handle automatically
@@ -308,7 +316,15 @@ namespace BossRush {
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
 		bool _CustomWeirdDraw = false;
-		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false) {
+		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false, bool attemptToLoad = false) {
+			if (attemptToLoad) {
+				try {
+					Main.Assets.Request<Texture2D>(tex.Name);
+				}
+				catch (Exception e) {
+					Main.NewText(e.Message);
+				}
+			}
 			postTex = tex;
 			_CustomWeirdDraw = CustomWeirdDraw;
 		}
@@ -320,6 +336,7 @@ namespace BossRush {
 		public Roguelike_UIImage(Asset<Texture2D> texture) : base(texture) {
 			innerTex = texture.Value;
 			OriginalColor = Color;
+			drawInfo.Opacity = 1;
 		}
 		public override sealed void Update(GameTime gameTime) {
 			base.Update(gameTime);
@@ -339,7 +356,6 @@ namespace BossRush {
 			if (Hide) {
 				return;
 			}
-
 			base.Draw(spriteBatch);
 			DrawImage(spriteBatch);
 			if (postTex != null) {
@@ -349,12 +365,12 @@ namespace BossRush {
 				if (_CustomWeirdDraw) {
 					spriteBatch.End();
 					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White * drawInfo.Opacity, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
 					spriteBatch.End();
 					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 				}
 				else {
-					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White * drawInfo.Opacity, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
 				}
 			}
 		}
@@ -367,8 +383,10 @@ namespace BossRush {
 		public Asset<Texture2D> postTex = null;
 		public Texture2D innerTex = null;
 		public string HoverText = null;
-		public void SetPostTex(Asset<Texture2D> tex) {
+		bool _CustomWeirdDraw = false;
+		public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false) {
 			postTex = tex;
+			_CustomWeirdDraw = CustomWeirdDraw;
 		}
 		public Roguelike_UIImageButton(Asset<Texture2D> texture) : base(texture) {
 			innerTex = texture.Value;
@@ -392,8 +410,17 @@ namespace BossRush {
 			if (postTex != null) {
 				Vector2 origin = postTex.Size() * .5f;
 				Vector2 origin2 = innerTex.Size() * .5f;
-				Vector2 drawpos = this.GetInnerDimensions().Position() + origin2;
-				spriteBatch.Draw(postTex.Value, drawpos, null, new Color(255, 255, 255), 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+				Vector2 drawpos = this.GetInnerDimensions().Position();
+				if (_CustomWeirdDraw) {
+					spriteBatch.End();
+					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+					spriteBatch.End();
+					spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+				}
+				else {
+					spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+				}
 			}
 		}
 	}

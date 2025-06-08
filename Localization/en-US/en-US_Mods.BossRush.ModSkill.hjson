@@ -111,22 +111,47 @@ Skill_HolyArrow: {
 
 CholorophyteArrowRain: {
 	DisplayName: Leafspore Rainfall
-	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each\nIncrease arrow damage by 10%
+	Description:
+		'''
+		Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 CursedArrowRain: {
 	DisplayName: Cursed Fanfare
-	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each\nIncrease arrow damage by 10%
+	Description: 
+	'''
+	Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
+	10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
+	
 }
 
 IchorArrowRain: {
 	DisplayName: Golden Spread
-	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each\nIncrease arrow damage by 10%
+	Description: 
+		'''
+		Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 JesterArrowRain: {
 	DisplayName: Circus Tricks
-	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each\nIncrease arrow damage by 10%
+	Description: 
+		'''
+		Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 WoodenArrowRain: {
@@ -142,7 +167,13 @@ WoodenArrowRain: {
 
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
-	Description: Rain down random arrow each dealing damage range from 8 to 16\nIncrease arrow damage by 11%
+	Description: 
+		'''
+		Rain down random arrow each dealing damage range from 8 to 16
+		10% projectile critical damage
+		2% projectile critical chance
+		8% arrow damage
+		'''
 }
 
 Increases_3xDamage: {

@@ -58,7 +58,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// This will tell the code how much should the player spin the weapon
 		/// </summary>
 		public float CircleSwingAmount = 1;
-		public int Item_CustomComboHandleCounter = 0;
+		public float ShaderOffSetLength = 0;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -177,13 +177,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.OrangePhasesaber:
 				case ItemID.RedPhasesaber:
 				case ItemID.WhitePhasesaber:
-					SwingType = BossRushUseStyle.SwipeDown;
+					SwingType = BossRushUseStyle.Swipe;
 					item.useTurn = false;
 					item.Set_ItemCriticalDamage(1f);
-					item.shoot = ModContent.ProjectileType<StarWarSwordProjectile>();
-					item.shootSpeed = 1;
-					item.useAnimation = item.useTime = 25;
-					CircleSwingAmount = 2.6f;
+					IframeDivision = 3;
+					ShaderOffSetLength = 5;
 					break;
 				default:
 					break;
@@ -312,73 +310,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modifiers.HitDirectionOverride = BossRushUtils.DirectionFromEntityAToEntityB(player.Center.X, target.Center.X);
 			}
 		}
-		public bool StarWarSword(int type) {
-			switch (type) {
-				case ItemID.PurplePhaseblade:
-				case ItemID.BluePhaseblade:
-				case ItemID.GreenPhaseblade:
-				case ItemID.YellowPhaseblade:
-				case ItemID.OrangePhaseblade:
-				case ItemID.RedPhaseblade:
-				case ItemID.WhitePhaseblade:
-				case ItemID.PurplePhasesaber:
-				case ItemID.BluePhasesaber:
-				case ItemID.GreenPhasesaber:
-				case ItemID.YellowPhasesaber:
-				case ItemID.OrangePhasesaber:
-				case ItemID.RedPhasesaber:
-				case ItemID.WhitePhasesaber:
-					return true;
-				default:
-					return false;
-			}
-		}
 		public override bool CanUseItem(Item item, Player player) {
 			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-				if (StarWarSword(item.type)) {
-					StarWarStyle(item, player);
-				}
-				else {
-					ModdedUseStyle(item, player);
-				}
+				ModdedUseStyle(item, player);
 			}
 			return base.CanUseItem(item, player);
-		}
-		public void StarWarStyle(Item item, Player player) {
-			if (!player.ItemAnimationActive) {
-				Item_CustomComboHandleCounter++;
-				switch (Item_CustomComboHandleCounter) {
-					case 1:
-						SwingType = BossRushUseStyle.SwipeDown;
-						IframeDivision = 1;
-						break;
-					case 2:
-						SwingType = BossRushUseStyle.SwipeUp;
-						break;
-					case 3:
-						SwingType = BossRushUseStyle.Spin;
-						IframeDivision = 2;
-						break;
-				}
-				if (Item_CustomComboHandleCounter >= 3) {
-					Item_CustomComboHandleCounter = 0;
-				}
-			}
-		}
-		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (StarWarSword(item.type)) {
-				if (Item_CustomComboHandleCounter == 0) {
-					Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 1, type, damage, knockback, player.whoAmI);
-					if (projectile.ModProjectile is StarWarSwordProjectile starwarProjectile) {
-						starwarProjectile.ColorOfSaber = SwordSlashTrail.averageColorByID[item.type] * 2;
-						starwarProjectile.ItemTextureID = item.type;
-					}
-					projectile.width = item.width;
-					projectile.height = item.height;
-				}
-				return false;
-			}
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
@@ -623,6 +559,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				float baseAngle = PlayerToMouseDirection.ToRotation();
 				startSwordSwingAngle = MathHelper.TwoPi * baseAngle / MathHelper.TwoPi;
 				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+					swordLength += meleeItem.ShaderOffSetLength;
 					if (!meleeItem.HideSwingVisual) {
 						Array.Fill(swordTipPositions, Vector2.Zero);
 						Array.Fill(swordRotations, 0);

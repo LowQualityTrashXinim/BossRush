@@ -60,9 +60,11 @@ public class ShatteredSky : SynergyModItem {
 		}
 		return base.CanUseItem(player);
 	}
+	bool CheckIfComboActivateOnce = false;
 	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		Timer++;
 		if (!player.ItemAnimationActive) {
+			CheckIfComboActivateOnce = false;
 			if (Timer >= 60 + player.itemAnimationMax) {
 				ComboCounter = 0;
 				RealCounter = 0;
@@ -76,7 +78,8 @@ public class ShatteredSky : SynergyModItem {
 		Vector2 position = player.Center;
 		int damage = player.GetWeaponDamage(Item);
 		float knockback = player.GetWeaponKnockback(Item);
-		if (ComboCounter == 3 && player.itemAnimation == player.itemAnimationMax - 1) {
+		if (ComboCounter == 3 && player.itemAnimation <= player.itemAnimationMax - 1 && !CheckIfComboActivateOnce) {
+			CheckIfComboActivateOnce = true;
 			float offsetLength = Item.Size.Length();
 			for (int i = 0; i < 16; i++) {
 				Vector2 vel = velocity.Vector2DistributeEvenly(16, 360, i) * 10;
@@ -91,7 +94,8 @@ public class ShatteredSky : SynergyModItem {
 			}
 			SoundEngine.PlaySound(SoundID.Thunder);
 		}
-		else if (ComboCounter == 0 && player.itemAnimation == player.itemAnimationMax * .4f) {
+		else if (ComboCounter == 0 && player.itemAnimation <= player.itemAnimationMax * .4f && CheckIfComboActivateOnce) {
+			CheckIfComboActivateOnce = false;
 			if (RealCounter >= 8) {
 				RealCounter = 0;
 				Projectile projectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, Item.Size.Length() * .9f) - Vector2.UnitY * 700, Vector2.Zero, ModContent.ProjectileType<ShatteredSkyProjectileHidden>(), damage, knockback, player.whoAmI, player.direction);

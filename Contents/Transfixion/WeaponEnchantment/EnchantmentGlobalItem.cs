@@ -485,6 +485,8 @@ public class DivineHammerUIState : UIState {
 		AccAugmentSlot.HAlign = 0;
 		AccAugmentSlot.VAlign = .5f;
 		AccAugmentSlot.Hide = true;
+		AccAugmentSlot.SetPostTex(TextureAssets.Item[ItemID.AvengerEmblem], attemptToLoad: true);
+		AccAugmentSlot.drawInfo.Opacity = .3f;
 		AccAugmentSlot.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccAugmentSlot);
 
@@ -500,6 +502,7 @@ public class DivineHammerUIState : UIState {
 		confirmButton.VAlign = .5f;
 		confirmButton.Hide = true;
 		confirmButton.OnLeftClick += ConfirmButton_OnLeftClick;
+		confirmButton.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<DivineHammerUIState>("Augmentation")), true);
 		confirmButton.SetVisibility(.7f, 1f);
 		BodyPanel.Append(confirmButton);
 
@@ -539,6 +542,7 @@ public class DivineHammerUIState : UIState {
 				return;
 			}
 			if (AccAugmentSlot.item.type == 0) {
+				AccAugmentSlot.drawInfo.Hide = true;
 				if (Main.mouseItem.type != 0) {
 					AccAugmentSlot.item = Main.mouseItem.Clone();
 					Main.mouseItem.TurnToAir();
@@ -553,6 +557,7 @@ public class DivineHammerUIState : UIState {
 					player.inventory[58] = cached.Clone();
 				}
 				else {
+					AccAugmentSlot.drawInfo.Hide = false;
 					Main.mouseItem = AccAugmentSlot.item.Clone();
 					player.inventory[58] = AccAugmentSlot.item.Clone();
 					AccAugmentSlot.item.TurnToAir();

@@ -16,7 +16,7 @@ public class AmethystStaff : ModEnchantment {
 		reduce -= .15f;
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		item.shoot = ProjectileID.AmethystBolt;
+		type = ProjectileID.AmethystBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -43,7 +43,7 @@ public class TopazStaff : ModEnchantment {
 		reduce -= .25f;
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		item.shoot = ProjectileID.TopazBolt;
+		type = ProjectileID.TopazBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -65,7 +65,7 @@ public class SapphireStaff : ModEnchantment {
 		}
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		item.shoot = ProjectileID.SapphireBolt;
+		type = ProjectileID.SapphireBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -85,7 +85,7 @@ public class EmeraldStaff : ModEnchantment {
 		reduce -= .15f;
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		item.shoot = ProjectileID.EmeraldBolt;
+		type = ProjectileID.EmeraldBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {

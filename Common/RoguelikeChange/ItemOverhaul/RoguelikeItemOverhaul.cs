@@ -1,19 +1,20 @@
+using BossRush.Common.Global;
+using BossRush.Common.Graphics;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.AxeOverhaul;
+using BossRush.Common.Systems;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Projectiles;
-using System.Collections.Generic;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria;
-using BossRush.Common.Systems;
-using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using ReLogic.Content;
-using BossRush.Common.RoguelikeChange.ItemOverhaul.AxeOverhaul;
-using BossRush.Common.Global;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -132,6 +133,46 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.Starfury:
 					item.scale += .25f;
 					break;
+				case ItemID.PurplePhaseblade:
+				case ItemID.BluePhaseblade:
+				case ItemID.GreenPhaseblade:
+				case ItemID.YellowPhaseblade:
+				case ItemID.OrangePhaseblade:
+				case ItemID.RedPhaseblade:
+				case ItemID.WhitePhaseblade:
+				case ItemID.PurplePhasesaber:
+				case ItemID.BluePhasesaber:
+				case ItemID.GreenPhasesaber:
+				case ItemID.YellowPhasesaber:
+				case ItemID.OrangePhasesaber:
+				case ItemID.RedPhasesaber:
+				case ItemID.WhitePhasesaber:
+					item.shoot = ModContent.ProjectileType<StarWarSwordProjectile>();
+					item.shootSpeed = 1;
+					item.useAnimation = item.useTime = 25;
+					item.ArmorPenetration = 30;
+					break;
+			}
+		}
+		public bool StarWarSword(int type) {
+			switch (type) {
+				case ItemID.PurplePhaseblade:
+				case ItemID.BluePhaseblade:
+				case ItemID.GreenPhaseblade:
+				case ItemID.YellowPhaseblade:
+				case ItemID.OrangePhaseblade:
+				case ItemID.RedPhaseblade:
+				case ItemID.WhitePhaseblade:
+				case ItemID.PurplePhasesaber:
+				case ItemID.BluePhasesaber:
+				case ItemID.GreenPhasesaber:
+				case ItemID.YellowPhasesaber:
+				case ItemID.OrangePhasesaber:
+				case ItemID.RedPhasesaber:
+				case ItemID.WhitePhasesaber:
+					return true;
+				default:
+					return false;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -173,6 +214,19 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
+			if (StarWarSword(item.type)) {
+				if (++modplayer.PhaseSaberBlade_Counter >= 3) {
+					modplayer.PhaseSaberBlade_Counter = 0;
+					Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero) * 1, type, damage, knockback, player.whoAmI);
+					if (projectile.ModProjectile is StarWarSwordProjectile starwarProjectile) {
+						starwarProjectile.ColorOfSaber = SwordSlashTrail.averageColorByID[item.type] * 2;
+						starwarProjectile.ItemTextureID = item.type;
+					}
+					projectile.width = item.width;
+					projectile.height = item.height;
+				}
+				return false;
+			}
 			if (modplayer.ModeSwitch_Revolver == 1) {
 				SoundEngine.PlaySound(item.UseSound);
 			}
@@ -324,6 +378,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
+		public int PhaseSaberBlade_Counter = 0;
 		/// <summary>
 		/// Use this during ResetEffect and after to set your value
 		/// </summary>

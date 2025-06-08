@@ -162,11 +162,22 @@ public class SkillHandlePlayer : ModPlayer {
 	public int ProjectileEnergyRegain = 0;
 	public float ProjectileCritDamage = 0;
 	public int ProjectileTimeLeft = 0;
+	public float ProjectileSpreadAmount = 5;
+	public float ProjectileSpreadMultiplier = 1;
 	public List<Projectile> NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
 		List<Projectile> projList = new();
 		speed *= ProjectileSpeedMultiplier;
+
 		for (int i = 0; i < ProjectileAmount; i++) {
-			Projectile projectile = Projectile.NewProjectileDirect(source, position, velNormalize * speed, type, SkillDamage(damage), knockback, Player.whoAmI);
+			float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier * i;
+			Vector2 vel;
+			if (ProjectileAmount > 1) {
+				vel = velNormalize.Vector2DistributeEvenly(ProjectileSpreadAmount, 360, i) * speed;
+			}
+			else {
+				vel = velNormalize * speed;
+			}
+			Projectile projectile = Projectile.NewProjectileDirect(source, position, vel, type, SkillDamage(damage), knockback, Player.whoAmI);
 			projectile.CritChance += ProjectileCritChance;
 			RoguelikeGlobalProjectile roguelikeProj = projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>();
 			roguelikeProj.CritDamage += ProjectileEnergyRegain;
@@ -516,10 +527,12 @@ public class SkillHandlePlayer : ModPlayer {
 			CoolDown = 0;
 		}
 		ProjectileCritChance = 0;
-		ProjectileAmount = 0;
+		ProjectileAmount = 1;
 		ProjectileCritDamage = 0;
 		ProjectileEnergyRegain = 0;
 		ProjectileSpeedMultiplier = 1;
+		ProjectileSpreadMultiplier = 1;
+		ProjectileSpreadAmount = 5;
 		skilldamage = StatModifier.Default;
 		SkillDamageWhileActive = StatModifier.Default;
 		if (!Activate) {
