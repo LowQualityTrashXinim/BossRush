@@ -972,6 +972,9 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 999;
 		}
+		public override bool SelectChoosing() {
+			return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
 		}

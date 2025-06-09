@@ -123,12 +123,12 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Glowing Mushrooms and Jungle Plants")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
-				BossRushWorld = true;
 			}
 			else {
 				tasks.ForEach(g => g.Disable());
 				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}
+			BossRushWorld = true;
 		}
 		public Dictionary<short, List<Rectangle>> Room;
 		public static bool IsInBiome(Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {

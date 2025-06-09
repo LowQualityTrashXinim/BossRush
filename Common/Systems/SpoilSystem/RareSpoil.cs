@@ -1,10 +1,11 @@
-﻿using Terraria;
-using Humanizer;
-using Terraria.ID;
-using BossRush.Contents.Items.Chest;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
+﻿using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Perks;
+using Humanizer;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class RareSpoil {
@@ -96,6 +97,24 @@ internal class RareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<CelestialEssence>());
+		}
+	}
+	public class RareRelicSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SuperRare;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.SuperRareDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			for (int i = 0; i < amount; i++) {
+				Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+				if (item.ModItem is Relic relic) {
+					relic.AutoAddRelicTemplate(player, 3);
+				}
+			}
 		}
 	}
 }

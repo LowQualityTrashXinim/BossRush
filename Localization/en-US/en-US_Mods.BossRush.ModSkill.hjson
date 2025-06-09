@@ -122,19 +122,19 @@ CholorophyteArrowRain: {
 
 CursedArrowRain: {
 	DisplayName: Cursed Fanfare
-	Description: 
-	'''
-	Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
-	10% projectile critical damage
-		2% projectile critical chance
-		5% arrow damage
+	Description:
 		'''
-	
+		Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
+		10% projectile critical damage
+			2% projectile critical chance
+			5% arrow damage
+			
+		'''
 }
 
 IchorArrowRain: {
 	DisplayName: Golden Spread
-	Description: 
+	Description:
 		'''
 		Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
 		10% projectile critical damage
@@ -145,7 +145,7 @@ IchorArrowRain: {
 
 JesterArrowRain: {
 	DisplayName: Circus Tricks
-	Description: 
+	Description:
 		'''
 		Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
 		10% projectile critical damage
@@ -167,7 +167,7 @@ WoodenArrowRain: {
 
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
-	Description: 
+	Description:
 		'''
 		Rain down random arrow each dealing damage range from 8 to 16
 		10% projectile critical damage

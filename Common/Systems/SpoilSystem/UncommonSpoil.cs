@@ -76,7 +76,7 @@ public class UncommonSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
-				LootBoxBase.GetAccessories(itemsource, player, true);
+				LootBoxBase.GetAccessories(itemsource, player, Main.rand.NextBool(5));
 			}
 		}
 	}
@@ -92,7 +92,7 @@ public class UncommonSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
 				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {
