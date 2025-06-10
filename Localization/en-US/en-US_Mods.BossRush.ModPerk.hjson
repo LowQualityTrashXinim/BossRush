@@ -99,7 +99,6 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of transmutation success by 10%
 		+ Increases the chance of accessory augmentated by 10%
 		+ Increases the chance of weapon enchanted by 10%
 		'''
@@ -214,9 +213,16 @@ BlessingOfVortex: {
 	DisplayName: Blessing Of Vortex
 	Description:
 		'''
-		+ 7% range critical strike chance
+		+ 7% range critical strike chance and ranged critical strike damage by 50%
 		+ You have 1% chance to deal 4x damage when using range weapon
-		+ Increases critical strike damage by 50%
+		+ Critical attack will increases your damage by 5% last for 2s
+		'''
+	Description3:
+		'''
+		+ 7% range critical strike chance and ranged critical strike damage by 50%
+		+ You have 1% chance to deal 4x damage when using range weapon
+		+ Critical attack will increases your damage by 5% last for 2s
+		+ After every 5th shot, your next shot will always be critical
 		'''
 }
 

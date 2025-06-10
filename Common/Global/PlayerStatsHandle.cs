@@ -37,8 +37,18 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier UpdateDefEff = new StatModifier();
 	public StatModifier UpdateMinion = new StatModifier();
 	public StatModifier UpdateSentry = new StatModifier();
+	/// <summary>
+	/// This is the debuff buff time modifier for NPC<br/>
+	/// this modifier will modify the duration of debuff on NPC<br/>
+	/// Not to be confused with <see cref="DebuffBuffTime"/>
+	/// </summary>
 	public StatModifier DebuffTime = new StatModifier();
 	public StatModifier BuffTime = new StatModifier();
+	/// <summary>
+	/// This is the debuff buff time modifier for player<br/>
+	/// this modifier will modify the duration of debuff on player<br/>
+	/// Not to be confused with <see cref="DebuffTime"/>
+	/// </summary>
 	public StatModifier DebuffBuffTime = new StatModifier();
 	public StatModifier AttackSpeed = new StatModifier();
 	public StatModifier ShieldHealth = new StatModifier();

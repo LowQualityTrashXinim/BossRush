@@ -24,29 +24,6 @@ using BossRush.Contents.Perks.BlessingPerk;
 using BossRush.Common.ChallengeMode;
 
 namespace BossRush.Contents.Perks {
-	public class SuppliesDrop : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushTexture.SUPPILESDROP;
-			CanBeStack = true;
-			StackLimit = -1;
-			CanBeChoosen = false;
-		}
-		public override void OnChoose(Player player) {
-			LootBoxBase.GetWeapon(out int weapon, out int amount);
-			player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
-		}
-	}
-	public class GiftOfRelic : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushTexture.Get_MissingTexture("Perk");
-			CanBeStack = true;
-			StackLimit = -1;
-			CanBeChoosen = false;
-		}
-		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
-		}
-	}
 	public class MarkOfSpectre : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<MarkOfSpectre>();
@@ -155,17 +132,6 @@ namespace BossRush.Contents.Perks {
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenMana, -.5f);
 		}
 	}
-	public class PeaceWithGod : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<PeaceWithGod>();
-			CanBeStack = false;
-			CanBeChoosen = false;
-		}
-		public override void ResetEffect(Player player) {
-			player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
-			player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
-		}
-	}
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
@@ -175,12 +141,11 @@ namespace BossRush.Contents.Perks {
 			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 			handle.AugmentationChance += .1f * StackAmount(player);
 			handle.RandomizeChanceEnchantment += .1f * StackAmount(player);
-			handle.Transmutation_SuccessChance += .1f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAs<PeaceWithGod>("PotionExpert");
+			textureString = BossRushUtils.GetTheSameTextureAs<AlchemistEmpowerment>("PotionExpert");
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
@@ -782,18 +747,6 @@ namespace BossRush.Contents.Perks {
 			this.BossRushSetDefaultDeBuff(true);
 		}
 	}
-	public class LostInWonderLand : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 10;
-		}
-		public override void UpdateEquip(Player player) {
-			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
-			modplayer.AugmentationChance += .05f * StackAmount(player);
-			modplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
-		}
-	}
 	public class DemolitionistGunner : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -954,29 +907,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.ModPlayerStats().CappedHealthAmount = 50;
-		}
-	}
-	public class WeaponDismantle : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override bool SelectChoosing() {
-			return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
-		}
-		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
-		}
-	}
-	public class EssenceExtraction : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 999;
-		}
-		public override bool SelectChoosing() {
-			return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
-		}
-		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PerkPlayer>().perk_DismantleWeapon = true;
 		}
 	}
 }

@@ -1,14 +1,16 @@
 ﻿using BossRush.Common.Global;
-using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items;
+using BossRush.Contents.Items.Chest;
 using BossRush.Texture;
-using System;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Perks.BlessingPerk;
 
@@ -71,16 +73,52 @@ public class BlessingOfVortex : Perk {
 		StackLimit = 3;
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: 1.5f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RangeCritDmg, Additive: 1.5f);
 		player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (Main.rand.NextFloat() <= .01f * StackAmount(player) && proj.DamageType == DamageClass.Ranged)
+		if (Main.rand.NextFloat() <= .01f * StackAmount(player) && proj.DamageType == DamageClass.Ranged) {
 			modifiers.SourceDamage *= 4;
+		}
+		if (StackAmount(player) >= 3 && player.GetModPlayer<BlessingOfVortexPlayer>().VortexCounter >= 5) {
+			modifiers.SetCrit();
+		}
+	}
+	public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (StackAmount(player) >= 3) {
+			player.GetModPlayer<BlessingOfVortexPlayer>().VortexCounter++;
+		}
 	}
 	public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-		if (item.DamageType == DamageClass.Ranged)
+		if (item.DamageType == DamageClass.Ranged) {
 			crit += 7 * StackAmount(player);
+		}
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.DamageType == DamageClass.Ranged && hit.Crit) {
+			player.AddBuff<Buff_VortexBlessing>(BossRushUtils.ToSecond(2));
+		}
+	}
+}
+public class Buff_VortexBlessing : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void Update(Player player, ref int buffIndex) {
+		BlessingOfVortexPlayer vortex = player.GetModPlayer<BlessingOfVortexPlayer>();
+		player.ModPlayerStats().AddStatsToPlayer(PlayerStats.RangeDMG, 1 + .05f * vortex.VortexStack);
+	}
+	public override bool ReApply(Player player, int time, int buffIndex) {
+		BlessingOfVortexPlayer vortex = player.GetModPlayer<BlessingOfVortexPlayer>();
+		vortex.VortexStack++;
+		return true;
+	}
+}
+public class BlessingOfVortexPlayer : ModPlayer {
+	public int VortexStack = 0;
+	public int VortexCounter = 0;
+	public override void ResetEffects() {
+		if (!Player.HasBuff<Buff_VortexBlessing>()) {
+			VortexStack = 0;
+		}
 	}
 }
 public class BlessingOfNebula : Perk {

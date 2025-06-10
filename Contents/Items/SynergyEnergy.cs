@@ -16,6 +16,16 @@ namespace BossRush.Contents.Items {
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.GetModPlayer<SynergyModPlayer>().acc_SynergyEnergy = true;
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 1.01f);
+			handle.AddStatsToPlayer(PlayerStats.Defense, Multiplicative: 1.01f);
+			handle.AddStatsToPlayer(PlayerStats.MovementSpeed, Multiplicative: 1.01f);
+			handle.AddStatsToPlayer(PlayerStats.JumpBoost, Multiplicative: 1.01f);
+			handle.Iframe += 1.1f;
+			handle.RandomizeChanceEnchantment += .01f;
+			handle.BuffTime *= 1.01f;
+			handle.DebuffBuffTime /= 1.01f;
+			handle.DebuffTime *= 1.01f;
 		}
 	}
 	public class SynergyModPlayer : ModPlayer {
@@ -32,7 +42,7 @@ namespace BossRush.Contents.Items {
 			if (Player.itemAnimation == 1) {
 				ItemTypeOld = ItemTypeCurrent;
 			}
-			if(item.ModItem is SynergyModItem) {
+			if (item.ModItem is SynergyModItem) {
 				IsTheItemInQuestionASynergyItem = true;
 			}
 			else {
