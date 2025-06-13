@@ -90,10 +90,11 @@ public abstract class ModSkill : ModType {
 	/// <param name="index"></param>
 	public virtual void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) { }
 	/// <summary>
-	/// Called upon player activate the skill when the skill requirement is fullfilled 
+	/// Called upon player activate the skill when the skill requirement is fullfilled<br/>
+	/// This is called before cool down, duration of the skill and energy subtraction is set
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer) { }
+	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) { }
 	/// <summary>
 	/// This only run when the duration of the skill is equal or below 1
 	/// </summary>
@@ -491,12 +492,12 @@ public class SkillHandlePlayer : ModPlayer {
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
 				Skill_PlayerLastPositionBeforeSkillActivation = Player.Center;
+				foreach (var item in activeskill) {
+					item.OnTrigger(Player, this, duration, cooldown, energy);
+				}
 				MaximumCoolDown += CoolDown;
 				MaximumDuration += Duration;
 				Energy -= energy;
-				foreach (var item in activeskill) {
-					item.OnTrigger(Player, this);
-				}
 			}
 		}
 	}

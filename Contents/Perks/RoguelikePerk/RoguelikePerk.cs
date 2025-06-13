@@ -72,7 +72,7 @@ public class PeaceWithGod : Perk {
 		CanBeStack = false;
 	}
 	public override bool SelectChoosing() {
-		return false;
+		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
@@ -85,12 +85,28 @@ public class LostInWonderLand : Perk {
 		StackLimit = 10;
 	}
 	public override bool SelectChoosing() {
-		return false;
+		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
 	}
 	public override void UpdateEquip(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
 		modplayer.AugmentationChance += .05f * StackAmount(player);
 		modplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
+	}
+}
+public class AlchemistEmpowerment : Perk {
+	public override void SetDefaults() {
+		textureString = BossRushUtils.GetTheSameTextureAs<AlchemistEmpowerment>("PotionExpert");
+		CanBeStack = false;
+	}
+	public override bool SelectChoosing() {
+		return !ModContent.GetInstance<BossRushWorldGen>().BossRushWorld;
+	}
+	public override void ResetEffect(Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
+		player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
+		player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
+		player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
+		player.GetModPlayer<PlayerStatsHandle>().LootboxCanDropSpecialPotion = true;
 	}
 }

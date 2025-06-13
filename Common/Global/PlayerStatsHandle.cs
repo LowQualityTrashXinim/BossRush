@@ -179,10 +179,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public int Rapid_ManaRegen = 0;
 	public int Debuff_LifeStruct = 0;
 	/// <summary>
-	/// This one is a hacky way of ensuring a hit always crit
-	/// </summary>
-	public bool? ModifyHit_OverrideCrit = null;
-	/// <summary>
 	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
@@ -307,16 +303,19 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
+
+		if (AlwaysCritValue > 0) {
+			modifiers.SetCrit();
+		}
+		else if (AlwaysCritValue < 0) {
+			modifiers.DisableCrit();
+		}
 	}
 	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
 		ModifyHit_Before_Crit = info.Crit;
 		if (info.Crit) {
 			ModifyHit_Before_Crit = true;
 		}
-		if (ModifyHit_OverrideCrit == null) {
-			return;
-		}
-		info.Crit = (bool)ModifyHit_OverrideCrit;
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
@@ -444,7 +443,6 @@ public class PlayerStatsHandle : ModPlayer {
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = 60;
 		LifeSteal_CoolDownCounter = BossRushUtils.CountDown(LifeSteal_CoolDownCounter);
-		ModifyHit_OverrideCrit = null;
 		ModifyHit_Before_Crit = false;
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
@@ -488,9 +486,18 @@ public class PlayerStatsHandle : ModPlayer {
 
 		CanDropSynergyEnergy = false;
 		LootboxCanDropSpecialPotion = false;
+
+		AlwaysCritValue = 0;
 	}
 	public bool RelicActivation = true;
 	public int RelicPoint = 0;
+	/// <summary>
+	/// This value will do a smarter handling of whenever or not should a critical strike be guaranteed or disable<br/>
+	/// If this value is <![CDATA[>]]> 0 then the hit will always be critical<br/>
+	/// If this value is <![CDATA[<]]> 0 then the hit will never be critical<br/>
+	/// If this value is = 0 then the hit will use vanilla critical hit calculation<br/>
+	/// </summary>
+	public short AlwaysCritValue = 0;
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = base.UseSpeedMultiplier(item);
 		StatModifier global = AttackSpeed;

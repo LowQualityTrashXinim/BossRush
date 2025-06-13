@@ -130,7 +130,7 @@ public class Shield_ModPlayer : ModPlayer {
 	}
 }
 public class Shield_ModBuff : ModBuff {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = false;
 		Main.buffNoSave[Type] = true;

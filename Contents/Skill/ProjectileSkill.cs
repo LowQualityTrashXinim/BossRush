@@ -423,12 +423,18 @@ public class SpiritBurst : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(10);
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
+		if (Main.rand.NextFloat() <= .1f) {
+			cooldown = (int)(cooldown * .5f);
+		}
+	}
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (Main.rand.NextBool(10) || modplayer.Duration % 15 == 0) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 44));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
-			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
+			Vector2 vel = Main.rand.NextVector2CircularEdge(4, 4);
+			List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center + vel * 100, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
 		}
 	}
 }
@@ -458,8 +464,8 @@ public class Icicle : ModSkill {
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
 			}
-			Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * (10 + Main.rand.NextFloat(-3, 3));
-			Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
+			Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero);
+			skillplayer.NewSkillProjectile(player.GetSource_FromThis(), pos, vel, (10 + Main.rand.NextFloat(-3, 3)), ProjectileID.Blizzard, damage, knockback);
 		}
 	}
 }
@@ -607,8 +613,12 @@ public class EnergyBolt : ModSkill {
 			return;
 		}
 		int damage = SkillDamage(player, 30);
+		Vector2 pos = player.Center + Main.rand.NextVector2Circular(150, 150);
 		Vector2 toMouse = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(20);
-		Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), player.Center, toMouse, ModContent.ProjectileType<EnergyBoltProjectile>(), damage, 2f, player.whoAmI);
+		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), pos, toMouse, 3, ModContent.ProjectileType<EnergyBoltProjectile>(), damage, 2f);
+		foreach (var item in projlist) {
+			item.extraUpdates += 3;
+		}
 	}
 }
 public class ElectricChain : ModSkill {

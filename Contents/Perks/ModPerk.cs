@@ -141,19 +141,8 @@ namespace BossRush.Contents.Perks {
 			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 			handle.AugmentationChance += .1f * StackAmount(player);
 			handle.RandomizeChanceEnchantment += .1f * StackAmount(player);
-		}
-	}
-	public class AlchemistEmpowerment : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAs<AlchemistEmpowerment>("PotionExpert");
-			CanBeStack = false;
-		}
-		public override void ResetEffect(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
-			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
-			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
-			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
-			player.GetModPlayer<PlayerStatsHandle>().LootboxCanDropSpecialPotion = true;
+			handle.ChanceDropModifier += .1f * StackAmount(player);
+			handle.DropModifier.Base += 1;
 		}
 	}
 	public class SelfExplosion : Perk {
