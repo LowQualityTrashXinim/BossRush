@@ -100,9 +100,7 @@ namespace BossRush.Contents.Items {
 			target.StrikeInstantKill();
 		}
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
-			PlayerDeathReason reason = new PlayerDeathReason();
-			reason.SourceCustomReason = $"Celestial wrath has rain down on {target.name}";
-			target.KillMe(reason, 999999999, 1);
+			target.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"Celestial wrath has rain down on {target.name}")), 9999999999, info.HitDirection);
 		}
 		public override bool? CanDamage() => true;
 		public override bool? CanHitNPC(NPC target) => true;

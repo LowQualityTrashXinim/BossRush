@@ -105,7 +105,6 @@ internal class TrialModSystem : ModSystem {
 	public static List<NPC> Trial_NPC = new List<NPC>();
 	public static int CurrentWave = 0;
 	public static int NextWave = 0;
-	private int Trial_TotalRemainingNPCs = 0;
 	private static Vector2 Trial_StartPos = Vector2.Zero;
 
 	private List<int> Trial_NPCPool = new();
@@ -114,7 +113,6 @@ internal class TrialModSystem : ModSystem {
 		Trial = null;
 		NextWave = 0;
 		CurrentWave = 0;
-		Trial_TotalRemainingNPCs = 0;
 	}
 	private void TrialNPCManage() {
 		//Check if list Trial NPC is null or not, but wtf why we are doing this ?

@@ -1,11 +1,12 @@
-﻿using Terraria;
-using BossRush.Texture;
-using Terraria.ModLoader;
-using Terraria.GameContent;
+﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Consumable;
 internal class ConfrontTrueGod : ModItem {
@@ -35,12 +36,10 @@ internal class ConfrontTrueGod : ModItem {
 	public override bool? UseItem(Player player) {
 		if (!player.dead) {
 			string whoAmI = "False God";
-			if(!NPC.downedMoonlord) {
+			if (!NPC.downedMoonlord) {
 				whoAmI = "\"True\" God";
 			}
-			PlayerDeathReason reason = new PlayerDeathReason();
-			reason.SourceCustomReason = $"{player.name} has confront {whoAmI}";
-			player.KillMe(reason, 1, 1);
+			player.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} has confront {whoAmI}")), 9999999999, 1);
 		}
 		return true;
 	}

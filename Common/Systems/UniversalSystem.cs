@@ -62,18 +62,18 @@ internal class UniversalSystem : ModSystem {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == SYNERGYFEVER_MODE)
 			return config.SynergyFeverMode;
-		if (config.HardEnableFeature || player.IsDebugPlayer())
-			return true;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
+		if (context == BOSSRUSH_MODE)
+			return config.BossRushMode;
+		if (config.HardEnableFeature || player.IsDebugPlayer())
+			return true;
 		if (context == HARDCORE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
 		if (player.difficulty != PlayerDifficultyID.Hardcore && !config.AutoHardCore)
 			return false;
-		if (context == BOSSRUSH_MODE)
-			return config.BossRushMode;
 		return false;
 	}
 	/// <summary>
@@ -85,8 +85,6 @@ internal class UniversalSystem : ModSystem {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
-		if (config.HardEnableFeature)
-			return true;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HELLISH_MODE)
@@ -97,6 +95,8 @@ internal class UniversalSystem : ModSystem {
 			return config.AutoHardCore;
 		if (context == SYNERGYFEVER_MODE)
 			return config.SynergyFeverMode;
+		if (config.HardEnableFeature)
+			return true;
 		return false;
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";

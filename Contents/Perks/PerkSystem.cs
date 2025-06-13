@@ -19,6 +19,8 @@ using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Perks.BlessingPerk;
+using BossRush.Contents.Perks.RoguelikePerk;
+using BossRush.Common.Systems.Mutation;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -62,16 +64,22 @@ namespace BossRush.Contents.Perks {
 			return base.ConsumeItem(item, player);
 		}
 	}
-	class PerkModSystem : ModSystem {
+	public class PerkModSystem : ModSystem {
 		public static List<int> StarterPerkType { get; private set; } = new();
 		public static List<int> WeaponUpgradeType { get; private set; } = new();
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;
-			StarterPerkType = new();
+			if (StarterPerkType == null) {
+				StarterPerkType = new();
+			}
+			if (WeaponUpgradeType == null) {
+				WeaponUpgradeType = new();
+			}
 		}
 		public override void Unload() {
 			StarterPerkType = null;
+			WeaponUpgradeType = null;
 		}
 		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
 			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();

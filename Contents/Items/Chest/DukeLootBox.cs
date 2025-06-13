@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Utils;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Utils;
 using Terraria;
 using Terraria.ID;
 
@@ -21,7 +22,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 30;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));

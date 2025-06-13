@@ -11,16 +11,17 @@ using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
+using BossRush.Common.Systems.ObjectSystem;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
 		public override void Load() {
 			On_Player.UpdateBiomes += On_Player_UpdateBiomes;
 		}
-		public override void Unload() {
-		}
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
+			if (!UniversalSystem.CanAccessContent(self, UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
 				orig(self);
 				return;
 			}
@@ -247,7 +248,50 @@ namespace BossRush.Common.ChallengeMode {
 			}
 			Room = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
-		public static string StringBuilder(string FileName) => $"Assets/Structures/{FileName}";
+		public override void PostUpdateEverything() {
+			if (!Main.LocalPlayer.active || !BossRushWorld) {
+				return;
+			}
+			if (!NPC.downedSlimeKing && !NPC.AnyNPCs(NPCID.KingSlime)) {
+				if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<KSsealed>())) {
+					Rectangle rect = Room[Bid.Slime][0];
+					ModObject.NewModObject(rect.TopLeft() * 16f + rect.Center.ToVector2(), Vector2.Zero, ModObject.GetModObjectType<KSsealed>());
+				}
+			}
+		}
+	}
+	public abstract class NPCSealedObject : ModObject {
+		public virtual int NPCTypeToFollow => 0;
+		public override void SetDefaults() {
+			timeLeft = 9999;
+		}
+		public override void AI() {
+			if (NPCTypeToFollow == 0) {
+				return;
+			}
+			Inner_AI();
+		}
+		public virtual void Inner_AI() { }
+
+		public override void Draw(SpriteBatch spritebatch) {
+			if (NPCTypeToFollow == 0) {
+				return;
+			}
+			Main.instance.LoadNPC(NPCTypeToFollow);
+			Texture2D texture = TextureAssets.Npc[NPCTypeToFollow].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawpos = position - Main.screenPosition + origin;
+			Color color = Color.White;
+			spritebatch.Draw(texture, drawpos, texture.Frame(1, 6, 0, 0), color, 0, origin, 1f, SpriteEffects.None, 1);
+		}
+	}
+	public class KSsealed : NPCSealedObject {
+		public override int NPCTypeToFollow => NPCID.KingSlime;
+		public override void Inner_AI() {
+			if (NPC.downedSlimeKing || NPC.AnyNPCs(NPCID.KingSlime)) {
+				this.Kill();
+			}
+		}
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]

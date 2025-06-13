@@ -13,7 +13,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 	}
 	public class GreedPlayer : ModPlayer {
 		bool Greed = false;
-		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
+		protected PlayerStatsHandle chestmodplayer => Player.GetModPlayer<PlayerStatsHandle>();
 		public override void ResetEffects() {
 			Greed = Player.HasArtifact<TokenOfGreedArtifact>();
 		}
@@ -55,7 +55,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			return Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			float chance = player.GetModPlayer<PlayerStatsHandle>().ChestLoot.DropModifier.ApplyTo(1);
+			float chance = player.GetModPlayer<PlayerStatsHandle>().DropModifier.ApplyTo(1);
 			if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
 				modifiers.SourceDamage *= 2;
 			}
@@ -67,7 +67,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			float chance = player.GetModPlayer<PlayerStatsHandle>().ChestLoot.DropModifier.ApplyTo(1);
+			float chance = player.GetModPlayer<PlayerStatsHandle>().DropModifier.ApplyTo(1);
 			if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
 				modifiers.SourceDamage *= 2;
 			}

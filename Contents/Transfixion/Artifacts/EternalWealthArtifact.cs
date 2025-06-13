@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Systems;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.ObjectSystem;
@@ -34,7 +35,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (EternalWealth) {
-				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= 3;
+				Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= 3;
 				timer = BossRushUtils.CountDown(timer);
 				if (timer <= 0) {
 					counterOldPos = BossRushUtils.Safe_SwitchValue(counterOldPos, objs.Length - 1);

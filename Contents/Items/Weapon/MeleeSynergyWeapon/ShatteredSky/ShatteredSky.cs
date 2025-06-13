@@ -94,8 +94,8 @@ public class ShatteredSky : SynergyModItem {
 			}
 			SoundEngine.PlaySound(SoundID.Thunder);
 		}
-		else if (ComboCounter == 0 && player.itemAnimation <= player.itemAnimationMax * .4f && CheckIfComboActivateOnce) {
-			CheckIfComboActivateOnce = false;
+		else if (ComboCounter == 0 && player.itemAnimation <= player.itemAnimationMax * .4f && !CheckIfComboActivateOnce) {
+			CheckIfComboActivateOnce = true;
 			if (RealCounter >= 8) {
 				RealCounter = 0;
 				Projectile projectile = Projectile.NewProjectileDirect(source, position.PositionOFFSET(velocity, Item.Size.Length() * .9f) - Vector2.UnitY * 700, Vector2.Zero, ModContent.ProjectileType<ShatteredSkyProjectileHidden>(), damage, knockback, player.whoAmI, player.direction);

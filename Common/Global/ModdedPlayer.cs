@@ -110,7 +110,7 @@ namespace BossRush.Common.Global {
 		}
 		public override void UpdateEquips() {
 			if (Secret_MrRakan) {
-				Player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 3;
+				Player.GetModPlayer<PlayerStatsHandle>().UpdateRangeChanceMutilplier += 3;
 			}
 		}
 		private void CheckHowManyHit() {
@@ -242,7 +242,7 @@ namespace BossRush.Common.Global {
 				}
 				yield return new Item(ItemID.LifeCrystal, LifeCrystal);
 				yield return new Item(ItemID.ManaCrystal, ManaCrystal);
-				if(Player.HasArtifact<SmallLootBoxArtifact>()) {
+				if (Player.HasArtifact<SmallLootBoxArtifact>()) {
 					yield return new Item(ModContent.ItemType<WorldEssence>());
 					yield return new Item(ModContent.ItemType<SkillLootBox>());
 				}
@@ -302,7 +302,9 @@ namespace BossRush.Common.Global {
 			}
 		}
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
-			itemsByMod["Terraria"].Clear();
+			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.BOSSRUSH_MODE)) {
+				itemsByMod["Terraria"].Clear();
+			}
 		}
 		public int amountOfTimeGotHit = 0;
 		public bool AllowForAchievement = true;

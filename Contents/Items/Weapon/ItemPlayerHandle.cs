@@ -122,7 +122,7 @@ namespace BossRush.Contents.Items.Weapon {
 		private void GodDecision(Player player) {
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 				return;
-			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || player.GetModPlayer<PlayerStatsHandle>().CanDropSynergyEnergy)
 				return;
 			if (player.IsDebugPlayer())
 				return;

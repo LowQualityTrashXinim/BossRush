@@ -12,7 +12,7 @@ public class Roguelike_TextBox : UITextBox {
 	}
 	public bool Hide = false;
 	public bool focus = false;
-	bool mousePressed = false;
+	public bool mousePressed = false;
 	public override void LeftClick(UIMouseEvent evt) {
 	}
 	public override void LeftMouseUp(UIMouseEvent evt) {

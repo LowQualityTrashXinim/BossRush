@@ -24,8 +24,8 @@ namespace BossRush.Contents.Items {
 			handle.Iframe += 1.1f;
 			handle.RandomizeChanceEnchantment += .01f;
 			handle.BuffTime *= 1.01f;
-			handle.DebuffBuffTime /= 1.01f;
 			handle.DebuffTime *= 1.01f;
+			handle.DebuffBuffTime *= .99f;
 		}
 	}
 	public class SynergyModPlayer : ModPlayer {

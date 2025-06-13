@@ -76,7 +76,7 @@ public class PeaceWithGod : Perk {
 	}
 	public override void ResetEffect(Player player) {
 		player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
-		player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
+		player.GetModPlayer<PlayerStatsHandle>().CanDropSynergyEnergy = true;
 	}
 }
 public class LostInWonderLand : Perk {

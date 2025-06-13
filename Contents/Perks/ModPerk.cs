@@ -64,7 +64,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .17f;
+			damage -= .11f;
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
@@ -153,7 +153,7 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
 			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
-			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
+			player.GetModPlayer<PlayerStatsHandle>().LootboxCanDropSpecialPotion = true;
 		}
 	}
 	public class SelfExplosion : Perk {

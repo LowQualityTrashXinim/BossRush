@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Chest;
+﻿using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Perks;
 using Humanizer;
@@ -17,7 +18,7 @@ internal class RareSpoil {
 			return DisplayName.FormatWith(ItemID.FallenStar);
 		}
 		public override string FinalDescription() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			return Description.FormatWith(
 				chestplayer.ModifyGetAmount(2),
 				chestplayer.ModifyGetAmount(4)
@@ -39,7 +40,7 @@ internal class RareSpoil {
 			return DisplayName.FormatWith(ItemID.ArmorStatue);
 		}
 		public override string FinalDescription() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			return Description.FormatWith(
 				chestplayer.ModifyGetAmount(1),
 				chestplayer.ModifyGetAmount(2)
@@ -49,11 +50,11 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
 				LootBoxBase.GetAccessories(itemsource, player);
 			}
-			int amount2 = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount2 = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount2; i++) {
 				LootBoxBase.GetArmorPiece(itemsource, player);
 			}
@@ -67,10 +68,10 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop() && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC);
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
 				player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.NextFromHashSet(BossRushModSystem.LostAccessories));
 			}
@@ -108,7 +109,7 @@ internal class RareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
 				Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
 				if (item.ModItem is Relic relic) {

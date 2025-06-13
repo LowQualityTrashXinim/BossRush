@@ -1,22 +1,23 @@
-﻿using System;
-using Terraria;
-using Terraria.ModLoader;
-using BossRush.Contents.Skill;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using BossRush.Contents.Perks;
-using System.Collections.Generic;
+﻿using BossRush.Common.General;
+using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Common.Systems.Mutation;
+using BossRush.Common.Systems.ObjectSystem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Common.Systems.Mutation;
-using BossRush.Common.Mode.DreamLikeWorldMode;
-using Terraria.ModLoader.IO;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Skill;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Terraria.ID;
-using BossRush.Common.Systems.ObjectSystem;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Global;
 /// <summary>
@@ -25,7 +26,90 @@ namespace BossRush.Common.Global;
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {
-	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
+	public bool CanDropSynergyEnergy = true;
+	public bool LootboxCanDropSpecialPotion = false;
+	public HashSet<int> ItemGraveYard = new HashSet<int>();
+	public HashSet<int> Request_AddMelee = new();
+	public HashSet<int> Request_AddRange = new();
+	public HashSet<int> Request_AddMagic = new();
+	public HashSet<int> Request_AddSummon = new();
+	public HashSet<int> Request_AddMisc = new();
+	public int InfluenceableRNGselector = -1;
+	public float Chance_4RNGselector { get; set; } = 0;
+
+	public int counterShow = 0;
+	public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
+	public float ChanceLootDrop = 0;
+	public StatModifier ChanceDropModifier = new();
+
+	public StatModifier DropModifier = new();
+
+	//This is inner modifier ( aka amount modifier to x stuff )
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int WeaponAmountAddition { get; set; } = 0;
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int PotionTypeAmountAddition { get; set; } = 0;
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int PotionNumberAmountAddition { get; set; } = 0;
+	//Do not touch this
+	public int weaponAmount;
+	public int potionTypeAmount;
+	public int potionNumAmount;
+
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateMeleeChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateRangeChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateMagicChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateSummonChanceMutilplier = 0;
+	public int ModifyGetAmount(int baseValue) {
+		int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
+		if (Main.rand.NextFloat() <= ChanceLootDrop) {
+			amount = (int)Math.Ceiling(ChanceDropModifier.ApplyTo(baseValue));
+		}
+		if (amount <= 0) {
+			return 1;
+		}
+		return amount;
+	}
+	/// <summary>
+	/// This must be called before using
+	/// <br/><see cref="weaponAmount"/>
+	/// <br/><see cref="potionTypeAmount"/>
+	/// <br/><see cref="potionNumAmount"/>
+	/// </summary>
+	public void GetAmount() {
+		weaponAmount = 3;
+		potionTypeAmount = 1;
+		potionNumAmount = 2;
+		if (Main.getGoodWorld) {
+			weaponAmount = 2;
+			potionTypeAmount = 1;
+			potionNumAmount = 1;
+		}
+		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
+		potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
+		potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
+		if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode) {
+			weaponAmount = 1;
+		}
+	}
 	public StatModifier UpdateMovement = new StatModifier();
 	public StatModifier UpdateJumpBoost = new StatModifier();
 	public StatModifier UpdateHPMax = new StatModifier();
@@ -383,6 +467,27 @@ public class PlayerStatsHandle : ModPlayer {
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
 		TransmutationPowerMaximum = 1000;
+
+		Request_AddMelee.Clear();
+		Request_AddRange.Clear();
+		Request_AddMagic.Clear();
+		Request_AddSummon.Clear();
+		Request_AddMisc.Clear();
+		InfluenceableRNGselector = -1;
+		Chance_4RNGselector = 0;
+		DropModifier = StatModifier.Default;
+		ChanceDropModifier = StatModifier.Default;
+		ChanceLootDrop = 0;
+		WeaponAmountAddition = 0;
+		PotionTypeAmountAddition = 0;
+		PotionNumberAmountAddition = 0;
+		UpdateMeleeChanceMutilplier = 1;
+		UpdateRangeChanceMutilplier = 1;
+		UpdateMagicChanceMutilplier = 1;
+		UpdateSummonChanceMutilplier = 1;
+
+		CanDropSynergyEnergy = false;
+		LootboxCanDropSpecialPotion = false;
 	}
 	public bool RelicActivation = true;
 	public int RelicPoint = 0;
@@ -585,7 +690,7 @@ public class PlayerStatsHandle : ModPlayer {
 				Summon_NonCritDmg = Summon_NonCritDmg.CombineWith(StatMod);
 				break;
 			case PlayerStats.LootDropIncrease:
-				ChestLoot.DropModifier = ChestLoot.DropModifier.CombineWith(StatMod);
+				DropModifier = DropModifier.CombineWith(StatMod);
 				break;
 			default:
 				break;

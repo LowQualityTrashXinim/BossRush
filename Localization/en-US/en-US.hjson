@@ -395,6 +395,8 @@ Mods: {
 			KingSlimeMinionSpawner.DisplayName: King Slime Minion Spawner
 			KingSlimeMinion.DisplayName: King Slime Minion
 			KingSlimeCrown.DisplayName: King Slime Crown
+			TrialArcher.DisplayName: Trial Archer
+			TrialKnight.DisplayName: Trial Knight
 		}
 
 		Items: {
@@ -3339,6 +3341,11 @@ Mods: {
 			DodgeJutsuCoolDown: {
 				DisplayName: Dodge Jutsu Cool Down
 				Description: Mods.BossRush.Buffs.DodgeJutsuCoolDown.Description
+			}
+
+			Buff_VortexBlessing: {
+				DisplayName: Buff_ Vortex Blessing
+				Description: Mods.BossRush.Buffs.Buff_VortexBlessing.Description
 			}
 		}
 

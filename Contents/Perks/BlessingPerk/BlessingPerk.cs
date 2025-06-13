@@ -28,7 +28,7 @@ public class BlessingOfSolar : Perk {
 		return base.ModifyToolTip();
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += 1f;
+		player.GetModPlayer<PlayerStatsHandle>().UpdateMeleeChanceMutilplier += 1f;
 	}
 	public override void ModifyItemScale(Player player, Item item, ref float scale) {
 		if (item.DamageType == DamageClass.Melee)
@@ -74,7 +74,7 @@ public class BlessingOfVortex : Perk {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RangeCritDmg, Additive: 1.5f);
-		player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
+		player.GetModPlayer<PlayerStatsHandle>().UpdateRangeChanceMutilplier += 1f;
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (Main.rand.NextFloat() <= .01f * StackAmount(player) && proj.DamageType == DamageClass.Ranged) {
@@ -135,7 +135,7 @@ public class BlessingOfNebula : Perk {
 		return base.ModifyToolTip();
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;
+		player.GetModPlayer<PlayerStatsHandle>().UpdateMagicChanceMutilplier += 1f;
 	}
 	public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) {
 		multi -= .11f * StackAmount(player);
@@ -171,7 +171,7 @@ public class BlessingOfStardust : Perk {
 	public override void UpdateEquip(Player player) {
 		player.maxMinions += 1;
 		player.maxTurrets += 1;
-		player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1f;
+		player.GetModPlayer<PlayerStatsHandle>().UpdateSummonChanceMutilplier += 1f;
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 		damage.Base += (player.maxMinions + player.maxTurrets) / 2 * StackAmount(player);
@@ -321,7 +321,7 @@ public class BlessingOfSynergy : Perk {
 		base.OnChoose(player);
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().ChestLoot.WeaponAmountAddition += StackAmount(player);
+		player.GetModPlayer<PlayerStatsHandle>().WeaponAmountAddition += StackAmount(player);
 	}
 	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 		if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {

@@ -388,7 +388,6 @@ namespace BossRush.Contents.Items.Toggle {
 			var player = Main.LocalPlayer;
 			string line;
 			var statshandle = player.GetModPlayer<PlayerStatsHandle>();
-			var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
 			var augmentation = player.GetModPlayer<AugmentsPlayer>();
 			switch (CurrentState) {
@@ -435,7 +434,7 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[17].SetInfo($"{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {chestplayer.DropModifier.ApplyTo(1)}");
+						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {statshandle.DropModifier.ApplyTo(1)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().RandomizeChanceEnchantment)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
@@ -457,15 +456,15 @@ namespace BossRush.Contents.Items.Toggle {
 					}
 					var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 					var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
-					chestplayer.GetAmount();
+					statshandle.GetAmount();
 					line =
-						$"Amount drop chest final weapon : {chestplayer.weaponAmount}" +
-						$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
-						$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-						$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
-						$"\nRange drop chance : {chestplayer.UpdateRangeChanceMutilplier}" +
-						$"\nMagic drop chance : {chestplayer.UpdateMagicChanceMutilplier}" +
-						$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
+						$"Amount drop chest final weapon : {statshandle.weaponAmount}" +
+						$"\nAmount drop chest final potion type : {statshandle.potionTypeAmount}" +
+						$"\nAmount drop chest final potion amount : {statshandle.potionNumAmount}" +
+						$"\nMelee drop chance : {statshandle.UpdateMeleeChanceMutilplier}" +
+						$"\nRange drop chance : {statshandle.UpdateRangeChanceMutilplier}" +
+						$"\nMagic drop chance : {statshandle.UpdateMagicChanceMutilplier}" +
+						$"\nSummon drop chance : {statshandle.UpdateSummonChanceMutilplier}" +
 						$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 						$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 						$"\nRun amount : {RoguelikeData.Run_Amount}" +

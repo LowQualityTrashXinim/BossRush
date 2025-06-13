@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Global;
 using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Consumable.Potion;
@@ -27,7 +28,7 @@ namespace BossRush.Contents.Items.Chest {
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			for (int i = 0; i < 2; i++) {
 				int Accessory = Main.rand.Next(new int[] { ItemID.MasterNinjaGear, ItemID.FireGauntlet, ItemID.NecromanticScroll, ItemID.CelestialEmblem, ItemID.CelestialShell, ItemID.AvengerEmblem, ItemID.CharmofMyths, ItemID.DestroyerEmblem, ItemID.SniperScope, ItemID.StarCloak, ItemID.StarVeil, ItemID.CelestialCuffs });
@@ -45,9 +46,7 @@ namespace BossRush.Contents.Items.Chest {
 			int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
 			player.QuickSpawnItem(entitySource, wing);
 			player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
-			}
+			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
 		}
 	}

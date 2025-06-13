@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Utils;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -56,7 +57,7 @@ namespace BossRush.Contents.Items.Chest {
 			return list;
 		}
 
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (player.IsDebugPlayer()) {
 				GetArmorForPlayer(entitySource, player);

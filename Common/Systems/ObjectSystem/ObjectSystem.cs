@@ -44,6 +44,18 @@ public class ObjectSystem : ModSystem {
 			ModObjectSample[i].Load();
 		}
 	}
+	public static bool AnyModObjects(int type) {
+		for (int i = 0; i < Objects.Length; i++) {
+			ModObject modobject = Objects[i];
+			if (modobject == null) {
+				continue;
+			}
+			if (modobject.Type == type && modobject.active) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public override void PostUpdateWorld() {
 		for (int i = 0; i < Objects.Length; i++) {
 			ModObject modobject = Objects[i];

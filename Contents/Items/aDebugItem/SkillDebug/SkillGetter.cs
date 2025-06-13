@@ -21,7 +21,6 @@ internal class SkillGetter : ModItem {
 		Item.BossRushDefaultToConsume(32, 32);
 		Item.Set_DebugItem(true);
 	}
-	int counter = 0;
 	public override bool AltFunctionUse(Player player) {
 		return true;
 	}

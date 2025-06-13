@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using BossRush.Common.Utils;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	class HoneyLootBox : LootBoxBase {
@@ -47,7 +48,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		//public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (player.IsDebugPlayer()) {
 				GetArmorForPlayer(entitySource, player);

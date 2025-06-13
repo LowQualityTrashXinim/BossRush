@@ -31,9 +31,6 @@ internal class SpoilGetter : ModItem {
 class SpoilGetterUI : UIState {
 	UIPanel panel;
 	int currentSelectTemplate = -1;
-
-	private int linePosition;
-	private int maxLinePosition;
 	private const int MAX_LINES = 6;
 
 	List<SpoilsUIButton> btn_list;

@@ -438,6 +438,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += On_PlayerDrawLayers_DrawPlayer_RenderAllLayers;
 			On_Player.ApplyAttackCooldown += On_Player_ApplyAttackCooldown;
 			On_Player.SetMeleeHitCooldown += On_Player_SetMeleeHitCooldown;
+			On_Player.ItemCheck += On_Player_ItemCheck;
+		}
+
+		private void On_Player_ItemCheck(On_Player.orig_ItemCheck orig, Player self) {
+			orig(self);
 		}
 
 		private void On_Player_SetMeleeHitCooldown(On_Player.orig_SetMeleeHitCooldown orig, Player self, int npcIndex, int timeInFrames) {

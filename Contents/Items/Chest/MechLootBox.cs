@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Utils;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Utils;
 using BossRush.Contents.Items.Consumable.Spawner;
 using System.Collections.Generic;
 using Terraria;
@@ -34,7 +35,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {

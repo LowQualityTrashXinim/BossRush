@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -305,7 +306,8 @@ namespace BossRush {
 		}
 	}
 	/// <summary>
-	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats
+	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats<br/>
+	/// Some of the stats in this enum range will be explained to avoid confusion
 	/// </summary>
 	public enum PlayerStats : byte {
 		None,
@@ -328,7 +330,13 @@ namespace BossRush {
 		MaxMinion,
 		MaxSentry,
 		Thorn,
+		/// <summary>
+		/// This stat is for shield mechanic, for more information on shield mechanic check <see cref="Shield_GlobalItem"/>
+		/// </summary>
 		ShieldHealth,
+		/// <summary>
+		/// This stat is for shield mechanic, for more information on shield mechanic check <see cref="Shield_GlobalItem"/>
+		/// </summary>
 		ShieldEffectiveness,
 		AttackSpeed,
 		LifeSteal,
@@ -336,14 +344,31 @@ namespace BossRush {
 		MysteriousPotionEffectiveness,
 		EnergyCap,
 		EnergyRechargeCap,
+		/// <summary>
+		/// This is first strike damage dealt stat, dealing damage to enemy first time will activate this stat
+		/// </summary>
 		FullHPDamage,
+		/// <summary>
+		/// To be replaced
+		/// </summary>
 		StaticDefense,
+		/// <summary>
+		/// This is damage dealt base on debuff stat, the intake damage of enemy is depend on the enemy current amount of debuff * this stat value
+		/// </summary>
 		DebuffDamage,
+		/// <summary>
+		/// This is synergy weapon damage and weapon switching damage<br/>
+		/// <b>Synergy weaopn damage :</b> Increases synergy weapon damage<br/>
+		/// <b>Weapon switching damage :</b> Increases the current weapon damage and then remove the bonus increases after used, switching to another weapon will regain the bonus to that weapon until it is used
+		/// </summary>
 		SynergyDamage,
 		Iframe,
 		EnergyRecharge,
 		SkillDuration,
 		SkillCooldown,
+		/// <summary>
+		/// This stat will increases debuff duration when inflicting on enemy
+		/// </summary>
 		DebuffDurationInflict,
 		MeleeCritDmg,
 		RangeCritDmg,

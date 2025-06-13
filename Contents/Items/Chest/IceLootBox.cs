@@ -2,6 +2,7 @@
 using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class IceLootBox : LootBoxBase {
@@ -67,7 +68,7 @@ namespace BossRush.Contents.Items.Chest {
 				itempool.DropItemMisc.Add(ItemID.Beenade);
 			}
 		}
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedQueenBee) {
 				int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace, ItemID.WaspGun });
