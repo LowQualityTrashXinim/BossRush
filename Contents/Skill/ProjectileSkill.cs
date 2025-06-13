@@ -5,6 +5,7 @@ using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -618,6 +619,7 @@ public class EnergyBolt : ModSkill {
 		List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_Misc("Skill"), pos, toMouse, 3, ModContent.ProjectileType<EnergyBoltProjectile>(), damage, 2f);
 		foreach (var item in projlist) {
 			item.extraUpdates += 3;
+			item.GetGlobalProjectile<RoguelikeGlobalProjectile>().EnergyRegainOnHit += damage / 3;
 		}
 	}
 }
