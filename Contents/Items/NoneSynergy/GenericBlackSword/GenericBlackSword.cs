@@ -114,17 +114,26 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 				Main.dust[dust].noGravity = true;
 			}
 		}
+		public bool RightClickActivate = false;
 		public override void AI() {
 			if (Projectile.timeLeft <= 100 && Projectile.ai[1] == 0) {
 				Projectile.timeLeft += 314 * 2;
 			}
 			var player = Main.player[Projectile.owner];
-			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO && Projectile.ai[1] == 0) {
+			if (player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO || Main.mouseRight && Projectile.ai[1] == 0) {
+				if (Main.mouseRight) {
+					RightClickActivate = true;
+				}
 				Projectile.ai[1] = 1;
 				Projectile.velocity = Vector2.Zero;
+				player.GetModPlayer<GenericBlackSwordPlayer>().YouGotHitLMAO = false;
+				player.GetModPlayer<GenericBlackSwordPlayer>().VoidCount = 0;
 			}
 			if (Projectile.ai[1] == 1) {
 				Projectile.Center.LookForHostileNPC(out NPC closestNPC, 1500);
+				if (RightClickActivate) {
+					closestNPC = null;
+				}
 				if (++Projectile.ai[0] >= 150) {
 					if (closestNPC != null) {
 						if (Projectile.ai[0] == 150) {
@@ -132,11 +141,16 @@ namespace BossRush.Contents.Items.NoneSynergy.GenericBlackSword {
 							Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
 							Projectile.timeLeft = 400;
 						}
+						Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 					}
 					else {
-						Projectile.ai[0] = 150;
+						if (Projectile.ai[0] == 150) {
+							Projectile.damage *= 5;
+							Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 10f;
+							Projectile.timeLeft = 400;
+						}
+						Projectile.rotation = MathHelper.PiOver4 + (Main.MouseWorld - Projectile.Center).ToRotation();
 					}
-					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 				}
 				else {
 					if (closestNPC != null) {

@@ -21,6 +21,7 @@ using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Perks.BlessingPerk;
 using BossRush.Contents.Perks.RoguelikePerk;
 using BossRush.Common.Systems.Mutation;
+using Terraria.ModLoader.UI;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -807,9 +808,6 @@ namespace BossRush.Contents.Perks {
 			if (ContainsPoint(Main.MouseScreen)) {
 				Main.LocalPlayer.mouseInterface = true;
 			}
-			if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
-				Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
-			}
 			else {
 				if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
 					Main.instance.MouseText("");
@@ -824,11 +822,14 @@ namespace BossRush.Contents.Perks {
 		}
 		int Switch = 0;
 		public override void Draw(SpriteBatch spriteBatch) {
+			if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
+				UICommon.TooltipMouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
+			}
 			if (Info == "Glitch") {
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Red * .5f);
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Blue * .5f);
 			}
-			spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position(), null, Color.White * .45f);
+			spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position(), null, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
 			if (Switch != 0) {
 				float alpha = (100 - Switch) * 0.01f;
 				float size = 1 + Switch * .01f * .75f;
@@ -836,7 +837,7 @@ namespace BossRush.Contents.Perks {
 				Vector2 adjustment = origin - origin * size;
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + adjustment, null, Color.White * alpha, 0, Vector2.Zero, size, SpriteEffects.None, 0f);
 			}
-			base.Draw(spriteBatch);
+			spriteBatch.Draw(texture.Value, this.GetInnerDimensions().Position() + ahhlookingassdefaultbgsperktexture.Size() * .5f, null, Color.White, 0, texture.Size() * .5f, 1f, SpriteEffects.None, 0);
 		}
 	}
 }

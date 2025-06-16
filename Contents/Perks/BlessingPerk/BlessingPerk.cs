@@ -310,7 +310,7 @@ public class StarDustProjectile : ModProjectile {
 public class BlessingOfSynergy : Perk {
 	public override void SetDefaults() {
 		list_category.Add(PerkCategory.Starter);
-		textureString = BossRushTexture.ACCESSORIESSLOT;
+		textureString = BossRushUtils.GetTheSameTextureAsEntity<SynergyEnergy>();
 		CanBeStack = true;
 		StackLimit = 3;
 	}
@@ -354,7 +354,7 @@ public class BlessingOfPerk : Perk {
 		StackLimit = 999;
 	}
 	public override string ModifyToolTip() {
-		if (StackAmount(Main.LocalPlayer) == 10) {
+		if (StackAmount(Main.LocalPlayer) >= 10) {
 			return "don't you think it is enough now ?";
 		}
 		return base.ModifyToolTip();

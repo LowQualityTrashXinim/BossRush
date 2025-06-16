@@ -96,6 +96,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	/// By default, ai2 will contain index of gem
 	/// </summary>
 	public abstract class SwotaffProjectile : SynergyModProjectile {
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Type] = 20;
+			ProjectileID.Sets.TrailingMode[Type] = 2;
+		}
 		public override void SetDefaults() {
 			Projectile.width = 66;
 			Projectile.height = 66;
@@ -196,11 +200,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			}
 			BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], Projectile.width, Projectile.height);
 		}
+		public float DeaccelartionVelocityToward = 0;
 		private void SpinAtCursorAI(Player player) {
 			Item item = player.HeldItem;
 			Vector2 length = PosToGo - Projectile.Center;
 			if (Main.mouseLeft && !isAlreadyHeldDown && !isAlreadyReleased) {
 				isAlreadyHeldDown = true;
+				DeaccelartionVelocityToward += length.Length() / 10f;
 			}
 			if (isAlreadyHeldDown) {
 				countdownBeforeReturn = 10;
@@ -212,13 +218,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			countdownBeforeReturn -= countdownBeforeReturn > 0 ? 1 : 0;
 			AbsoluteCountDown -= AbsoluteCountDown > 0 ? 1 : 0;
 			if (countdownBeforeReturn <= 0 || AbsoluteCountDown <= 0 || item.type != projectileBelongToItem) {
-				length = player.Center - Projectile.Center;
+				length = player.Center - Projectile.Center + player.velocity;
+				DeaccelartionVelocityToward = length.Length();
+				if (DeaccelartionVelocityToward > 20) {
+					DeaccelartionVelocityToward = 20;
+				}
 				float distanceTo = length.Length();
 				if (distanceTo < 60) {
 					Projectile.Kill();
 				}
 			}
-			Projectile.velocity = (length.SafeNormalize(Vector2.Zero) * length.Length() + player.velocity).LimitedVelocity(20);
+			Projectile.velocity = (length.SafeNormalize(Vector2.Zero) * DeaccelartionVelocityToward);
+			DeaccelartionVelocityToward *= .9f;
 			Projectile.rotation += MathHelper.ToRadians(15);
 			Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
 			int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(velocity, 50), 0, 0, DustType);
@@ -281,6 +292,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Main.dust[dust].fadeIn = 1.5f;
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		}
+		public override bool PreDraw(ref Color lightColor) {
+			Color sampleColor = Color.White;
+			sampleColor.A = 0;
+			Projectile.DrawTrail(sampleColor);
+			return base.PreDraw(ref lightColor);
 		}
 	}
 	public class SwotaffPlayer : ModPlayer {

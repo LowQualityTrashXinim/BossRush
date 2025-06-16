@@ -25,6 +25,7 @@
 		public const string PingpongGradient = CommonTextureStringPattern + "PingpongGradient";
 		public const string LinesNoise = CommonTextureStringPattern + "LinesNoise";
 		public const string Gradient = CommonTextureStringPattern + "Gradient";
+		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";
 		/// <summary>
 		/// Width : 16 | Height : 16
 		/// </summary>

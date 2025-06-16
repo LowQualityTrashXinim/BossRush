@@ -643,8 +643,12 @@ Mods: {
 			}
 
 			SuperShortSword: {
-				Tooltip: Found peace with the size of your junk? Super...?
 				DisplayName: Super Shortsword
+				Tooltip:
+					'''
+					Found peace with the size of your junk? Super...?
+					Alt-attack hold to make all your shortsword focus to 1 direction, releases the attack to shoot the shortsword forward
+					'''
 			}
 
 			ShadowTrick: {
@@ -1804,9 +1808,9 @@ Mods: {
 				DisplayName: Genocidal Pact
 				Tooltip:
 					'''
-					Increases your first strike damage by 300%
-					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases
-					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
+					Increases your first strike damage by 300% but decreases your weapon damage by 25%
+					Killing a enemy will ingore the damage decreases and increases your attack damage by 10% and attack speed by 5%
+					You can stack the effect by keep killing enemies, the stack effect capped at 5 but can be over stack
 					'''
 			}
 
@@ -1869,7 +1873,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Muzzle made by wizard"
-					Weapon that uses bullet ammo will have their projectile convert to Arcane Bullet
+					Weapon that use bullet ammo will have their shot convert to Arcane Bullet
 					Arcane Bullet damage is affected by both range damage and magic damage
 					'''
 			}
@@ -2091,17 +2095,17 @@ Mods: {
 					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
 					in order to gain their uniquely personalized attributes.
 
-					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
+					[c/ffff52:Hover] over your weapon of choice before enchanting to view their perks.
 					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
 
 					[Augmentation]
-					Empower your accessories with up to 5 randomly-assigned effects by red>sacrificing an item of similar rarity<red.
-					yellow>The cost for empowering increases with each successful augmentation.<yellow
+					Empower your accessories with up to 5 randomly-assigned effects by [c/d92b2b:sacrificing an item of similar rarity.]
+					[c/ffff52:The cost for empowering increases with each successful augmentation.]
 
 					[Soulbound]
 					Bind a soul into your armor, inheriting its proprieting.
 					Once activated, the soul will level up based on the total damage dealt with the armor piece equipped.
-					red>Once activated, you cannot dismantle a soul for later use.<red
+					[c/d92b2b:Once activated, you cannot dismantle a soul for later use.]
 					'''
 			}
 
@@ -2670,8 +2674,13 @@ Mods: {
 			}
 
 			GenericBlackSword: {
-				DisplayName: Generic Black Sword
-				Tooltip: "[Community Content Mod : Crossover Weapon]"
+				DisplayName: Samanya
+				Tooltip:
+					'''
+					[Community Content Mod : Crossover Weapon]
+					Weapon of black matter, however the shape is rather generic
+					Alt-attack to make all void sword orbitting around you shoot toward cursor
+					'''
 			}
 
 			SmartNeoDynamite: {
@@ -3346,6 +3355,11 @@ Mods: {
 			Buff_VortexBlessing: {
 				DisplayName: Buff_ Vortex Blessing
 				Description: Mods.BossRush.Buffs.Buff_VortexBlessing.Description
+			}
+
+			DebugStatus: {
+				DisplayName: Debug Status
+				Description: Mods.BossRush.Buffs.DebugStatus.Description
 			}
 		}
 

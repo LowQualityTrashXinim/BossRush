@@ -5,7 +5,7 @@ SuppliesDrop: {
 
 GiftOfRelic: {
 	DisplayName: Gift of Relic
-	Description: Gift you a relic container
+	Description: Grant you a relic
 }
 
 StrokeOfLuck: {

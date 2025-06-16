@@ -193,20 +193,20 @@ MeteorShower: {
 
 SpiritBurst: {
 	DisplayName: Spirit Burst
-	Description: 
-	'''
-	Bursts out a powerful spirit that homes in on the nearest enemy.
-	Have 10% chance to halve cool down
-	'''
+	Description:
+		'''
+		Bursts out a powerful spirit that homes in on the nearest enemy.
+		Have 10% chance to halve cool down
+		'''
 }
 
 EnergyBolt: {
 	DisplayName: Energy Bolt
-	Description: 
-	'''
-	Shoot out fast moving energy orb
-	Increases skill cost and damage for each active skill after this skill
-	'''
+	Description:
+		'''
+		Shoot out fast moving energy orb
+		Increases skill cost and damage for each active skill after this skill
+		'''
 }
 
 InfiniteManaSupply: {
@@ -316,11 +316,11 @@ BulletHell: {
 
 DebugCommand: {
 	DisplayName: Debug command
-	Description: 
-	'''
-	Deal 2000 damage to every npc on screen on activate skill
-	Grant you completely immunity to all debuff ( including potion sickness ) for 1/10 of skill duration
-	'''
+	Description:
+		'''
+		Deal 2000 damage to every npc on screen on activate skill
+		Grant you completely immunity to all debuff ( including potion sickness ) for 1/10 of skill duration
+		'''
 }
 
 LucidNightmares: {
