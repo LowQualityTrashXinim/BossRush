@@ -26,6 +26,8 @@
 		public const string LinesNoise = CommonTextureStringPattern + "LinesNoise";
 		public const string Gradient = CommonTextureStringPattern + "Gradient";
 		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";
+		public const string Eye = CommonTextureStringPattern + "EyeOutline";
+		public const string EyePupil = CommonTextureStringPattern + "EyePupil";
 		/// <summary>
 		/// Width : 16 | Height : 16
 		/// </summary>

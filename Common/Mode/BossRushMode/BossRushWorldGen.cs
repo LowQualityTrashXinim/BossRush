@@ -350,7 +350,6 @@ namespace BossRush.Common.ChallengeMode {
 			spritebatch.End();
 			spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 		}
-
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]

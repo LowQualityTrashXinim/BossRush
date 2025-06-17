@@ -16,12 +16,6 @@ namespace BossRush {
 			}
 			return false;
 		}
-		[Obsolete]
-		public static void SpawnHostileProjectile(Vector2 position, Vector2 velocity, int ProjectileType, int damage, float knockback) {
-			int projectile = Projectile.NewProjectile(null, position, velocity, ProjectileType, damage, knockback);
-			Main.projectile[projectile].hostile = true;
-			Main.projectile[projectile].friendly = false;
-		}
 		public static void FillProjectileOldPosAndRot(this Projectile projectile) {
 			for (int i = 0; i < projectile.oldPos.Length; i++) {
 				projectile.oldPos[i] = projectile.position - projectile.velocity.SafeNormalize(Vector2.UnitY) * i;
@@ -61,11 +55,12 @@ namespace BossRush {
 		}
 		public static void DrawTrailWithoutAlpha(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
 			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+			SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {
 				for (int k = 0; k < projectile.oldPos.Length; k++) {
-					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
 					Color color = lightColor * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
+					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
+					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, effect, 0);
 				}
 			}
 			else {
@@ -73,7 +68,7 @@ namespace BossRush {
 					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
 					Color color = lightColor * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
 					float scaling = Math.Clamp(k * ManualScaleAccordinglyToLength, 0, 10f);
-					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.oldRot[k], origin, projectile.scale - scaling, SpriteEffects.None, 0);
+					Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.oldRot[k], origin, projectile.scale - scaling, effect, 0);
 				}
 			}
 		}

@@ -140,7 +140,7 @@ public class ModObject : Entity, IModType, ILoadable {
 		ModObject obj = ObjectSystem.Objects[whoAmI];
 		obj.SetDefaults();
 		obj.active = true;
-		obj.position = position - obj.Size * .5f;
+		obj.position = position;
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
 		return obj;

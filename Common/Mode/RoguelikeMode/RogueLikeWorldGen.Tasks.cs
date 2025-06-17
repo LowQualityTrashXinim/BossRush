@@ -1,22 +1,26 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using BossRush.Common.ChallengeMode;
+using BossRush.Common.General;
+using BossRush.Common.Systems.ObjectSystem;
+using BossRush.Common.Utils;
+using BossRush.Texture;
+using Microsoft.Build.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StructureHelper.API;
+using StructureHelper.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Utils;
-using Terraria.WorldBuilding;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.Reflection;
-using BossRush.Common.General;
-using System;
 using Terraria.Utilities;
-using System.Diagnostics;
-using System.Text;
-using StructureHelper.Models;
-using StructureHelper.API;
-using Microsoft.Build.Tasks;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
@@ -160,8 +164,37 @@ public partial class RogueLikeWorldGen : ModSystem {
 		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
 	}
+	public override void PostUpdateEverything() {
+		if (!Main.LocalPlayer.active) {
+			return;
+		}
+		if (EyeRoom.X != 0 && EyeRoom.Y != 0) {
+			if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<EyeCreature>())) {
+				ModObject.NewModObject(EyeRoom.Center().ToWorldCoordinates(), Vector2.Zero, ModObject.GetModObjectType<EyeCreature>());
+			}
+		}
+	}
+}
+public class EyeCreature : ModObject {
+	public override void SetDefaults() {
+		timeLeft = 9999;
+	}
+	public override void AI() {
+		timeLeft = 9999;
+	}
+	public override void Draw(SpriteBatch spritebatch) {
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.Eye).Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawpos = position - Main.screenPosition;
+		spritebatch.Draw(texture, drawpos, null, Color.White, 0, origin, 2, SpriteEffects.None, 1);
+		Texture2D texture2 = ModContent.Request<Texture2D>(BossRushTexture.EyePupil).Value;
+		Vector2 origin2 = texture2.Size() * .5f;
+		Vector2 drawpos2 = position - Main.screenPosition;
+		spritebatch.Draw(texture2, drawpos2, null, Color.White, 0, origin2, 2, SpriteEffects.None, 1);
+	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
+	public Rectangle EyeRoom = new Rectangle();
 	/// <summary>
 	/// Convert from <see cref="Bid"/> biome area id to char type
 	/// </summary>
@@ -229,6 +262,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Main.spawnTileX = GridPart_X * 11;
 		Main.spawnTileY = GridPart_Y * 14;
 
+		//Forest spawn zone
 		ZoneToBeIgnored.Add(new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200));
 
 		Stopwatch watch = new();
@@ -370,9 +404,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 
 		watch.Stop();
 		Mod.Logger.Info(watch.ToString());
+
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.TryGetValue(RogueLikeWorldGenSystem.FileDestination + "Watcher", out List<GenPassData> datalist)) {
+			WatcherStructure = datalist;
+		}
 	}
+	List<GenPassData> WatcherStructure = new();
 	[Task]
-	public void AddAltar() {
+	public void Create_Biome() {
 		Stopwatch watch = new();
 		watch.Start();
 		rect = GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 24);
@@ -695,37 +735,33 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	[Task]
+	public void Generate_EyeRoom() {
+		Point point = new((int)(Main.maxTilesX * Main.rand.NextFloat(.7f, .9f)), (int)(Main.maxTilesY * Main.rand.NextFloat(.7f, .9f)));
+		StructureData data = Generator.GetStructureData("Assets/Watcher", Mod);
+		Generator.GenerateFromData(data, new(point.X - data.width / 2, point.Y + data.height / 2));
+		EyeRoom = new(point.X - data.width / 2, point.Y + data.height / 2, data.width, data.height);
+	}
+	[Task]
 	public void Generate_PostWorld() {
 		Rectangle goldRoomSize = new(0, 0, 150, 150);
 		int trialLimit = 3;
+		bool HasGenerated = false;
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				if (CanGenerateGoldRoom(i, j)) {
 					continue;
 				}
-				//This is the end of gold room generation
-				//This is trial generation
-				if (Rand.NextBool(125000) && trialLimit > 0) {
-					bool canplace = true;
-					if (canplace) {
-						Point position = new(i / GridPart_X, j / GridPart_Y);
-						int WorldIndex = MapIndex(position.X, position.Y);
-						string zone = BiomeMapping[WorldIndex];
-						if (zone != null) {
-							if (!ZoneToBeIgnored[0].Contains(i, j)
-								&& !zone.Contains((char)Bid.JungleTemple)
-								 && !zone.Contains((char)Bid.Dungeon)) {
-								Generate_Trial(i, j);
-								trialLimit--;
-							}
-						}
-					}
-				}
 			}
 		}
 	}
-	
+
 	Rectangle goldRoomSize = new(0, 0, 150, 150);
+	/// <summary>
+	/// Return true if the method successfully generated gold room
+	/// </summary>
+	/// <param name="i"></param>
+	/// <param name="j"></param>
+	/// <returns></returns>
 	public bool CanGenerateGoldRoom(int i, int j) {
 		if (i > 100 && i < Main.maxTilesX - 100 && j > 100 && j < Main.maxTilesY - 100) {
 			//This is where we generate our gold room via code
@@ -757,6 +793,15 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 		return false;
+	}
+	public bool GenerateWatcher(int i, int j) {
+		foreach (var item in ZoneToBeIgnored) {
+			if (item.Contains(i, j)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 	public void Generate_Trial(int X, int Y) {
 		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");

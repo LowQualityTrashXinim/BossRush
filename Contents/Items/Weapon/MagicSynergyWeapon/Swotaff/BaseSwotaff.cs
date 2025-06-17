@@ -296,7 +296,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		public override bool PreDraw(ref Color lightColor) {
 			Color sampleColor = Color.White;
 			sampleColor.A = 0;
-			Projectile.DrawTrail(sampleColor);
+			Projectile.DrawTrailWithoutAlpha(sampleColor);
 			return base.PreDraw(ref lightColor);
 		}
 	}

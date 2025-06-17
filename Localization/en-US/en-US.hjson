@@ -2687,6 +2687,11 @@ Mods: {
 				DisplayName: Smart Neo Dynamite
 				Tooltip: ""
 			}
+
+			MasterSword: {
+				DisplayName: Master Sword
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

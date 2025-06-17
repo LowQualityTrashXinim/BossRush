@@ -141,7 +141,7 @@ namespace BossRush.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Projectile.wet = false;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
-			Projectile.extraUpdates = 6;
+			Projectile.extraUpdates = 5;
 		}
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;

@@ -88,6 +88,6 @@ internal class StarWarSwordProjectile : ModProjectile {
 			color.A = (byte)Projectile.alpha;
 			Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], origin, Projectile.scale, SpriteEffects.None, 0);
 		}
-		return true;
+		return false;
 	}
 }
