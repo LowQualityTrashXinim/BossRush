@@ -154,6 +154,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		tag["BiomeType"] = Biome.Keys.ToList();
 		tag["BiomeArea"] = Biome.Values.ToList();
 		tag["TrialArea"] = TrialArea;
+		tag["EyeRoom"] = EyeRoom;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		var Type = tag.Get<List<short>>("BiomeType");
@@ -163,6 +164,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		TrialArea = tag.Get<List<Rectangle>>("TrialArea");
+		EyeRoom = tag.Get<Rectangle>("EyeRoom");
 	}
 	public override void PostUpdateEverything() {
 		if (!Main.LocalPlayer.active) {
@@ -793,15 +795,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 		}
 		return false;
-	}
-	public bool GenerateWatcher(int i, int j) {
-		foreach (var item in ZoneToBeIgnored) {
-			if (item.Contains(i, j)) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 	public void Generate_Trial(int X, int Y) {
 		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");

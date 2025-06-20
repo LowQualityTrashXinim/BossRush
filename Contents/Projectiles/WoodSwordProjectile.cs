@@ -19,8 +19,8 @@ internal class SwordProjectile : ModProjectile {
 		Projectile.usesLocalNPCImmunity = true;
 	}
 	public int ItemIDtextureValue = ItemID.WoodenSword;
-	Vector2 directionToMouse = Vector2.Zero;
 	Player player;
+	Vector2 directionToMouse = Vector2.Zero;
 	float outrotation = 0;
 	int directionLooking = 1;
 	Vector2 oldCenter = Vector2.Zero;

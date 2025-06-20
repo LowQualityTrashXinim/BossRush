@@ -81,7 +81,7 @@ public class TheOrbitProjectile : SynergyModProjectile {
 			Vector2 drawpos = Projectile.position - Main.screenPosition + origin;
 			Main.EntitySpriteDraw(texture, drawpos, null, new(255, 255, 255, 0), Projectile.rotation, origin, 1.3f, SpriteEffects.None);
 		}
-		Projectile.DrawTrail(lightColor, .05f);
+		Projectile.DrawTrail(lightColor * .25f, .05f);
 		return base.PreDraw(ref lightColor);
 	}
 }

@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.CorruptedRebirth;
 
 public class CorruptedRebirth : SynergyModItem {
 	public override void SetDefaults() {
-		Item.BossRushDefaultRange(32, 32, 30, 1f, 5, 25, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 12, false, AmmoID.Arrow);
+		Item.BossRushDefaultRange(32, 32, 30, 1f, 4, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 12, false, AmmoID.Arrow);
 		Item.UseSound = SoundID.Item5;
 		Item.reuseDelay = 30;
 	}
@@ -106,9 +106,6 @@ public class AcidArrow : SynergyModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.WoodenArrowFriendly);
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 6;
-		Projectile.penetrate = 3;
-		Projectile.usesLocalNPCImmunity = true;
-		Projectile.localNPCHitCooldown = 20;
 		Projectile.timeLeft = 120;
 		Projectile.friendly = true;
 		Projectile.tileCollide = true;
@@ -197,6 +194,13 @@ public class CorruptedRebirthBowObject : ModObject {
 	}
 	public override void AI() {
 		var player = Main.LocalPlayer;
+		if (!position.IsCloseToPosition(player.Center, 150)) {
+			velocity += (player.Center - position).SafeNormalize(Vector2.Zero) * .1f;
+			velocity = velocity.LimitedVelocity(5f);
+		}
+		else {
+			velocity *= .85f;
+		}
 		var item = player.HeldItem;
 		var vel = (Main.MouseWorld - Center).SafeNormalize(Vector2.Zero);
 		direction = BossRushUtils.DirectionFromEntityAToEntityB(position.X, Main.MouseWorld.X);

@@ -187,11 +187,6 @@ namespace BossRush.Common.Global {
 					yield return new Item(ModContent.ItemType<TransmuteTablet>());
 					yield return new Item(ModContent.ItemType<SkillOrb>());
 				}
-				if (ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest) {
-					yield return new Item(ItemID.CopperPickaxe);
-					yield return new Item(ItemID.CopperAxe);
-				}
-
 				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
 				}

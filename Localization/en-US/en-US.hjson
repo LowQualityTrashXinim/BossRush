@@ -365,6 +365,9 @@ Mods: {
 			GenericBlackSwordSlash.DisplayName: Generic Black Sword Slash
 			SmartNeoDynamiteExplosion.DisplayName: Smart Neo Dynamite Explosion
 			StarWarSwordProjectile.DisplayName: Star War Sword Projectile
+			Trial_IronBroadsword.DisplayName: Trial_ Iron Broadsword
+			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
+			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
 		}
 
 		NPCs: {
@@ -2629,7 +2632,12 @@ Mods: {
 
 			CorruptedRebirth: {
 				DisplayName: Corrupted Rebirth
-				Tooltip: ""
+				Tooltip:
+					'''
+					Replace wooden arrow with acid arrow which pernamently decreases target defenses
+					Occasionally spawn acid bubble which home in to closest enemy
+					Every 10th shot summon a ghost version of the bow which breath cursed flame
+					'''
 			}
 
 			EnchantedCopperSword: {
@@ -2690,6 +2698,11 @@ Mods: {
 
 			MasterSword: {
 				DisplayName: Master Sword
+				Tooltip: ""
+			}
+
+			OldSkullRevolver: {
+				DisplayName: Old Skull Revolver
 				Tooltip: ""
 			}
 		}
@@ -3366,6 +3379,11 @@ Mods: {
 				DisplayName: Debug Status
 				Description: Mods.BossRush.Buffs.DebugStatus.Description
 			}
+
+			CursedStatus: {
+				DisplayName: Cursed Status
+				Description: Mods.BossRush.Buffs.CursedStatus.Description
+			}
 		}
 
 		Configs: {
@@ -3380,6 +3398,11 @@ Mods: {
 						Boss Rush mode world setting are enable
 						Offer custom boss arena World generation
 						'''
+				}
+
+				RoguelikeMode: {
+					Label: "[WIP] Roguelike Mode"
+					Tooltip: ""
 				}
 
 				SynergyFeverMode: {
@@ -3398,7 +3421,7 @@ Mods: {
 						'''
 						Enable this to activate vanilla terraria overhaul
 						- It will change some weapon behavior
-						- Rework how most vanilla weapon work to fit the mod
+						- Rework how most vanilla item work to fit the mod
 						- Rebalancing vanilla item
 						'''
 				}
@@ -3414,20 +3437,6 @@ Mods: {
 						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
 						- Boss can sometime become elite
-						'''
-				}
-
-				Ascension: {
-					Label: Ascension ( NOT IMPLEMENTED !)
-					Tooltip:
-						'''
-						"So you like more pain regardless of reward"
-						This mode will not treat you fair, expect hundred or even thousand of attempts
-						Extremely not recommend for any Player
-						- Enemy are even more brutal
-						- Boss will gain 5 time the hp
-						- Nightmare mode are enable by default
-						- Special debuff now can be inflict by enemy and projectile
 						'''
 				}
 
@@ -3532,11 +3541,6 @@ Mods: {
 						[-] Your right to access enchantment system is revoked
 						Instead weapon enchantment have 20% to appear on your weapon
 						'''
-				}
-
-				WorldGenRLSettingTest: {
-					Label: World Gen R L Setting Test
-					Tooltip: ""
 				}
 
 				HellishEndeavour: {

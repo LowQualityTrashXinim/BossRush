@@ -9,6 +9,7 @@ namespace BossRush.Common.General {
 		public bool RoguelikeOverhaul { get; set; }
 
 		[Header($"GameModeHeader")]
+		public bool RoguelikeMode { get; set; }
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
 		[DefaultValue(false)]
@@ -19,9 +20,6 @@ namespace BossRush.Common.General {
 		public bool Nightmare { get; set; }
 		[DefaultValue(false)]
 		public bool TotalRNG { get; set; }
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool Ascension { get; set; }
 		//Replace Cursed skull
 		[ReloadRequired]
 		[DefaultValue(false)]
@@ -66,7 +64,6 @@ namespace BossRush.Common.General {
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
 		public bool TemplateTest { get; set; }
-		public bool WorldGenRLSettingTest { get; set; }
 		[Header($"GameHeader")]
 		public bool HoldShift { get; set; }
 	}
