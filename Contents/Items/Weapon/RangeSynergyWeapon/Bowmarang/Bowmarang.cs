@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 	internal class Bowmarang : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WoodYoyo);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WoodYoyo, $"[i:{ItemID.WoodYoyo}] Bowmerang are accompany with a wood yoyo");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(32, 64, 15, 3f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
@@ -18,9 +18,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 			Item.UseSound = SoundID.Item7;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WoodYoyo)) {
-				tooltips.Add(new(Mod, Set_TooltipName(ItemID.WoodYoyo), $"[i:{ItemID.WoodYoyo}] Bowmerang are accompany with a wood yoyo"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WoodYoyo);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<BowmarangP>(), damage, knockback, player.whoAmI, 1, type);

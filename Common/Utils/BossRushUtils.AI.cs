@@ -64,32 +64,6 @@ namespace BossRush {
 				projectile.velocity.Y = -0.05f;
 			}
 		}
-		/// <summary>
-		/// Find the closest NPC to the player
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="distance"></param>
-		/// <param name="npc"></param>
-		/// <returns>
-		/// Return true if found and return NPC that is closest to player<br/>
-		/// Return false if not found any NPC and NPC set to null
-		/// </returns>
-		public static bool ClosestToPlayer(this Projectile projectile, Player player, float distance, out NPC npc) {
-			LookForHostileNPC(player.Center, out List<NPC> npclocal, distance);
-			for (int i = 0; i < npclocal.Count; i++) {
-				if (!npclocal[i].CanBeChasedBy()) {
-					continue;
-				}
-				float between = Vector2.DistanceSquared(npclocal[i].Center, player.Center);
-				bool closest = Vector2.DistanceSquared(projectile.Center, npclocal[i].Center) > between;
-				if (closest) {
-					npc = npclocal[i];
-					return true;
-				}
-			}
-			npc = null;
-			return false;
-		}
 		public static void ProjectileSwordSwingAI(Projectile projectile, Player player, Vector2 PositionFromMouseToPlayer, int swing = 1, int swingdegree = 120) {
 			if (projectile.timeLeft > player.itemAnimationMax) {
 				projectile.timeLeft = player.itemAnimationMax;
@@ -97,7 +71,10 @@ namespace BossRush {
 			player.heldProj = projectile.whoAmI;
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			if (swing == -1) {
-				percentDone = 1 - percentDone;
+				percentDone = OutExpo(1 - percentDone, 11);
+			}
+			else if (swing == 1) {
+				percentDone = InExpo(percentDone, 11);
 			}
 			percentDone = Math.Clamp(percentDone, 0, 1);
 			projectile.spriteDirection = player.direction;
@@ -105,7 +82,7 @@ namespace BossRush {
 			float angle = MathHelper.ToRadians(baseAngle + swingdegree) * player.direction;
 			float start = baseAngle + angle;
 			float end = baseAngle - angle;
-			float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			projectile.rotation = currentAngle;
 			projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
 			projectile.velocity.X = player.direction;
@@ -125,15 +102,6 @@ namespace BossRush {
 			(int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
 			hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 		}
-		/// <summary>
-		/// Please applied the rotation to that is not <see cref="Projectile.rotation"/>
-		/// </summary>
-		/// <param name="hitbox"></param>
-		/// <param name="player"></param>
-		/// <param name="rotation"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="offset"></param>
 		public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, float rotation, int width, int height, float offset = 0) {
 			float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
 			Vector2 handPos = Vector2.UnitX.RotatedBy(rotation);
@@ -146,15 +114,6 @@ namespace BossRush {
 			(int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
 			hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 		}
-		/// <summary>
-		/// Please applied the rotation to that is not <see cref="Projectile.rotation"/>
-		/// </summary>
-		/// <param name="hitbox"></param>
-		/// <param name="player"></param>
-		/// <param name="rotation"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="offset"></param>
 		public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Vector2 position, float rotation, int width, int height, float offset = 0) {
 			float length = new Vector2(width, height).Length();
 			Vector2 handPos = Vector2.UnitX.RotatedBy(rotation);

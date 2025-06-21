@@ -19,58 +19,48 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
-using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Annihiliation;
+using BossRush.Common.Systems.IOhandle;
+using BossRush.Common.ChallengeMode;
 
 namespace BossRush.Contents.Items.Weapon {
+	public struct SynergyBonus {
+		public int ItemID;
+		public bool Active;
+		public string Tooltip = "";
+
+		public SynergyBonus(int id) {
+			ItemID = id;
+		}
+		public SynergyBonus(int id, string tooltip) {
+			ItemID = id;
+			Tooltip = tooltip;
+		}
+	}
 	/// <summary>
 	/// This is synergy bonus system, this system will automatically handle most of the bonus action for you<br/>
 	/// No need to manual set, nor anything, you only need to check whenever or not if a bonus is active or not
 	/// </summary>
 	public class SynergyBonus_System : ModSystem {
-		public static Dictionary<int, Dictionary<int, bool>> Dictionary_SynergyBonus = new();
-		public static Dictionary<int, Dictionary<int, List<int>>> Dictionary_SynergyGroupBonus = new();
+		public static Dictionary<int, List<SynergyBonus>> Dictionary_SynergyBonus = new();
 		public override void Load() {
 			Dictionary_SynergyBonus = new();
-			Dictionary_SynergyGroupBonus = new();
 		}
 		public override void Unload() {
 			Dictionary_SynergyBonus = null;
-			Dictionary_SynergyGroupBonus = null;
 		}
-		public static void Add_SynergyBonus(int SynergyItemID, int ItemID) {
+		public static void Add_SynergyBonus(int SynergyItemID, int ItemID, string tooltip = "") {
 			if (Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
-				if (Dictionary_SynergyBonus[SynergyItemID].ContainsKey(ItemID)) {
+				if (Dictionary_SynergyBonus[SynergyItemID].Select(b => b.ItemID).ToArray().Contains(ItemID)) {
 					return;
 				}
-				Dictionary_SynergyBonus[SynergyItemID].Add(ItemID, false);
+				Dictionary_SynergyBonus[SynergyItemID].Add(new(ItemID, tooltip));
 				return;
 			}
-			Dictionary_SynergyBonus.Add(SynergyItemID, new() { { ItemID, false } });
-		}
-		public static void Add_SynergyGroupBonus(int SynergyItemID, int KeyItemID, List<int> GroupItemID) {
-			if (Dictionary_SynergyGroupBonus.ContainsKey(SynergyItemID)) {
-				if (Dictionary_SynergyGroupBonus[SynergyItemID].ContainsKey(KeyItemID)) {
-					return;
-				}
-				Dictionary_SynergyGroupBonus[SynergyItemID].Add(KeyItemID, GroupItemID);
-				return;
-			}
-			Dictionary_SynergyGroupBonus.Add(SynergyItemID, new() { { KeyItemID, GroupItemID } });
-		}
-		/// <summary>
-		/// Set your key item here, not synergy item
-		/// </summary>
-		/// <param name="ItemID"></param>
-		/// <returns></returns>
-		public static List<int> SafeGet_SynergyGroupBonus(int SynergyItemID, int KeyItemID) {
-			if (Dictionary_SynergyGroupBonus.ContainsKey(SynergyItemID)) {
-				if (Dictionary_SynergyGroupBonus[SynergyItemID].ContainsKey(KeyItemID))
-					return Dictionary_SynergyGroupBonus[SynergyItemID][KeyItemID];
-			}
-			return new();
+			Dictionary_SynergyBonus.Add(SynergyItemID, new() { { new(ItemID, tooltip) } });
 		}
 		/// <summary>
 		/// Check if the synergy bonus is active or not<br/>
@@ -83,10 +73,39 @@ namespace BossRush.Contents.Items.Weapon {
 			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
 				return false;
 			}
-			if (!Dictionary_SynergyBonus[SynergyItemID].ContainsKey(ItemID)) {
-				return false;
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				SynergyBonus bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				if (bonus.ItemID == ItemID) {
+					return bonus.Active;
+				}
 			}
-			return Dictionary_SynergyBonus[SynergyItemID][ItemID];
+			return false;
+		}
+		public static string Get_SynergyBonusTooltip(int SynergyItemID, int itemID) {
+			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
+				return "Synergy item not found !";
+			}
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				SynergyBonus bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				if (bonus.ItemID == itemID) {
+					return bonus.Tooltip;
+				}
+			}
+			return "Synergy bonus item not found !";
+		}
+		public static void Write_SynergyTooltip(ref List<TooltipLine> lines, SynergyModItem moditem, int itemID) {
+			int SynergyItemID = moditem.Type;
+			if (!Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
+				return;
+			}
+			SynergyBonus bonus = new();
+			for (int i = 0; i < Dictionary_SynergyBonus[SynergyItemID].Count; i++) {
+				if (Dictionary_SynergyBonus[SynergyItemID][i].ItemID == itemID) {
+					bonus = Dictionary_SynergyBonus[SynergyItemID][i];
+				}
+			}
+			if (bonus.Active)
+				lines.Add(new(moditem.Mod, moditem.Set_TooltipName(itemID), bonus.Tooltip));
 		}
 
 		public bool GodAreEnraged = false;
@@ -103,7 +122,7 @@ namespace BossRush.Contents.Items.Weapon {
 		private void GodDecision(Player player) {
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 				return;
-			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || player.GetModPlayer<PlayerStatsHandle>().CanDropSynergyEnergy)
 				return;
 			if (player.IsDebugPlayer())
 				return;
@@ -148,7 +167,6 @@ namespace BossRush.Contents.Items.Weapon {
 			if (Player.HeldItem.type != ModContent.ItemType<Annihiliation>()) {
 				Annihiliation_Counter = 0;
 			}
-
 			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;
 			}
@@ -156,28 +174,16 @@ namespace BossRush.Contents.Items.Weapon {
 			if (!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
 				return;
 			}
-			int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
+			int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Count;
 			for (int l = 0; l < SynergyBonusLength; l++) {
-				int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
+				int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][l].ItemID;
 				bool HasItem = Player.HasItem(itemIDBonus);
 				if (HasItem) {
 					SynergyBonus++;
 				}
-				else {
-					if (SynergyBonus_System.Dictionary_SynergyGroupBonus.ContainsKey(synergyItem)
-						&& SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem].ContainsKey(itemIDBonus)) {
-						List<int> keyItem = SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem][itemIDBonus];
-						foreach (var item in keyItem) {
-							bool HasAnyGroupItem = SynergyBonus_System.SafeGet_SynergyGroupBonus(synergyItem, item).Where(Player.HasItem).Any();
-							if (HasAnyGroupItem) {
-								SynergyBonus++;
-								HasItem = HasAnyGroupItem;
-								break;
-							}
-						}
-					}
-				}
-				SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
+				SynergyBonus bonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][l];
+				bonus.Active = HasItem;
+				SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][l] = bonus;
 			}
 		}
 	}
@@ -194,9 +200,17 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
 		public bool OverrideVanillaEffect = false;
+		public override void OnCreated(Item item, ItemCreationContext context) {
+			if (item.ModItem == null) {
+				return;
+			}
+			if (item.ModItem is SynergyModItem && context is RecipeItemCreationContext) {
+				LootBoxBase.AmmoForWeapon(Main.LocalPlayer, item.type);
+			}
+		}
 		public override void SetDefaults(Item entity) {
 		}
-		public float CriticalDamage = 0;
+		public float CriticalDamage;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (UniversalSystem.EnchantingState) {
 				return;
@@ -246,10 +260,18 @@ namespace BossRush.Contents.Items.Weapon {
 				NameLine.Text += " [Advanced]";
 			}
 		}
+		public override void PostUpdate(Item item) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && ModContent.GetInstance<BossRushWorldGen>().BossRushWorld) {
+				if (!Main.LocalPlayer.dead && item.type != ItemID.Heart && item.type != ItemID.Star && item.position.IsCloseToPosition(Main.LocalPlayer.Center, 1000)) {
+					item.velocity = (Main.LocalPlayer.Center - item.Center).SafeNormalize(Vector2.Zero) * 5;
+				}
+			}
+		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			if (item.ModItem == null) {
 				return true;
 			}
+			//Prevent possible conflict, basically hardcoding to make it so that it only work for item belong to this mod
 			if (item.ModItem.Mod != Mod) {
 				return true;
 			}
@@ -339,10 +361,33 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void Synergy_ModifyWeaponDamage(Player player, ref StatModifier damage) { }
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
-			base.HoldItem(player);
-			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-			if (modplayer.SynergyBonusBlock) {
+			string internalItemName = Item.ModItem.Name;
+			if (!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(Type)) {
 				return;
+			}
+			List<SynergyBonus> listBonus = SynergyBonus_System.Dictionary_SynergyBonus[Type];
+			if (!RoguelikeData.SynergyProgressTracker.ContainsKey(internalItemName)) {
+				RoguelikeData.SynergyProgressTracker.Add(internalItemName, new());
+				foreach (SynergyBonus bonus in listBonus) {
+					SynergyBonus defaultBonus = new(bonus.ItemID);
+					RoguelikeData.SynergyProgressTracker[internalItemName].Add(defaultBonus);
+				}
+			}
+			else {
+				if (RoguelikeData.SynergyProgressTracker[internalItemName].Count != listBonus.Count) {
+					RoguelikeData.SynergyProgressTracker[internalItemName].Clear();
+					foreach (SynergyBonus bonus in listBonus) {
+						SynergyBonus defaultBonus = new(bonus.ItemID);
+						RoguelikeData.SynergyProgressTracker[internalItemName].Add(defaultBonus);
+					}
+				}
+				for (int i = 0; i < listBonus.Count; i++) {
+					if (listBonus[i].Active) {
+						SynergyBonus bonus = listBonus[i];
+						bonus.Tooltip = "";
+						RoguelikeData.SynergyProgressTracker[internalItemName][i] = bonus;
+					}
+				}
 			}
 		}
 		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -420,8 +465,8 @@ namespace BossRush.Contents.Items.Weapon {
 			if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1) {
 				return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 			}
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
+			Main.instance.LoadItem(Type);
+			Texture2D texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);

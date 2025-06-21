@@ -6,6 +6,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 	internal class ModStatsDebugger : ModItem {
@@ -16,7 +17,7 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
-			var chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			var chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			var drugplayer = Main.LocalPlayer.GetModPlayer<WonderDrugPlayer>();
 			var nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
 			var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();

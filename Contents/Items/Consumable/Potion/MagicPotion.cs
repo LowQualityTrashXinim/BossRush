@@ -1,12 +1,7 @@
-﻿using BossRush.Common.Global;
+﻿using Terraria;
 using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
-using Terraria;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Consumable.Potion;
 

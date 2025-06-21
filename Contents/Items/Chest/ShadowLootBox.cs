@@ -6,6 +6,7 @@ using BossRush.Common.Utils;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Common.Systems;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	class ShadowLootBox : LootBoxBase {
@@ -28,7 +29,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.rare = ItemRarityID.LightPurple;
 		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			int RandomNumber = Main.rand.Next(7);
 			int Random2 = Main.rand.Next(3);

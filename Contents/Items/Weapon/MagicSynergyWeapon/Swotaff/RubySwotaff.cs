@@ -17,6 +17,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 				.Register();
 		}
 	}
+	public class RubySwotaffPlayer : ModPlayer {
+		public override void UpdateEquips() {
+			if (Player.IsHeldingModItem<RubySwotaff>()) {
+				Player.ModPlayerStats().AddStatsToPlayer(PlayerStats.MagicDMG, Base: .5f * Player.ownedProjectileCounts[ModContent.ProjectileType<RubyGemProjectileSwotaff>()]);
+			}
+		}
+	}
 	class RubySwotaffProjectile : SwotaffProjectile {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<RubySwotaff>();
 		public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost) {
@@ -35,7 +42,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.friendly = true;
 			Projectile.tileCollide = true;
 			Projectile.timeLeft = 200;
-			Projectile.penetrate = 1;
+			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Magic;
 		}
 		Vector2 firstframePos = Vector2.Zero;
@@ -78,8 +85,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	class RubyGemProjectileSwotaff : SynergyModProjectile {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Ruby);
 		public override void SetDefaults() {
-			Projectile.width = 14;
-			Projectile.height = 14;
+			Projectile.width = Projectile.height = 14;
 			Projectile.hide = true;
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
@@ -89,25 +95,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.idStaticNPCHitCooldown = 6;
 			Projectile.DamageType = DamageClass.Magic;
 		}
-		NPC npcTarget;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			for (int i = 0; i < 3; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemRuby);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(3f, 3f);
 				Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
+				Main.dust[dust].Dust_GetDust().FollowEntity = true;
+				Main.dust[dust].Dust_BelongTo(Projectile);
 			}
+			Projectile.Center += player.velocity;
 			if (Projectile.timeLeft > 150) {
 				Projectile.velocity -= Projectile.velocity * .01f;
-			}
-			if (npcTarget is not null) {
-				if (++Projectile.ai[0] >= 30) {
-					Vector2 vel = (npcTarget.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5;
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, vel, ProjectileID.RubyBolt, (int)(Projectile.damage * .55f), Projectile.knockBack, player.whoAmI);
-				}
-			}
-			if (Projectile.Center.LookForHostileNPC(out NPC npc, 1000)) {
-				npcTarget = npc;
 			}
 		}
 	}

@@ -105,5 +105,7 @@ class RichMahoganyArmorPlayer : PlayerArmorHandle {
 	public override void Armor_UpdateEquipsSet() {
 		Player.statDefense += 6;
 		Player.moveSpeed += .30f;
+		Player.ModPlayerStats().UpdateSentry.Base += 1;
+		Player.ModPlayerStats().UpdateMinion.Base += 1;
 	}
 }

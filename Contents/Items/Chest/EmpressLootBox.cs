@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class EmpressLootBox : LootBoxBase {
@@ -25,7 +26,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 35;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));

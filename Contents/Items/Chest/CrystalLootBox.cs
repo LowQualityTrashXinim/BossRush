@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Utils;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -37,7 +38,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings, ItemID.LeafWings, ItemID.FairyWings, ItemID.HarpyWings });
 			player.QuickSpawnItem(entitySource, wing);

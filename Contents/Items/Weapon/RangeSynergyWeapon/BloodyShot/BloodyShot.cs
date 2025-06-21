@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	internal class BloodyShot : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AquaScepter);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AquaScepter, $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 22, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
@@ -23,8 +23,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AquaScepter))
-				tooltips.Add(new TooltipLine(Mod, "BloodyShoot_AquaScepter", $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.AquaScepter);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 10);

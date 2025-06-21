@@ -1,26 +1,39 @@
-﻿using System;
-using Terraria;
+﻿using BossRush.Common.Systems;
+using BossRush.Common.Systems.ObjectSystem;
+using BossRush.Common.Utils;
+using BossRush.Common.WorldGenOverhaul;
+using BossRush.Texture;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Utils;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using BossRush.Common.Systems;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
 		public override void Load() {
 			On_Player.UpdateBiomes += On_Player_UpdateBiomes;
+			On_Player.ItemCheck_UseBossSpawners += On_Player_ItemCheck_UseBossSpawners;
 		}
-		public override void Unload() {
+
+		private void On_Player_ItemCheck_UseBossSpawners(On_Player.orig_ItemCheck_UseBossSpawners orig, Player self, int onWhichPlayer, Item sItem) {
+			if (BossRushWorld) {
+				if (sItem.type == ItemID.SlimeCrown) {
+					return;
+				}
+			}
+			orig(self, onWhichPlayer, sItem);
 		}
+
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
-			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (!UniversalSystem.CanAccessContent(self, UniversalSystem.BOSSRUSH_MODE) || self.difficulty == PlayerDifficultyID.Creative) {
 				orig(self);
 				return;
 			}
@@ -128,6 +141,7 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.ForEach(g => g.Disable());
 				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}
+			BossRushWorld = true;
 		}
 		public Dictionary<short, List<Rectangle>> Room;
 		public static bool IsInBiome(Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
@@ -246,7 +260,96 @@ namespace BossRush.Common.ChallengeMode {
 			}
 			Room = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
-		public static string StringBuilder(string FileName) => $"Assets/Structures/{FileName}";
+		public override void PostUpdateEverything() {
+			if (!Main.LocalPlayer.active || !BossRushWorld) {
+				return;
+			}
+			if (!NPC.downedSlimeKing && !NPC.AnyNPCs(NPCID.KingSlime)) {
+				if (!ObjectSystem.AnyModObjects(ModObject.GetModObjectType<KSsealed>())) {
+					Rectangle rect = Room[Bid.Slime][0];
+					ModObject.NewModObject(rect.Center() * 16f, Vector2.Zero, ModObject.GetModObjectType<KSsealed>());
+				}
+			}
+		}
+	}
+	public abstract class NPCSealedObject : ModObject {
+		public virtual int NPCTypeToFollow => 0;
+		public int Counter = 0;
+		public int frame = 1;
+		public int frameCounter = 0;
+		public sealed override void SetDefaults() {
+			timeLeft = 9999;
+			NPCObject_SetDefaults();
+		}
+		public virtual void NPCObject_SetDefaults() { }
+		public sealed override void AI() {
+			if (NPCTypeToFollow == 0) {
+				Kill();
+				return;
+			}
+			timeLeft = 9999;
+			Inner_AI();
+		}
+		public virtual void Inner_AI() { }
+		public virtual void Inner_Draw(SpriteBatch spritebatch) { }
+		public sealed override void Draw(SpriteBatch spritebatch) {
+			if (NPCTypeToFollow == 0) {
+				return;
+			}
+			if (frame < 1) {
+				return;
+			}
+			Inner_Draw(spritebatch);
+		}
+	}
+	public class KSsealed : NPCSealedObject {
+		public int AuraCounter = 0;
+		public bool Switch = false;
+		public override int NPCTypeToFollow => NPCID.KingSlime;
+		public override void NPCObject_SetDefaults() {
+			frame = 6;
+		}
+		public override void Inner_AI() {
+			if (AuraCounter < 100 && !Switch) {
+				AuraCounter++;
+			}
+			if (AuraCounter > 0 && Switch) {
+				AuraCounter--;
+			}
+			if (AuraCounter >= 100) {
+				Switch = true;
+			}
+			if (AuraCounter <= 0) {
+				Switch = false;
+			}
+			if (++Counter >= 10) {
+				frameCounter = BossRushUtils.Safe_SwitchValue(frameCounter, frame - 1);
+				Counter = 0;
+			}
+			if (NPC.downedSlimeKing || NPC.AnyNPCs(NPCID.KingSlime)) {
+				this.Kill();
+			}
+		}
+		public override void Inner_Draw(SpriteBatch spritebatch) {
+			Main.instance.LoadNPC(NPCTypeToFollow);
+			Texture2D texture = TextureAssets.Npc[NPCTypeToFollow].Value;
+			Vector2 origin = texture.Size() * .5f;
+			Vector2 drawpos = position - Main.screenPosition + origin * .75f;
+			Color color = Color.White;
+			frameCounter = Math.Clamp(frameCounter, 0, frame);
+			spritebatch.Draw(texture, drawpos, texture.Frame(1, frame, 0, frameCounter), color, 0, origin, 1f, SpriteEffects.None, 1);
+
+			Texture2D glow = ModContent.Request<Texture2D>(BossRushTexture.OuterInnerGlow).Value;
+
+			spritebatch.End();
+			spritebatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+			float percentalge = Math.Clamp(1 - AuraCounter / 300f, .5f, 1f);
+			Vector2 offset = Vector2.UnitX * origin.X * .75f - Vector2.UnitY * origin.Y / (float)frame * .5f;
+			Vector2 adjustment = offset - offset * (AuraCounter * .01f);
+			spritebatch.Draw(glow, position - Main.screenPosition + offset, null, Color.DodgerBlue * percentalge, 0, glow.Size() * .5f, 4 + AuraCounter * .01f, SpriteEffects.None, 0);
+			spritebatch.End();
+			spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+		}
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]

@@ -44,6 +44,18 @@ public class ObjectSystem : ModSystem {
 			ModObjectSample[i].Load();
 		}
 	}
+	public static bool AnyModObjects(int type) {
+		for (int i = 0; i < Objects.Length; i++) {
+			ModObject modobject = Objects[i];
+			if (modobject == null) {
+				continue;
+			}
+			if (modobject.Type == type && modobject.active) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public override void PostUpdateWorld() {
 		for (int i = 0; i < Objects.Length; i++) {
 			ModObject modobject = Objects[i];
@@ -52,6 +64,7 @@ public class ObjectSystem : ModSystem {
 			}
 			if (modobject.active) {
 				modobject.AI();
+				modobject.position += modobject.velocity;
 				if (modobject.timeLeft > 0) {
 					modobject.timeLeft--;
 				}
@@ -75,6 +88,15 @@ public class ObjectSystem : ModSystem {
 			}
 		}
 		Main.spriteBatch.End();
+	}
+	public override void OnWorldUnload() {
+		for (int i = 0; i < Objects.Length; i++) {
+			ModObject modobject = Objects[i];
+			if (modobject == null) {
+				continue;
+			}
+			modobject.Kill();
+		}
 	}
 }
 /// <summary>
@@ -118,7 +140,7 @@ public class ModObject : Entity, IModType, ILoadable {
 		ModObject obj = ObjectSystem.Objects[whoAmI];
 		obj.SetDefaults();
 		obj.active = true;
-		obj.position = position - obj.Size * .5f;
+		obj.position = position;
 		obj.velocity = velocity;
 		obj.whoAmI = whoAmI;
 		return obj;

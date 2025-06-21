@@ -19,6 +19,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Item.noUseGraphic = true;
 		}
 		public override bool AltFunctionUse(Player player) => true;
+		public override float UseSpeedMultiplier(Player player) {
+			if (player.altFunctionUse == 2) {
+				return base.UseSpeedMultiplier(player) * 10;
+			}
+			return base.UseSpeedMultiplier(player);
+		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {
 				type = ModContent.ProjectileType<AngelicSmgThrow>();
@@ -86,17 +92,17 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		public int useAnimation { get => (int)Projectile.ai[1]; set => Projectile.ai[1] = value; }
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
-			if (Projectile.timeLeft > player.itemAnimationMax) {
+			if (Projectile.timeLeft > player.itemAnimationMax + 30) {
 				Projectile.ai[1] = shootVelocity.Length();
-				Projectile.timeLeft = player.itemAnimationMax;
+				Projectile.timeLeft = player.itemAnimationMax + 30;
 			}
 			player.heldProj = Projectile.whoAmI;
 			Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * Projectile.ai[1];
 			Vector2 OFFSET = velocity.SafeNormalize(Vector2.Zero);
 			Projectile.Center = player.Center + OFFSET * 10 + new Vector2(0, -5f);
-			if (++Projectile.ai[2] >= useTime) {
+			if (++Projectile.ai[2] >= useTime && Projectile.timeLeft >= 30) {
 				int damage = Projectile.damage;
-				if (player.velocity.Y > 0f && player.HasBuff<AngelicSmgBuff>()) {
+				if (player.HasBuff<AngelicSmgBuff>()) {
 					type = ModContent.ProjectileType<AngelicBolt>();
 					damage = (int)(damage * 1.5f);
 				}
@@ -117,7 +123,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			player.direction = velocity.X > 0 ? 1 : -1;
 			Projectile.spriteDirection = player.direction;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2 * player.direction);
-			player.heldProj = Projectile.whoAmI;
 			if (++Projectile.frameCounter >= 3) {
 				Projectile.frameCounter = 0;
 				Projectile.frame += 1;
@@ -187,6 +192,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			if (!returningToOwner) {
 				targetHit = true;
 				player.AddBuff(ModContent.BuffType<AngelicSmgBuff>(), 300);
+				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
 			}
 			returnToPlayer();
 		}
@@ -231,7 +237,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			}
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			player.reuseDelay = 30;
 			if (targetHit)
 				for (int i = 1; i < oldposFrameAmount; i++) {
 					Vector2 oldVel = Projectile.oldPos[i].DirectionTo(Projectile.oldPos[i - 1]);
@@ -248,8 +253,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		public override void Update(Player player, ref int buffIndex) {
 			player.slowFall = true;
 			player.jumpSpeedBoost = 5;
-
-			if (player.buffTime[buffIndex] == 2) {
+			if (player.buffTime[buffIndex] <= 0) {
 				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
 			}
 		}
@@ -266,6 +270,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 16;
 			Projectile.friendly = true;
+			Projectile.extraUpdates = 1;
 			Projectile.timeLeft = 570;
 			Projectile.aiStyle = -1;
 			Projectile.alpha = 0;
@@ -273,7 +278,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Projectile.tileCollide = false;
 			isMiniProjectile = false;
 			projSpeed = 0f;
-			canDealDamage = false;
 		}
 		public override void OnSpawn(IEntitySource source) {
 			if (Projectile.ai[0] == 1)
@@ -281,8 +285,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		}
 		float maxProjSpeed = 15f;
 		float projSpeed = 0f;
-		bool canDealDamage = false;
-		public override bool? CanHitNPC(NPC target) => canDealDamage;
+		public override bool? CanHitNPC(NPC target) => true;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			float maxDetectRadius = 2000f;
@@ -291,11 +294,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Projectile.Center.LookForHostileNPC(out NPC closestNPC, maxDetectRadius);
 			if (closestNPC == null || (Projectile.timeLeft > 570 && Projectile.ai[0] == 1)) {
 				accel = 1f;
-				canDealDamage = false;
 			}
 			else {
 				vel = closestNPC.Center - Projectile.Center;
-				canDealDamage = true;
 			}
 			vel.Normalize();
 			projSpeed += accel;
@@ -349,15 +350,19 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			}
 		}
 		public void IncreaseStack() {
-			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<AngelicBolt>(), 30, 0, Player.whoAmI, 1);
+			if (!Player.HasBuff<AngelicSmgBuff>()) {
+				for (int i = 0; i < 5 + HeavenSmg_Stacks; i++) {
+					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f + HeavenSmg_Stacks, 360, i), ModContent.ProjectileType<AngelicBolt>(), 30, 0, Player.whoAmI, 1);
+				}
 			}
-			if (HeavenSmg_Stacks >= 40) {
-				SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
-				return;
+			else {
+				if (HeavenSmg_Stacks >= 40) {
+					SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
+					return;
+				}
+				HeavenSmg_Stacks++;
+				SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
 			}
-			HeavenSmg_Stacks++;
-			SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
 		}
 		public void ModPlayer_resetStacks() {
 			if (Player.HeldItem.type == ModContent.ItemType<AngelicSmg>()) {

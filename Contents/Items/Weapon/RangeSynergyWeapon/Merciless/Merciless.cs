@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 	internal class Merciless : SynergyModItem {
@@ -16,30 +17,38 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 			Item.scale -= 0.15f;
 			Item.UseSound = SoundID.Item38;
 			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
-				weapon.SpreadAmount = 20;
-				weapon.AdditionalSpread = 3;
-				weapon.AdditionalMulti = .55f;
-				weapon.OffSetPost = 60;
-				weapon.NumOfProjectile = 10;
 				weapon.itemIsAShotgun = true;
 			}
 		}
+		int counter = 0;
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-26, 0);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			position = position.PositionOFFSET(velocity, 60);
 			if (type == ProjectileID.Bullet) {
 				type = ProjectileID.ExplosiveBullet;
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (++player.GetModPlayer<Item_MercilessPlayer>().count == 1) {
-				Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.CannonballFriendly, damage * 4, knockback, player.whoAmI);
+			SoundEngine.PlaySound(Item.UseSound, player.Center);
+			int weapondamage = damage;
+			float spread = 30, additional = 3, multi = .55f;
+			if (++counter == 1) {
+				spread = 5;
+				additional = 1;
+				multi = .85f;
 			}
 			else {
-				player.GetModPlayer<Item_MercilessPlayer>().count = 0;
+				weapondamage = (int)(weapondamage * 1.25f);
+				Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.CannonballFriendly, damage * 4, knockback, player.whoAmI);
+				counter = 0;
 			}
-			CanShootItem = false;
+			for (int i = 0; i < 10; i++) {
+				Vector2 velocity2 = velocity.Vector2RotateByRandom(spread).Vector2RandomSpread(additional, Main.rand.NextFloat(multi, 1f));
+				Projectile.NewProjectile(source, position, velocity2, type, weapondamage, knockback, player.whoAmI);
+			}
+			CanShootItem = true;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()
@@ -49,9 +58,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 		}
 	}
 	public class Item_MercilessPlayer : ModPlayer {
-		public int count = 0;
-		public override void Initialize() {
-			count = 0;
+		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (proj.Check_ItemTypeSource(ModContent.ItemType<Merciless>())) {
+				if (target.GetLifePercent() <= .3f || target.GetLifePercent() >= .8f) {
+					modifiers.SourceDamage += .5f;
+				}
+			}
 		}
 	}
 }

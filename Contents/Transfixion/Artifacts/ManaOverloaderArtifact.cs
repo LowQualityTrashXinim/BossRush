@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using System;
 using BossRush.Contents.Items.Accessories.TrinketAccessories;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {
@@ -22,7 +23,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (ManaOverLoader) {
-				Player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;
+				Player.GetModPlayer<PlayerStatsHandle>().UpdateMagicChanceMutilplier += 1f;
 				if (!Player.HasBuff(ModContent.BuffType<ManaReleaseBuff>())) {
 					StackPoint = 0;
 				}

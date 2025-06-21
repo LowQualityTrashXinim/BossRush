@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Utils;
+﻿using BossRush.Common.Global;
+using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -23,7 +24,7 @@ namespace BossRush.Contents.Items.Chest {
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);

@@ -15,6 +15,7 @@ using Terraria.UI;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Perks.BlessingPerk;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {

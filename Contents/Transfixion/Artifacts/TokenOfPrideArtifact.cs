@@ -28,7 +28,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				if (Player.HasPerk<TokenOfPride_Upgrade1>()) {
 					multiplier += .5f;
 				}
-				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= multiplier;
+				Player.GetModPlayer<PlayerStatsHandle>().DropModifier *= multiplier;
 				handle.AugmentationChance += .65f;
 				if (Player.HasPerk<TokenOfPride_Upgrade2>()) {
 					handle.AugmentationChance += .2f;

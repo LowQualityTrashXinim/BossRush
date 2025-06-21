@@ -147,6 +147,6 @@ public class RageEmpowerment : ModBuff {
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.ModifyHit_OverrideCrit = true;
+		modplayer.AlwaysCritValue++;
 	}
 }

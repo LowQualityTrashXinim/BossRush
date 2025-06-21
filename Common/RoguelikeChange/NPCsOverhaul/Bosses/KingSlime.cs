@@ -14,7 +14,6 @@ using Terraria.WorldBuilding;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using BossRush.Contents.Items.Accessories.LostAccessories;
 
 
 namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses;
@@ -80,7 +79,7 @@ internal class KingSlime : NPCReworker {
 						break;
 					}
 
-				
+
 			}
 
 
@@ -104,22 +103,20 @@ internal class KingSlime : NPCReworker {
 		if (crownNPC != null)
 			crownNPC.active = false;
 
-		for(int i = 0; i < Main.maxTilesX; i++)
-		{
-			for(int j = 0; j < Main.maxTilesY; j++){
+		for (int i = 0; i < Main.maxTilesX; i++) {
+			for (int j = 0; j < Main.maxTilesY; j++) {
 
-				if(WorldGen.TileType(i,j) == ModContent.TileType<KingSlimeSludgeTile>())
-					WorldGen.KillTile(i,j);
-				
-				
+				if (WorldGen.TileType(i, j) == ModContent.TileType<KingSlimeSludgeTile>())
+					WorldGen.KillTile(i, j);
+
+
 			}
-		
+
 		}
 
-		foreach(Projectile proj in Main.ActiveProjectiles)
-		{
-		
-			if(proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
+		foreach (Projectile proj in Main.ActiveProjectiles) {
+
+			if (proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
 				proj.Kill();
 
 		}
@@ -291,16 +288,18 @@ internal class KingSlime : NPCReworker {
 							NewProjectileWithMPCheck(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
 
 
-							
+
 						}
+
 
 						if(Counter % 220 == 0)
 						{
 
 							if(Main.netMode != NetmodeID.MultiplayerClient)
 							{
-								NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(7,-7);
-								NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(-7,-7);
+								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(7, -7);
+								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(-7, -7);
+
 							}
 						
 						}
@@ -397,7 +396,7 @@ internal class KingSlime : NPCReworker {
 					}
 
 			}
-		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0,40,npc.scale - ((1 - npc.scale))))) * currentScale.Y);
+		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0, 40, npc.scale - ((1 - npc.scale))))) * currentScale.Y);
 
 	}
 	// also dust cuz it makes sense to be here also
@@ -676,8 +675,7 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 		Dust.NewDustPerfect(Projectile.position, DustID.t_Slime, newColor: Color.CornflowerBlue);
 		Point tilePos = Projectile.position.ToTileCoordinates();
 
-		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15))
-		{
+		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15)) {
 			Projectile.Kill();
 			Projectile.netUpdate = true;
 
@@ -775,18 +773,18 @@ public class KingSlimeMinionSpawner : ModNPC {
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 
-		if (Duration == 160 || !NPC.active || Main.LocalPlayer.Center.Distance(NPC.Center) > 1000f)
-			return false;
+		//if (Duration == 160 || !NPC.active || Main.LocalPlayer.Center.Distance(NPC.Center) > 1000f)
+		//	return false;
 
-		var player = Main.player[NPC.FindClosestPlayer()];
-		float length = NPC.Distance(player.Center);
-		ShaderSettings shaderSettings = new ShaderSettings();
-		shaderSettings.image1 = TextureAssets.Extra[193];
-		shaderSettings.image2 = null;
-		shaderSettings.image3 = null;
-		shaderSettings.Color = Color.Cyan;
-		shaderSettings.shaderData = new Vector4(1f, length, 0, 0);
-		default(ColorIndicatorQuad).Draw(NPC.Center, player.DirectionFrom(NPC.Center).ToRotation(), new Vector2(length, 128), shaderSettings);
+		//var player = Main.player[NPC.FindClosestPlayer()];
+		//float length = NPC.Distance(player.Center);
+		//ShaderSettings shaderSettings = new ShaderSettings();
+		//shaderSettings.image1 = TextureAssets.Extra[193];
+		//shaderSettings.image2 = null;
+		//shaderSettings.image3 = null;
+		//shaderSettings.Color = Color.Cyan;
+		//shaderSettings.shaderData = new Vector4(1f, length, 0, 0);
+		//default(ColorIndicatorQuad).Draw(NPC.Center, player.DirectionFrom(NPC.Center).ToRotation(), new Vector2(length, 128), shaderSettings);
 		return false;
 	}
 
@@ -903,9 +901,8 @@ public class KingSlimeCrown : ModNPC {
 
 						}
 
-						if(Counter >= 260 && magnetSlime != null)	
-						{
-						
+						if (Counter >= 260 && magnetSlime != null) {
+
 							magnetSlime.velocity = magnetSlime.DirectionTo(NPC.targetRect.Center()) * 15;
 							magnetSlime.noGravity = false;
 							magnetSlime.noTileCollide = false;
@@ -946,8 +943,7 @@ public class KingSlimeCrown : ModNPC {
 					}
 				case AIState.Charging: {
 						NPC.velocity *= 0.97f;
-						if (Counter == 15)
-						{
+						if (Counter == 15) {
 							NPC.velocity = NPC.DirectionTo(NPC.targetRect.Center()) * 20;
 						}
 						if (Counter >= 100) {
@@ -969,7 +965,7 @@ public class KingSlimeCrown : ModNPC {
 
 							}
 							NPC.netUpdate = true;
-							
+
 						}
 						Counter++;
 						break;
@@ -996,7 +992,9 @@ public class KingSlimeMinion : ModNPC {
 		NPC.lifeMax = 50;
 	}
 	public override Color? GetAlpha(Color drawColor) {
-		return Color.CornflowerBlue;
+		Color blend = Color.CornflowerBlue;
+		blend.A = 100;
+		return blend;
 	}
 	public override bool PreAI() {
 		bool isGettingYeeted = NPC.ai[3] != 1;
@@ -1009,12 +1007,20 @@ public class KingSlimeMinion : ModNPC {
 			NPC.ai[3] = 0;
 		return isGettingYeeted;
 	}
+	public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		NPC.ai[3] = 0;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit) {
+		NPC.ai[3] = 0;
+	}
 	// DOESNT WORK BECAUSE SLIME AI RED CODE WOOHOOO
 	public override bool? CanFallThroughPlatforms() {
 		return NPC.ai[3] == 1 ? false : base.CanFallThroughPlatforms();
-	}
-
-	public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers) {
-		modifiers.SetMaxDamage((int)(NPC.lifeMax * 0.25f));
 	}
 }

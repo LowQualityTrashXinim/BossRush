@@ -11,8 +11,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 	public class ZapSnapper : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain, $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff, $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(56, 16, 12, 2f, 50, 50, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
@@ -22,10 +22,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			Item.UseSound = SoundID.Item9;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain))
-				tooltips.Add(new TooltipLine(Mod, "ZapSnapper_WeatherPain", $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot"));
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff))
-				tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You shoot out thunder bolt"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.WeatherPain);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.ThunderStaff);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 30);
@@ -34,14 +32,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			int amount = Main.rand.Next(20, 30);
 			for (int i = 0; i < amount; i++) {
 				Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
-				int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
+				int proj = Projectile.NewProjectile(source, position, newVec, type, damage, knockback, player.whoAmI);
 				Main.projectile[proj].DamageType = DamageClass.Magic;
-				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3))
-					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3)) {
+					int projectile = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+					Main.projectile[projectile].extraUpdates += 3;
+				}
 			}
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
-				float[] variant = new float[] { };
+				float[] variant = Array.Empty<float>();
 				Array.Resize(ref variant, SoundID.Thunder.Variants.Length);
 				variant[0] = 1f;
 				SoundEngine.PlaySound(SoundID.Thunder with { Pitch = -1, MaxInstances = 5, VariantsWeights = variant.AsSpan() }, player.Center);

@@ -9,6 +9,12 @@ using BossRush.Common.General;
 using BossRush.Common.Global;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
+/// <summary>
+/// This is a entirely new mechanic for shield<br/>
+/// Introducing 2 new stats for shield being <see cref="PlayerStats.ShieldHealth"/> and <see cref="PlayerStats.ShieldEffectiveness"/> <br/>
+/// <see cref="PlayerStats.ShieldHealth"/> Is the amount of life a shield can take for each hit before render useless for 10s <br/>
+/// <see cref="PlayerStats.ShieldEffectiveness"/> Is the amount of damage a shield can block based on player current defenses stat
+/// </summary>
 public class Shield_GlobalItem : GlobalItem {
 	public int ShieldPoint = 0;
 	public float ShieldRes = 0;
@@ -124,7 +130,7 @@ public class Shield_ModPlayer : ModPlayer {
 	}
 }
 public class Shield_ModBuff : ModBuff {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = false;
 		Main.buffNoSave[Type] = true;

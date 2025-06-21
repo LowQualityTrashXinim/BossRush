@@ -11,7 +11,10 @@ using BossRush.Common.General;
 using BossRush.Contents.Transfixion.Artifacts;
 using System.Collections.Generic;
 using Terraria.Audio;
-using BossRush.Contents.Items.Consumable;
+using BossRush.Contents.Perks.BlessingPerk;
+using BossRush.Common.Systems.IOhandle;
+using BossRush.Contents.Items.Consumable.Throwable;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalNPC : GlobalNPC {
@@ -221,7 +224,27 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 		modifiers.FinalDamage *= 1 - Endurance;
 	}
+	public int CursedSkullStatus = 0;
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (!projectile.npcProj && !projectile.trap && projectile.IsMinionOrSentryRelated) {
+			var projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
+			if (npc.HasBuff<StarRay>()) {
+				// Apply a flat bonus to every hit
+				modifiers.FlatBonusDamage += StarRay.TagDamage * projTagMultiplier;
+			}
+		}
+		if (projectile.Check_ItemTypeSource(ModContent.ItemType<SkullRevolver>())) {
+			if (npc.HasBuff<CursedStatus>()) {
+				if (++CursedSkullStatus >= 3) {
+					CursedSkullStatus = 3;
+				}
+				if (projectile.type == ProjectileID.BookOfSkullsSkull) {
+					modifiers.SourceDamage += 1;
+				}
+			}
+		}
+
+
 		if (npc.boss) {
 			if (Main.rand.NextBool(20) || EliteBoss && Main.rand.NextBool(10)) {
 				modifiers.SetMaxDamage(1);
@@ -246,6 +269,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
+		HitCount++;
 		if (!npc.boss) {
 			return;
 		}
@@ -265,9 +289,9 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
-		HitCount++;
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		HitCount++;
 		if (projectile.type == ProjectileID.HeatRay) {
 			HeatRay_HitCount = Math.Clamp(HeatRay_HitCount + 1, 0, 100);
 			HeatRay_Decay = 30;
@@ -316,7 +340,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
-		HitCount++;
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;

@@ -52,17 +52,19 @@ public class SoulBoundGlobalItem : GlobalItem {
 	public override bool InstancePerEntity => true;
 
 	public LevelingValue SoulBoundSlots = LevelingValue.Default;
-	public static void AddSoulBound(ref Item item, short SoulBoundType) {
+	public static bool AddSoulBound(ref Item item, short SoulBoundType) {
 		if (item.headSlot <= 0 && item.legSlot <= 0 && item.bodySlot <= 0) {
-			return;
+			return false;
 		}
 		if (item.TryGetGlobalItem(out SoulBoundGlobalItem armorItem)) {
 			ModSoulBound modSoulBound = SoulBoundLoader.GetSoulBound(SoulBoundType);
 			if (modSoulBound == null) {
-				return;
+				return false;
 			}
 			armorItem.SoulBoundSlots = new(modSoulBound.Type, 0);
+			return true;
 		}
+		return false;
 	}
 	public override GlobalItem NewInstance(Item target) {
 		SoulBoundSlots = new();
@@ -148,10 +150,9 @@ public class SoulBoundPlayer : ModPlayer {
 	public override void ResetEffects() {
 		armorItemUpdate.Clear();
 	}
-	public static bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
@@ -164,7 +165,7 @@ public class SoulBoundPlayer : ModPlayer {
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
@@ -177,15 +178,15 @@ public class SoulBoundPlayer : ModPlayer {
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		foreach (var item in armorItemUpdate) {
-			if (IsSoulBoundable(item)) {
-				SoulBoundGlobalItem moditem = item.GetGlobalItem<SoulBoundGlobalItem>();
+		foreach (var acc in armorItemUpdate) {
+			if (acc.IsThisArmorPiece()) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitNPC(Player, item, target, hit);
+				SoulBound.OnHitNPC(Player, acc, target, hit);
 
 				moditem.SoulBoundSlots.Modify_Exp(hit.Damage);
 				if (moditem.SoulBoundSlots.ReachLevelCondition(10)) {
@@ -195,49 +196,49 @@ public class SoulBoundPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		foreach (var itemAcc in armorItemUpdate) {
-			if (IsSoulBoundable(itemAcc)) {
-				SoulBoundGlobalItem moditem = itemAcc.GetGlobalItem<SoulBoundGlobalItem>();
+		foreach (var acc in armorItemUpdate) {
+			if (acc.IsThisArmorPiece()) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitNPCWithItem(Player, itemAcc, item, target, hit);
+				SoulBound.OnHitNPCWithItem(Player, acc, item, target, hit);
 			}
 
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		foreach (var item in armorItemUpdate) {
-			if (IsSoulBoundable(item)) {
-				SoulBoundGlobalItem moditem = item.GetGlobalItem<SoulBoundGlobalItem>();
+		foreach (var acc in armorItemUpdate) {
+			if (acc.IsThisArmorPiece()) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitNPCWithProj(Player, item, proj, target, hit);
+				SoulBound.OnHitNPCWithProj(Player, acc, proj, target, hit);
 			}
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		foreach (var item in armorItemUpdate) {
-			if (IsSoulBoundable(item)) {
-				SoulBoundGlobalItem moditem = item.GetGlobalItem<SoulBoundGlobalItem>();
+		foreach (var acc in armorItemUpdate) {
+			if (acc.IsThisArmorPiece()) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.ModifyHitNPCWithProj(Player, item, proj, target, ref modifiers);
+				SoulBound.ModifyHitNPCWithProj(Player, acc, proj, target, ref modifiers);
 			}
 
 		}
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
@@ -251,7 +252,7 @@ public class SoulBoundPlayer : ModPlayer {
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
@@ -265,7 +266,7 @@ public class SoulBoundPlayer : ModPlayer {
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
@@ -277,7 +278,7 @@ public class SoulBoundPlayer : ModPlayer {
 	}
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {
@@ -292,7 +293,7 @@ public class SoulBoundPlayer : ModPlayer {
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(acc)) {
+			if (acc.IsThisArmorPiece()) {
 				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {

@@ -15,8 +15,8 @@ public class AmethystStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .15f;
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		item.shoot = ProjectileID.AmethystBolt;
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		type = ProjectileID.AmethystBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -42,8 +42,8 @@ public class TopazStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .25f;
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		item.shoot = ProjectileID.TopazBolt;
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		type = ProjectileID.TopazBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -64,8 +64,8 @@ public class SapphireStaff : ModEnchantment {
 			player.statMana = Math.Clamp(player.statMana + consumedMana, 0, player.statManaMax2);
 		}
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		item.shoot = ProjectileID.SapphireBolt;
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		type = ProjectileID.SapphireBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -84,8 +84,8 @@ public class EmeraldStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .15f;
 	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		item.shoot = ProjectileID.EmeraldBolt;
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		type = ProjectileID.EmeraldBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (!velocity.IsLimitReached(3)) {
@@ -456,7 +456,7 @@ public class CrimsonRod : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] <= 0) {
-			Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld.Add(0, -500).PositionOFFSET(Vector2.UnitX, Main.rand.NextFloat(-30, 30)), Vector2.UnitY * Main.rand.NextFloat(4, 12), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld.Add(Main.rand.NextFloat(-30, 30), 500), Vector2.UnitY * Main.rand.NextFloat(4, 12), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
 			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 9);
 		}
 	}

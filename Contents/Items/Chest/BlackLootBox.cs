@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Chest {
 						break;
 				}
 			}
-			if (Main.rand.NextBool(25) && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (Main.rand.NextBool(25) && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || Main.rand.NextBool(100)) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
 			}
 			switch (Main.rand.Next(11)) {

@@ -389,12 +389,7 @@ public class AchievementUI : UIState {
 		base.Update(gameTime);
 		for (int i = 0; i < pagnitation.Count; i++) {
 			var item = pagnitation[i];
-			if (i == pageIndex) {
-				item.toggled = true;
-			}
-			else {
-				item.toggled = false;
-			}
+			item.toggled = i == pageIndex;
 			if (item.IsMouseHovering) {
 				Main.instance.MouseText("page " + (i + 1).ToString());
 			}

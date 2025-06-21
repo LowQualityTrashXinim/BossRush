@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class UncommonSpoil {
@@ -34,7 +35,7 @@ public class UncommonSpoil {
 			return DisplayName.FormatWith(ItemID.Campfire);
 		}
 		public override string FinalDescription() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			chestplayer.GetAmount();
 			return Description.FormatWith(
 				Math.Ceiling(chestplayer.weaponAmount * .5f),
@@ -47,7 +48,7 @@ public class UncommonSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, additiveModify: .5f);
 			LootBoxBase.GetPotion(itemsource, player);
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			chestplayer.GetAmount();
 			int amount = chestplayer.potionTypeAmount;
 			for (int i = 0; i < amount; i++) {
@@ -60,7 +61,7 @@ public class UncommonSpoil {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
 		public override string FinalDisplayName() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			if (chestplayer.accShowID == 0 || --chestplayer.counterShow <= 0) {
 				chestplayer.accShowID = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
 				chestplayer.counterShow = 6;
@@ -68,15 +69,15 @@ public class UncommonSpoil {
 			return DisplayName.FormatWith(chestplayer.accShowID);
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
 			return SpoilDropRarity.UncommonDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
-				LootBoxBase.GetAccessories(itemsource, player, true);
+				LootBoxBase.GetAccessories(itemsource, player, Main.rand.NextBool(5));
 			}
 		}
 	}
@@ -88,11 +89,11 @@ public class UncommonSpoil {
 			return SpoilDropRarity.UncommonDrop();
 		}
 		public override string FinalDescription() {
-			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
 				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {

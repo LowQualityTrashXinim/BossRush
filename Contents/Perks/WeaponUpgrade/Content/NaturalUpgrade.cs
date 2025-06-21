@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Contents.Projectiles;
@@ -13,6 +14,9 @@ namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 
 public class NaturalUpgrade_GlobalItem : GlobalItem {
 	public static bool CheckWoodenBow(int type) {
+		if(type == ModContent.ItemType<NatureSelection>()) {
+			return true;
+		}
 		switch (type) {
 			case ItemID.WoodenBow:
 			case ItemID.AshWoodBow:

@@ -11,6 +11,9 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
 	public class ArcherMasteryTemplate : RelicTemplate {
+		public override void SetStaticDefaults() {
+			relicType = RelicType.MultiStats;
+		}
 		public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.RangeDMG;
 		public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 			float tierValue = 1 + .07f * (relic.RelicTier - 1);
@@ -18,7 +21,7 @@ namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent {
 					Color.Yellow.Hex3(),
 			RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * tierValue),
 			RelicTemplateLoader.RelicValueToNumber(value.Base + value.Base * tierValue),
-			RelicTemplateLoader.RelicValueToPercentage((value.Additive * 2 - 1) + (value.Additive * 2 - 1) * tierValue),
+			RelicTemplateLoader.RelicValueToPercentage((value.Additive * 2 - 1) + (value.Additive - 1) * tierValue),
 		]);
 		}
 

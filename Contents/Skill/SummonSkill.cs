@@ -5,6 +5,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Skill;
 
@@ -15,7 +16,7 @@ public class BroadSwordSpirit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
 			for (int i = 0; i < 3; i++) {
 				int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(34));
@@ -34,7 +35,7 @@ public class WoodSwordSpirit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<SoulWoodSword>()] < 1) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(skillplayer.SkillDamage(24));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(5);
@@ -53,7 +54,7 @@ public class WilloFreeze : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<WilloFreezeProjectile>()] < 1) {
 			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(skillplayer.SkillDamage(36));
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(5);
@@ -97,7 +98,7 @@ public class OrbOfPurity : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1) {
 			int damage = skillplayer.SkillDamage(10);
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DiamondSwotaffOrb>(), damage, 0, player.whoAmI);
@@ -112,7 +113,7 @@ public class PhoenixBlazingTornado : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
 			int damage = skillplayer.SkillDamage(120);
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), damage, 0, player.whoAmI);
@@ -127,12 +128,29 @@ public class DebugCommand : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(60);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		int damage = skillplayer.SkillDamage(2000);
 		player.Center.LookForHostileNPC(out List<NPC> npclist, 2500);
 		foreach (NPC npc in npclist) {
 			player.StrikeNPCDirect(npc, npc.CalculateHitInfo(damage, BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
 		}
+		player.AddImmuneTime(-1, duration / 10);
+		player.AddBuff<DebugStatus>(BossRushUtils.ToSecond(duration / 10));
+	}
+}
+public class DebugStatus : ModBuff {
+	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		for (int i = 0; i < player.buffImmune.Length; i++) {
+			int buffType = i;
+			if (Main.debuff[i]) {
+				player.buffImmune[buffIndex] = true;
+			}
+		}
+		player.potionDelayTime = 0;
 	}
 }
 
@@ -143,7 +161,7 @@ public class LucidNightmares : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		int damage = skillplayer.SkillDamage(53);
 		for (int i = 0; i < 3; i++) {
 			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.UnitX.Vector2DistributeEvenly(3, 360, i) * Main.rand.NextFloat(4, 7), ModContent.ProjectileType<NightmaresProjectile>(), damage, 0, player.whoAmI);
@@ -158,7 +176,7 @@ public class SacrificialWormhole : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(30);
 		Skill_Type = SkillTypeID.Skill_Summon;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		int damage = skillplayer.SkillDamage(50);
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero,
 			ModContent.ProjectileType<SacrificialWormholeProjectile>(), damage, 0, player.whoAmI);

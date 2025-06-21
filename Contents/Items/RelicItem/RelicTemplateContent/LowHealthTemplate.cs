@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent
 {
     public class LowHealthTemplate : RelicTemplate {
+		public override void SetStaticDefaults() {
+			relicType = RelicType.Stat;
+		}
 		public override PlayerStats StatCondition(Relic relic, Player player) {
 			return Main.rand.Next([
 				PlayerStats.RegenHP,

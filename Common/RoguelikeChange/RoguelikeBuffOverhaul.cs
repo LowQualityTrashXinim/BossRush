@@ -2,6 +2,7 @@
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 using BossRush.Common.Systems;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,6 +31,9 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 			if (npc.velocity != Microsoft.Xna.Framework.Vector2.Zero) {
 				lifelose += 11;
 			}
+			if (npc.HasBuff(BuffID.Wet)) {
+				lifelose += 22;
+			}
 			npc.lifeRegen -= lifelose;
 			globalnpc.StatDefense.Base -= 10;
 			int extraElectric = (int)(npc.Size.Length() / 20) + 2;
@@ -37,6 +41,11 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Electric, Scale: Main.rand.NextFloat(.25f, .5f));
 				dust.velocity = Main.rand.NextVector2Circular(3, 3);
 				dust.noGravity = true;
+			}
+		}
+		if (BossRushModSystem.FireDeBuff.Contains(type)) {
+			if (npc.HasBuff(BuffID.Slimed)) {
+				npc.lifeRegen -= Math.Max(npc.lifeMax / 1000, 1);
 			}
 		}
 	}

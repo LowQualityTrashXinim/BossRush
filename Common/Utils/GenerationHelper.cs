@@ -537,7 +537,7 @@ internal static partial class GenerationHelper {
 		}
 	}
 	private static Dictionary<TileData, char> dict_TileData = new();
-	private static readonly HashSet<char> AlphabetCharacter = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', ',', '/', '\\', '\'', '"', ':', ';', '|', '`', '~', ']', '[', '=', '-', '_', '+', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
+	private static readonly HashSet<char> Character = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', ',', '/', '\\', '\'', '"', ':', ';', '|', '`', '~', ']', '[', '=', '-', '_', '+', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
 	/// <summary>
 	/// Attempt to save a structure into a file
 	/// </summary>
@@ -564,7 +564,7 @@ internal static partial class GenerationHelper {
 						outSideLoop = tile;
 						distance = 1;
 						char c;
-						c = AlphabetCharacter.ElementAt(indexCounter);
+						c = Character.ElementAt(indexCounter);
 						indexCounter++;
 						td += c + tileA.ToString();
 						dict_TileData.Add(tileA, c);
@@ -576,7 +576,7 @@ internal static partial class GenerationHelper {
 							distance = 1;
 						}
 						outSideLoop = tile;
-						if (indexCounter >= AlphabetCharacter.Count) {
+						if (indexCounter >= Character.Count) {
 							throw new Exception("GenerationHelper.SaveStructureV2.ExceedTileVarityAllowing");
 						}
 						char c;
@@ -584,7 +584,7 @@ internal static partial class GenerationHelper {
 							c = dict_TileData[tileA];
 						}
 						else {
-							c = AlphabetCharacter.ElementAt(indexCounter);
+							c = Character.ElementAt(indexCounter);
 							td += c + tileA.ToString();
 							indexCounter++;
 							dict_TileData.Add(tileA, c);

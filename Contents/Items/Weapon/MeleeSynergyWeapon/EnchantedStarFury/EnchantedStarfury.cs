@@ -9,8 +9,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 	internal class EnchantedStarfury : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BreakerBlade);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture, $"[i:{ItemID.SkyFracture}] Shower down StarFury regardless of attack and with additional sky facture");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BreakerBlade, $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal 250% of your weapon damage");
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(66, 66, 24, 4f, 60, 20, ItemUseStyleID.Swing, true);
@@ -27,12 +27,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 		}
 		int switchProj = 0;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
-				tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_SkyFacture", $"[i:{ItemID.SkyFracture}] Shower down StarFury regardless of attack and with additional sky facture"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BreakerBlade)) {
-				tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_BreakerBlade", $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal 250% of your weapon damage"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.SkyFracture);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.BreakerBlade);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			for (int i = 0; i < 5; i++) {
@@ -42,7 +38,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 						Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f, 200f);
 						Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
 						int typeChoose = l == 0 ? ProjectileID.StarCannonStar : ProjectileID.SkyFracture;
-						Projectile.NewProjectile(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
+						Projectile proj = Projectile.NewProjectileDirect(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
+						proj.tileCollide = false;
+						proj.timeLeft = 210;
 						if (!SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 							break;
 						}

@@ -21,6 +21,7 @@ using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
 using BossRush.Common.Global;
+using BossRush.Common.Systems.IOhandle;
 
 namespace BossRush.Contents.Items.Toggle {
 	class UserInfoTablet : ModItem {
@@ -387,7 +388,6 @@ namespace BossRush.Contents.Items.Toggle {
 			var player = Main.LocalPlayer;
 			string line;
 			var statshandle = player.GetModPlayer<PlayerStatsHandle>();
-			var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
 			var augmentation = player.GetModPlayer<AugmentsPlayer>();
 			switch (CurrentState) {
@@ -408,9 +408,9 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[4].SetInfo($"{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {Math.Round(player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100)}% Base : {player.GetTotalDamage(DamageClass.Generic).Base} Flat : {player.GetTotalDamage(DamageClass.Generic).Flat} Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
+						list_info[list_info.Count - 1].action = () => list_info[5].SetInfo($"{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
+						list_info[list_info.Count - 1].action = () => list_info[6].SetInfo($"{ItemIcon(ItemID.BreakerBlade)} First strike damage : {Math.Round((player.GetModPlayer<PlayerStatsHandle>().UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[7].SetInfo($"{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
@@ -434,11 +434,11 @@ namespace BossRush.Contents.Items.Toggle {
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
 						list_info[list_info.Count - 1].action = () => list_info[17].SetInfo($"{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {chestplayer.DropModifier.ApplyTo(1)}");
+						list_info[list_info.Count - 1].action = () => list_info[18].SetInfo($"{ItemIcon(ModContent.ItemType<WoodenLootBox>())} Amount drop : {statshandle.DropModifier.ApplyTo(1)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}");
+						list_info[list_info.Count - 1].action = () => list_info[19].SetInfo($"{ItemIcon(ModContent.ItemType<DivineHammer>())} Bonus chance getting enchanted : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().RandomizeChanceEnchantment)}");
 						list_info[list_info.Count - 1].action.Invoke(); list_info.Add(new(textpanel));
-						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}");
+						list_info[list_info.Count - 1].action = () => list_info[20].SetInfo($"Bonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + player.GetModPlayer<PlayerStatsHandle>().AugmentationChance)}");
 						for (int i = 0; i < list_info.Count; i++) {
 							float Y = MathHelper.Lerp(0, 1f, i / (list_info.Count - 1f));
 							list_info[i].SetAlign(0, Y);
@@ -456,15 +456,15 @@ namespace BossRush.Contents.Items.Toggle {
 					}
 					var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 					var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
-					chestplayer.GetAmount();
+					statshandle.GetAmount();
 					line =
-						$"Amount drop chest final weapon : {chestplayer.weaponAmount}" +
-						$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
-						$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-						$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
-						$"\nRange drop chance : {chestplayer.UpdateRangeChanceMutilplier}" +
-						$"\nMagic drop chance : {chestplayer.UpdateMagicChanceMutilplier}" +
-						$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
+						$"Amount drop chest final weapon : {statshandle.weaponAmount}" +
+						$"\nAmount drop chest final potion type : {statshandle.potionTypeAmount}" +
+						$"\nAmount drop chest final potion amount : {statshandle.potionNumAmount}" +
+						$"\nMelee drop chance : {statshandle.UpdateMeleeChanceMutilplier}" +
+						$"\nRange drop chance : {statshandle.UpdateRangeChanceMutilplier}" +
+						$"\nMagic drop chance : {statshandle.UpdateMagicChanceMutilplier}" +
+						$"\nSummon drop chance : {statshandle.UpdateSummonChanceMutilplier}" +
 						$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 						$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 						$"\nRun amount : {RoguelikeData.Run_Amount}" +

@@ -15,6 +15,7 @@ namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		relicType = RelicType.Projectile;
 		DataStorer.AddContext("Relic_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 	}
 	//we can return whatever we want since this doesn't matter to what we are making,
@@ -44,7 +45,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
 				//This is my custom method that convert float number to string
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -68,7 +69,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				(int)(value.Base * (1 + .1f * (Tier - 1))),
+				(int)(value.Base * (1 + .1f * (Tier - 1)) * value.Multiplicative),
 				2 + .5f * Tier,
 				player.whoAmI);
 			//Setting projectile travel distance before killing

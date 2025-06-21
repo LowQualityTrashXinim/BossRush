@@ -13,6 +13,58 @@ using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		//Taken from chatGPT
+		public static Color FakeHueShift(Color original, float hueShiftDegrees) {
+			float r = original.R / 255f;
+			float g = original.G / 255f;
+			float b = original.B / 255f;
+
+			// Step 3: Approximate hue angle from RGB — not exact HSV, but good for fake shifting
+			float angle = MathF.Atan2(g - b, r - g) * (180f / MathHelper.Pi);
+			if (angle < 0) angle += 360f;
+
+			// Step 4: Add hue offset
+			float newHue = (angle + hueShiftDegrees) % 360f;
+
+			// Step 1: Get grayscale (luminance) 
+			// Xinim note : I have verified that this a actual real thing, https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
+			// Turn out our eyes perceive color in weird way
+			float luminance = 0.299f * original.R + 0.587f * original.G + 0.114f * original.B;
+			Color gray = new Color((int)luminance, (int)luminance, (int)luminance, original.A);
+
+			// Step 2: Get RGB hue color from the hueShiftDegrees (approximate pure hue)
+			Color targetHue = HueToRGB(newHue);
+
+			// Step 3: Estimate original saturation (based on min/max channel spread)
+			float min = MathF.Min(original.R, MathF.Min(original.G, original.B)) / 255f;
+			float max = MathF.Max(original.R, MathF.Max(original.G, original.B)) / 255f;
+			float saturation = max - min;
+
+			// Step 4: Lerp from grayscale to target hue by saturation
+			return Color.Lerp(gray, targetHue, saturation);
+		}
+
+		// Converts hue (0–360) to an RGB color (pure hue, full saturation, mid brightness)
+		private static Color HueToRGB(float hue) {
+			float c = 1f;
+			float x = c * (1 - MathF.Abs((hue / 60f) % 2 - 1));
+			float r = 0, g = 0, b = 0;
+
+			if (hue < 60) { r = c; g = x; }
+			else if (hue < 120) { r = x; g = c; }
+			else if (hue < 180) { g = c; b = x; }
+			else if (hue < 240) { b = c; g = x; }
+			else if (hue < 300) { b = c; r = x; }
+			else { r = c; b = x; }
+
+			return new Color((int)(r * 255), (int)(g * 255), (int)(b * 255));
+		}
+		public static Color ScaleRGB(this Color color, float scale) {
+			color.R = (byte)MathF.Round(color.R * scale);
+			color.B = (byte)MathF.Round(color.B * scale);
+			color.G = (byte)MathF.Round(color.G * scale);
+			return color;
+		}
 		public static float EaseInBounce(float x) {
 
 			const float n1 = 7.5625f;
@@ -57,7 +109,7 @@ namespace BossRush {
 		/// <returns></returns>
 		public static Roguelike_Dust Dust_GetDust(this Dust dust) {
 			if (!dust.active) {
-				return null;
+				return RoguelikeGlobalDust.DeadDust;
 			}
 			return RoguelikeGlobalDust.Dust[dust.dustIndex];
 		}
@@ -102,7 +154,20 @@ namespace BossRush {
 			Array.Copy(array, 0, array, 1, array.Length - 1);
 			array[0] = value;
 		}
-
+		public static int FastDropItem(Item item, int fastCheckSlot = 0) {
+			Player player = Main.LocalPlayer;
+			if (item == null || item.type == 0)
+				return 0;
+			for (int i = fastCheckSlot; i < 50; i++) {
+				if (player.CanItemSlotAccept(player.inventory[i], item)) {
+					player.inventory[i] = item.Clone();
+					item.TurnToAir();
+					return i;
+				}
+			}
+			player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+			return 50;
+		}
 		public static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {
 			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
@@ -426,6 +491,10 @@ namespace BossRush {
 				return true;
 			return false;
 		}
+		private static readonly RasterizerState OverflowHiddenRasterizerState = new RasterizerState {
+			CullMode = CullMode.None,
+			ScissorTestEnable = true
+		};
 		/// <summary>
 		/// Allow for easy to uses everywhere draw progress line without the need of a texture file
 		/// </summary>
@@ -436,13 +505,13 @@ namespace BossRush {
 		/// <param name="offsetX">the offset X for the line, usually you would want to take origin X of the frame and put it here for the line to be centered</param>
 		/// <param name="line">This include the extra offset of the line</param>
 		/// <param name="spriteBatch"><see cref="Main.spriteBatch"/> should be put here</param>
-		public static void DrawProgressLine(float progress, float maxprogress, Point frame, Point position, int offsetX, Rectangle line, SpriteBatch spriteBatch, Color colorA, Color colorB) {
+		public static void DrawProgressLine(SpriteBatch spriteBatch, float progress, float maxprogress, Point position, Rectangle line, Color colorA, Color colorB, float curveValue = 0, float strengthCurve = 1) {
 			float quotient = progress / maxprogress; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
 			quotient = Math.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
 
 			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
 			Rectangle hitbox = new(
-				line.X + position.X - offsetX
+				line.X + position.X
 				, line.Y + position.Y
 				, line.Width
 				, line.Height);
@@ -450,11 +519,24 @@ namespace BossRush {
 			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
 			int left = hitbox.Left;
 			int right = hitbox.Right;
-			int steps = (int)((right - left) * quotient);
+			int length = right - left;
+			int steps = (int)(length * quotient);
+
+			curveValue = Math.Max(curveValue, 1);
+
 			for (int i = 0; i < steps; i += 1) {
+
+				float percentage = i / curveValue;
+				if (curveValue >= length - i) {
+					percentage = (length - i) / curveValue;
+				}
+
+				percentage = BossRushUtils.OutExpo(percentage, strengthCurve);
+				float percentageCurveClamp = Math.Clamp(percentage, 0, 1f);
+				int value = (int)Math.Ceiling(hitbox.Height * percentageCurveClamp);
 				// float percent = (float)i / steps; // Alternate Gradient Approach
-				float percent = (float)i / (right - left);
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(colorA, colorB, percent));
+				float percent = i / (float)length;
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y + (hitbox.Height - value) / 2, 1, value), Color.Lerp(colorA, colorB, percent));
 			}
 		}
 	}
@@ -517,18 +599,15 @@ namespace BossRush {
 		private ushort _type;
 		private int _style;
 
-		public PlaceTileWithCheck(ushort type, int style = 0)
-		{
+		public PlaceTileWithCheck(ushort type, int style = 0) {
 			_type = type;
 			_style = style;
 		}
 
-		public override bool Apply(Point origin, int x, int y, params object[] args)
-		{
-			if(WorldGen.TileEmpty(x,y))
-			{
+		public override bool Apply(Point origin, int x, int y, params object[] args) {
+			if (WorldGen.TileEmpty(x, y)) {
 				WorldGen.PlaceTile(x, y, _type, mute: true, forced: false, -1, _style);
-				
+
 			}
 
 			return UnitApply(origin, x, y, args);

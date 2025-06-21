@@ -2,6 +2,7 @@
 using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	class CorruptionLootBox : LootBoxBase {
@@ -35,7 +36,7 @@ namespace BossRush.Contents.Items.Chest {
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (player.IsDebugPlayer()) {
 				GetArmorForPlayer(entitySource, player);

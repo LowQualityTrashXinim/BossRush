@@ -1,11 +1,12 @@
-﻿using Terraria;
-using Terraria.ID;
-using System.Linq;
-using Terraria.ModLoader;
-using Terraria.Localization;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 public class ArmorLoader : ModSystem {
@@ -156,13 +157,20 @@ public abstract class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_NaturalLifeRegen(ref float regen) { }
+	public override sealed bool FreeDodge(Player.HurtInfo info) {
+		if (modplayer.ArmorSetCheck(this)) {
+			return Armor_FreeDodge(info);
+		}
+		return base.FreeDodge(info);
+	}
+	public virtual bool Armor_FreeDodge(Player.HurtInfo info) => false;
 }
 public abstract class ModArmorPiece : ModType {
 	public const string Type_Head = "Head";
 	public const string Type_Body = "Body";
 	public const string Type_Leg = "Leg";
 	public int PieceID = ItemID.None;
-	
+
 	/// <summary>
 	/// Uses to add defenses to armor piece, do note that you can also substract the defenese
 	/// </summary>

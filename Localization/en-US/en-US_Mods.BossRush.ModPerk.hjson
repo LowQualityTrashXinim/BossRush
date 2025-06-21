@@ -5,17 +5,19 @@ SuppliesDrop: {
 
 GiftOfRelic: {
 	DisplayName: Gift of Relic
-	Description: Gift you a relic container
+	Description: Grant you a relic
 }
 
 StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
 		'''
+		Everytime you receive loot, have 30% chance to increases loot drop by 1
 		Your attack have 20% chance to do the following
-		+ Your damage increases from 15% to 100% when strike NPC
-		+ Damage dealt onto you may be reduced from 15% to 100%
-		You have 35% to dodge a attack
+		+ Your damage increases range from 15% to 100% when striking enemy
+		Taking hit have 20% chance to 
+		+ Reduce damage dealt onto you from 15% to 100%
+		+ Have 35% to dodge a attack
 		'''
 }
 
@@ -28,6 +30,7 @@ UncertainStrike: {
 		+ 15% chance to ignore 20 defenses
 		+ 5% chance to multiply damage by 2.0x
 		+ 1% chance to heal player
+		( note : all of this effect can happen all at once )
 		'''
 }
 
@@ -48,7 +51,7 @@ LethalKnockBack: {
 		'''
 		+ You deal additional damage base on your knockback and target's knockback resistance
 		+ Increases melee knockback by 15%
-		- Decreases weapon damage by 17%
+		- Decreases weapon damage by 11%
 		'''
 }
 
@@ -68,7 +71,7 @@ WindSlash: {
 		'''
 		"For people who complain their sword isn't special"
 		 + Release a short wind slash upon swing that deal 75% of that weapon damage
-		 + Waiting for 1.5s will result in stronger wind slash !
+		 + Waiting for 1.5s will multiply wind slash damage by 3x and drastically increases velocity
 		 + Increases weapon base damage by 5
 		'''
 }
@@ -99,9 +102,9 @@ Dirt: {
 	Description:
 		'''
 		"Being low as dirt"
-		+ Increases the chance of transmutation success by 10%
 		+ Increases the chance of accessory augmentated by 10%
 		+ Increases the chance of weapon enchanted by 10%
+		+ Increases the chance of getting extra item from loot drop by 10%
 		'''
 }
 
@@ -214,9 +217,16 @@ BlessingOfVortex: {
 	DisplayName: Blessing Of Vortex
 	Description:
 		'''
-		+ 7% range critical strike chance
+		+ 7% range critical strike chance and ranged critical strike damage by 50%
 		+ You have 1% chance to deal 4x damage when using range weapon
-		+ Increases critical strike damage by 50%
+		+ Critical attack will increases your damage by 5% last for 2s
+		'''
+	Description3:
+		'''
+		+ 7% range critical strike chance and ranged critical strike damage by 50%
+		+ You have 1% chance to deal 4x damage when using range weapon
+		+ Critical attack will increases your damage by 5% last for 2s
+		+ After every 5th shot, your next shot will always be critical
 		'''
 }
 
@@ -244,6 +254,13 @@ BlessingOfStardust: {
 		+ Your whip inflict Star gaze
 		+ For 2 minion/sentry slot you have, you gain 1 base damage
 		+ Increases your max minion slot and sentry slot by 1
+		'''
+	Description3:
+		'''
+		+ Your whip inflict Star gaze
+		+ For 2 minion/sentry slot you have, you gain 1 base damage
+		+ Increases your max minion slot and sentry slot by 1
+		+ Your whip attack may occassionally spawn stardust which home into enemy
 		'''
 }
 
@@ -804,9 +821,33 @@ LegendaryWoodSword: {
 	DisplayName: Legendary Wood Sword
 	Description:
 		'''
-		Wood sword are strengthen
+		"Wood sword are strengthen"
 		+ Increases base damage by 20
 		+ Weapon size increases by 50%
 		+ After every 3 swing, throw out wood that deal 200% of weapon damage
+		'''
+}
+
+GlassCannon: {
+	DisplayName: Glass cannon
+	Description:
+		'''
+		"Paradise for mad pursuer"
+		+ Multiply your damage by 1.25x
+		+ Capped your maximum health at 50
+		'''
+}
+
+WeaponDismantle: {
+	DisplayName: Weapon Dismantle [WIP]
+	Description: Enable ability to dismantle weapon via divine hammer
+}
+
+EssenceExtraction: {
+	DisplayName: Essence Extraction [WIP]
+	Description:
+		'''
+		Enable ability to extract essence from weapon, destroying the weapon
+		Consume the essence of a weapon to temporary gain a power boost
 		'''
 }

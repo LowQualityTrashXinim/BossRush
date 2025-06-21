@@ -170,3 +170,9 @@ StraightForTheWall: {
 	Description: Aren't you a bit too hurry ?
 	ConditionTip: Beat wall of flesh without beating any other boss prior
 }
+
+SynergyDream: {
+	DisplayName: Synergy fever dream
+	Description: What a weird dream, don't you agree ?
+	ConditionTip: Beat the mod with synergy fever mode on
+}

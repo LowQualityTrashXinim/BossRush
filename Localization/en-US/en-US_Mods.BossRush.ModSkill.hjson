@@ -45,62 +45,135 @@ TranquilMind: {
 
 HellFireArrowRain: {
 	DisplayName: Hellborn Cascade
-	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
+	Description:
+		'''
+		Casts a cascade of Hellfire Arrows that phases through blocks, dealing 13 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 FireArrowRain: {
 	DisplayName: Firefall Rain
-	Description: Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
+	Description:
+		'''
+		Casts a rain of Fire Arrows that phases through blocks, dealing 9 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 FrostburnArrowRain: {
 	DisplayName: Frosthail
-	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
+	Description:
+		'''
+		Casts a hail of Frostburn Arrows that phases through blocks, dealing 9 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_BoneArrow: {
 	DisplayName: Bonefide Shower
-	Description: Casts a ring of 16 bone arrows, dealing 10 damage each
+	Description:
+		'''
+		Casts a ring of 16 bone arrows, dealing 10 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_UnholyArrow: {
 	DisplayName: Demonic Shatter
-	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
+	Description:
+		'''
+		Casts a shatter of Unholy Arrows that phases through blocks, dealing 11 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 Skill_HolyArrow: {
 	DisplayName: Blessed Flood
-	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
+	Description:
+		'''
+		Casts a flood of Holy Arrows that phases through blocks, dealing 8 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 CholorophyteArrowRain: {
 	DisplayName: Leafspore Rainfall
-	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each
+	Description:
+		'''
+		Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 11 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 CursedArrowRain: {
 	DisplayName: Cursed Fanfare
-	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
+	Description:
+		'''
+		Casts a fanfare of Cursed Arrows that phases through blocks, dealing 12 damage each
+		10% projectile critical damage
+			2% projectile critical chance
+			5% arrow damage
+			
+		'''
 }
 
 IchorArrowRain: {
 	DisplayName: Golden Spread
-	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
+	Description:
+		'''
+		Casts a spread of Ichor Arrows that phases through blocks, dealing 12 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 JesterArrowRain: {
 	DisplayName: Circus Tricks
-	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
+	Description:
+		'''
+		Casts a trick of Jester Arrows that phases through blocks, dealing 15 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 WoodenArrowRain: {
 	DisplayName: Tribal Ambush
-	Description: Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
+	Description:
+		'''
+		Casts an ambush of Arrows that phases through blocks, dealing 6 damage each
+		10% projectile critical damage
+		2% projectile critical chance
+		5% arrow damage
+		'''
 }
 
 ChaosArrowRain: {
 	DisplayName: Chaos Arrow Rain
-	Description: Rain down random arrow each dealing damage range from 8 to 16
+	Description:
+		'''
+		Rain down random arrow each dealing damage range from 8 to 16
+		10% projectile critical damage
+		2% projectile critical chance
+		8% arrow damage
+		'''
 }
 
 Increases_3xDamage: {
@@ -120,12 +193,20 @@ MeteorShower: {
 
 SpiritBurst: {
 	DisplayName: Spirit Burst
-	Description: Bursts out a powerful spirit that homes in on the nearest enemy.
+	Description:
+		'''
+		Bursts out a powerful spirit that homes in on the nearest enemy.
+		Have 10% chance to halve cool down
+		'''
 }
 
 EnergyBolt: {
 	DisplayName: Energy Bolt
-	Description: Increases skill cost and damage for each active skill, shoot out bunch of energy orb
+	Description:
+		'''
+		Shoot out fast moving energy orb
+		Increases skill cost and damage for each active skill after this skill
+		'''
 }
 
 InfiniteManaSupply: {
@@ -235,7 +316,11 @@ BulletHell: {
 
 DebugCommand: {
 	DisplayName: Debug command
-	Description: Deal 2000 damage to every npc on screen on activate skill
+	Description:
+		'''
+		Deal 2000 damage to every npc on screen on activate skill
+		Grant you completely immunity to all debuff ( including potion sickness ) for 1/10 of skill duration
+		'''
 }
 
 LucidNightmares: {

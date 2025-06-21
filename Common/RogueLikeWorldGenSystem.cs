@@ -304,6 +304,10 @@ public class StructureUI : UIState {
 public class RogueLikeWorldGenSystem : ModSystem {
 
 	public List<GenPassData> list_genPass = new();
+	/// <summary>
+	/// This dictionary only load file in folder "Assets/Structures/..." so make sure you got the naming right<br/>
+	/// You can ignore inputing "Assets/Structures/..." 
+	/// </summary>
 	public Dictionary<string, List<GenPassData>> dict_Struture = new();
 	public const string FileDestination = "Assets/Structures/";
 	public override void Unload() {

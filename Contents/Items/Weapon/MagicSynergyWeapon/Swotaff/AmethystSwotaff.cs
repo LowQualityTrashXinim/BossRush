@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	public class AmethystSwotaffP : SwotaffProjectile {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AmethystSwotaff>();
 		public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost) {
-			AltAttackAmountProjectile = 4;
+			AltAttackAmountProjectile = 8;
 			AltAttackProjectileType = ModContent.ProjectileType<AmethystSwotaffGemProjectile>();
 			NormalBoltProjectile = ProjectileID.AmethystBolt;
 			DustType = DustID.GemAmethyst;
@@ -40,22 +40,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		Vector2 firstframePos = Vector2.Zero;
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			if (Projectile.timeLeft == 200) {
-				Projectile.velocity = Vector2.Zero;
-				firstframePos = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);
+				firstframePos = Main.MouseWorld;
 			}
 			if (Main.rand.NextBool(5)) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].scale = Main.rand.NextFloat(1f);
 			}
-			Projectile.ai[0]++;
-			if (Projectile.ai[0] >= 20) {
-				Projectile.hide = true;
-				for (int i = 0; i < 3; i++) {
-					int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = Main.rand.NextVector2Circular(3f, 3f);
-					Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
+			if (++Projectile.ai[0] >= 20) {
+				if (Projectile.ai[0] == 20) {
+					firstframePos = (firstframePos - Projectile.Center).SafeNormalize(Vector2.Zero);
 				}
 				Projectile.velocity = firstframePos * 15f;
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TheOrbit;
-//The orbit will linger around for a while before returning to player
 internal class TheOrbit : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(32, 32, 21, 4f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<TheOrbitProjectile>(), 16f, true);
@@ -35,6 +34,10 @@ internal class TheOrbit : SynergyModItem {
 }
 public class TheOrbitProjectile : SynergyModProjectile {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TheOrbit>();
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 10;
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+	}
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.friendly = true;
@@ -70,7 +73,7 @@ public class TheOrbitProjectile : SynergyModProjectile {
 		}
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		Projectile.ai[2] = 1;
+
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		if (Projectile.ai[1] == 1) {
@@ -78,6 +81,7 @@ public class TheOrbitProjectile : SynergyModProjectile {
 			Vector2 drawpos = Projectile.position - Main.screenPosition + origin;
 			Main.EntitySpriteDraw(texture, drawpos, null, new(255, 255, 255, 0), Projectile.rotation, origin, 1.3f, SpriteEffects.None);
 		}
+		Projectile.DrawTrail(lightColor * .25f, .05f);
 		return base.PreDraw(ref lightColor);
 	}
 }

@@ -19,16 +19,20 @@ public class WindSlashProjectile : ModProjectile {
 		Projectile.localNPCHitCooldown = 30;
 		ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 		ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+		Projectile.alpha = 255;
 	}
 	public override void AI() {
-		Projectile.alpha += 255 / 75;
+		if (Projectile.ai[0] > 1) {
+			Projectile.Kill();
+		}
 		Projectile.scale += .01f;
+		Projectile.ai[0] += .01f;
 		if (Projectile.velocity != Vector2.Zero) {
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
-		if (Projectile.alpha >= 255) {
-			Projectile.Kill();
-		}
+	}
+	public override Color? GetAlpha(Color lightColor) {
+		return lightColor * (1f - Projectile.ai[0]);
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Projectile.damage > 1) {
@@ -54,6 +58,7 @@ public class WindSlashProjectile : ModProjectile {
 				drawPos = drawPos.IgnoreTilePositionOFFSET(Projectile.velocity, -24);
 			}
 			Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+			color.A = 0;
 			Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, origin, Projectile.scale - k * .02f, SpriteEffects.None, 0);
 		}
 		return false;

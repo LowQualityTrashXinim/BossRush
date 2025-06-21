@@ -12,8 +12,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 	public class StreetLamp : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(15, 6));
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.VampireFrogStaff);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.FireWhip);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.VampireFrogStaff, $"[i:{ItemID.VampireFrogStaff}] Moth's dash speed increased by 15% and every 3 successful hit will heal player for 2.5% of dash attack damage dealt");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.FireWhip, $"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to do small explosion that deal 3 time the damage and inflict Hellfire for 5 seconds");
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(62, 62, 20, 0, 32, 32, ItemUseStyleID.HoldUp, true);
@@ -47,14 +47,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 		}
 
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff)) {
-				tooltips.Add(new TooltipLine(Mod, "StreetLamp_VampireFrogStaff",
-					$"[i:{ItemID.VampireFrogStaff}] Moth's dash speed increased by 15% and every 3 successful hit will heal player for 2.5% of dash attack damage dealt"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FireWhip)) {
-				tooltips.Add(new TooltipLine(Mod, "StreetLamp_Firecracker",
-					$"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to do small explosion that deal 3 time the damage and inflict Hellfire for 5 seconds"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.VampireFrogStaff);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.FireWhip);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			//modify the moths spawn location to be at the lamp
@@ -343,7 +337,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 		public int attackCooldown {
 			get => (int)Projectile.ai[2];
 			set => Projectile.ai[2] = value;
-			
+
 		}
 
 		public enum State {

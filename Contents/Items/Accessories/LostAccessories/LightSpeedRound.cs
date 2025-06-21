@@ -27,6 +27,7 @@ public class LightSpeedRound_Player : ModPlayer {
 			if (type == ProjectileID.Bullet) {
 				type = ModContent.ProjectileType<HitScanBullet>();
 			}
+			velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
 		}
 	}
 }

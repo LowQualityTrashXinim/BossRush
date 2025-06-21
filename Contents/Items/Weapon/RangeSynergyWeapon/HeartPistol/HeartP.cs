@@ -12,16 +12,19 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.friendly = true;
 			Projectile.penetrate = 1;
 			Projectile.light = 0.45f;
-			Projectile.timeLeft = 45;
+			Projectile.timeLeft = 35;
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.Vilethorn)) {
+				npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(3));
+			}
 			if (npc.lifeMax > 5 && !npc.friendly && npc.type != NPCID.TargetDummy) {
 				player.Heal(Main.rand.Next(1, 3));
 			}
-			if (Main.rand.NextBool(50)) {
+			if (Main.rand.NextBool(50) || (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.CandyCaneSword) && Main.rand.NextBool(20))) {
 				Item.NewItem(Projectile.GetSource_OnHit(npc), npc.Hitbox, ItemID.Heart);
 			}
 		}
@@ -67,8 +70,22 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Projectile.light = .25f;
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			Projectile.velocity -= Projectile.velocity * 0.05f;
+			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.WhiteTorch, newColor: new(255, 0, 100, 0));
+			dust.noGravity = true;
+			if (Projectile.ai[0] == 0) {
+				Projectile.velocity -= Projectile.velocity * 0.1f;
+			}
 			Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+			if (Projectile.timeLeft < 10)
+				Projectile.alpha += 25;
+		}
+		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.Vilethorn)) {
+				npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(3));
+			}
+			if (Main.rand.NextBool(150) || (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<HeartPistol>(), ItemID.CandyCaneSword) && Main.rand.NextBool(50))) {
+				Item.NewItem(Projectile.GetSource_OnHit(npc), npc.Hitbox, ItemID.Heart);
+			}
 		}
 	}
 }

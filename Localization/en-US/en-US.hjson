@@ -350,6 +350,24 @@ Mods: {
 			BottleOfUrineProjectile.DisplayName: Bottle Of Urine Projectile
 			KingSlimeSludgeProjectile.DisplayName: King Slime Sludge Projectile
 			SlimeKingRubyBolt.DisplayName: Slime King Ruby Bolt
+			StarDustProjectile.DisplayName: Star Dust Projectile
+			SlashStrikeProjectile.DisplayName: Slash Strike Projectile
+			SpearThurstProjectile.DisplayName: Spear Thurst Projectile
+			SimplePiercingProjectile.DisplayName: Simple Piercing Projectile
+			AcidArrow.DisplayName: Acid Arrow
+			FlameProjectile.DisplayName: Flame Projectile
+			Legacy_EnchantedCopperSwordP.DisplayName: Legacy_ Enchanted Copper Sword P
+			ToxicBubble.DisplayName: Toxic Bubble
+			ShatteredSkyProjectileHidden.DisplayName: Shattered Sky Projectile Hidden
+			SuperShurikenProjectile.DisplayName: Super Shuriken Projectile
+			AntiGravityShurikenProjectile.DisplayName: Anti Gravity Shuriken Projectile
+			GenericBlackSwordProjectileBlade.DisplayName: Generic Black Sword Projectile Blade
+			GenericBlackSwordSlash.DisplayName: Generic Black Sword Slash
+			SmartNeoDynamiteExplosion.DisplayName: Smart Neo Dynamite Explosion
+			StarWarSwordProjectile.DisplayName: Star War Sword Projectile
+			Trial_IronBroadsword.DisplayName: Trial_ Iron Broadsword
+			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
+			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
 		}
 
 		NPCs: {
@@ -380,6 +398,8 @@ Mods: {
 			KingSlimeMinionSpawner.DisplayName: King Slime Minion Spawner
 			KingSlimeMinion.DisplayName: King Slime Minion
 			KingSlimeCrown.DisplayName: King Slime Crown
+			TrialArcher.DisplayName: Trial Archer
+			TrialKnight.DisplayName: Trial Knight
 		}
 
 		Items: {
@@ -452,7 +472,13 @@ Mods: {
 			}
 
 			Merciless: {
-				Tooltip: You may now defend your lawn the way eagles intended
+				Tooltip:
+					'''
+					"You may now defend your lawn the way eagles intended"
+					Grants increased spread and damage during your second shot
+					Increases damage by 50% against enemy with over 80% or under 30% health
+					Completes a cycle by shotting a cannonball at 400% base damage
+					'''
 				DisplayName: Merciless
 			}
 
@@ -494,7 +520,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A British-American fusion cuisine!"
-					Right-Click improvises the gun into a knife which upon contact hypercharges your next shot
+					Alt-Click improvises the gun into a knife which upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -519,13 +545,17 @@ Mods: {
 			}
 
 			Gunmerang: {
-				Tooltip: "[WIP] Do pizzerias always come back too?"
+				Tooltip: Do pizzerias always come back too?
 				DisplayName: Gunmerang
 			}
 
 			ForceOfEarth: {
-				Tooltip: The culmination of Mother Nature at your middle finger
 				DisplayName: Natural Disaster
+				Tooltip:
+					'''
+					The culmination of Mother Nature at your hand
+					Alt-attack to order the bow around you attack faster toward whatever your direction at
+					'''
 			}
 
 			DeathBySpark: {
@@ -616,8 +646,12 @@ Mods: {
 			}
 
 			SuperShortSword: {
-				Tooltip: Found peace with the size of your junk? Super...?
 				DisplayName: Super Shortsword
+				Tooltip:
+					'''
+					Found peace with the size of your junk? Super...?
+					Alt-attack hold to make all your shortsword focus to 1 direction, releases the attack to shoot the shortsword forward
+					'''
 			}
 
 			ShadowTrick: {
@@ -676,12 +710,16 @@ Mods: {
 			}
 
 			BurningPassion: {
-				Tooltip: Nothing quite like a day in the life of Vlad the Impaler!
+				Tooltip:
+					'''
+					Nothing quite like a day in the life of Vlad the Impaler!
+					Alt-attack to thurst your passion toward your foes, you will receive no damage during thurst attack
+					'''
 				DisplayName: Burning Passion
 			}
 
 			BloodStar: {
-				Tooltip: "[WIP] It's bloody small, that's what! Shorty..."
+				Tooltip: It's bloody small, that's what! Shorty...
 				DisplayName: Bloodstar
 			}
 
@@ -723,7 +761,7 @@ Mods: {
 				Tooltip:
 					'''
 					"I'll cut to the chase - yeet that goddamn thing."
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 50 mana
 					'''
 				DisplayName: Amethyst Swotaff
 			}
@@ -732,7 +770,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Yeah, right! Just stick a blade atop a staff, what could possibly go wrong?"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 50 mana
 					'''
 				DisplayName: Topaz Swotaff
 			}
@@ -741,7 +779,7 @@ Mods: {
 				Tooltip:
 					'''
 					"... These sapphires are sentient."
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 75
 					'''
 				DisplayName: Sapphire Swotaff
 			}
@@ -750,7 +788,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Radiating a very green energy, suitable for all crystal girlies out there!"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 75 mana
 					'''
 				DisplayName: Emerald Swotaff
 			}
@@ -759,7 +797,7 @@ Mods: {
 				Tooltip:
 					'''
 					"So much raw, concentrated power... and for what?"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 100 mana
 					'''
 				DisplayName: Ruby Swotaff
 			}
@@ -768,7 +806,7 @@ Mods: {
 				Tooltip:
 					'''
 					"The pinnacle of purity, and the magnum opus of inflation!"
-					Right-Click to activate a special attack
+					Alt-attack to activate a special attack at the cost of 100 mana
 					'''
 				DisplayName: Diamond Swotaff
 			}
@@ -914,7 +952,7 @@ Mods: {
 					'''
 					"Your rage is what turns tides in battle"
 					Increase 5% damage, 5% critical strike chance and 25% maximum health
-					Grant a buff upon getting hit that increase 50% damage and critical strike chance
+					Grant a buff upon getting hit that increase 25% damage and critical strike chance
 					But shatter your defense and cut your life regen
 					The buff will reset its life time when you got hit again
 					'''
@@ -972,13 +1010,12 @@ Mods: {
 				Tooltip:
 					'''
 					"A small ancient power left from god, said to be cursed"
-					Increases damage reduction by 15%
+					Increases damage reduction by 10%
 					Most projectiles can bounce off tile
 					Bouncing off a tile increase damage by 20%
-					Bouncing more than 10 times won't no longer increase damage
 					Bouncing off a tile will make the projectile disappear after 3s
 					'''
-				DisplayName: Bouncy Relic
+				DisplayName: Chalice of Royal Gel
 			}
 
 			TowerDestruction: {
@@ -1310,7 +1347,11 @@ Mods: {
 
 			AmberBoneSpear: {
 				DisplayName: Amber Bone Spear
-				Tooltip: ""
+				Tooltip:
+					'''
+					A ancient magic spear
+					Alt-attack to throw the magic spear toward your foes
+					'''
 			}
 
 			BuilderLootBox: {
@@ -1526,11 +1567,13 @@ Mods: {
 				Tooltip: ""
 				ExtraInfo:
 					'''
-					[Tier] : is how much effect your relic have
-					some relic's effect is affected by tier
+					[Tier] : is how much effect your relic currently have, tier affect relic effectiveness
 
-					[Passive active item] : having the item in your 
-					inventory will activate their effect
+					[Relic point] : this indicate how much relic of vary tier can be actived at all time
+					each relic tier of being active contribute to relic point
+
+					[Relic type] : relic have 3 types being [c/ff005a:Stat], [c/ffff00:Multistat] and [c/ff7500:Projectile]
+					These type are important to know which prefix effect can apply to the relic
 					'''
 			}
 
@@ -1607,13 +1650,12 @@ Mods: {
 			}
 
 			ArcaneMaster: {
-				DisplayName: Arcane Master
+				DisplayName: Orb of arcane mastery
 				Tooltip:
 					'''
-					"The zenith of sage ideology"
-					Multiply magic damage by 1.5 and reduce mana cost by 50%
-					Inherit the following effect : mana flower, mana magnet, star cloak
-					Using a magic weapon will increases mana cost by 10% but increases weapon magic damage by 5%
+					"The zenith of sage ideology, well what used to be"
+					Multiply magic damage by 1.1x and reduce mana cost by 15%
+					Using a magic weapon will increases mana cost by 2% but increases weapon magic damage by 1%
 					This have a capped at 60 and have 1s of decay
 					'''
 			}
@@ -1745,7 +1787,7 @@ Mods: {
 					'''
 			}
 
-			GreatHolyCross: {
+			GoldenCross: {
 				DisplayName: Golden Cross
 				Tooltip:
 					'''
@@ -1769,9 +1811,9 @@ Mods: {
 				DisplayName: Genocidal Pact
 				Tooltip:
 					'''
-					Increases your first strike damage by 300%
-					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases
-					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
+					Increases your first strike damage by 300% but decreases your weapon damage by 25%
+					Killing a enemy will ingore the damage decreases and increases your attack damage by 10% and attack speed by 5%
+					You can stack the effect by keep killing enemies, the stack effect capped at 5 but can be over stack
 					'''
 			}
 
@@ -1834,7 +1876,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Muzzle made by wizard"
-					Weapon that uses bullet ammo will have their projectile convert to Arcane Bullet
+					Weapon that use bullet ammo will have their shot convert to Arcane Bullet
 					Arcane Bullet damage is affected by both range damage and magic damage
 					'''
 			}
@@ -1897,7 +1939,7 @@ Mods: {
 					'''
 					Energy can regenerate slowly 1 energy/second
 					During skill activation, increases defense by 12 and damage by 22%
-					Decreases your maximum energy capacity by 100 but Increase energy recharge rate by 11%
+					Decreases your maximum energy capacity by 100 but increase energy recharge rate by 11%
 					'''
 			}
 
@@ -1952,8 +1994,8 @@ Mods: {
 			}
 
 			OldFlamingWoodSword: {
-				DisplayName: Old Flaming Wood Sword
-				Tooltip: ""
+				DisplayName: Small Flaming Wood Sword
+				Tooltip: The youngest brother of fire aspect wood sword family
 			}
 
 			SkillGetter: {
@@ -1987,7 +2029,7 @@ Mods: {
 					'''
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
-					Alt click to throw out a anti gravity plasma grenade
+					Alt-attack to throw out a anti gravity plasma grenade
 					Shooting the plasma grenade will make it explode
 					Letting it collide or explode naturally will make it deal 1/3 of original damage
 					'''
@@ -2029,7 +2071,11 @@ Mods: {
 
 			AngelicSmg: {
 				DisplayName: Angelic Smg
-				Tooltip: Bring down heaven wrath with this smg
+				Tooltip:
+					'''
+					Bring down heaven wrath with this smg
+					Alt-attack to throw the gun toward heretic dealing 3x damage
+					'''
 			}
 
 			GlitchWorldEssence: {
@@ -2041,9 +2087,9 @@ Mods: {
 				DisplayName: Divine Hammer
 				Tooltip:
 					'''
-					Enable ability to modify world's rule which enforce on weapon
-					enchant them with something new
-					Can also be used to increases weapon's stats
+					Enable ability to modify world's rule which enforce on weapon, accessory and armor
+					Make them into something more special
+					Can also be used to increases item's stats
 					'''
 				ExtraInfo:
 					'''
@@ -2052,8 +2098,17 @@ Mods: {
 					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
 					in order to gain their uniquely personalized attributes.
 
-					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
+					[c/ffff52:Hover] over your weapon of choice before enchanting to view their perks.
 					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
+
+					[Augmentation]
+					Empower your accessories with up to 5 randomly-assigned effects by [c/d92b2b:sacrificing an item of similar rarity.]
+					[c/ffff52:The cost for empowering increases with each successful augmentation.]
+
+					[Soulbound]
+					Bind a soul into your armor, inheriting its proprieting.
+					Once activated, the soul will level up based on the total damage dealt with the armor piece equipped.
+					[c/d92b2b:Once activated, you cannot dismantle a soul for later use.]
 					'''
 			}
 
@@ -2079,7 +2134,11 @@ Mods: {
 
 			WinterFlame: {
 				DisplayName: Winter Flame
-				Tooltip: Praise the red winter !
+				Tooltip:
+					'''
+					Praise the red winter !
+					Alt-attack to light your foes in burst of flame
+					'''
 			}
 
 			StarWhip: {
@@ -2153,12 +2212,12 @@ Mods: {
 
 			TheTwoEvil: {
 				DisplayName: The Two Evil
-				Tooltip: ""
+				Tooltip: Disgusting
 			}
 
 			BurningSky: {
 				DisplayName: Burning Sky
-				Tooltip: ""
+				Tooltip: Make them see and fear
 			}
 
 			SakuraKatana: {
@@ -2292,13 +2351,14 @@ Mods: {
 				Tooltip:
 					'''
 					"Comeback is always good"
+					Every 6th shot you shot out a burst of 6 bullets
 					+10 critical strike chance and 25% attack speed when below 50% hp
 					'''
 			}
 
 			BlueMinishark: {
 				DisplayName: Blue Minishark
-				Tooltip: ""
+				Tooltip: New and improve with a new coat of paint !
 			}
 
 			RelentlessAbomination: {
@@ -2328,11 +2388,7 @@ Mods: {
 
 			ReInitializeUI: {
 				DisplayName: ReInitialize UI
-				Tooltip:
-					'''
-					Current UI to reintialize : Transmutation
-					Debug item, do not uses it unless you are the one working on this
-					'''
+				Tooltip: Debug item, do not uses it unless you are the one working on this
 			}
 
 			PerkDebugShower: {
@@ -2344,9 +2400,10 @@ Mods: {
 				DisplayName: Tundra Bow
 				Tooltip:
 					'''
-					Your shot are accompany with a snowbal dealing 35% of weapon damage
-					Every 5th shot shoot a arch of snowball
+					Every 5th shot will shoot out a arch of snowball
 					Hitting enemy will increases snowball damage by 10% ( capped at 50% )
+					Have 0.1% chance to cause a snow storm which last for 3s
+					During snow storm, Tundra bow will always shoot arch of snowball
 					Snowball shoot from bow inflict [c/75ffff:Hypothermia]
 					'''
 				ExtraInfo:
@@ -2528,16 +2585,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			AcidRebirth: {
-				DisplayName: Acid Rebirth
-				Tooltip: ""
-			}
-
-			BrokenForecast: {
-				DisplayName: Broken Forecast
-				Tooltip: ""
-			}
-
 			DrainingVeil: {
 				DisplayName: Draining Veil
 				Tooltip: ""
@@ -2565,21 +2612,97 @@ Mods: {
 
 			MagicPotion: {
 				DisplayName: Magic Potion
-				Tooltip: ""
+				Tooltip: Increases magic damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			MeleePotion: {
 				DisplayName: Melee Potion
-				Tooltip: ""
+				Tooltip: Increases Melee damage by 10%, critical chance by 10, critical damage 10%
 			}
 
-			RangerPotion: {
-				DisplayName: Ranger Potion
-				Tooltip: ""
+			RangePotion: {
+				DisplayName: Range Potion
+				Tooltip: Increases range damage by 10%, critical chance by 10, critical damage 10%
 			}
 
 			SummonPotion: {
 				DisplayName: Summon Potion
+				Tooltip: Increases summon damage by 10%, critical chance by 10, critical damage 10%
+			}
+
+			CorruptedRebirth: {
+				DisplayName: Corrupted Rebirth
+				Tooltip:
+					'''
+					Replace wooden arrow with acid arrow which pernamently decreases target defenses
+					Occasionally spawn acid bubble which home in to closest enemy
+					Every 10th shot summon a ghost version of the bow which breath cursed flame
+					'''
+			}
+
+			EnchantedCopperSword: {
+				DisplayName: Enchanted Copper Sword
+				Tooltip: A derserve forgotten
+			}
+
+			SniperRifle: {
+				DisplayName: Sniper Rifle
+				Tooltip:
+					'''
+					"A sniper rifle of a forgotten alternative timeline in a broken alternative universe"
+					Wait for 2s to charge your next shot
+					Charge shot increases damage by 2.0x, have 50% of instantly killing enemy
+					Charge shot explode enemy on hit inflicting Completely Shatter debuff
+					'''
+			}
+
+			AchievementResetter: {
+				DisplayName: Achievement Resetter
+				Tooltip: ""
+			}
+
+			ShatteredSky: {
+				DisplayName: Shattered Sky
+				Tooltip: Weather forecasting today is going to be thunderous
+			}
+
+			SuperShuriken: {
+				DisplayName: Super Shuriken
+				Tooltip: ""
+			}
+
+			AntiGravityShuriken: {
+				DisplayName: Anti Gravity Shuriken
+				Tooltip: ""
+			}
+
+			TestCustomLootDropItem: {
+				DisplayName: Test Custom Loot Drop Item
+				Tooltip: ""
+			}
+
+			GenericBlackSword: {
+				DisplayName: Samanya
+				Tooltip:
+					'''
+					[Community Content Mod : Crossover Weapon]
+					Weapon of black matter, however the shape is rather generic
+					Alt-attack to make all void sword orbitting around you shoot toward cursor
+					'''
+			}
+
+			SmartNeoDynamite: {
+				DisplayName: Smart Neo Dynamite
+				Tooltip: ""
+			}
+
+			MasterSword: {
+				DisplayName: Master Sword
+				Tooltip: ""
+			}
+
+			OldSkullRevolver: {
+				DisplayName: Old Skull Revolver
 				Tooltip: ""
 			}
 		}
@@ -3203,23 +3326,63 @@ Mods: {
 			}
 
 			Magic_Buff: {
-				DisplayName: Magic_ Buff
-				Description: Mods.BossRush.Buffs.Magic_Buff.Description
+				DisplayName: Magic power
+				Description: Increases magic power
 			}
 
 			Melee_Buff: {
-				DisplayName: Melee_ Buff
-				Description: Mods.BossRush.Buffs.Melee_Buff.Description
+				DisplayName: Melee power
+				Description: Increases melee power
 			}
 
-			Ranger_Buff: {
-				DisplayName: Ranger_ Buff
-				Description: Mods.BossRush.Buffs.Ranger_Buff.Description
+			Range_Buff: {
+				DisplayName: Range power
+				Description: Increases range power
 			}
 
 			Summon_Buff: {
-				DisplayName: Summon_ Buff
-				Description: Mods.BossRush.Buffs.Summon_Buff.Description
+				DisplayName: Summon power
+				Description: Increases summon power
+			}
+
+			StarRay: {
+				DisplayName: Star Ray
+				Description: Mods.BossRush.Buffs.StarRay.Description
+			}
+
+			Acid: {
+				DisplayName: Acid
+				Description: Mods.BossRush.Buffs.Acid.Description
+			}
+
+			CompletelyShatter: {
+				DisplayName: Completely Shatter
+				Description: Mods.BossRush.Buffs.CompletelyShatter.Description
+			}
+
+			DodgeJutsu: {
+				DisplayName: Dodge Jutsu
+				Description: Mods.BossRush.Buffs.DodgeJutsu.Description
+			}
+
+			DodgeJutsuCoolDown: {
+				DisplayName: Dodge Jutsu Cool Down
+				Description: Mods.BossRush.Buffs.DodgeJutsuCoolDown.Description
+			}
+
+			Buff_VortexBlessing: {
+				DisplayName: Buff_ Vortex Blessing
+				Description: Mods.BossRush.Buffs.Buff_VortexBlessing.Description
+			}
+
+			DebugStatus: {
+				DisplayName: Debug Status
+				Description: Mods.BossRush.Buffs.DebugStatus.Description
+			}
+
+			CursedStatus: {
+				DisplayName: Cursed Status
+				Description: Mods.BossRush.Buffs.CursedStatus.Description
 			}
 		}
 
@@ -3235,6 +3398,11 @@ Mods: {
 						Boss Rush mode world setting are enable
 						Offer custom boss arena World generation
 						'''
+				}
+
+				RoguelikeMode: {
+					Label: "[WIP] Roguelike Mode"
+					Tooltip: ""
 				}
 
 				SynergyFeverMode: {
@@ -3253,7 +3421,7 @@ Mods: {
 						'''
 						Enable this to activate vanilla terraria overhaul
 						- It will change some weapon behavior
-						- Rework how most vanilla weapon work to fit the mod
+						- Rework how most vanilla item work to fit the mod
 						- Rebalancing vanilla item
 						'''
 				}
@@ -3269,20 +3437,6 @@ Mods: {
 						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
 						- Boss can sometime become elite
-						'''
-				}
-
-				Ascension: {
-					Label: Ascension ( NOT IMPLEMENTED !)
-					Tooltip:
-						'''
-						"So you like more pain regardless of reward"
-						This mode will not treat you fair, expect hundred or even thousand of attempts
-						Extremely not recommend for any Player
-						- Enemy are even more brutal
-						- Boss will gain 5 time the hp
-						- Nightmare mode are enable by default
-						- Special debuff now can be inflict by enemy and projectile
 						'''
 				}
 
@@ -3387,11 +3541,6 @@ Mods: {
 						[-] Your right to access enchantment system is revoked
 						Instead weapon enchantment have 20% to appear on your weapon
 						'''
-				}
-
-				WorldGenRLSettingTest: {
-					Label: World Gen R L Setting Test
-					Tooltip: ""
 				}
 
 				HellishEndeavour: {

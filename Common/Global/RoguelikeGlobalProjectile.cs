@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -24,6 +25,13 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
+	public float CritDamage = 0;
+	public int EnergyRegainOnHit = 0;
+	/// <summary>
+	/// This is for projectile that is spawned via duplicate projectile method<br/><br/>
+	/// <b>Return true if it is from duplication</b>
+	/// </summary>
+	public bool IsASubProjectile = false;
 	public int InitialTimeLeft { get; private set; } = 0;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
@@ -53,6 +61,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					if (global.Source_ItemType != 0) {
 						Source_ItemType = global.Source_ItemType;
 					}
+				}
+			}
+			if (parent3.Context != null) {
+				if (parent3.Context == "subProj") {
+					IsASubProjectile = true;
 				}
 			}
 			if (parent3.Entity is NPC npc) {
@@ -92,7 +105,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Source_CustomContextInfo == "Skill_IceAge") {
+		if (Source_CustomContextInfo == "Skill" && projectile.type == ProjectileID.Blizzard) {
 			var player = Main.player[projectile.owner];
 			target.AddBuff(BuffID.Frozen, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 			target.Center.LookForHostileNPC(out var npclist, 75);
@@ -106,6 +119,11 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			}
 		}
 	}
+	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[projectile.owner];
+		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
+		modifiers.CritDamage += CritDamage;
+	}
 	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
 		if (IsFromBoss) {
 			modifiers.FinalDamage.Flat += target.statManaMax2 * .1f;
@@ -116,6 +134,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0
 			|| player.heldProj == projectile.owner
+			|| ProjectileID.Sets.SingleGrappleHook[projectile.type]
 			|| projectile.hostile
 			|| !projectile.friendly
 			|| projectile.minion
@@ -136,6 +155,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.PortalGunBolt
 			|| projectile.type == ProjectileID.PortalGunGate
 			|| projectile.type == ProjectileID.LightsBane
+			|| projectile.aiStyle == ProjAIStyleID.Hook
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
 			|| projectile.type == ModContent.ProjectileType<AngelicSmgHeld>()
 			|| projectile.type == ModContent.ProjectileType<MagicBullet>()//This is to prevent lag

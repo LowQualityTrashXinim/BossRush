@@ -9,8 +9,8 @@ using BossRush.Common.RoguelikeChange.ItemOverhaul;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 	internal class Deagle : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PhoenixBlaster);
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DaedalusStormbow);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PhoenixBlaster, $"[i:{ItemID.PhoenixBlaster}] You shoot out additional bullet but at a random position, getting crit will make the next shot shoot out a fire phoenix dealing quadruple damage");
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DaedalusStormbow, $"[i:{ItemID.DaedalusStormbow}] Upon critical hit, storm of bullet fly down at target, have a 10 second cool down");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 40, false, AmmoID.Bullet);
@@ -24,13 +24,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PhoenixBlaster)) {
-				tooltips.Add(new TooltipLine(Mod, "Deagle_PhoenixBlaster", $"[i:{ItemID.PhoenixBlaster}] You shoot out additional bullet but at a random position, getting crit will make the next shot shoot out a fire phoenix dealing quadruple damage"));
-			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.DaedalusStormbow)) {
-				tooltips.Add(new TooltipLine(Mod, "Deagle_DaedalusStormBow",
-					$"[i:{ItemID.DaedalusStormbow}] Upon critical hit, storm of bullet fly down at target, have a 10 second cool down"));
-			}
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.PhoenixBlaster);
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.DaedalusStormbow);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			var weapon = Item.GetGlobalItem<RangeWeaponOverhaul>();

@@ -183,11 +183,8 @@ public class GuaranteedCrit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(2.5f);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		player.GetModPlayer<PlayerStatsHandle>().ModifyHit_OverrideCrit = true;
-	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		player.GetModPlayer<PlayerStatsHandle>().ModifyHit_OverrideCrit = true;
+	public override void Update(Player player, SkillHandlePlayer skillplayer) {
+		player.GetModPlayer<PlayerStatsHandle>().AlwaysCritValue++;
 	}
 }
 public class RapidHealing : ModSkill {
@@ -242,7 +239,7 @@ public class BloodToPower : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		int blood = player.statLife / 2;
 		player.statLife -= blood;
 		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
@@ -297,7 +294,7 @@ public class AllOrNothing : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
 	}
 	public class AllOrNothingBuff : ModBuff {
@@ -331,7 +328,7 @@ public class CoinFlip : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		if (Main.rand.NextBool()) {
 			int chanceDecider = Main.rand.Next(10);
 			//Positive effect
@@ -350,7 +347,7 @@ public class DiceRoll : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer) {
+	public override void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) {
 		int chance = Main.rand.Next(7);//0 , 1 , 2, 3, 4, 5
 		switch (chance) {
 			case 0:

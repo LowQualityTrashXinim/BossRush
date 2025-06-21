@@ -1,13 +1,11 @@
 ﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Contents.Items.NoneSynergy.GenericBlackSword;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -19,7 +17,14 @@ public class SwordSlashTrail : ModSystem {
 	public static Dictionary<int, Color> averageColorByID = new();
 	public static Dictionary<int, string> swordSlashShaderType = new();
 
-
+	public override void Load() {
+		averageColorByID = new();
+		swordSlashShaderType = new();
+	}
+	public override void Unload() {
+		averageColorByID = null;
+		swordSlashShaderType = null;
+	}
 	public override void PostAddRecipes() {
 		Stopwatch watch = new();
 		watch.Start();
@@ -67,21 +72,24 @@ public class SwordSlashTrail : ModSystem {
 		}).Wait();
 
 		//Xinim optimization : check for Alpha check only instead all 3 colours check, and also only do addition if alpha is not 0
+		//Extra optimization : since terraria sprite is actually scale up by 2, we can iterate 2 time ahead
+
 		for (int i = 0; i < color.Length; i++) {
-			if (color[i].A == 0) {
-				continue;
+			var Col = color[i];
+			if (Col.A != 0) {
+				nonTransparentPixelsAmount++;
+				R += Col.R;
+				G += Col.G;
+				B += Col.B;
 			}
-			nonTransparentPixelsAmount++;
-			R += color[i].R;
-			G += color[i].G;
-			B += color[i].B;
+			i++;
 		}
 		R /= nonTransparentPixelsAmount;
 		G /= nonTransparentPixelsAmount;
 		B /= nonTransparentPixelsAmount;
 
 		//Slight small optimization by grouping both initialization of new struct and adding a new element into list into 1
-		averageColorByID.Add(id, new Color(R, G, B));
+		averageColorByID.TryAdd(id, new Color(R, G, B));
 
 	}
 }

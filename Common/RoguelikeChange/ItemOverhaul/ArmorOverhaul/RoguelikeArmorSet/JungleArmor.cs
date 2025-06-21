@@ -32,6 +32,9 @@ public class JunglePants : ModArmorPiece {
 	}
 }
 public class JungleArmorPlayer : PlayerArmorHandle {
+	public override void SetStaticDefaults() {
+		ArmorLoader.SetModPlayer("JungleArmor", this);
+	}
 	public float[] Projindex = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
 	public override bool Armor_Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (item.DamageType == DamageClass.Magic) {

@@ -19,13 +19,13 @@ namespace BossRush.Common.Mode.BossRushMode {
 			recipe.Register();
 		}
 		public override void AddRecipeGroups() {
-			foreach (var item in ContentSamples.ItemsByType) {
-				if (item.Value.ModItem is SynergyModItem) {
-					list.Add(item.Key);
-				}
-			}
-			RecipeGroup SynergyItem = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<SynergyEnergy>())}", list.ToArray());
-			RecipeGroup.RegisterGroup("Synergy Item", SynergyItem);
+			//foreach (var item in ContentSamples.ItemsByType) {
+			//	if (item.Value.ModItem is SynergyModItem) {
+			//		list.Add(item.Key);
+			//	}
+			//}
+			//RecipeGroup SynergyItem = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<SynergyEnergy>())}", list.ToArray());
+			//RecipeGroup.RegisterGroup("Synergy Item", SynergyItem);
 
 			RecipeGroup WoodSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Wood sword", new int[]
 			{
@@ -100,10 +100,6 @@ namespace BossRush.Common.Mode.BossRushMode {
 			}
 		}
 		private void SynergyRecipe(Recipe recipe) {
-			if (recipe.createItem.ModItem is FlamingWoodSword) {
-				recipe.DisableRecipe();
-				return;
-			}
 			if (recipe.createItem.ModItem is SynergyModItem) {
 				recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
 			}

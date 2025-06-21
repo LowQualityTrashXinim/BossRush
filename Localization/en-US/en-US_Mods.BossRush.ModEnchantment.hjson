@@ -515,8 +515,8 @@ SpaceGun.Description:
 BeeGun.Description:
 	'''
 	Shooting weapon have 20% to shoot out a friendly bee that deal 20 damage 
-	( note : increases to 50% if player have Have Pack )
-	When player are hitted, put player in honey buff for 6s and release 5 bees that deal 30 damage
+	( note : increases to 50% if player have Hive Pack )
+	Player on getting hit will put them in honey buff for 6s and release 5 bees that deal 30 damage
 	( note : 10% of your weapon damage will contribute to bee damage exclusive to enchantment )
 	'''
 Vilethorn.Description:
@@ -666,7 +666,7 @@ SwordFish.Description:
 	'''
 	Your attack ignore 5 point of defenses
 	Damage dealt have 1 in 10 chance to strike twice
-	If enemy are near, spawn out a sword fish that swim around
+	If enemy are near, spawn out a sword fish that swim to attack
 	'''
 TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
@@ -727,9 +727,16 @@ StylistKilLaKillScissorsIWish.Description:
 	Multiply melee damage by 1.11x
 	Multiply melee critical strike damage by 1.12x
 	Increases weapon size by 20%
+	Hitting enemey with item have 50% chance to do additional slash
 	'''
 Ruler.Description:
 	'''
 	Increases base damage of projectile depend on distance from target to player
 	Increases additive damage of melee item depend on distance from target to player
+	'''
+OnyxBlaster.Description:
+	'''
+	Increases base range damage by 5
+	Override your shot to shoot Onyx beam
+	Have 1 in 5 chance to accompany your shot with a Onyx bolt deal 300% damage
 	'''

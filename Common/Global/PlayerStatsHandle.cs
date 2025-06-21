@@ -1,19 +1,23 @@
-﻿using System;
-using Terraria;
-using Terraria.ModLoader;
-using BossRush.Contents.Skill;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using BossRush.Contents.Perks;
-using System.Collections.Generic;
+﻿using BossRush.Common.General;
+using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Common.Systems.Mutation;
+using BossRush.Common.Systems.ObjectSystem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Common.Systems.Mutation;
-using BossRush.Common.Mode.DreamLikeWorldMode;
-using Terraria.ModLoader.IO;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Skill;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Global;
 /// <summary>
@@ -22,7 +26,90 @@ namespace BossRush.Common.Global;
 /// Due to some system uses <see cref="PlayerStats"/> so the above must be uses for ease of access
 /// </summary>
 public class PlayerStatsHandle : ModPlayer {
-	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
+	public bool CanDropSynergyEnergy = true;
+	public bool LootboxCanDropSpecialPotion = false;
+	public HashSet<int> ItemGraveYard = new HashSet<int>();
+	public HashSet<int> Request_AddMelee = new();
+	public HashSet<int> Request_AddRange = new();
+	public HashSet<int> Request_AddMagic = new();
+	public HashSet<int> Request_AddSummon = new();
+	public HashSet<int> Request_AddMisc = new();
+	public int InfluenceableRNGselector = -1;
+	public float Chance_4RNGselector { get; set; } = 0;
+
+	public int counterShow = 0;
+	public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
+	public float ChanceLootDrop = 0;
+	public StatModifier ChanceDropModifier = new();
+
+	public StatModifier DropModifier = new();
+
+	//This is inner modifier ( aka amount modifier to x stuff )
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int WeaponAmountAddition { get; set; } = 0;
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int PotionTypeAmountAddition { get; set; } = 0;
+	/// <summary>
+	/// Use this if it is a always update item
+	/// </summary>
+	public int PotionNumberAmountAddition { get; set; } = 0;
+	//Do not touch this
+	public int weaponAmount;
+	public int potionTypeAmount;
+	public int potionNumAmount;
+
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateMeleeChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateRangeChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateMagicChanceMutilplier = 0;
+	/// <summary>
+	/// Use this if you gonna always update it
+	/// </summary>
+	public float UpdateSummonChanceMutilplier = 0;
+	public int ModifyGetAmount(int baseValue) {
+		int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
+		if (Main.rand.NextFloat() <= ChanceLootDrop) {
+			amount = (int)Math.Ceiling(ChanceDropModifier.ApplyTo(baseValue));
+		}
+		if (amount <= 0) {
+			return 1;
+		}
+		return amount;
+	}
+	/// <summary>
+	/// This must be called before using
+	/// <br/><see cref="weaponAmount"/>
+	/// <br/><see cref="potionTypeAmount"/>
+	/// <br/><see cref="potionNumAmount"/>
+	/// </summary>
+	public void GetAmount() {
+		weaponAmount = 3;
+		potionTypeAmount = 1;
+		potionNumAmount = 2;
+		if (Main.getGoodWorld) {
+			weaponAmount = 2;
+			potionTypeAmount = 1;
+			potionNumAmount = 1;
+		}
+		weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
+		potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
+		potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
+		if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode) {
+			weaponAmount = 1;
+		}
+	}
 	public StatModifier UpdateMovement = new StatModifier();
 	public StatModifier UpdateJumpBoost = new StatModifier();
 	public StatModifier UpdateHPMax = new StatModifier();
@@ -34,8 +121,18 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier UpdateDefEff = new StatModifier();
 	public StatModifier UpdateMinion = new StatModifier();
 	public StatModifier UpdateSentry = new StatModifier();
+	/// <summary>
+	/// This is the debuff buff time modifier for NPC<br/>
+	/// this modifier will modify the duration of debuff on NPC<br/>
+	/// Not to be confused with <see cref="DebuffBuffTime"/>
+	/// </summary>
 	public StatModifier DebuffTime = new StatModifier();
 	public StatModifier BuffTime = new StatModifier();
+	/// <summary>
+	/// This is the debuff buff time modifier for player<br/>
+	/// this modifier will modify the duration of debuff on player<br/>
+	/// Not to be confused with <see cref="DebuffTime"/>
+	/// </summary>
 	public StatModifier DebuffBuffTime = new StatModifier();
 	public StatModifier AttackSpeed = new StatModifier();
 	public StatModifier ShieldHealth = new StatModifier();
@@ -81,10 +178,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public int Rapid_LifeRegen = 0;
 	public int Rapid_ManaRegen = 0;
 	public int Debuff_LifeStruct = 0;
-	/// <summary>
-	/// This one is a hacky way of ensuring a hit always crit
-	/// </summary>
-	public bool? ModifyHit_OverrideCrit = null;
 	/// <summary>
 	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
 	/// </summary>
@@ -210,16 +303,19 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
 
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
+
+		if (AlwaysCritValue > 0) {
+			modifiers.SetCrit();
+		}
+		else if (AlwaysCritValue < 0) {
+			modifiers.DisableCrit();
+		}
 	}
 	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
 		ModifyHit_Before_Crit = info.Crit;
 		if (info.Crit) {
 			ModifyHit_Before_Crit = true;
 		}
-		if (ModifyHit_OverrideCrit == null) {
-			return;
-		}
-		info.Crit = (bool)ModifyHit_OverrideCrit;
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
@@ -249,6 +345,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier EnergyRegenCountLimit = StatModifier.Default;
 	public int EnergyRegen_Count = 0;
 	public int EnergyRegen_CountLimit = 60;
+	public int CappedHealthAmount = -1;
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
@@ -283,7 +380,13 @@ public class PlayerStatsHandle : ModPlayer {
 			TemporaryLife_CounterLimit = 0;
 		}
 
-		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
+		if (CappedHealthAmount == -1) {
+			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
+		}
+		else {
+			Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, CappedHealthAmount);
+		}
+		CappedHealthAmount = -1;
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
 
 		UpdateCritDamage = StatModifier.Default;
@@ -334,12 +437,12 @@ public class PlayerStatsHandle : ModPlayer {
 		SkillCoolDown = StatModifier.Default;
 		DirectItemDamage = StatModifier.Default;
 		EnchantmentCoolDown = StatModifier.Default;
+		TransmutationModifier = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = 60;
 		LifeSteal_CoolDownCounter = BossRushUtils.CountDown(LifeSteal_CoolDownCounter);
-		ModifyHit_OverrideCrit = null;
 		ModifyHit_Before_Crit = false;
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
@@ -355,11 +458,46 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		EnergyRegen_CountLimit = (int)Math.Ceiling(EnergyRegenCountLimit.ApplyTo(60));
 
+		RelicActivation = RelicPoint <= 10;
+		RelicPoint = 0;
 
 		EnergyRegen = StatModifier.Default;
 		EnergyRegenCount = StatModifier.Default;
 		EnergyRegenCountLimit = StatModifier.Default;
+		TransmutationPowerMaximum = 1000;
+
+		Request_AddMelee.Clear();
+		Request_AddRange.Clear();
+		Request_AddMagic.Clear();
+		Request_AddSummon.Clear();
+		Request_AddMisc.Clear();
+		InfluenceableRNGselector = -1;
+		Chance_4RNGselector = 0;
+		DropModifier = StatModifier.Default;
+		ChanceDropModifier = StatModifier.Default;
+		ChanceLootDrop = 0;
+		WeaponAmountAddition = 0;
+		PotionTypeAmountAddition = 0;
+		PotionNumberAmountAddition = 0;
+		UpdateMeleeChanceMutilplier = 1;
+		UpdateRangeChanceMutilplier = 1;
+		UpdateMagicChanceMutilplier = 1;
+		UpdateSummonChanceMutilplier = 1;
+
+		CanDropSynergyEnergy = false;
+		LootboxCanDropSpecialPotion = false;
+
+		AlwaysCritValue = 0;
 	}
+	public bool RelicActivation = true;
+	public int RelicPoint = 0;
+	/// <summary>
+	/// This value will do a smarter handling of whenever or not should a critical strike be guaranteed or disable<br/>
+	/// If this value is <![CDATA[>]]> 0 then the hit will always be critical<br/>
+	/// If this value is <![CDATA[<]]> 0 then the hit will never be critical<br/>
+	/// If this value is = 0 then the hit will use vanilla critical hit calculation<br/>
+	/// </summary>
+	public short AlwaysCritValue = 0;
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = base.UseSpeedMultiplier(item);
 		StatModifier global = AttackSpeed;
@@ -375,7 +513,7 @@ public class PlayerStatsHandle : ModPlayer {
 		else if (item.DamageType == DamageClass.Summon) {
 			global = AttackSpeed.CombineWith(SummonAtkSpeed);
 		}
-		return MathF.Ceiling(global.ApplyTo(useSpeed));
+		return MathF.Round(global.ApplyTo(useSpeed), 2);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -398,6 +536,10 @@ public class PlayerStatsHandle : ModPlayer {
 			}
 		}
 		if (listItem != null && listItem.Count > 0) {
+			int typeItem = listItem[0].type;
+			ModObject modobject = ModObject.NewModObject(Player.Center, Vector2.Zero, ModObject.GetModObjectType<AccessoryVisualModObject>());
+			AccessoryVisualModObject accobject = (AccessoryVisualModObject)modobject;
+			accobject.AccType = typeItem;
 			listItem[0].TurnToAir();
 			listItem.RemoveAt(0);
 			Player.Heal(Player.statLifeMax2 / 2);
@@ -414,7 +556,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatMod = new(MathF.Round(StatModifier.Default.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
+		StatMod = new(MathF.Round(StatMod.Additive + (StatMod.Additive - 1) * singularAdditiveMultiplier, 2), MathF.Round(StatMod.Multiplicative, 2), MathF.Round(StatMod.Flat, 2), MathF.Round(StatMod.Base * singularBaseMultiplier, 2));
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
@@ -555,7 +697,7 @@ public class PlayerStatsHandle : ModPlayer {
 				Summon_NonCritDmg = Summon_NonCritDmg.CombineWith(StatMod);
 				break;
 			case PlayerStats.LootDropIncrease:
-				ChestLoot.DropModifier = ChestLoot.DropModifier.CombineWith(StatMod);
+				DropModifier = DropModifier.CombineWith(StatMod);
 				break;
 			default:
 				break;
@@ -619,7 +761,37 @@ public class PlayerStatsHandle : ModPlayer {
 			|| TransmutationPowerMaximum != clone.TransmutationPowerMaximum) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
 	public int TransmutationPower = 0;
-	public int TransmutationPowerMaximum = 10;
+	public int TransmutationPowerMaximum = 1000;
+	public StatModifier TransmutationModifier = StatModifier.Default;
+	/// <summary>
+	/// This method take account of <see cref="TransmutationModifier"/> when adding power to energy bank of transmutation system
+	/// </summary>
+	/// <param name="power"></param>
+	public void Add_TransmutationPower(int power) {
+		if (power > 0) {
+			TransmutationPower += (int)Math.Ceiling(TransmutationModifier.ApplyTo(power));
+		}
+		else {
+			TransmutationPower += power;
+		}
+		TransmutationPower = Math.Clamp(TransmutationPower, 0, TransmutationPowerMaximum);
+	}
+	/// <summary>
+	/// This method directly modify without taking account of <see cref="TransmutationModifier"/><br/><br/>
+	/// 
+	/// This method will return true of false whenever or not modification is successful
+	/// </summary>
+	/// <param name="power"></param>
+	/// <returns>
+	/// Return true if modification is successful
+	/// </returns>
+	public bool Modify_TransmutationPower(int power) {
+		if (TransmutationPower + power > 0 && TransmutationPower + power < TransmutationPowerMaximum) {
+			TransmutationPower += power;
+			return true;
+		}
+		return false;
+	}
 	public override void SaveData(TagCompound tag) {
 		tag["DPSTracker"] = DPStracker;
 		tag["HitTakenCounter"] = HitTakenCounter;
@@ -790,6 +962,30 @@ public class PlayerStatsHandle : ModPlayer {
 		return false;
 	}
 }
+public class AccessoryVisualModObject : ModObject {
+	public int AccType = -1;
+	public int alpha = 255;
+	public override void SetDefaults() {
+		timeLeft = 120;
+	}
+	public override void AI() {
+		velocity = -Vector2.UnitY * 2;
+		alpha = (int)MathHelper.Lerp(0, 255, timeLeft / 120f);
+	}
+	public override void Draw(SpriteBatch spritebatch) {
+		if (AccType < 0) {
+			return;
+		}
+		float opacity = alpha / 255f;
+		Main.instance.LoadItem(AccType);
+		Texture2D texture = TextureAssets.Item[AccType].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = position - Main.screenPosition + origin;
+		Color color = new Color(255, 255, 255, 0) * opacity;
+		color.A = (byte)alpha;
+		spritebatch.Draw(texture, drawPos, null, color, 0, origin, 1f, SpriteEffects.None, 0);
+	}
+}
 /// <summary>
 /// This is for the second life mechanic
 /// </summary>
@@ -930,15 +1126,15 @@ public class PlayerStatsHandleSystem : ModSystem {
 		origNew = null;
 		return proj;
 	}
-	private Projectile Copy_NewProjectile(Projectile projectile) {
+	private Projectile Copy_NewProjectile(Projectile projectile, string extraContext) {
 		if (origDirect != null) {
-			return origDirect(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2]);
+			return origDirect(projectile.GetSource_FromThis(extraContext), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2]);
 		}
 		else if (origNew != null) {
-			return Main.projectile[origNew(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+			return Main.projectile[origNew(projectile.GetSource_FromThis(extraContext), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
 		}
 		else if (origOld != null) {
-			return Main.projectile[origOld(projectile.GetSource_FromThis(), projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+			return Main.projectile[origOld(projectile.GetSource_FromThis(extraContext), projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
 		}
 		else {
 			return null;
@@ -946,22 +1142,40 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void Extra_SpecialMechanic(Player player, Projectile projectile) {
-		bool Scatter = player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
-		if (Scatter) {
-			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		bool Scatter = false;
+		if (player.TryGetModPlayer(out PerkPlayer perk)) {
+			Scatter = perk.perk_ScatterShot;
 		}
-		var handle = player.GetModPlayer<PlayerStatsHandle>();
+		RoguelikeGlobalProjectile globalhandle;
+		if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+			globalhandle = global;
+		}
+		else {
+			return;
+		}
+		if (globalhandle.IsASubProjectile) {
+			return;
+		}
+		if (Scatter) {
+			globalhandle.OnKill_ScatterShot += 2;
+		}
+		PlayerStatsHandle handle = null;
+		if (player.TryGetModPlayer(out PlayerStatsHandle hand)) {
+			handle = hand;
+		}
+		else {
+			return;
+		}
 		int shootExtra = handle.request_ShootExtra;
 		int shootSpread = handle.request_ShootSpreadExtra;
 		float angleSpread = handle.request_AngleSpread;
 		float angleChange = handle.request_VelocityChange;
-		handle.Reset_ShootRequest();
 		if (!projectile.Check_ItemTypeSource(player.HeldItem.type)) {
 			return;
 		}
 		if (shootExtra > 0) {
 			for (int i = 0; i < shootExtra; i++) {
-				var proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile, "subProj");
 				if (proj == null) {
 					break;
 				}
@@ -973,7 +1187,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		}
 		if (shootSpread > 1) {
 			for (int i = 0; i < shootSpread; i++) {
-				var proj = Copy_NewProjectile(projectile);
+				var proj = Copy_NewProjectile(projectile, "subProj");
 				if (proj == null) {
 					break;
 				}

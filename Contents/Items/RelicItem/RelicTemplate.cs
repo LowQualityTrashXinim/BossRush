@@ -8,6 +8,9 @@ using BossRush.Common.Global;
 namespace BossRush.Contents.Items.RelicItem;
 
 public class SynergyTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SynergyDamage;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) =>
 		string.Format(Description, [
@@ -26,6 +29,9 @@ public class SynergyTemplate : RelicTemplate {
 	}
 }
 public class StrikeFullHPTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.FullHPDamage;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		return string.Format(Description, [Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * (.5f * (relic.RelicTier - 1))),]);
@@ -38,6 +44,9 @@ public class StrikeFullHPTemplate : RelicTemplate {
 	}
 }
 public class SkillDurationTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.SkillDuration;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
@@ -56,6 +65,9 @@ public class SkillDurationTemplate : RelicTemplate {
 	}
 }
 public class SkillCoolDownTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return PlayerStats.SkillCooldown;
 	}
@@ -75,6 +87,9 @@ public class SkillCoolDownTemplate : RelicTemplate {
 	}
 }
 public class CombatV4Template : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next([
 			PlayerStats.MeleeDMG,
@@ -98,6 +113,9 @@ public class CombatV4Template : RelicTemplate {
 	}
 }
 public class StaticDefeneseTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.StaticDefense;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		value.Base += relic.RelicTier - 1;
@@ -112,11 +130,14 @@ public class StaticDefeneseTemplate : RelicTemplate {
 	}
 }
 public class GunFireRateTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		relicType = RelicType.Stat;
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.AttackSpeed;
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) =>
 		string.Format(Description, [
 			Color.Yellow.Hex3(),
-			RelicTemplateLoader.RelicValueToPercentage(value.Additive + (value.Additive - 1) * ( .22f * (relic.RelicTier - 1))),
+			RelicTemplateLoader.RelicValueToPercentage((value.Additive + (value.Additive - 1) * ( .22f * (relic.RelicTier - 1))) * value.Multiplicative),
 		]);
 
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {

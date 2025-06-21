@@ -286,7 +286,7 @@ public class LightsBane : ModEnchantment {
 		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] > 0) {
+		if (globalItem.Item_Counter1[index] > 0 && proj.minion) {
 			return;
 		}
 		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);
@@ -968,7 +968,7 @@ public class Umbrella : ModEnchantment {
 		}
 	}
 }
-public class TragicEmbrella : ModEnchantment {
+public class TragicUmbrella : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TragicUmbrella;
 	}
@@ -1198,17 +1198,24 @@ public class StylistKilLaKillScissorsIWish : ModEnchantment {
 	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
 		scale += .2f;
 	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool()) {
+			Vector2 spawnPosition = target.Center + Main.rand.NextVector2CircularEdge(target.width, target.height);
+			Vector2 velocityToward = (target.Center - spawnPosition).SafeNormalize(Vector2.Zero);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), spawnPosition, velocityToward, ModContent.ProjectileType<SimplePiercingProjectile>(), (int)(hit.Damage * .85f), 0, player.whoAmI, 3);
+		}
+	}
 }
 public class Ruler : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Ruler;
 	}
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		float damageincreases = (target.Center - player.Center).Length();
+		float damageincreases = (target.Center - player.Center).Length() / 5f;
 		modifiers.SourceDamage.Base += damageincreases * .1f;
 	}
 	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		float damageincreases = (target.Center - player.Center).Length();
+		float damageincreases = (target.Center - player.Center).Length() / 5f;
 		modifiers.SourceDamage += damageincreases * .1f;
 	}
 }

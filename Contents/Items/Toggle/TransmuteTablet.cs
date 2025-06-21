@@ -1,27 +1,31 @@
-﻿using System;
-using Terraria;
-using Terraria.UI;
-using Terraria.ID;
-using Terraria.Audio;
-using ReLogic.Content;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using BossRush.Common.Global;
-using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Global;
 using BossRush.Common.Systems;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.Weapon.UnfinishedItem;
 using BossRush.Contents.Transfixion.SoulBound;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Texture;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Utilities;
+using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace BossRush.Contents.Items.Toggle;
 public class TransmuteTablet : ModItem {
 	public override void SetDefaults() {
-		Item.width = 32;
-		Item.height = 32;
-		Item.useTime = 15;
-		Item.useAnimation = 15;
+		Item.width = Item.height = 32;
+		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.autoReuse = false;
 		Item.noUseGraphic = true;
@@ -33,543 +37,651 @@ public class TransmuteTablet : ModItem {
 		return base.UseItem(player);
 	}
 }
+public class EnergyDrawPanel : Roguelike_UIPanel {
+	public override void PreDraw(SpriteBatch spriteBatch) {
+		PlayerStatsHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
+		Rectangle rect = this.GetDimensions().ToRectangle();
+		Point point = new(rect.X, rect.Y);
+		BossRushUtils.DrawProgressLine(spriteBatch,
+			modplayer.TransmutationPower,
+			modplayer.TransmutationPowerMaximum,
+			new(rect.X, rect.Y + 2),
+			new(0, 0, rect.Width, rect.Height - 4),
+			Color.Cyan,
+			Color.Blue,
+			16f,
+			9f);
+	}
+}
 public class TransmutationUIState : UIState {
+	Asset<Texture2D> tex = TextureAssets.InventoryBack;
+
 	UIPanel panel;
-	TransmutationUIConfirmButton btn_confirm;
-	TransmutationUI slot1;
-	TransmutationUI slot2;
 	ExitUI btn_exit;
-	UITextBox txtbox;
-	UITextBox CurrentMode;
-	UITextBox transmutateText;
-	UIPanel panelToBeDrawnOnTop;
+	EnergyDrawPanel panelToBeDrawnOnTop;
 	UIPanel slotPanel;
+
 	UIPanel headerPanel;
-	UIImageButton sa_btn;
-	UIPanel littleButtonPanel;
-	public override void OnInitialize() {
+	Roguelike_UIImage btn_EnergyMode;
+	Roguelike_UIImage btn_RelicMergeMode;
+	Roguelike_UIImage btn_ItemShift;
+	UIPanel FooterPanel;
+
+	ItemHolderSlot Relicslot1;
+	ItemHolderSlot Relicslot2;
+	Roguelike_UIImageButton btn_RelicMerge;
+	ItemHolderSlot Relicresultslot;
+	UITextBox transmutateText;
+	Roguelike_UITextPanel mergeInfo;
+
+	Roguelike_UITextPanel EquivalentExchange;
+	Roguelike_UITextPanel UpgradeRarity;
+	ItemHolderSlot ItemShiftSlot;
+	ItemHolderSlot ItemResultSlotShift;
+	Roguelike_UIImageButton btn_ItemShiftConfirm;
+	ItemHolderSlot ItemAccSelection;
+	ItemHolderSlot ItemArmorSelection;
+	ItemHolderSlot ItemWeaponSelection;
+	Roguelike_UITextPanel shiftTextInfo;
+	bool UpgradeRarityMode = false;
+
+	ItemHolderSlot energyItemslot1;
+	ItemHolderSlot energyItemslot2;
+	ItemHolderSlot energyItemslot3;
+	ItemHolderSlot energyItemslot4;
+	Roguelike_UIImageButton btn_energy;
+	Roguelike_UITextPanel energyinfo;
+	public void GeneralInit() {
 		panel = new UIPanel();
-		panel.UISetWidthHeight(450, 250);
+		panel.UISetWidthHeight(450, 350);
 		panel.HAlign = .5f;
 		panel.VAlign = .5f;
 		Append(panel);
 
 		headerPanel = new();
 		headerPanel.Width.Percent = 1f;
-		headerPanel.Height.Pixels = 60f;
-		headerPanel.SetPadding(4);
+		headerPanel.Height.Pixels = 70f;
+		headerPanel.SetPadding(0);
+		headerPanel.BorderColor = new(0, 0, 0, 0);
+		headerPanel.BackgroundColor = new(0, 0, 0, 0);
 		panel.Append(headerPanel);
 
-		txtbox = new("Transmutate tablet remain dormant...");
-		txtbox.UISetWidthHeight(450, 30);
-		txtbox.SetTextMaxLength(255);
-		txtbox.MarginTop = headerPanel.Height.Pixels + 10;
-		txtbox.TextHAlign = 0;
-		txtbox.ShowInputTicker = false;
-		panel.Append(txtbox);
-
-		float marginTop = headerPanel.Height.Pixels + txtbox.Height.Pixels + 30;
-
-		CurrentMode = new("Transmutation Mode");
-		CurrentMode.VAlign = .5f;
-		CurrentMode.MarginLeft = 10;
-		CurrentMode.TextHAlign = 0;
-		CurrentMode.Width.Percent = 1;
-		CurrentMode.Width.Pixels = -72;
-		CurrentMode.ShowInputTicker = false;
-		headerPanel.Append(CurrentMode);
-
 		slotPanel = new();
-		slotPanel.MarginTop = marginTop;
-		slotPanel.Width.Precent = .55f;
-		slotPanel.Height.Pixels = 76;
+		slotPanel.MarginTop = headerPanel.Height.Pixels + 5;
+		slotPanel.Width.Precent = 1f;
+		slotPanel.Height.Pixels = 193;
 		slotPanel.HAlign = 1f;
-		slotPanel.BackgroundColor = Color.Gray;
 		panel.Append(slotPanel);
+	}
+	public void HeaderInit() {
+		btn_RelicMergeMode = new(tex);
+		btn_RelicMergeMode.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<TransmuteTablet>("TransmuteTablet_Relic")));
+		btn_RelicMergeMode.VAlign = .5f;
+		btn_RelicMergeMode.OnLeftClick += btn_Mode_OnLeftClick;
+		btn_RelicMergeMode.HighlightColor = btn_RelicMergeMode.OriginalColor.ScaleRGB(.5f);
+		btn_RelicMergeMode.Highlight = true;
+		btn_RelicMergeMode.SwapHightlightColorWithOriginalColor();
+		headerPanel.Append(btn_RelicMergeMode);
 
-		transmutateText = new("");
-		transmutateText.Width.Percent = 1;
-		transmutateText.Width.Pixels -= slotPanel.Width.GetValue(panel.GetInnerDimensions().Width) + 20;
-		transmutateText.MarginTop = marginTop;
-		transmutateText.TextHAlign = 0;
-		transmutateText.ShowInputTicker = false;
-		panel.Append(transmutateText);
+		btn_EnergyMode = new(tex);
+		btn_EnergyMode.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<TransmutationUIState>("TransmutationEnergy")), false);
+		btn_EnergyMode.MarginLeft += btn_RelicMergeMode.Width.Pixels + 10;
+		btn_EnergyMode.VAlign = .5f;
+		btn_EnergyMode.HighlightColor = btn_EnergyMode.OriginalColor.ScaleRGB(.5f);
+		btn_EnergyMode.OnLeftClick += btn_Mode_OnLeftClick;
+		btn_EnergyMode.SwapHightlightColorWithOriginalColor();
+		headerPanel.Append(btn_EnergyMode);
 
-		slot1 = new TransmutationUI(TextureAssets.InventoryBack);
-		slot1.UISetWidthHeight(52, 52);
-		slot1.OnLeftClick += Slot_OnLeftClick;
-		slotPanel.Append(slot1);
+		btn_ItemShift = new(tex);
+		btn_ItemShift.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAsEntity<TransmuteTablet>()), false);
+		btn_ItemShift.MarginLeft += btn_RelicMergeMode.Width.Pixels * 2 + 20;
+		btn_ItemShift.VAlign = .5f;
+		btn_ItemShift.HighlightColor = btn_EnergyMode.OriginalColor.ScaleRGB(.5f);
+		btn_ItemShift.OnLeftClick += btn_Mode_OnLeftClick;
+		btn_ItemShift.SwapHightlightColorWithOriginalColor();
+		headerPanel.Append(btn_ItemShift);
 
-		slot2 = new TransmutationUI(TextureAssets.InventoryBack);
-		slot2.UISetWidthHeight(52, 52);
-		slot2.HAlign = .5f;
-		slot2.OnLeftClick += Slot_OnLeftClick;
-		slotPanel.Append(slot2);
 
-		btn_confirm = new TransmutationUIConfirmButton(TextureAssets.InventoryBack10);
-		btn_confirm.UISetWidthHeight(52, 52);
-		btn_confirm.HAlign = 1f;
-		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
-		slotPanel.Append(btn_confirm);
-
-		btn_exit = new ExitUI(TextureAssets.InventoryBack13);
+		btn_exit = new ExitUI(tex);
 		btn_exit.UISetWidthHeight(52, 52);
 		btn_exit.HAlign = 1f;
+		btn_exit.VAlign = .5f;
 		headerPanel.Append(btn_exit);
+	}
+	public void RelicMergeInit() {
+		Relicslot1 = new ItemHolderSlot(tex);
+		Relicslot1.UISetWidthHeight(52, 52);
+		Relicslot1.OnLeftClick += Slot_OnLeftClick;
+		slotPanel.Append(Relicslot1);
 
-		littleButtonPanel = new();
-		littleButtonPanel.Width.Percent = 1;
-		littleButtonPanel.Width.Pixels -= slotPanel.Width.GetValue(panel.GetInnerDimensions().Width) + 20;
-		littleButtonPanel.Height.Pixels = 28;
-		littleButtonPanel.SetPadding(5f);
-		littleButtonPanel.PaddingLeft = 15;
-		littleButtonPanel.MarginTop += transmutateText.MarginTop + littleButtonPanel.Height.Pixels + 20;
-		panel.Append(littleButtonPanel);
+		Relicslot2 = new ItemHolderSlot(tex);
+		Relicslot2.UISetWidthHeight(52, 52);
+		Relicslot2.HAlign = .33f;
+		Relicslot2.OnLeftClick += Slot_OnLeftClick;
+		slotPanel.Append(Relicslot2);
 
-		sa_btn = new(ModContent.Request<Texture2D>(BossRushTexture.Boxes));
-		sa_btn.UISetWidthHeight(16, 16);
-		sa_btn.OnLeftClick += Sa_btn_OnLeftClick;
-		sa_btn.VAlign = .5f;
-		sa_btn.SetVisibility(.8f, 1f);
-		littleButtonPanel.Append(sa_btn);
+		btn_RelicMerge = new Roguelike_UIImageButton(TextureAssets.InventoryBack10);
+		btn_RelicMerge.HAlign = .66f;
+		btn_RelicMerge.OnLeftClick += Btn_confirm_OnLeftClick;
+		btn_RelicMerge.SetVisibility(.6f, 1f);
+		slotPanel.Append(btn_RelicMerge);
+
+		Relicresultslot = new(tex);
+		Relicresultslot.HAlign = 1f;
+		Relicresultslot.OnLeftClick += Resultslot_OnLeftClick;
+		slotPanel.Append(Relicresultslot);
+
+		mergeInfo = new("");
+		mergeInfo.VAlign = 1f;
+		mergeInfo.Width.Percent = 1f;
+		mergeInfo.Height.Pixels = 110;
+		mergeInfo.UseCustmSetHeight = true;
+		slotPanel.Append(mergeInfo);
+	}
+	public void Visual_RelicMerge(bool hide) {
+		Relicslot1.Hide = hide;
+		Relicslot2.Hide = hide;
+		btn_RelicMerge.Hide = hide;
+		Relicresultslot.Hide = hide;
+		mergeInfo.Hide = hide;
+	}
+	public void TransmutationEnergyInit() {
+		FooterPanel = new();
+		FooterPanel.VAlign = 1f;
+		FooterPanel.Width.Percent = 1f;
+		FooterPanel.Height.Pixels = 61;
+		FooterPanel.BackgroundColor = new(0, 0, 0, 0);
+		FooterPanel.BorderColor = new(0, 0, 0, 0);
+		panel.Append(FooterPanel);
 
 		panelToBeDrawnOnTop = new();
+		panelToBeDrawnOnTop.HAlign = .5f;
 		panelToBeDrawnOnTop.VAlign = 1;
-		panelToBeDrawnOnTop.Width.Percent = 1;
-		panelToBeDrawnOnTop.Height.Pixels = 16;
-		panelToBeDrawnOnTop.BorderColor = new(0, 0, 0, 255);
-		panel.Append(panelToBeDrawnOnTop);
-	}
-	public bool SwitchModeTo_TransmutationConvertPower = false;
-	private void Sa_btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		SwitchModeTo_TransmutationConvertPower = !SwitchModeTo_TransmutationConvertPower;
-	}
+		panelToBeDrawnOnTop.Width.Percent = 1f;
+		panelToBeDrawnOnTop.Height.Pixels = 32;
+		panelToBeDrawnOnTop.BorderColor = new(255, 255, 255, 0);
+		panelToBeDrawnOnTop.BackgroundColor = new(0, 0, 0, 0);
+		FooterPanel.Append(panelToBeDrawnOnTop);
 
-	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (TransmutationUIConfirmButton.SpecialInteraction(slot1.item, slot2.item)) {
-			SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
-		}
-		else {
-			SoundEngine.PlaySound(SoundID.AbigailSummon with { Pitch = -1 });
-		}
+		transmutateText = new("", .76f);
+		transmutateText.VAlign = 1;
+		transmutateText.HAlign = .5f;
+		transmutateText.TextHAlign = .5f;
+		transmutateText.ShowInputTicker = false;
+		transmutateText.BorderColor = new(0, 0, 0, 0);
+		transmutateText.BackgroundColor = new(0, 0, 0, 0);
+		FooterPanel.Append(transmutateText);
 	}
+	public void Visual_ItemShift(bool hide) {
+		ItemShiftSlot.Hide = hide;
+		ItemResultSlotShift.Hide = hide;
+		btn_ItemShiftConfirm.Hide = hide;
+		ItemAccSelection.Hide = hide;
+		ItemArmorSelection.Hide = hide;
+		ItemWeaponSelection.Hide = hide;
+		EquivalentExchange.Hide = hide;
+		UpgradeRarity.Hide = hide;
+		shiftTextInfo.Hide = hide;
+	}
+	public void ItemShiftInit() {
+		EquivalentExchange = new("Equivalent Exchange");
+		EquivalentExchange.OnLeftClick += ItemShiftOptionPanel_OnLeftClick;
+		EquivalentExchange.Hide = true;
+		EquivalentExchange.Width.Set(0, .45f);
+		EquivalentExchange.BorderColor = Color.Yellow;
+		slotPanel.Append(EquivalentExchange);
 
-	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		PlayerStatsHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		Rectangle rect = panelToBeDrawnOnTop.GetInnerDimensions().ToRectangle();
-		Point point = new(rect.X, rect.Y);
-		BossRushUtils.DrawProgressLine(modplayer.TransmutationPower, modplayer.TransmutationPowerMaximum, point, rect.TopLeft().ToPoint(), 0, new(0, -6, rect.Width, 4), spriteBatch, Color.Wheat, Color.White);
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		PlayerStatsHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-		if (sa_btn.IsMouseHovering) {
-			sa_btn.Disable_MouseItemUsesWhenHoverOverAUI();
-			if (!SwitchModeTo_TransmutationConvertPower) {
-				CurrentMode.SetText("Transmutation Mode");
-				Main.instance.MouseText("Switch to charging power up mode");
-			}
-			else {
-				CurrentMode.SetText("Powering Mode");
-				Main.instance.MouseText("Switch to transmutation mode");
-			}
-		}
-		transmutateText.SetText($"Power : {modplayer.TransmutationPower} / {modplayer.TransmutationPowerMaximum}");
-		if (SwitchModeTo_TransmutationConvertPower) {
-			txtbox.SetText("Convert item into tablet power");
-			return;
-		}
-		txtbox.SetText("Transmutation tablet remain dormant...");
-		if (slot1.item.type == ItemID.None || slot2.item.type == ItemID.None) {
-			if (slot1.item.type == ItemID.None && slot2.item.type == ItemID.None) {
-				return;
-			}
-			txtbox.SetText("Transmute the following item ...");
-			return;
-		}
-		float offsetchance = modplayer.Transmutation_SuccessChance;
-		bool AnyRelic = slot1.item.ModItem is Relic || slot2.item.ModItem is Relic;
-		if (slot1.item.ModItem is Relic re1 && slot2.item.ModItem is Relic re2) {
-			txtbox.SetText("Chance to merge relic : " + RelicTemplateLoader.RelicValueToNumber(TransmutationUIConfirmButton.GetRelicChance(re1, re2, offsetchance) * 100) + "%");
-			return;
-		}
-		Item item1 = slot1.item;
-		Item item2 = slot2.item;
-		if (AnyRelic &&
-			(item1.IsAWeapon() || item2.IsAWeapon()
-			|| ((item1.accessory || item2.accessory)
-			|| (item1.headSlot > 0 || item2.headSlot > 0)
-			|| (item1.bodySlot > 0 || item2.bodySlot > 0)
-			|| (item1.legSlot > 0 || item2.legSlot > 0) && (!item1.vanity && !item2.vanity)))) {
+		UpgradeRarity = new("Upgrade Rarity");
+		UpgradeRarity.OnLeftClick += ItemShiftOptionPanel_OnLeftClick;
+		UpgradeRarity.Width.Set(0, .45f);
+		UpgradeRarity.Hide = true;
+		UpgradeRarity.HAlign = 1f;
+		slotPanel.Append(UpgradeRarity);
 
-			Relic relicItem;
-			Item slotitem;
-			if (slot1.item.ModItem is Relic) {
-				relicItem = slot1.item.ModItem as Relic;
-				slotitem = slot2.item;
-			}
-			else {
-				relicItem = slot2.item.ModItem as Relic;
-				slotitem = slot1.item;
-			}
-			float rarityOffSet;
-			if (slotitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
-				rarityOffSet = ItemRarityID.Orange * .03f + (slotitem.OriginalRarity - 3) * .02f;
-			}
-			else {
-				rarityOffSet = slotitem.OriginalRarity * .03f;
-			}
-			float SuccessChance;
-			switch (relicItem.RelicTier) {
-				case 1:
-					SuccessChance = Relic.chanceTier1;
-					break;
-				case 2:
-					SuccessChance = Relic.chanceTier2;
-					break;
-				case 3:
-					SuccessChance = Relic.chanceTier3;
-					break;
-				case 4:
-					SuccessChance = Relic.chanceTier4;
-					break;
-				default:
-					SuccessChance = Relic.chanceTier4 + .05f * relicItem.RelicTier;
-					break;
-			}
-			SuccessChance += offsetchance;
-			txtbox.SetText($"Success item rarity upgrade : {RelicTemplateLoader.RelicValueToNumber(Math.Clamp(SuccessChance - rarityOffSet + offsetchance, 0, 1f) * 100)}%");
+		ItemShiftSlot = new ItemHolderSlot(tex);
+		ItemShiftSlot.OnLeftClick += ItemShift_OnLeftClick;
+		ItemShiftSlot.VAlign = .5f;
+		ItemShiftSlot.Hide = true;
+		slotPanel.Append(ItemShiftSlot);
+
+		btn_ItemShiftConfirm = new Roguelike_UIImageButton(TextureAssets.InventoryBack10);
+		btn_ItemShiftConfirm.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAsEntity<TransmuteTablet>()));
+		btn_ItemShiftConfirm.MarginLeft = 52 + 10;
+		btn_ItemShiftConfirm.VAlign = .5f;
+		btn_ItemShiftConfirm.OnLeftClick += Btn_ItemShiftConfirm_OnLeftClick;
+		btn_ItemShiftConfirm.SetVisibility(.6f, 1f);
+		btn_ItemShiftConfirm.Hide = true;
+		slotPanel.Append(btn_ItemShiftConfirm);
+
+		ItemResultSlotShift = new ItemHolderSlot(tex);
+		ItemResultSlotShift.MarginLeft = (52 + 10) * 2;
+		ItemResultSlotShift.VAlign = .5f;
+		ItemResultSlotShift.OnLeftClick += ItemShift_OnLeftClick;
+		ItemResultSlotShift.Hide = true;
+		slotPanel.Append(ItemResultSlotShift);
+
+		ItemAccSelection = new(tex);
+		ItemAccSelection.HighlightColor = ItemAccSelection.OriginalColor.ScaleRGB(.7f);
+		ItemAccSelection.SwapHightlightColorWithOriginalColor();
+		ItemAccSelection.OnLeftClick += ItemSelection_OnLeftClick;
+		ItemAccSelection.Highlight = true;
+		ItemAccSelection.HAlign = 0;
+		ItemAccSelection.VAlign = 1;
+		ItemAccSelection.Hide = true;
+		ItemAccSelection.item = new Item(ItemID.AvengerEmblem);
+		ItemAccSelection.Description = "Transmute to accessory";
+		slotPanel.Append(ItemAccSelection);
+
+		ItemArmorSelection = new(tex);
+		ItemArmorSelection.MarginLeft = 52 + 10;
+		ItemArmorSelection.HighlightColor = ItemArmorSelection.OriginalColor.ScaleRGB(.7f);
+		ItemArmorSelection.SwapHightlightColorWithOriginalColor();
+		ItemArmorSelection.OnLeftClick += ItemSelection_OnLeftClick;
+		ItemArmorSelection.VAlign = 1;
+		ItemArmorSelection.Hide = true;
+		ItemArmorSelection.item = new Item(ItemID.IronChainmail);
+		ItemArmorSelection.Description = "Transmute to armor piece";
+		slotPanel.Append(ItemArmorSelection);
+
+		ItemWeaponSelection = new(tex);
+		ItemWeaponSelection.MarginLeft = (52 + 10) * 2;
+		ItemWeaponSelection.HighlightColor = ItemWeaponSelection.OriginalColor.ScaleRGB(.7f);
+		ItemWeaponSelection.SwapHightlightColorWithOriginalColor();
+		ItemWeaponSelection.OnLeftClick += ItemSelection_OnLeftClick;
+		ItemWeaponSelection.VAlign = 1;
+		ItemWeaponSelection.Hide = true;
+		ItemWeaponSelection.item = new Item(ItemID.IronBroadsword);
+		ItemWeaponSelection.Description = "Transmute to weapon";
+		slotPanel.Append(ItemWeaponSelection);
+
+		shiftTextInfo = new("", .77f);
+		shiftTextInfo.Width.Pixels = 200;
+		shiftTextInfo.Height.Pixels = 110;
+		shiftTextInfo.HAlign = 1f;
+		shiftTextInfo.VAlign = 1f;
+		shiftTextInfo.UseCustmSetHeight = true;
+		shiftTextInfo.Hide = true;
+		slotPanel.Append(shiftTextInfo);
+	}
+	private void ItemShiftOptionPanel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (listeningElement.UniqueId == EquivalentExchange.UniqueId) {
+			UpgradeRarityMode = false;
+			EquivalentExchange.BorderColor = Color.Yellow;
+			UpgradeRarity.BorderColor = Color.Black;
 		}
-		else {
-			txtbox.SetText($"Transmuting to different item of same rarity");
+		else if (listeningElement.UniqueId == UpgradeRarity.UniqueId) {
+			UpgradeRarityMode = true;
+			UpgradeRarity.BorderColor = Color.Yellow;
+			EquivalentExchange.BorderColor = Color.Black;
 		}
 	}
-}
-public class TransmutationUI : UIImage {
-	public int WhoAmI = -1;
-	public Texture2D textureDraw;
-	public Item item = new();
-	public int Timer = 0;
-	private Texture2D texture;
-	public int itemToShow = -1;
-	public TransmutationUI(Asset<Texture2D> texture) : base(texture) {
-		this.texture = texture.Value;
+	public void Visual_Energy(bool hide) {
+		energyItemslot1.Hide = hide;
+		energyItemslot2.Hide = hide;
+		energyItemslot3.Hide = hide;
+		energyItemslot4.Hide = hide;
+		btn_energy.Hide = hide;
+		energyinfo.Hide = hide;
 	}
-	public override void LeftClick(UIMouseEvent evt) {
+	public void EnergyModeInit() {
+		energyItemslot1 = new ItemHolderSlot(tex);
+		energyItemslot1.UISetWidthHeight(52, 52);
+		energyItemslot1.OnLeftClick += EnergyItemslot_OnLeftClick;
+		slotPanel.Append(energyItemslot1);
+
+		energyItemslot2 = new ItemHolderSlot(tex);
+		energyItemslot2.UISetWidthHeight(52, 52);
+		energyItemslot2.HAlign = .25f;
+		energyItemslot2.OnLeftClick += EnergyItemslot_OnLeftClick;
+		slotPanel.Append(energyItemslot2);
+
+		energyItemslot3 = new(tex);
+		energyItemslot3.HAlign = .5f;
+		energyItemslot3.OnLeftClick += EnergyItemslot_OnLeftClick;
+		slotPanel.Append(energyItemslot3);
+
+		energyItemslot4 = new(tex);
+		energyItemslot4.HAlign = .75f;
+		energyItemslot4.OnLeftClick += EnergyItemslot_OnLeftClick;
+		slotPanel.Append(energyItemslot4);
+
+		btn_energy = new Roguelike_UIImageButton(TextureAssets.InventoryBack10);
+		btn_energy.HAlign = 1;
+		btn_energy.OnLeftClick += btn_energy_OnLeftClick;
+		btn_energy.SetVisibility(.6f, 1f);
+		slotPanel.Append(btn_energy);
+
+		energyinfo = new("");
+		energyinfo.VAlign = 1f;
+		energyinfo.Width.Percent = 1f;
+		energyinfo.Height.Pixels = 110;
+		energyinfo.UseCustmSetHeight = true;
+		slotPanel.Append(energyinfo);
+
+		Visual_Energy(true);
+	}
+	private void EnergyItemslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Player player = Main.LocalPlayer;
-		if (item != null && Main.mouseItem.type != ItemID.None) {
-			//Swap item here
-			Item itemcache = Main.mouseItem.Clone();
-			Main.mouseItem = item.Clone();
-			player.inventory[58] = item.Clone();
-			item = itemcache.Clone();
-			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
+		Item item = Main.mouseItem;
+		if (item.IsAWeapon() || item.accessory || item.IsThisArmorPiece()) {
+			if (listeningElement.UniqueId == energyItemslot1.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot1.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot2.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot2.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot3.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot3.item);
+			}
+			else if (listeningElement.UniqueId == energyItemslot4.UniqueId) {
+				SimpleItemMouseExchange(player, ref energyItemslot4.item);
+			}
 		}
-		else if (Main.mouseItem.type != ItemID.None && item.type == ItemID.None) {
-			//When the slot is available
-			item = Main.mouseItem.Clone();
-			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
-			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
-				Main.mouseItem.stack--;
-				item.stack = 1;
+	}
+	private void btn_energy_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Player player = Main.LocalPlayer;
+		PlayerStatsHandle handler = player.ModPlayerStats();
+		int total = GetEnergyFromEnergySlot();
+		if (total > 0) {
+			handler.Add_TransmutationPower(total);
+			energyItemslot1.item.TurnToAir();
+			energyItemslot2.item.TurnToAir();
+			energyItemslot3.item.TurnToAir();
+			energyItemslot4.item.TurnToAir();
+		}
+	}
+	public int GetEnergyFromEnergySlot() {
+		int total = 0;
+		if (energyItemslot1.item.type != 0) {
+			total += EnergyPoint(energyItemslot1.item.OriginalRarity, true);
+		}
+		if (energyItemslot2.item.type != 0) {
+			total += EnergyPoint(energyItemslot2.item.OriginalRarity, true);
+		}
+		if (energyItemslot3.item.type != 0) {
+			total += EnergyPoint(energyItemslot3.item.OriginalRarity, true);
+		}
+		if (energyItemslot4.item.type != 0) {
+			total += EnergyPoint(energyItemslot4.item.OriginalRarity, true);
+		}
+		return total;
+	}
+	public int EnergyPoint(int rarity, bool Charging = false, float extramultiplication = 0) {
+		rarity += 1;
+		float multiplier = 1f + extramultiplication;
+		if (Charging) {
+			multiplier -= .25f;
+		}
+		int baseVal = 10;
+		return (int)Math.Ceiling((baseVal + 10 * (rarity * (.25f + .1f * rarity))) * multiplier);
+	}
+	private void ItemSelection_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ItemAccSelection.Highlight = false;
+		ItemArmorSelection.Highlight = false;
+		ItemWeaponSelection.Highlight = false;
+		if (listeningElement.UniqueId == ItemAccSelection.UniqueId) {
+			ItemAccSelection.Highlight = true;
+		}
+		else if (listeningElement.UniqueId == ItemArmorSelection.UniqueId) {
+			ItemArmorSelection.Highlight = true;
+		}
+		else if (listeningElement.UniqueId == ItemWeaponSelection.UniqueId) {
+			ItemWeaponSelection.Highlight = true;
+		}
+	}
+	private void Btn_ItemShiftConfirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (ItemShiftSlot.item.type != 0 && ItemResultSlotShift.item.type == 0) {
+			Player player = Main.LocalPlayer;
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
+			Item item = ItemShiftSlot.item;
+			int rareval1 = item.OriginalRarity;
+			byte rareOffset = 0;
+			if (UpgradeRarityMode) {
+				rareOffset = 1;
+			}
+			float extra = 0;
+			int itemType = ItemID.None;
+			if (ItemAccSelection.Highlight) {
+				if (!item.accessory) {
+					extra += .55f;
+				}
+				itemType = GetItemRarityDB(rareval1 + rareOffset, 2);
+			}
+			else if (ItemWeaponSelection.Highlight) {
+				if (!item.IsAWeapon()) {
+					extra += .5f;
+				}
+				itemType = GetItemRarityDB(rareval1 + rareOffset, 1);
+			}
+			else if (ItemArmorSelection.Highlight) {
+				if (item.headSlot > 0) {
+					itemType = GetItemRarityDB(rareval1 + rareOffset, 3);
+				}
+				else if (item.bodySlot > 0) {
+					itemType = GetItemRarityDB(rareval1 + rareOffset, 4);
+				}
+				else if (item.legSlot > 0) {
+					itemType = GetItemRarityDB(rareval1 + rareOffset, 5);
+				}
+				else {
+					extra += .35f;
+					itemType = GetItemRarityDB(rareval1 + rareOffset, Main.rand.Next(3, 6));
+				}
+			}
+			int cost = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+			if (!modplayer.Modify_TransmutationPower(-cost)) {
 				return;
 			}
-			if (Main.mouseItem.stack > 1) {
-				Main.mouseItem.stack--;
-				player.inventory[58].stack--;
+			if (itemType == ItemID.None) {
+				Main.NewText($"Detected no rarity found ! at {rareval1} rarity with {item.Name}");
+				return;
 			}
-			else {
+			LootBoxBase.AmmoForWeapon(player, itemType);
+			ItemResultSlotShift.item = new Item(itemType);
+			ItemShiftSlot.item.TurnToAir();
+		}
+	}
+	private void ItemShift_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Player player = Main.LocalPlayer;
+		if (listeningElement.UniqueId == ItemShiftSlot.UniqueId) {
+			Item item = Main.mouseItem;
+			SimpleItemMouseExchange(player, ref ItemShiftSlot.item);
+		}
+		else if (listeningElement.UniqueId == ItemResultSlotShift.UniqueId) {
+			Item item = Main.mouseItem;
+			if (item.type != 0) {
+				return;
+			}
+			if (ItemResultSlotShift.item.type == 0) {
+				return;
+			}
+			Main.mouseItem = ItemResultSlotShift.item.Clone();
+			Main.LocalPlayer.inventory[58] = ItemResultSlotShift.item.Clone();
+			ItemResultSlotShift.item.TurnToAir();
+		}
+	}
+	public override void OnInitialize() {
+		GeneralInit();
+
+		HeaderInit();
+
+		RelicMergeInit();
+
+		ItemShiftInit();
+
+		TransmutationEnergyInit();
+
+		EnergyModeInit();
+	}
+	private void Resultslot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Item item = Main.mouseItem;
+		if (item.type != 0) {
+			return;
+		}
+		if (Relicresultslot.item.type == 0) {
+			return;
+		}
+		Main.mouseItem = Relicresultslot.item.Clone();
+		Main.LocalPlayer.inventory[58] = Relicresultslot.item.Clone();
+		Relicresultslot.item.TurnToAir();
+	}
+	private void btn_Mode_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		btn_EnergyMode.Highlight = false;
+		btn_RelicMergeMode.Highlight = false;
+		btn_ItemShift.Highlight = false;
+		Visual_RelicMerge(true);
+		Visual_ItemShift(true);
+		Visual_Energy(true);
+		//visual change
+		if (listeningElement.UniqueId == btn_RelicMergeMode.UniqueId) {
+			btn_RelicMergeMode.Highlight = true;
+			Visual_RelicMerge(false);
+		}
+		else if (listeningElement.UniqueId == btn_EnergyMode.UniqueId) {
+			btn_EnergyMode.Highlight = true;
+			Visual_Energy(false);
+		}
+		else if (listeningElement.UniqueId == btn_ItemShift.UniqueId) {
+			btn_ItemShift.Highlight = true;
+			Visual_ItemShift(false);
+		}
+	}
+	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (Relicslot1.item.type != 0 && Relicslot2.item.type != 0 && Relicresultslot.item.type == 0) {
+			if (Relicslot1.item.ModItem is Relic relic1 && Relicslot2.item.ModItem is Relic relic2) {
+				if (relic1.RelicTier + relic2.RelicTier > 4) {
+					SoundEngine.PlaySound(SoundID.AbigailSummon with { Pitch = -1 });
+					return;
+				}
+				PlayerStatsHandle handler = Main.LocalPlayer.ModPlayerStats();
+				if (!handler.Modify_TransmutationPower(-RelicMergeCost(relic1.RelicTier, relic2.RelicTier))) {
+					return;
+				}
+				if (RelicTemplateLoader.MergeStat(relic1, relic2)) {
+					Relicresultslot.item = relic1.Item.Clone();
+					relic1.Item.TurnToAir();
+					SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
+					return;
+				}
+			}
+		}
+		SoundEngine.PlaySound(SoundID.AbigailSummon with { Pitch = -1 });
+	}
+	public int RelicMergeCost(int Tier1, int Tier2) => (EnergyPoint(Tier1) + EnergyPoint(Tier2) * (Tier1 + Tier2));
+	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Player player = Main.LocalPlayer;
+		Item item = Main.mouseItem;
+		if (item.type != ModContent.ItemType<Relic>()) {
+			return;
+		}
+		if (listeningElement.UniqueId == Relicslot1.UniqueId) {
+			SimpleItemMouseExchange(player, ref Relicslot1.item);
+		}
+		else if (listeningElement.UniqueId == Relicslot2.UniqueId) {
+			SimpleItemMouseExchange(player, ref Relicslot2.item);
+		}
+	}
+	public void SimpleItemMouseExchange(Player player, ref Item item) {
+		Item mouseitem = Main.mouseItem;
+		if (item.type == 0) {
+			if (Main.mouseItem.type != 0) {
+				item = Main.mouseItem.Clone();
 				Main.mouseItem.TurnToAir();
 				player.inventory[58].TurnToAir();
 			}
 		}
-		else if (Main.mouseItem.type == ItemID.None && item.type != ItemID.None) {
-			//When player want to change item
-			Main.mouseItem = item.Clone();
-			player.inventory[58] = item.Clone();
-			item.TurnToAir();
-			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -.5f });
-		}
 		else {
-			//Do nothing lmao
+			if (Main.mouseItem.type != 0) {
+				Item cached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = cached.Clone();
+				player.inventory[58] = cached.Clone();
+			}
+			else {
+				Main.mouseItem = item.Clone();
+				player.inventory[58] = item.Clone();
+				item.TurnToAir();
+			}
 		}
 	}
 	public override void OnDeactivate() {
-		Player player = Main.LocalPlayer;
-		if (item == null)
-			return;
-		for (int i = 0; i < 50; i++) if (player.CanItemSlotAccept(player.inventory[i], item)) {
-				player.inventory[i] = item.Clone();
-				item.TurnToAir();
+		int optimization = 0;
+		optimization = BossRushUtils.FastDropItem(Relicslot1.item);
+		optimization = BossRushUtils.FastDropItem(Relicslot2.item, optimization);
+		optimization = BossRushUtils.FastDropItem(Relicresultslot.item, optimization);
+		optimization = BossRushUtils.FastDropItem(ItemShiftSlot.item, optimization);
+		optimization = BossRushUtils.FastDropItem(ItemResultSlotShift.item, optimization);
+		optimization = BossRushUtils.FastDropItem(energyItemslot1.item, optimization);
+		optimization = BossRushUtils.FastDropItem(energyItemslot2.item, optimization);
+		optimization = BossRushUtils.FastDropItem(energyItemslot3.item, optimization);
+		optimization = BossRushUtils.FastDropItem(energyItemslot4.item, optimization);
+
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		PlayerStatsHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
+		transmutateText.SetText($"Energy : {modplayer.TransmutationPower} / {modplayer.TransmutationPowerMaximum}");
+		if (btn_EnergyMode.Highlight) {
+			int totalEnergyCharge = GetEnergyFromEnergySlot();
+			string text = "";
+			energyinfo.SetText(text + "\nTotal energy charging : " + totalEnergyCharge);
+
+		}
+		else if (btn_ItemShift.Highlight) {
+			Item item = ItemShiftSlot.item;
+			if (item.type == 0) {
+				shiftTextInfo.SetText("");
 				return;
 			}
-		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
-	}
-	public override void Update(GameTime gameTime) {
-		Timer = BossRushUtils.Safe_SwitchValue(Timer, 120);
-		base.Update(gameTime);
-		this.Disable_MouseItemUsesWhenHoverOverAUI();
-		if (Timer == 120) {
-			int cached = itemToShow;
-			while (itemToShow == cached) {
-				itemToShow = Main.rand.Next(new int[] { ItemID.SilverBroadsword, ItemID.SilverBow, ItemID.SapphireStaff, ItemID.FlinxStaff, ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves, ItemID.AvengerEmblem, ModContent.ItemType<Relic>() });
+			int rareval1 = item.OriginalRarity;
+			byte rareOffset = 0;
+			if (UpgradeRarityMode) {
+				rareOffset = 1;
+			}
+			float extra = 0;
+			if (ItemAccSelection.Highlight) {
+				if (!item.accessory) {
+					extra += .55f;
+				}
+			}
+			else if (ItemWeaponSelection.Highlight) {
+				if (!item.IsAWeapon()) {
+					extra += .5f;
+				}
+			}
+			else if (ItemArmorSelection.Highlight) {
+				if (item.headSlot <= 0 && item.bodySlot <= 0 && item.legSlot <= 0) {
+					extra += .35f;
+				}
+			}
+			int cost = EnergyPoint(rareval1 + rareOffset, extramultiplication: extra);
+			if (modplayer.TransmutationPower < cost) {
+				shiftTextInfo.SetText("Insufficient energy\nRequired energy cost : " + cost);
+			}
+			else {
+				shiftTextInfo.SetText("Item transmutation cost : " + cost);
 			}
 		}
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		var drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
-		base.Draw(spriteBatch);
-		try {
-			if (item != null) {
-				if (IsMouseHovering) {
-					Main.HoverItem = item.Clone();
-					Main.hoverItemName = item.HoverName;
-				}
-				Main.instance.LoadItem(item.type);
-				var texture = TextureAssets.Item[item.type].Value;
-				var origin = texture.Size() * .5f;
-				float scaling = ScaleCalculation(texture.Size());
-				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
-
-				if (itemToShow != -1) {
-					Main.instance.LoadItem(itemToShow);
-					var tex = TextureAssets.Item[itemToShow].Value;
-					var origin2 = tex.Size() * .5f;
-					float scaling2;
-					if (itemToShow == ModContent.ItemType<Relic>()) {
-						scaling2 = .5f;
+		else if (btn_RelicMergeMode.Highlight) {
+			if (Relicslot1.item.type != 0 && Relicslot2.item.type != 0) {
+				if (Relicslot1.item.ModItem is Relic relic1 && Relicslot2.item.ModItem is Relic relic2) {
+					if (relic1.RelicTier + relic2.RelicTier > 4) {
+						mergeInfo.SetText("Excessing relic merge tier\nYou are attempting to create : " + relic1.RelicTier + relic2.RelicTier + " tier");
+						return;
+					}
+					int cost = RelicMergeCost(relic1.RelicTier, relic2.RelicTier);
+					if (modplayer.TransmutationPower < cost) {
+						mergeInfo.SetText("Insufficient energy\nRequired energy cost : " + cost);
 					}
 					else {
-						scaling2 = ScaleCalculation(texture.Size());
+						mergeInfo.SetText("Merging energy cost : " + cost);
 					}
-					spriteBatch.Draw(tex, drawpos, null, Color.Gray * .6f, 0, origin2, scaling2, SpriteEffects.None, 0);
 				}
-			}
-		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
-		}
-	}
-	private float ScaleCalculation(Vector2 textureSize) {
-		Vector2 origin = texture.Size();
-		float multiplier = 3;
-		if (origin.X <= textureSize.X && origin.Y <= textureSize.Y) {
-			multiplier = 1;
-		}
-		float length = origin.Length();
-		float length2 = textureSize.Length();
-		return length / (length2 * multiplier);
-	}
-}
-public class TransmutationUIConfirmButton : UIImageButton {
-	public TransmutationUIConfirmButton(Asset<Texture2D> texture) : base(texture) {
-		SetVisibility(.67f, 1f);
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		this.Disable_MouseItemUsesWhenHoverOverAUI();
-		if (IsMouseHovering) {
-			Main.instance.MouseText("Transmute");
-		}
-	}
-	public static float GetRelicChance(Relic relic1, Relic relic2, float chance = 0) {
-		return Math.Clamp(1f - .15f * (relic1.RelicTier + relic2.RelicTier) + chance, .01f, 1f);
-	}
-	private static bool TransmutationPowerChargeUp(ref Item item, PlayerStatsHandle modplayer) {
-		if (modplayer.TransmutationPower < modplayer.TransmutationPowerMaximum) {
-			modplayer.TransmutationPower++;
-			item.TurnToAir();
-			return true;
-		}
-		return false;
-	}
-	/// <summary>
-	/// Please check null on your own
-	/// </summary>
-	/// <param name="item1"></param>
-	/// <param name="item2"></param>
-	/// <returns></returns>
-	public static bool SpecialInteraction(Item item1, Item item2) {
-		var player = Main.LocalPlayer;
-		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (ModContent.GetInstance<UniversalSystem>().transmutationUI.SwitchModeTo_TransmutationConvertPower) {
-			bool verify = false;
-			if (item1.type != ItemID.None) {
-				if (TransmutationPowerChargeUp(ref item1, modplayer))
-					verify = true;
-			}
-			if (item2.type != ItemID.None) {
-				if (TransmutationPowerChargeUp(ref item2, modplayer))
-					verify = true;
-			}
-			return verify;
-		}
-		if (item1.ModItem != null || item2.ModItem != null) {
-			BaseSoulBoundItem soul = null;
-			Item armor = null;
-			if (item1.ModItem is BaseSoulBoundItem soulbound) {
-				soul = soulbound;
-				armor = item2;
-			}
-			else if (item2.ModItem is BaseSoulBoundItem soulbound2) {
-				soul = soulbound2;
-				armor = item1;
-			}
-			if (armor != null && SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
-				SoulBoundGlobalItem.AddSoulBound(ref armor, soul.SoulBoundType);
-				soul.Item.TurnToAir();
-				return true;
-			}
-		}
-		float offsetchance = modplayer.Transmutation_SuccessChance;
-		if (modplayer.TransmutationPower > 0) {
-			modplayer.TransmutationPower--;
-			offsetchance += 1;
-		}
-		Relic relicItem = null;
-		Item slotitem = new();
-		Item slotitem2 = new();
-		if (item1.ModItem != null && item1.ModItem is Relic relic) {
-			relicItem = relic;
-		}
-		if (item2.ModItem != null && item2.ModItem is Relic relic2) {
-			if (relicItem == null) {
-				relicItem = relic2;
-				slotitem = item1;
 			}
 			else {
-				int count = relicItem.TemplateCount + relic2.TemplateCount;
-				if (count > 4) {
-					return false;
-				}
-				if (Main.rand.NextFloat() >= GetRelicChance(relicItem, relic2, offsetchance) && !player.IsDebugPlayer()) {
-					item1.TurnToAir();
-					item2.TurnToAir();
-					return false;
-				}
-				RelicTemplateLoader.MergeStat(relicItem, relic2);
-				return true;
+				mergeInfo.SetText("");
 			}
 		}
-		else {
-			slotitem = item1;
-			slotitem2 = item2;
-		}
-		int Option = 0;
-		int rareval1 = ContentSamples.ItemsByType[slotitem.type].rare;
-
-		//Slot item are never null so no need to check for them
-		if (rareval1 < ItemRarityID.Purple - 2) {
-			if (slotitem.IsAWeapon()) {
-				Option = 1;
-			}
-			if (!slotitem.vanity) {
-				if (slotitem.accessory) {
-					Option = 2;
-				}
-				else if (slotitem.headSlot > 0) {
-					Option = 3;
-				}
-				else if (slotitem.bodySlot > 0) {
-					Option = 4;
-				}
-				else if (slotitem.legSlot > 0) {
-					Option = 5;
-				}
-			}
-		}
-
-		//Upgrading item rarity, it is still imporant to check for null here
-		if (relicItem != null) {
-			if (Option != 0) {
-				float chance = Main.rand.NextFloat();
-
-				float rarityOffSet = rareval1 * .03f;
-				if (rareval1 >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
-					rarityOffSet += (rareval1 - 3) * .02f;
-				}
-				//Look, the idea is certainly there, I just wonder to my past self why tf you do this ?
-				chance += rarityOffSet - offsetchance;
-				bool SuccessChance;
-				if (relicItem.RelicTier > 4) {
-					SuccessChance = chance <= Relic.chanceTier4 + .05f * relicItem.RelicTier;
-				}
-				else {
-					SuccessChance = chance <= Relic.GetTierChance(relicItem.RelicTier);
-				}
-				int rare = rareval1;
-				if (SuccessChance) {
-					rare++;
-				}
-				int itemType = GetItemRarityDB(rare, Option);
-				if (itemType == ItemID.None) {
-					Main.NewText($"Detected no rarity found ! at {rare} rarity at {Option} option");
-					return false;
-				}
-				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
-				if (Main.item[itemSpawn].CanHavePrefixes())
-					Main.item[itemSpawn].ResetPrefix();
-				item1.TurnToAir();
-				item2.TurnToAir();
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {//Equivalent exchange
-			int rareval2 = ContentSamples.ItemsByType[slotitem2.type].rare;
-			int Option2 = 0;
-			if (rareval2 < ItemRarityID.Purple - 2) {
-				if (slotitem2.IsAWeapon()) {
-					Option2 = 1;
-				}
-				if (!slotitem2.vanity) {
-					if (slotitem2.accessory) {
-						Option2 = 2;
-					}
-					else if (slotitem2.headSlot > 0) {
-						Option2 = 3;
-					}
-					else if (slotitem2.bodySlot > 0) {
-						Option2 = 4;
-					}
-					else if (slotitem2.legSlot > 0) {
-						Option2 = 5;
-					}
-				}
-			}
-			if (Option2 == 0 || Option != Option2) {
-				return false;
-			}
-			//Changing to other same tier item
-			if (rareval1 == rareval2) {
-				int itemType = GetItemRarityDB(rareval1, Option);
-				if (itemType == ItemID.None) {
-					Main.NewText($"Detected no rarity found ! at {rareval1} rarity at {Option} option");
-					return false;
-				}
-				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
-				if (Main.item[itemSpawn].CanHavePrefixes())
-					Main.item[itemSpawn].ResetPrefix();
-				item1.TurnToAir();
-				item2.TurnToAir();
-				return true;
-			}
-			else {//Choosing between 2 different rarities
-				int spawmItemType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rareval1]);
-				int spawnItemType2 = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rareval2]);
-				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.NextBool() ? spawmItemType : spawnItemType2);
-				if (Main.item[itemSpawn].CanHavePrefixes())
-					Main.item[itemSpawn].ResetPrefix();
-				item1.TurnToAir();
-				item2.TurnToAir();
-			}
-		}
-		return true;
 	}
 	public static int GetItemRarityDB(int rare, int option) {
 		switch (option) {

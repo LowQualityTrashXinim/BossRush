@@ -8,6 +8,7 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
 using Terraria.DataStructures;
 using BossRush.Contents.Items.RelicItem.RelicTemplateContent;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SSRspoil {
@@ -19,7 +20,7 @@ internal class SSRspoil {
 			return DisplayName.FormatWith(ItemID.FallenStar);
 		}
 		public override string FinalDescription() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			return Description.FormatWith(chestplayer.ModifyGetAmount(1), chestplayer.ModifyGetAmount(2));
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
@@ -33,7 +34,7 @@ internal class SSRspoil {
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), type);
 			LootBoxBase.GetSkillLootbox(itemsource, player);
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
-			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
+			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(2);
 			for (int i = 0; i < amount; i++) {
 				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (relicitem.ModItem is Relic relic) {

@@ -233,7 +233,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				amount--;
 				for (int i = 0; i < amount; i++) {
 					Vector2 velocity2 = RoguelikeGunVelocity(modplayer, velocity);
-					Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, item, item.ammo), position, velocity2, type, damage, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
 				}
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

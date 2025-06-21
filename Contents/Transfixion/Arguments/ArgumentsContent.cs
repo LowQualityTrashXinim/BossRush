@@ -9,6 +9,7 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Transfixion.Artifacts;
 using BossRush.Common.Global;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 
@@ -362,15 +363,8 @@ public class AlchemistII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.BlueViolet;
 	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		int buffamount = target.buffType.Where(b => b != 0 && b != -1).Count();
-		modifiers.FinalDamage += 0.06f * buffamount;
-	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
-			int buffamount = target.buffType.Where(b => b != 0 && b != -1).Count();
-			modifiers.FinalDamage += 0.06f * buffamount;
-		}
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: player.BuffAmount());
 	}
 }
 

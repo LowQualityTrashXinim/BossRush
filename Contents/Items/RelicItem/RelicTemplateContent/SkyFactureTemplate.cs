@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Contents.Items.RelicItem.RelicTemplateContent;
 public class SkyFractureTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
+		relicType = RelicType.Projectile;
 		DataStorer.AddContext("Relic_SkyFracture", new(
 			450,
 			Vector2.Zero,
@@ -37,7 +38,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				Color.Cyan.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				Color.Yellow.Hex3(),
 				Name
 		]);
@@ -62,7 +63,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				position,
 				toTarget,
 				ProjectileID.SkyFracture,
-				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
+				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1)) * value.Multiplicative),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.Set_ProjectileTravelDistance(450);

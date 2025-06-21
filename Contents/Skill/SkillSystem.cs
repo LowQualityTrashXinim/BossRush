@@ -64,28 +64,51 @@ public abstract class ModSkill : ModType {
 	protected sealed override void Register() {
 		Type = SkillModSystem.Register(this);
 	}
+	/// <summary>
+	/// This have the same functionality of <see cref="ModifySkillSet(Player, SkillHandlePlayer, ref int, ref StatModifier, ref StatModifier, ref StatModifier)"/><br/>
+	/// But simpified, use this over ModifySkillSet if you are doing less logic
+	/// </summary>
+	/// <param name="energy"></param>
+	/// <param name="duration"></param>
+	/// <param name="cooldown"></param>
 	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
 		energy = new();
 		duration = new();
 		cooldown = new();
 	}
+	/// <summary>
+	/// Use this to set skill stat
+	/// </summary>
 	public virtual void SetDefault() { }
 	/// <summary>
-	/// Use this if you are modifying the skill set in a way
+	/// Use this if you are modifying the skill set in a way<br/>
+	/// This can be use to either skip a skill directly or loop but not recommend for looping as there are no support for that<br/>
+	/// You can also directly modify energy cost, duration and cool down of the next skill
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="modplayer"></param>
 	/// <param name="index"></param>
 	public virtual void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) { }
 	/// <summary>
-	/// Called upon pressed when the skill requirement is fullfilled 
+	/// Called upon player activate the skill when the skill requirement is fullfilled<br/>
+	/// This is called before cool down, duration of the skill and energy subtraction is set
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer) { }
+	public virtual void OnTrigger(Player player, SkillHandlePlayer skillplayer, int duration, int cooldown, int energy) { }
+	/// <summary>
+	/// This only run when the duration of the skill is equal or below 1
+	/// </summary>
+	/// <param name="player"></param>
 	public virtual void OnEnded(Player player) { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ResetEffect(Player player) { }
 	public virtual void Update(Player player, SkillHandlePlayer skillplayer) { }
+	/// <summary>
+	/// This will always update the skill, it work like UpdateEquip
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="skillplayer"></param>
+	public virtual void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
@@ -134,6 +157,37 @@ public class SkillModSystem : ModSystem {
 	}
 }
 public class SkillHandlePlayer : ModPlayer {
+	public float ProjectileSpeedMultiplier = 1;
+	public int ProjectileAmount = 1;
+	public int ProjectileCritChance = 0;
+	public int ProjectileEnergyRegain = 0;
+	public float ProjectileCritDamage = 0;
+	public int ProjectileTimeLeft = 0;
+	public float ProjectileSpreadAmount = 5;
+	public float ProjectileSpreadMultiplier = 1;
+	public List<Projectile> NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
+		List<Projectile> projList = new();
+		speed *= ProjectileSpeedMultiplier;
+
+		for (int i = 0; i < ProjectileAmount; i++) {
+			float modifierSpread = ProjectileSpreadAmount * ProjectileSpreadMultiplier * i;
+			Vector2 vel;
+			if (ProjectileAmount > 1) {
+				vel = velNormalize.Vector2DistributeEvenly(ProjectileSpreadAmount, 360, i) * speed;
+			}
+			else {
+				vel = velNormalize * speed;
+			}
+			Projectile projectile = Projectile.NewProjectileDirect(source, position, vel, type, SkillDamage(damage), knockback, Player.whoAmI);
+			projectile.CritChance += ProjectileCritChance;
+			RoguelikeGlobalProjectile roguelikeProj = projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>();
+			roguelikeProj.CritDamage += ProjectileEnergyRegain;
+			roguelikeProj.EnergyRegainOnHit += ProjectileEnergyRegain;
+			projectile.timeLeft += ProjectileTimeLeft;
+			projList.Add(projectile);
+		}
+		return projList;
+	}
 	public int SkillDamage(int damage) {
 		StatModifier modifier = skilldamage.CombineWith(SkillDamageWhileActive);
 		return (int)Math.Ceiling(modifier.ApplyTo(damage));
@@ -425,8 +479,8 @@ public class SkillHandlePlayer : ModPlayer {
 			}
 			Activate = true;
 			SkillStatTotal(out int energy, out int duration, out int cooldown);
-			Duration = duration;
-			CoolDown = cooldown;
+			Duration += duration;
+			CoolDown += cooldown;
 			if (energy > Energy) {
 				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
@@ -434,17 +488,16 @@ public class SkillHandlePlayer : ModPlayer {
 				Activate = false;
 				MaximumCoolDown = 0;
 				MaximumDuration = 0;
-				return;
 			}
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
 				Skill_PlayerLastPositionBeforeSkillActivation = Player.Center;
-				MaximumCoolDown = CoolDown;
-				MaximumDuration = Duration;
-				Energy -= energy;
 				foreach (var item in activeskill) {
-					item.OnTrigger(Player, this);
+					item.OnTrigger(Player, this, duration, cooldown, energy);
 				}
+				MaximumCoolDown += CoolDown;
+				MaximumDuration += Duration;
+				Energy -= energy;
 			}
 		}
 	}
@@ -474,6 +527,13 @@ public class SkillHandlePlayer : ModPlayer {
 		if (Player.HeldItem.type == ModContent.ItemType<SkillCoolDownRemove>()) {
 			CoolDown = 0;
 		}
+		ProjectileCritChance = 0;
+		ProjectileAmount = 1;
+		ProjectileCritDamage = 0;
+		ProjectileEnergyRegain = 0;
+		ProjectileSpeedMultiplier = 1;
+		ProjectileSpreadMultiplier = 1;
+		ProjectileSpreadAmount = 5;
 		skilldamage = StatModifier.Default;
 		SkillDamageWhileActive = StatModifier.Default;
 		if (!Activate) {
@@ -484,6 +544,14 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
+		int[] skillHolder = GetCurrentActiveSkillHolder();
+		for (int i = 0; i < skillHolder.Length; i++) {
+			ModSkill skill = SkillModSystem.GetSkill(skillHolder[i]);
+			if (skill == null) {
+				continue;
+			}
+			skill.AlwaysUpdate(Player, this);
+		}
 		if (!Activate) {
 			return;
 		}

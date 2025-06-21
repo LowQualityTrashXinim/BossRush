@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 	internal class OvergrownMinishark : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.CrimsonRod);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.CrimsonRod, $"[i:{ItemID.CrimsonRod}] When shooting, you summon blood rain at cursor");
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(54, 24, 14, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
@@ -27,8 +27,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 			return new Vector2(-4, 0);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.CrimsonRod))
-				tooltips.Add(new TooltipLine(Mod, "OvergrownMinishark_CrimsonRod", $"[i:{ItemID.CrimsonRod}] When shooting, you summon blood rain at cursor"));
+			SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.CrimsonRod);
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		}

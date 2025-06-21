@@ -15,8 +15,8 @@ namespace BossRush.Contents.BuffAndDebuff {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, -.5f);
 			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, -.25f);
-			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.5f);
-			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 50);
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.25f);
+			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 25);
 			if (player.buffTime[buffIndex] == 0) {
 				player.AddBuff(ModContent.BuffType<FuriousCoolDown>(), 420);
 			}

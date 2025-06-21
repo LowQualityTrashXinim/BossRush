@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -37,6 +38,7 @@ namespace BossRush {
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.PlayerCurrentArtifact<T>(player);
 		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? -1 : 1;
+		public static int DirectionFromEntityAToEntityB(float A, float B) => A > B ? -1 : 1;
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
 		}
@@ -64,6 +66,7 @@ namespace BossRush {
 			player.head == ArmorIDs.Head.MeteorHelmet
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
+		public static bool IsThisArmorPiece(this Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
 		/// <summary>
 		/// Check whenever or not is this item a weapon or not
 		/// </summary>
@@ -92,7 +95,28 @@ namespace BossRush {
 			return item.Select(i => i.type).Contains(itemType);
 		}
 		/// <summary>
-		/// Highly unstable, not recommend to uses unless you know what you are doing
+		/// The following method attempt to return amount of current player buff<br/>
+		/// It will ignore pet, mount and minion buff
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static int BuffAmount(this Player player) {
+			int buffamount = player.buffType.Where(b => b != 0 && b != -1 && !Main.debuff[b] && !Main.vanityPet[b] && !Main.lightPet[b] && !BossRushModSystem.MinionPetMountBuff.Contains(b)).Count();
+			return buffamount;
+		}
+		/// <summary>
+		/// The following method attempt to return amount of current player debuff<br/>
+		/// It will ignore pet, mount and minion buff
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static int DeBuffAmount(this Player player) {
+			int buffamount = player.buffType.Where(b => b != 0 && b != -1 && Main.debuff[b]).Count();
+			return buffamount;
+		}
+		/// <summary>
+		/// <b>Highly unstable</b><br/><br/>
+		/// Will attempt to reflesh global item within the inventory
 		/// </summary>
 		/// <param name="mod"></param>
 		/// <param name="player"></param>
@@ -114,25 +138,30 @@ namespace BossRush {
 				//item.shoot = itemA.shoot;
 				//item.shootSpeed = itemA.shootSpeed;
 				int type = item.type;
+				Set_ItemCriticalDamage(item, 0f);
 				if (ItemID.Sets.IsFood[type]) {
 					continue;
 				}
-				else if (type <= 1000) {
-					item.SetDefaults1(type);
-				}
-				else if (type <= 2001) {
-					item.SetDefaults2(type);
-				}
-				else if (type <= 3000) {
-					item.SetDefaults3(type);
-				}
-				else if (type <= 3989) {
-					item.SetDefaults4(type);
+				if (item.ModItem != null) {
+					item.ModItem.SetDefaults();
 				}
 				else {
-					item.SetDefaults5(type);
+					if (type <= 1000) {
+						item.SetDefaults1(type);
+					}
+					else if (type <= 2001) {
+						item.SetDefaults2(type);
+					}
+					else if (type <= 3000) {
+						item.SetDefaults3(type);
+					}
+					else if (type <= 3989) {
+						item.SetDefaults4(type);
+					}
+					else {
+						item.SetDefaults5(type);
+					}
 				}
-				Set_ItemCriticalDamage(item, 0f);
 				foreach (var globalitem in item.Globals) {
 					if (globalitem == null || globalitem.Mod.Name != mod.Name) {
 						continue;
@@ -277,7 +306,8 @@ namespace BossRush {
 		}
 	}
 	/// <summary>
-	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats
+	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats<br/>
+	/// Some of the stats in this enum range will be explained to avoid confusion
 	/// </summary>
 	public enum PlayerStats : byte {
 		None,
@@ -300,7 +330,13 @@ namespace BossRush {
 		MaxMinion,
 		MaxSentry,
 		Thorn,
+		/// <summary>
+		/// This stat is for shield mechanic, for more information on shield mechanic check <see cref="Shield_GlobalItem"/>
+		/// </summary>
 		ShieldHealth,
+		/// <summary>
+		/// This stat is for shield mechanic, for more information on shield mechanic check <see cref="Shield_GlobalItem"/>
+		/// </summary>
 		ShieldEffectiveness,
 		AttackSpeed,
 		LifeSteal,
@@ -308,14 +344,31 @@ namespace BossRush {
 		MysteriousPotionEffectiveness,
 		EnergyCap,
 		EnergyRechargeCap,
+		/// <summary>
+		/// This is first strike damage dealt stat, dealing damage to enemy first time will activate this stat
+		/// </summary>
 		FullHPDamage,
+		/// <summary>
+		/// To be replaced
+		/// </summary>
 		StaticDefense,
+		/// <summary>
+		/// This is damage dealt base on debuff stat, the intake damage of enemy is depend on the enemy current amount of debuff * this stat value
+		/// </summary>
 		DebuffDamage,
+		/// <summary>
+		/// This is synergy weapon damage and weapon switching damage<br/>
+		/// <b>Synergy weaopn damage :</b> Increases synergy weapon damage<br/>
+		/// <b>Weapon switching damage :</b> Increases the current weapon damage and then remove the bonus increases after used, switching to another weapon will regain the bonus to that weapon until it is used
+		/// </summary>
 		SynergyDamage,
 		Iframe,
 		EnergyRecharge,
 		SkillDuration,
 		SkillCooldown,
+		/// <summary>
+		/// This stat will increases debuff duration when inflicting on enemy
+		/// </summary>
 		DebuffDurationInflict,
 		MeleeCritDmg,
 		RangeCritDmg,
@@ -404,6 +457,16 @@ namespace BossRush {
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
 		public Vector2 PlayerLastPositionBeforeAnimation = Vector2.Zero;
 		public int counterToFullPi = 0;
+		public bool CurrentHoveringOverChest = false;
+		public override void ResetEffects() {
+			if (!Player.active) {
+				return;
+			}
+			Point point = Main.MouseWorld.ToTileCoordinates();
+			if (WorldGen.InWorld(point.X, point.Y)) {
+				CurrentHoveringOverChest = Main.tile[point.X, point.Y].TileType == TileID.Containers || Main.tile[point.X, point.Y].TileType == TileID.Containers2;
+			}
+		}
 		public override void PreUpdate() {
 			if (++counterToFullPi >= 360)
 				counterToFullPi = 0;

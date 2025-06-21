@@ -12,9 +12,9 @@ using System;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle);
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
-		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle);
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SniperRifle, $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor");
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile, $"[i:{ItemID.MagicMissile}] Have 1 in 10 chance to shoot additional magic missle");
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Shoot burst arch and missle more common");
 	}
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
@@ -23,15 +23,9 @@ internal class PulseRifle : SynergyModItem {
 		Item.UseSound = SoundID.Item75 with { Pitch = 1 };
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SniperRifle)) {
-			tooltips.Add(new(Mod, "PulseRifle_SniperRifle", $"[i:{ItemID.SniperRifle}] 20% critical strike chance, 100% critical strike damage and pulse bolt ignore armor"));
-		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile)) {
-			tooltips.Add(new(Mod, "PulseRifle_MagicMissile", $"[i:{ItemID.MagicMissile}] Have 1 in 10 chance to shoot additional magic missle"));
-		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
-			tooltips.Add(new(Mod, "PulseRifle_ClockworkAssaultRifle", $"[i:{ItemID.ClockworkAssaultRifle}] Shoot burst arch and missle more common"));
-		}
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.SniperRifle);
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.MagicMissile);
+		SynergyBonus_System.Write_SynergyTooltip(ref tooltips, this, ItemID.ClockworkAssaultRifle);
 	}
 	public override Vector2? HoldoutOffset() {
 		return new Vector2(-20, 0);
@@ -59,7 +53,7 @@ internal class PulseRifle : SynergyModItem {
 		if (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ModContent.ProjectileType<PulseHomingProjectile>(), (int)(damage * 1.25f), knockback, player.whoAmI);
 		}
-		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) || Main.rand.NextBool(5) && SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle)) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) && (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle))) {
 			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ProjectileID.MagicMissile, (int)(damage), knockback, player.whoAmI);
 			Main.projectile[proj].penetrate = 1;
 		}

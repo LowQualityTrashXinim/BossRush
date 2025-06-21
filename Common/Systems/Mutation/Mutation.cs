@@ -1,9 +1,11 @@
 ﻿using BossRush.Common.Global;
 using BossRush.Texture;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.Mutation;
@@ -185,6 +187,17 @@ public class Elite : ModMutation {
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextFloat() <= .01f) {
 			npc.Heal((int)(npc.lifeMax * .2f));
+		}
+	}
+}
+public class DarkTentacle : ModMutation {
+	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
+		for (int i = 0; i < 5; i++) {
+			Vector2 vec2 = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 10;
+			Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, vec2, ProjectileID.ShadowFlame, npc.damage * 2, 3f);
+			proj.ai[0] = Main.rand.NextFloat(-1,1);
+			proj.ai[1] = Main.rand.NextFloat(-1, 1);
+			proj.ai[2] = Main.rand.NextFloat(-1, 1);
 		}
 	}
 }

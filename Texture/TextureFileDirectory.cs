@@ -19,16 +19,20 @@
 		public const string FOURSTAR = "BossRush/Texture/FourStar";
 		public const string CrossSprite = "BossRush/Texture/UI/Cross";
 		public const string Lock = "BossRush/Texture/UI/lock";
-		public const string Perlinnoise= "BossRush/Texture/roguelikePerlinNoise";
+		public const string Perlinnoise = "BossRush/Texture/roguelikePerlinNoise";
 		public const string Arrow_Left = CommonTextureStringPattern + "UI/LeftArrow";
 		public const string Arrow_Right = CommonTextureStringPattern + "UI/RightArrow";
 		public const string PingpongGradient = CommonTextureStringPattern + "PingpongGradient";
 		public const string LinesNoise = CommonTextureStringPattern + "LinesNoise";
 		public const string Gradient = CommonTextureStringPattern + "Gradient";
+		public const string OuterInnerGlow = CommonTextureStringPattern + "OuterInnerGlow";
+		public const string Eye = CommonTextureStringPattern + "EyeOutline";
+		public const string EyePupil = CommonTextureStringPattern + "EyePupil";
 		/// <summary>
 		/// Width : 16 | Height : 16
 		/// </summary>
 		public const string Boxes = CommonTextureStringPattern + "UI/Boxes";
+		public const string QuestionMark_Help = CommonTextureStringPattern + "UI/Help";
 		public const string Page_StateSelected = CommonTextureStringPattern + "UI/page_selected";
 		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";

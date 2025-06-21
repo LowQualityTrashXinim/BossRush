@@ -344,5 +344,25 @@ namespace BossRush.Common.Utils {
 						ModContent.TileType<PotionAltar>(),
 						ModContent.TileType<FoodAltar>(),
 		};
+		//Material
+		public readonly static int[] SeedsMaterial = {
+			ItemID.GrassSeeds, ItemID.JungleGrassSeeds, ItemID.MushroomGrassSeeds,ItemID.AshGrassSeeds, ItemID.CorruptSeeds, ItemID.CrimsonSeeds, ItemID.HallowedSeeds, ItemID.Acorn,
+			ItemID.VanityTreeSakuraSeed, ItemID.VanityTreeYellowWillowSeed, ItemID.PumpkinSeed, ItemID.GemTreeAmberSeed, ItemID.GemTreeAmethystSeed, ItemID.GemTreeDiamondSeed, ItemID.GemTreeEmeraldSeed, ItemID.GemTreeRubySeed, ItemID.GemTreeSapphireSeed, ItemID.GemTreeTopazSeed
+		};
+		public readonly static int[] HerbMaterial = {
+			ItemID.Blinkroot, ItemID.Daybloom, ItemID.Mushroom, ItemID.VileMushroom, ItemID.ViciousMushroom, ItemID.Moonglow, ItemID.Waterleaf, ItemID.Shiverthorn, ItemID.Fireblossom, ItemID.Deathweed
+		};
+		public readonly static int[] Powder = {
+			ItemID.PurificationPowder, ItemID.ViciousPowder, ItemID.VilePowder
+		};
+		public readonly static int[] RareDyeMaterial = {
+			ItemID.RedHusk, ItemID.CyanHusk, ItemID.YellowMarigold, ItemID.LimeKelp, ItemID.GreenMushroom, ItemID.TealMushroom, ItemID.SkyBlueFlower, ItemID.BlueBerries, ItemID.PurpleMucos, ItemID.VioletHusk, ItemID.PinkPricklyPear
+		};
+		public readonly static int[] FoodMaterrial = {
+			ItemID.Apple, ItemID.BloodOrange, ItemID.Apricot, ItemID.Banana, ItemID.BlackCurrant, ItemID.Cherry, ItemID.Elderberry, ItemID.Grapefruit, ItemID.Lemon, ItemID.Mango, ItemID.Peach, ItemID.Pineapple, ItemID.Plum, ItemID.Pomegranate, ItemID.Rambutan, ItemID.SpicyPepper, ItemID.Dragonfruit, ItemID.Starfruit, ItemID.Grapes
+		};
+		public readonly static int[] MossMaterial = {
+			ItemID.BlueMoss, ItemID.GreenMoss, ItemID.BrownMoss, ItemID.PurpleMoss, ItemID.RedMoss, ItemID.LavaMoss, ItemID.KryptonMoss, ItemID.ArgonMoss, ItemID.XenonMoss, ItemID.RainbowMoss, ItemID.VioletMoss
+		};
 	}
 }

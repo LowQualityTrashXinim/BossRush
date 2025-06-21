@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Chest;
+﻿using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Perks;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class TreasureMagnet : ItemReworker {
 	public override int VanillaItemType => ItemID.TreasureMagnet;
 	public override void UpdateEquip(Player player) {
 		player.luck += 0.1f;
-		player.GetModPlayer<ChestLootDropPlayer>().DropModifier += player.luck;
+		player.GetModPlayer<PlayerStatsHandle>().DropModifier += player.luck;
 	}
 
 

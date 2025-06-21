@@ -111,11 +111,6 @@ namespace BossRush {
 			item.mana = manaCost;
 			item.noMelee = true;
 		}
-		public enum MeleeStyle {
-			CheckVanillaSwingWithModded,
-			CheckOnlyModded,
-			CheckOnlyModdedWithoutDefault
-		}
 		public static void Set_InfoItem(this Item item, bool ExtraInfo = true) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.ExtraInfo = ExtraInfo;
@@ -191,12 +186,20 @@ namespace BossRush {
 				globalitem.ShieldRes = res;
 			}
 		}
-		/// <summary>
-		/// Soon to be deprecated
-		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="WhatToCheck"></param>
-		/// <returns></returns>
+		public enum MeleeStyle {
+			/// <summary>
+			/// This will check vanilla swing and modded swing whenever or not either of 2 is active
+			/// </summary>
+			CheckVanillaSwingWithModded,
+			/// <summary>
+			/// This will check for modded swing only whenever or not the modded swing is active
+			/// </summary>
+			CheckOnlyModded,
+			/// <summary>
+			/// This will check only modded swing but exclude the default swing
+			/// </summary>
+			CheckOnlyModdedWithoutDefault
+		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
 			if (!UniversalSystem.Check_RLOH()) {
 				return false;
@@ -204,17 +207,11 @@ namespace BossRush {
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 				switch (WhatToCheck) {
 					case MeleeStyle.CheckVanillaSwingWithModded:
-						return item.useStyle == ItemUseStyleID.Swing
-							|| meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
-							|| meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+						return item.useStyle == ItemUseStyleID.Swing || meleeItem.SwingType != 0;
 					case MeleeStyle.CheckOnlyModded:
-						return meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
-							|| meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+						return meleeItem.SwingType != 0;
 					case MeleeStyle.CheckOnlyModdedWithoutDefault:
-						return meleeItem.SwingType == BossRushUseStyle.Swipe
-							|| meleeItem.SwingType == BossRushUseStyle.Poke;
+						return meleeItem.SwingType == BossRushUseStyle.Swipe;
 					default:
 						Console.WriteLine("Fail to know what to check !");
 						return false;

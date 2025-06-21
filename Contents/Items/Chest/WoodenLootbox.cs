@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Common.General;
 using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -14,7 +15,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = ItemRarityID.White;
 		}
-		public override bool CanActivateSpoil => !ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest;
+		public override bool CanActivateSpoil => !ModContent.GetInstance<RogueLikeConfig>().RoguelikeMode;
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
@@ -31,7 +32,7 @@ namespace BossRush.Contents.Items.Chest {
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 2 };
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void OnRightClick(Player player, PlayerStatsHandle modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount);

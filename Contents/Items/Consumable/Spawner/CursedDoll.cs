@@ -27,7 +27,6 @@ namespace BossRush.Contents.Items.Consumable.Spawner {
 			if (Main.IsItDay()) {
 				Main.time = Main.dayLength;
 			}
-
 			return !Main.IsItDay();
 		}
 	}

@@ -14,6 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Consumable.Potion;
 using Steamworks;
+using BossRush.Common.Systems.IOhandle;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -36,7 +38,7 @@ namespace BossRush.Contents.Items.Chest {
 					return;
 				if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX))
 					return;
-				ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+				PlayerStatsHandle chestplayer = Main.LocalPlayer.ModPlayerStats();
 				//absolutely not recommend to do this
 				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
 				if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
@@ -69,11 +71,11 @@ namespace BossRush.Contents.Items.Chest {
 			return rng;
 		}
 		protected static int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
-			ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-			meleeChance = (int)(modPlayer.UpdateMeleeChanceMutilplier * meleeChance);
-			rangeChance = (int)(modPlayer.UpdateRangeChanceMutilplier * rangeChance);
-			magicChance = (int)(modPlayer.UpdateMagicChanceMutilplier * magicChance);
-			summonChance = (int)(modPlayer.UpdateSummonChanceMutilplier * summonChance);
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
+			meleeChance = (int)(modplayer.UpdateMeleeChanceMutilplier * meleeChance);
+			rangeChance = (int)(modplayer.UpdateRangeChanceMutilplier * rangeChance);
+			magicChance = (int)(modplayer.UpdateMagicChanceMutilplier * magicChance);
+			summonChance = (int)(modplayer.UpdateSummonChanceMutilplier * summonChance);
 			rangeChance += meleeChance;
 			magicChance += rangeChance;
 			summonChance += magicChance;
@@ -108,7 +110,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (!ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Contains(Type)) {
 				ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Add(Type);
 			}
-			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
 			if (modplayer.ItemGraveYard.Count > 0) {
 				int RemoveAmount = 1 + modplayer.ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {
@@ -188,7 +190,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="modplayer"></param>
-		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
+		public virtual void OnRightClick(Player player, PlayerStatsHandle modplayer) { }
 		/// <summary>
 		/// Return weapon
 		/// </summary>
@@ -211,7 +213,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			ModifyLootAdd(player);
 			//actual choosing item
-			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
 			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(Type).DropItemMelee.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(Type).DropItemRange.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
@@ -706,7 +708,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			item.ModifyLootAdd(player);
 			//actual choosing item
-			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
 			modplayer.GetAmount();
 			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(item.Type).DropItemMelee.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(item.Type).DropItemRange.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
@@ -720,8 +722,10 @@ namespace BossRush.Contents.Items.Chest {
 			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
-				rng = RNGManage(player);
-				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				if (rng == 0) {
+					rng = RNGManage(player);
+					rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
+				}
 				switch (rng) {
 					case 0:
 						continue;
@@ -932,7 +936,7 @@ namespace BossRush.Contents.Items.Chest {
 			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion, .. BossRushModSystem.LootboxPotion.Select(i => i.type)];
 			DropItemPotion.Add(ItemID.LifeforcePotion);
 			DropItemPotion.Add(ItemID.InfernoPotion);
-			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle modplayer = player.ModPlayerStats();
 			modplayer.GetAmount();
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
@@ -951,7 +955,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public static void GetRelic(int type, Player player, int amount = 1) {
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(amount);
+			amount = player.ModPlayerStats().ModifyGetAmount(amount);
 
 			for (int i = 0; i < amount; i++) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
@@ -959,7 +963,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public static void GetSkillLootbox(int type, Player player, int amount = 1) {
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(amount);
+			amount = player.ModPlayerStats().ModifyGetAmount(amount);
 
 			for (int i = 0; i < amount; i++) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
@@ -1053,110 +1057,6 @@ namespace BossRush.Contents.Items.Chest {
 			}
 
 			return _cachedAllItems;
-		}
-	}
-	public class ChestLootDropPlayer : ModPlayer {
-		public HashSet<int> Request_AddMelee = new();
-		public HashSet<int> Request_AddRange = new();
-		public HashSet<int> Request_AddMagic = new();
-		public HashSet<int> Request_AddSummon = new();
-		public HashSet<int> Request_AddMisc = new();
-		public int InfluenceableRNGselector = -1;
-		public float Chance_4RNGselector { get; set; } = 0;
-
-		public int counterShow = 0;
-		public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
-
-		public HashSet<int> ItemGraveYard = new HashSet<int>();
-		public bool CanDropSynergyEnergy = true;
-
-		public StatModifier DropModifier = new();
-
-		//This is inner modifier ( aka amount modifier to x stuff )
-		/// <summary>
-		/// Use this if it is a always update item
-		/// </summary>
-		public int WeaponAmountAddition { get; set; } = 0;
-		/// <summary>
-		/// Use this if it is a always update item
-		/// </summary>
-		public int PotionTypeAmountAddition { get; set; } = 0;
-		/// <summary>
-		/// Use this if it is a always update item
-		/// </summary>
-		public int PotionNumberAmountAddition { get; set; } = 0;
-		//Do not touch this
-		public int weaponAmount;
-		public int potionTypeAmount;
-		public int potionNumAmount;
-
-		/// <summary>
-		/// Use this if you gonna always update it
-		/// </summary>
-		public float UpdateMeleeChanceMutilplier = 0;
-		/// <summary>
-		/// Use this if you gonna always update it
-		/// </summary>
-		public float UpdateRangeChanceMutilplier = 0;
-		/// <summary>
-		/// Use this if you gonna always update it
-		/// </summary>
-		public float UpdateMagicChanceMutilplier = 0;
-		/// <summary>
-		/// Use this if you gonna always update it
-		/// </summary>
-		public float UpdateSummonChanceMutilplier = 0;
-		public bool LootboxCanDropSpecialPotion = false;
-		public int ModifyGetAmount(int baseValue) {
-			int amount = (int)Math.Ceiling(DropModifier.ApplyTo(baseValue));
-			if (amount <= 0) {
-				return 1;
-			}
-			return amount;
-		}
-		/// <summary>
-		/// This must be called before using
-		/// <br/><see cref="weaponAmount"/>
-		/// <br/><see cref="potionTypeAmount"/>
-		/// <br/><see cref="potionNumAmount"/>
-		/// </summary>
-		public void GetAmount() {
-			weaponAmount = 3;
-			potionTypeAmount = 1;
-			potionNumAmount = 2;
-			if (Main.getGoodWorld) {
-				weaponAmount = 2;
-				potionTypeAmount = 1;
-				potionNumAmount = 1;
-			}
-			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
-			potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
-			potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
-			if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode) {
-				weaponAmount = 1;
-			}
-		}
-		public override void ResetEffects() {
-			Request_AddMelee.Clear();
-			Request_AddRange.Clear();
-			Request_AddMagic.Clear();
-			Request_AddSummon.Clear();
-			Request_AddMisc.Clear();
-			InfluenceableRNGselector = -1;
-			Chance_4RNGselector = 0;
-			LootboxCanDropSpecialPotion = false;
-			CanDropSynergyEnergy = false;
-			DropModifier = StatModifier.Default;
-			WeaponAmountAddition = 0;
-			PotionTypeAmountAddition = 0;
-			PotionNumberAmountAddition = 0;
-			UpdateMeleeChanceMutilplier = 1;
-			UpdateRangeChanceMutilplier = 1;
-			UpdateMagicChanceMutilplier = 1;
-			UpdateSummonChanceMutilplier = 1;
-		}
-		public override void Unload() {
-			ItemGraveYard = null;
 		}
 	}
 }

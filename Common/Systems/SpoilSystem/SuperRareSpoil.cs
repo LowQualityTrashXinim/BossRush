@@ -9,6 +9,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Items.aDebugItem.UIdebug;
+using BossRush.Common.Global;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -17,7 +18,7 @@ internal class SuperRareSpoil {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
 		public override string FinalDescription() {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			PlayerStatsHandle chestplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			chestplayer.GetAmount();
 			return Description.FormatWith(
 				Math.Ceiling(chestplayer.weaponAmount * .5f),
@@ -85,7 +86,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
-			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, 0, 0);
+			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, Main.rand.Next(1, 5), 0);
 		}
 	}
 }
