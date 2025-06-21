@@ -2705,6 +2705,21 @@ Mods: {
 				DisplayName: Old Skull Revolver
 				Tooltip: ""
 			}
+
+			FillTool: {
+				DisplayName: Fill Tool
+				Tooltip: ""
+			}
+
+			SuperTilePlacer: {
+				DisplayName: Super Tile Placer
+				Tooltip: ""
+			}
+
+			GeneralBuilderTool: {
+				DisplayName: General Builder Tool
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

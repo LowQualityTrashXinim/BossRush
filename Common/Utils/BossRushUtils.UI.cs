@@ -309,6 +309,7 @@ namespace BossRush {
 		public Color OriginalColor = Color.White;
 		public Color HighlightColor = Color.White;
 		public PostTextDrawInfo drawInfo = new PostTextDrawInfo();
+		public string HoverText = "";
 		/// <summary>
 		/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
 		/// The drawing will be handle automatically
@@ -358,6 +359,9 @@ namespace BossRush {
 			}
 			base.Draw(spriteBatch);
 			DrawImage(spriteBatch);
+			if (!string.IsNullOrEmpty(HoverText) && IsMouseHovering) {
+				Main.instance.MouseText(HoverText);
+			}
 			if (postTex != null) {
 				Vector2 origin2 = innerTex.Size() * .5f;
 				Vector2 drawpos = this.GetInnerDimensions().Position();
