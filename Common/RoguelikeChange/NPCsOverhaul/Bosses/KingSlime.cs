@@ -200,7 +200,7 @@ internal class KingSlime : NPCReworker {
 						afterimages = true;
 						if (npc.oldVelocity.Y <= 1 && npc.velocity.Y > 0 && !firedRuby && crownNPC == null && Delay2 == 0) {
 							firedRuby = true;
-							Projectile.NewProjectile(npc.GetSource_FromAI(), crownPos, (crownPos).DirectionTo(npc.targetRect.Center()) * 5, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI);
+							NewProjectileWithMPCheck(npc.GetSource_FromAI(), crownPos, (crownPos).DirectionTo(npc.targetRect.Center()) * 5, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI);
 
 						}
 
@@ -288,7 +288,7 @@ internal class KingSlime : NPCReworker {
 						}
 
 						if (Counter % 110 == 0) {
-							Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
+							NewProjectileWithMPCheck(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
 
 
 							
@@ -296,9 +296,12 @@ internal class KingSlime : NPCReworker {
 
 						if(Counter % 220 == 0)
 						{
-							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(7,-7);
-							NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(-7,-7);
 
+							if(Main.netMode != NetmodeID.MultiplayerClient)
+							{
+								NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(7,-7);
+								NPC.NewNPCDirect(npc.GetSource_FromAI(),npc.Center,ModContent.NPCType<KingSlimeMinion>(),0,0).velocity = new Vector2(-7,-7);
+							}
 						
 						}
 
@@ -336,7 +339,7 @@ internal class KingSlime : NPCReworker {
 
 							for (int i = 0; i < 2; i++) {
 
-								Projectile.NewProjectileDirect(npc.GetSource_FromAI(), crownPos, (npc.Center - new Vector2(0, 64)).DirectionTo(npc.targetRect.Center()).RotatedBy((Counter2 / 8f) * -MathHelper.Pi + MathHelper.PiOver2) * 6, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 0).FillProjectileOldPosAndRot();
+								NewProjectileWithMPCheck(npc.GetSource_FromAI(), crownPos, (npc.Center - new Vector2(0, 64)).DirectionTo(npc.targetRect.Center()).RotatedBy((Counter2 / 8f) * -MathHelper.Pi + MathHelper.PiOver2) * 6, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 0);
 
 
 							}
@@ -381,7 +384,7 @@ internal class KingSlime : NPCReworker {
 							for (int i = 0; i < 12; i++) {
 								Vector2 vel = Vector2.UnitX.Vector2RotateByRandom(30) * Main.rand.NextFloat(5, 11);
 
-								Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<KingSlimeSludgeProjectile>(), 0, 0);
+								NewProjectileWithMPCheck(npc.GetSource_FromAI(), npc.Center, vel.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<KingSlimeSludgeProjectile>(), 0, 0);
 
 
 							}
@@ -636,7 +639,9 @@ public class KingSlimeSludgeTile : ModTile {
 	}
 
 	public override void RandomUpdate(int i, int j) {
-		NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
+
+		if(Main.netMode != NetmodeID.MultiplayerClient)
+			NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
 
 
 	}
