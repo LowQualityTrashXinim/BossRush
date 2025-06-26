@@ -7,7 +7,7 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Contents.Transfixion.WeaponEnchantment.ShortSwordEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment.ShortSwordEnchantments;
 public class ModPlayer_ShortSwordEnchantment : ModPlayer {
 	public int ShortSwordValue = 0;
 	public int ShortSwordCapacity = 3;
@@ -39,7 +39,7 @@ public class Enchantment_ShortSwordProjectile : ModProjectile {
 		return Main.player[Projectile.owner].GetModPlayer<ModPlayer_ShortSwordEnchantment>().ShortSwordCoolDownHit <= 0;
 	}
 	public override void AI() {
-		Player player = Main.player[Projectile.owner];
+		var player = Main.player[Projectile.owner];
 		if (player.GetModPlayer<ModPlayer_ShortSwordEnchantment>().ShortSwordCoolDownHit == 59) {
 			float index = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>().ShortSwordIndexesGotHit;
 			if (Projectile.ai[0] >= index) {
@@ -57,12 +57,12 @@ public class Enchantment_ShortSwordProjectile : ModProjectile {
 		else {
 			Degree = 0;
 		}
-		Vector2 toward = Vector2.One.RotatedBy(MathHelper.ToRadians(Degree + player.GetModPlayer<BossRushUtilsPlayer>().counterToFullPi * 2));
+		var toward = Vector2.One.RotatedBy(MathHelper.ToRadians(Degree + player.GetModPlayer<BossRushUtilsPlayer>().counterToFullPi * 2));
 		Projectile.Center = player.Center + toward * (100 - Projectile.timeLeft);
 		Projectile.rotation = toward.ToRotation() + MathHelper.PiOver4;
 	}
 	public override void OnKill(int timeLeft) {
-		Player player = Main.player[Projectile.owner];
+		var player = Main.player[Projectile.owner];
 		player.GetModPlayer<ModPlayer_ShortSwordEnchantment>().ShortSwordIndexesGotHit = Projectile.ai[0];
 		if (player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= 1) {
 			player.GetModPlayer<ModPlayer_ShortSwordEnchantment>().ShortSwordCoolDownHit = 0;
@@ -81,9 +81,9 @@ public class Enchantment_ShortSwordProjectile : ModProjectile {
 		}
 		Main.instance.LoadItem(ItemTextureID);
 		Main.instance.LoadProjectile(Type);
-		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemTextureID)).Value;
-		Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		var texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemTextureID)).Value;
+		var origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+		var drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
 	}
@@ -97,14 +97,14 @@ public class CopperShortSword : ModEnchantment {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, Base: 5);
 		player.GetModPlayer<GlobalItemPlayer>().ShortSword_ThrownCD *= 0;
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool() && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
-			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
-			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			var position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			var vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
 			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
 				position,
 				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
@@ -115,8 +115,8 @@ public class CopperShortSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool() && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
-			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
-			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			var position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			var vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
 			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
 				position,
 				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
@@ -130,12 +130,12 @@ public class TinShortSword : ModEnchantment {
 		ItemIDType = ItemID.TinShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f * player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& modplayer.ShortSwordCoolDownHit <= 0) {
@@ -150,7 +150,7 @@ public class TinShortSword : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& proj.type != ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()
@@ -171,13 +171,13 @@ public class IronShortSword : ModEnchantment {
 		ItemIDType = ItemID.IronShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
-		PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+		var statplayer = player.GetModPlayer<PlayerStatsHandle>();
 		statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 3 * player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& modplayer.ShortSwordCoolDownHit <= 0) {
@@ -192,7 +192,7 @@ public class IronShortSword : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& proj.type != ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()
@@ -213,7 +213,7 @@ public class LeadShortSword : ModEnchantment {
 		ItemIDType = ItemID.LeadShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		player.GetModPlayer<PlayerStatsHandle>().DebuffDamage += .08f * player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
@@ -221,7 +221,7 @@ public class LeadShortSword : ModEnchantment {
 		damage.Base += player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& modplayer.ShortSwordCoolDownHit <= 0) {
@@ -236,7 +236,7 @@ public class LeadShortSword : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& proj.type != ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()
@@ -257,19 +257,19 @@ public class SilverShortSword : ModEnchantment {
 		ItemIDType = ItemID.SilverShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateFullHPDamage += .4f;
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (target.CheckFirstStrike()) {
-			Vector2 vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
+			var vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (target.CheckFirstStrike()) {
-			Vector2 vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
+			var vel = (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 10;
 			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: ItemIDType);
 		}
 	}
@@ -279,14 +279,14 @@ public class TungstenShortSword : ModEnchantment {
 		ItemIDType = ItemID.TungstenShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		if (player.ItemAnimationActive) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 			if (globalItem.Item_Counter1[index] <= 0) {
 				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 24);
-				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 5;
-				Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center + Main.rand.NextVector2Circular(20, 20), vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), (int)(item.damage * .34f), item.knockBack, player.whoAmI, ai2: ItemIDType);
+				var vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 5;
+				var proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center + Main.rand.NextVector2Circular(20, 20), vel, ModContent.ProjectileType<ThrowShortSwordProjectile>(), (int)(item.damage * .34f), item.knockBack, player.whoAmI, ai2: ItemIDType);
 				proj.penetrate = 1;
 				proj.aiStyle = -1;
 			}
@@ -301,7 +301,7 @@ public class GoldShortSword : ModEnchantment {
 		ItemIDType = ItemID.GoldShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f * player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
@@ -309,7 +309,7 @@ public class GoldShortSword : ModEnchantment {
 		damage.Base += player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& modplayer.ShortSwordCoolDownHit <= 0) {
@@ -327,7 +327,7 @@ public class GoldShortSword : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& proj.type != ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()
@@ -351,7 +351,7 @@ public class PlatinumShortSword : ModEnchantment {
 		ItemIDType = ItemID.PlatinumShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		modplayer.ShortSwordCapacity++;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f * player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
@@ -359,7 +359,7 @@ public class PlatinumShortSword : ModEnchantment {
 		damage.Base += player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()];
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& modplayer.ShortSwordCoolDownHit <= 0) {
@@ -374,7 +374,7 @@ public class PlatinumShortSword : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ModPlayer_ShortSwordEnchantment modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
+		var modplayer = player.GetModPlayer<ModPlayer_ShortSwordEnchantment>();
 		if (modplayer.ShortSwordValue <= 0
 			&& player.ownedProjectileCounts[ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()] <= modplayer.ShortSwordCapacity
 			&& proj.type != ModContent.ProjectileType<Enchantment_ShortSwordProjectile>()

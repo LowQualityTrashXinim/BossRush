@@ -14,7 +14,8 @@ internal class LightSpeedRound : ModItem {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<LightSpeedRound_Player>().LightSpeedRound = true;
-		player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify *= 0;
+		player.ModPlayerStats().Range_CritDamage += .15f;
+		player.GetCritChance(DamageClass.Ranged) += 5;
 	}
 }
 public class LightSpeedRound_Player : ModPlayer {

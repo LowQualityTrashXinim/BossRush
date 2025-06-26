@@ -17,4 +17,7 @@
       <HintPath>..\ModAssemblies\StructureHelper_v3.0.1.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\RoguelikeChange\ItemOverhaul\ItemOverhaul\" />
+  </ItemGroup>
 </Project>

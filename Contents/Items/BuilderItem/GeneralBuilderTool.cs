@@ -70,15 +70,13 @@ public class GeneralBuilderToolSystem : ModSystem {
 	}
 }
 public class GeneralBuilderToolUI : UIState {
-	public GeneralBuilderToolUI() {
-	}
-	public Roguelike_UIPanel Panel;
-	public Roguelike_UIImage FillMode;
-	public Roguelike_UIImage DrawMode;
-	public Roguelike_UIImage DeleteMode;
-	public Roguelike_UIImage OverrideMode;
-	public Roguelike_UIImage TileMode;
-	public Roguelike_UIImage WallMode;
+	public UIPanel Panel;
+	public ImprovedUIImage FillMode;
+	public ImprovedUIImage DrawMode;
+	public ImprovedUIImage DeleteMode;
+	public ImprovedUIImage OverrideMode;
+	public ImprovedUIImage TileMode;
+	public ImprovedUIImage WallMode;
 	public override void OnInitialize() {
 		Asset<Texture2D> thesameuitextureasvanilla = TextureAssets.InventoryBack7;
 
@@ -87,6 +85,7 @@ public class GeneralBuilderToolUI : UIState {
 		Panel.Height.Pixels = 100;
 		Panel.HAlign = .5f;
 		Panel.VAlign = .4f;
+		Panel.BackgroundColor.A = 255;
 		Append(Panel);
 
 		DrawMode = new(thesameuitextureasvanilla);
@@ -128,7 +127,7 @@ public class GeneralBuilderToolUI : UIState {
 		Panel.Append(OverrideMode);
 
 		TileMode = new(thesameuitextureasvanilla);
-		TileMode.SetPostTex(TextureAssets.Item[ItemID.StoneBlock]);
+		TileMode.SetPostTex(TextureAssets.Item[ItemID.StoneBlock], attemptToLoad: true);
 		TileMode.VAlign = .5f;
 		TileMode.HAlign = MathHelper.Lerp(0, 1f, 4 / 5f);
 		TileMode.HighlightColor = TileMode.OriginalColor * .5f;
@@ -184,8 +183,84 @@ public class GeneralBuilderToolUI : UIState {
 		FillMode.Highlight = true;
 	}
 }
+public class ImprovedUIImage : UIImage {
+	public bool Hide = false;
+	public bool Highlight = false;
+	public Color OriginalColor = Color.White;
+	public Color HighlightColor = Color.White;
+	public PostTextDrawInfo drawInfo = new PostTextDrawInfo();
+	public string HoverText = "";
+	/// <summary>
+	/// Set this to have value if you want a specific texture to be drawn on top of it<br/>
+	/// The drawing will be handle automatically
+	/// </summary>
+	public Asset<Texture2D> postTex = null;
+	public Texture2D innerTex = null;
+	bool _CustomWeirdDraw = false;
+	public void SetPostTex(Asset<Texture2D> tex, bool CustomWeirdDraw = false, bool attemptToLoad = false) {
+		if (attemptToLoad) {
+			try {
+				Main.Assets.Request<Texture2D>(tex.Name);
+			}
+			catch (Exception e) {
+				Main.NewText(e.Message);
+			}
+		}
+		postTex = tex;
+		_CustomWeirdDraw = CustomWeirdDraw;
+	}
+	public void SwapHightlightColorWithOriginalColor() {
+		Color origin = OriginalColor;
+		OriginalColor = HighlightColor;
+		HighlightColor = origin;
+	}
+	public ImprovedUIImage(Asset<Texture2D> texture) : base(texture) {
+		innerTex = texture.Value;
+		OriginalColor = Color;
+		drawInfo.Opacity = 1;
+	}
+	public override sealed void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		this.IgnoresMouseInteraction = Hide;
+		this.Disable_MouseItemUsesWhenHoverOverAUI();
+		if (Highlight) {
+			Color = HighlightColor;
+		}
+		else {
+			Color = OriginalColor;
+		}
+		UpdateImage(gameTime);
+	}
+	public virtual void UpdateImage(GameTime gameTime) { }
+	public virtual void DrawImage(SpriteBatch spriteBatch) { }
+	public sealed override void Draw(SpriteBatch spriteBatch) {
+		if (Hide) {
+			return;
+		}
+		base.Draw(spriteBatch);
+		DrawImage(spriteBatch);
+		if (!string.IsNullOrEmpty(HoverText) && IsMouseHovering) {
+			Main.instance.MouseText(HoverText);
+		}
+		if (postTex != null) {
+			Vector2 origin2 = innerTex.Size() * .5f;
+			Vector2 drawpos = this.GetInnerDimensions().Position();
+			Vector2 origin = postTex.Size() * .5f;
+			if (_CustomWeirdDraw) {
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+				spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White * drawInfo.Opacity, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+			}
+			else {
+				spriteBatch.Draw(postTex.Value, drawpos + origin2, null, Color.White * drawInfo.Opacity, 0, origin, origin2.Length() / origin.Length() * .8f, SpriteEffects.None, 0);
+			}
+		}
+	}
+}
 internal class GeneralBuilderTool : ModItem {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CelestialWand);
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		Item.useStyle = ItemUseStyleID.Swing;
@@ -253,6 +328,8 @@ internal class GeneralBuilderTool : ModItem {
 		Point point = Main.MouseWorld.ToTileCoordinates();
 		if (Main.mouseLeftRelease) {
 			oldMousePosition = new();
+			this.position1 = new();
+			this.position2 = new();
 		}
 		if (Main.mouseLeft) {
 			if (oldMousePosition.X == 0 && oldMousePosition.Y == 0) {
@@ -312,10 +389,10 @@ internal class GeneralBuilderTool : ModItem {
 						}
 						else if (GeneralBuilderToolSystem.OverrideMode) {
 							WorldGen.KillTile(x, y, noItem: true);
-							WorldGen.PlaceTile(x, y, item.createTile);
+							WorldGen.PlaceTile(x, y, item.createTile, style: item.placeStyle);
 						}
 						else {
-							WorldGen.PlaceTile(x, y, item.createTile);
+							WorldGen.PlaceTile(x, y, item.createTile, style: item.placeStyle);
 						}
 					}
 				}

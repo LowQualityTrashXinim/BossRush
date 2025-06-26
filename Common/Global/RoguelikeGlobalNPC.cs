@@ -56,7 +56,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!UniversalSystem.Check_RLOH()) {
+		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}
 		if (entity.boss && entity.type != NPCID.WallofFlesh && entity.type != NPCID.WallofFleshEye) {
@@ -80,7 +80,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 		}
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!UniversalSystem.Check_RLOH()) {
+		if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 			return;
 		}
 		if (npc.boss && npc.type != NPCID.WallofFlesh && npc.type != NPCID.WallofFleshEye) {

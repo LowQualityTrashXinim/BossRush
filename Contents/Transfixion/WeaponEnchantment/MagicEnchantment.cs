@@ -431,6 +431,16 @@ public class Vilethorn : ModEnchantment {
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (player.ItemAnimationActive && player.ItemAnimationJustStarted) {
+			if (++globalItem.Item_Counter2[index] >= 5) {
+				for (int i = 0; i < 12; i++) {
+					Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(12, 360, i) * 20;
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, vel, ProjectileID.VilethornBase, player.GetWeaponDamage(item), 1f, player.whoAmI);
+					Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, vel, ProjectileID.VilethornTip, player.GetWeaponDamage(item), 1f, player.whoAmI);
+				}
+				globalItem.Item_Counter2[index] = 0;
+			}
+		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
@@ -467,9 +477,6 @@ public class CrimsonRod : ModEnchantment {
 public class MagicMissile : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.MagicMissile;
-	}
-	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
-		multi += .1f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		if (item.shoot != ProjectileID.None) {

@@ -370,7 +370,7 @@ namespace BossRush {
 		}
 		public static float OutBack(float t) => 1 - InBack(1 - t);
 		public static float InOutBack(float t) {
-			if (t < 0.5) return InBack(t) * .5f;
+			if (t < .5f) return InBack(t) * .5f;
 			return 1 - InBack((1 - t)) * .5f;
 		}
 		public static bool lineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {

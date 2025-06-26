@@ -63,12 +63,12 @@ public class StarFury : ModEnchantment {
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
-			Vector2 positionAbovePlayer = position + new Vector2(Main.rand.Next(-200, 200), -1000);
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), positionAbovePlayer, (Main.MouseWorld - positionAbovePlayer).SafeNormalize(Vector2.Zero) * 10, ProjectileID.Starfury, (int)(damage * 1.5f), knockback, player.whoAmI);
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+				Vector2 positionAbovePlayer = player.Center + new Vector2(Main.rand.Next(-200, 200), -1000);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), positionAbovePlayer, (Main.MouseWorld - positionAbovePlayer).SafeNormalize(Vector2.Zero) * 10, ProjectileID.Starfury, (int)(player.GetWeaponDamage(item) * 1.5f), 3f, player.whoAmI);
+			}
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -88,16 +88,6 @@ public class IceBlade : ModEnchantment {
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		if (player.ZoneSnow) {
-			damage += .12f;
-		}
-	}
-	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
-		if (player.ZoneSnow) {
-			crit += 3;
-		}
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0) {

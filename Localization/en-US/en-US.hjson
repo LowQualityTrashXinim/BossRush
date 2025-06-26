@@ -368,6 +368,7 @@ Mods: {
 			Trial_IronBroadsword.DisplayName: Trial_ Iron Broadsword
 			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
 			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
+			SimplePiercingProjectile2.DisplayName: Simple Piercing Projectile2
 		}
 
 		NPCs: {
@@ -1959,7 +1960,7 @@ Mods: {
 					'''
 					"Made to be perfect"
 					Replace normal bullet with Light-speed round
-					Drastically reduce gun inaccuracy
+					Increases critical chance strike by 5 and critical damage by 15%
 					'''
 			}
 
@@ -3399,6 +3400,11 @@ Mods: {
 				DisplayName: Cursed Status
 				Description: Mods.BossRush.Buffs.CursedStatus.Description
 			}
+
+			PlasmaDefensesMelt: {
+				DisplayName: Plasma Defenses Melt
+				Description: Mods.BossRush.Buffs.PlasmaDefensesMelt.Description
+			}
 		}
 
 		Configs: {
@@ -3632,6 +3638,7 @@ Mods: {
 			Alchemic.DisplayName: Alchemic
 			Jumpy.DisplayName: Floating
 			Holy.DisplayName: Phasing
+			Chaotic.DisplayName: Chaotic
 		}
 	}
 }

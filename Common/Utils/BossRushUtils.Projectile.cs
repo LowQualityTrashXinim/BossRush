@@ -16,6 +16,12 @@ namespace BossRush {
 			}
 			return false;
 		}
+		public static int Get_ProjectileTimeInitial(this Projectile projectile) {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.InitialTimeLeft;
+			}
+			return 1;
+		}
 		public static void FillProjectileOldPosAndRot(this Projectile projectile) {
 			for (int i = 0; i < projectile.oldPos.Length; i++) {
 				projectile.oldPos[i] = projectile.position - projectile.velocity.SafeNormalize(Vector2.UnitY) * i;

@@ -11,6 +11,7 @@ using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using BossRush.Contents.Skill;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -118,6 +119,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
 		}
+	}
+	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+		if (projectile.type == ProjectileID.StarCannonStar || projectile.type == ProjectileID.Starfury || projectile.type == ProjectileID.StarWrath && UniversalSystem.Check_RLOH()) {
+			fallThrough = true;
+		}
+		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
 	}
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[projectile.owner];

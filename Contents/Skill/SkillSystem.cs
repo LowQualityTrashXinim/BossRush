@@ -165,6 +165,17 @@ public class SkillHandlePlayer : ModPlayer {
 	public int ProjectileTimeLeft = 0;
 	public float ProjectileSpreadAmount = 5;
 	public float ProjectileSpreadMultiplier = 1;
+	/// <summary>
+	/// This method automatically handle skill damage, critical chance, energy regain and anything related
+	/// </summary>
+	/// <param name="source"></param>
+	/// <param name="position"></param>
+	/// <param name="velNormalize"></param>
+	/// <param name="speed"></param>
+	/// <param name="type"></param>
+	/// <param name="damage"></param>
+	/// <param name="knockback"></param>
+	/// <returns></returns>
 	public List<Projectile> NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
 		List<Projectile> projList = new();
 		speed *= ProjectileSpeedMultiplier;

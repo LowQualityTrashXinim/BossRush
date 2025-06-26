@@ -134,6 +134,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 		dict_BiomeBundle = null;
 		BiomeZone = null;
 	}
+	public override void Load() {
+	}
 
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;

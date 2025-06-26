@@ -152,6 +152,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.useAnimation = item.useTime = 25;
 					item.ArmorPenetration = 30;
 					break;
+				case ItemID.CobaltSword:
+					item.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
+					item.shootSpeed = 1;
+					break;
 			}
 		}
 		public bool StarWarSword(int type) {
@@ -227,10 +231,27 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 				return false;
 			}
-			if (modplayer.ModeSwitch_Revolver == 1) {
-				SoundEngine.PlaySound(item.UseSound);
-			}
 			switch (item.type) {
+				case ItemID.CobaltSword:
+					if (modplayer.CobaltSword_Counter >= 150) {
+						for (int i = 0; i < 16; i++) {
+							Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(30) * Main.rand.NextBool().ToDirectionInt();
+							Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * (i * .25f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 3 + i * .5f);
+							if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
+								modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
+								Swordprojectile.scale += .2f;
+							}
+						}
+						return false;
+					}
+					for (int i = 0; i < 2; i++) {
+						Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(30);
+						Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * Main.rand.NextFloat(.4f, 1.2f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
+						if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
+							modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
+						}
+					}
+					return false;
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
 				case ItemID.IronShortsword:
@@ -336,7 +357,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_TheUndertaker", "Hitting your shot heal you for 1hp"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases gun accurancy by 25%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases range damage by 1.1x"));
 			}
 			else if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose", "Grant immunity to OnFire debuff !"));
@@ -345,17 +366,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
-			}
-			else if (item.type == ItemID.Revolver) {
-				string text;
-				if (modplayer.ModeSwitch_Revolver == 1) {
-					text = $"[c/{Color.Yellow.Hex3()}:Rapid fire Mode]";
-				}
-				else {
-					text = $"[c/{Color.Blue.Hex3()}:Precise fire Mode]";
-				}
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Revolver",
-					text));
 			}
 			else if (item.type == ItemID.CopperWatch) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch",
@@ -369,13 +379,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override void HoldItem(Item item, Player player) {
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			if (modplayer.ModeSwitch_Revolver == 1) {
-				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify += 1f;
-			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
 		public bool RoguelikeOverhaul_VikingHelmet = false;
+		public int CobaltSword_Counter = 0;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
 		public int PhaseSaberBlade_Counter = 0;
@@ -393,8 +401,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public bool WeaponKeyHeld = false;
 		public int ReuseDelay = 0;
 
-		public int ModeSwitch_Revolver = 0;
-
 		public int ShortSword_ThrownCD = 90;
 		public bool ShortSword_OnCoolDown = false;
 		public int FrostBandBurst = 0;
@@ -403,10 +409,34 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			ShortSword_OnCoolDown = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 			Item item = Player.HeldItem;
-			if (WeaponKeyPressed) {
-				if (item.type == ItemID.Revolver) {
-					ModeSwitch_Revolver = BossRushUtils.Safe_SwitchValue(ModeSwitch_Revolver, 1);
+			if (item.type == ItemID.CobaltSword) {
+				if (!Player.ItemAnimationActive) {
+					CobaltSword_Counter++;
+					if (CobaltSword_Counter == 150) {
+						for (int o = 0; o < 10; o++) {
+							for (int i = 0; i < 4; i++) {
+								var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * (3 + Main.rand.NextFloat()) * 5;
+								for (int l = 0; l < 8; l++) {
+									float multiplier = Main.rand.NextFloat();
+									float scale = MathHelper.Lerp(1.1f, .1f, multiplier);
+									int dust = Dust.NewDust(Player.Center.Add(0, -60), 0, 0, DustID.GemDiamond, 0, 0, 0, Color.Blue, scale);
+									Main.dust[dust].velocity = Toward * multiplier;
+									Main.dust[dust].noGravity = true;
+									Main.dust[dust].Dust_GetDust().FollowEntity = true;
+									Main.dust[dust].Dust_BelongTo(Player);
+								}
+							}
+						}
+					}
 				}
+				else {
+					CobaltSword_Counter = 0;
+				}
+			}
+			else {
+				CobaltSword_Counter = 0;
+			}
+			if (WeaponKeyPressed) {
 			}
 			if (UniversalSystem.Check_RLOH()) {
 				Player.downedDD2EventAnyDifficulty = true;
@@ -434,11 +464,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override float UseTimeMultiplier(Item item) {
 			float time = base.UseTimeMultiplier(item);
-			if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
-				float useAni = Player.itemAnimationMax;
-				float SimulatedUseTime = useAni / 4f;
-				return SimulatedUseTime / useAni;
-			}
 			return base.UseTimeMultiplier(item);
 		}
 		public override void PostUpdate() {
@@ -448,9 +473,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			else {
 				Item item = Player.HeldItem;
-				if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
-					ReuseDelay = 40;
-				}
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {

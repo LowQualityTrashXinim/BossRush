@@ -19,7 +19,6 @@ public class Musket : ModEnchantment {
 		ItemIDType = ItemID.Musket;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
@@ -598,7 +597,6 @@ public class RedRyder : ModEnchantment {
 		ItemIDType = ItemID.RedRyder;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .15f;
 		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .15f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
@@ -655,22 +653,6 @@ public class MoltenFury : ModEnchantment {
 		for (int i = 0; i < 2; i++) {
 			int proj = Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(40, 40), velocity, ProjectileID.FireArrow, damage, knockback, player.whoAmI);
 			Main.projectile[proj].extraUpdates += 1;
-		}
-	}
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.type == ProjectileID.FireArrow && target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
-			modifiers.SourceDamage += .35f;
-		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType != player.HeldItem.type) {
-			return;
-		}
-		if (Main.rand.NextBool(3)) {
-			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + 125, target.height + 125);
-			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 7f;
-			int projectile = Projectile.NewProjectile(proj.GetSource_OnHit(target), pos, vel, ProjectileID.FireArrow, proj.damage, proj.knockBack, player.whoAmI);
-			Main.projectile[projectile].extraUpdates += 1;
 		}
 	}
 }
