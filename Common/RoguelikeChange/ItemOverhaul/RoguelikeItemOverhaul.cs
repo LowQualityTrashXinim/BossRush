@@ -18,11 +18,11 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
-	/// This is where we should modify vanilla item
+	/// This is where we should modify vanilla item simple<br/>
+	/// Any complex rework should be put into their own file
 	/// </summary>
-	class RoguelikeItemOverhaul : GlobalItem {
+	public class RoguelikeItemOverhaul : GlobalItem {
 		public override void SetDefaults(Item entity) {
-			base.SetDefaults(entity);
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
@@ -77,7 +77,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.crit = 4;
 					item.ArmorPenetration = 5;
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					item.useTime = item.useAnimation = 12;
 					break;
@@ -152,10 +151,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.useAnimation = item.useTime = 25;
 					item.ArmorPenetration = 30;
 					break;
-				case ItemID.CobaltSword:
-					item.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
-					item.shootSpeed = 1;
-					break;
 			}
 		}
 		public bool StarWarSword(int type) {
@@ -188,7 +183,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					velocity = velocity.Vector2RotateByRandom(5);
 					break;
@@ -232,26 +226,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return false;
 			}
 			switch (item.type) {
-				case ItemID.CobaltSword:
-					if (modplayer.CobaltSword_Counter >= 150) {
-						for (int i = 0; i < 16; i++) {
-							Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2).Vector2RotateByRandom(30) * Main.rand.NextBool().ToDirectionInt();
-							Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * (i * .25f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2), 5 + i, 3 + i * .5f);
-							if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
-								modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
-								Swordprojectile.scale += .2f;
-							}
-						}
-						return false;
-					}
-					for (int i = 0; i < 2; i++) {
-						Vector2 velocityToward = velocity.RotatedBy(MathHelper.PiOver2 * Main.rand.NextBool().ToDirectionInt()).Vector2RotateByRandom(30);
-						Projectile Swordprojectile = Projectile.NewProjectileDirect(source, position + velocity * item.Size.Length() * Main.rand.NextFloat(.4f, 1.2f), velocityToward, ModContent.ProjectileType<SimplePiercingProjectile2>(), (int)(damage * .85f), 2f, player.whoAmI, 2f + Main.rand.NextFloat(2));
-						if (Swordprojectile.ModProjectile is SimplePiercingProjectile2 modproj) {
-							modproj.ProjectileColor = SwordSlashTrail.averageColorByID[ItemID.CobaltSword] * 2;
-						}
-					}
-					return false;
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
 				case ItemID.IronShortsword:
@@ -266,7 +240,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						return false;
 					}
 					return true;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					int counter = 1;
 					for (int i = 0; i < counter; i++) {
@@ -336,7 +309,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					line.OverrideColor = Color.Yellow;
 					tooltips.Add(line);
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow");
 					tooltips.Add(line);
@@ -383,7 +355,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	}
 	public class GlobalItemPlayer : ModPlayer {
 		public bool RoguelikeOverhaul_VikingHelmet = false;
-		public int CobaltSword_Counter = 0;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
 		public int PhaseSaberBlade_Counter = 0;
@@ -409,33 +380,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			ShortSword_OnCoolDown = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 			Item item = Player.HeldItem;
-			if (item.type == ItemID.CobaltSword) {
-				if (!Player.ItemAnimationActive) {
-					CobaltSword_Counter++;
-					if (CobaltSword_Counter == 150) {
-						for (int o = 0; o < 10; o++) {
-							for (int i = 0; i < 4; i++) {
-								var Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * (3 + Main.rand.NextFloat()) * 5;
-								for (int l = 0; l < 8; l++) {
-									float multiplier = Main.rand.NextFloat();
-									float scale = MathHelper.Lerp(1.1f, .1f, multiplier);
-									int dust = Dust.NewDust(Player.Center.Add(0, -60), 0, 0, DustID.GemDiamond, 0, 0, 0, Color.Blue, scale);
-									Main.dust[dust].velocity = Toward * multiplier;
-									Main.dust[dust].noGravity = true;
-									Main.dust[dust].Dust_GetDust().FollowEntity = true;
-									Main.dust[dust].Dust_BelongTo(Player);
-								}
-							}
-						}
-					}
-				}
-				else {
-					CobaltSword_Counter = 0;
-				}
-			}
-			else {
-				CobaltSword_Counter = 0;
-			}
 			if (WeaponKeyPressed) {
 			}
 			if (UniversalSystem.Check_RLOH()) {

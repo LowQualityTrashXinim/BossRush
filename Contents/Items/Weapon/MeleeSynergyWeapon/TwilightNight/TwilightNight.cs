@@ -11,7 +11,90 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TwilightNight;
 public class TwilightNight : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultMeleeShootCustomProjectile(68, 68, 35, 4f, 14, 14, ItemUseStyleID.Swing, ModContent.ProjectileType<TwilightNightProjectile>(), 20f, true);
-		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;
+		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.SwipeDown;
+	}
+	int ComboCounter = 0;
+	int Timer = 0;
+	public override bool CanUseItem(Player player) {
+		if (!player.ItemAnimationActive) {
+			if (++ComboCounter > 7) {
+				ComboCounter = 1;
+			}
+			MeleeWeaponOverhaul overhaul = Item.GetGlobalItem<MeleeWeaponOverhaul>();
+			switch (ComboCounter) {
+				case 1:
+					overhaul.OffSetAnimationPercentage = 1.25f;
+					overhaul.SwingDegree = 140;
+					overhaul.SwingStrength = 9;
+					overhaul.SwingType = BossRushUseStyle.SwipeDown;
+					break;
+				case 2:
+					overhaul.SwingType = BossRushUseStyle.SwipeUp;
+					break;
+				case 3:
+					overhaul.SwingStrength = 15;
+					overhaul.OffSetAnimationPercentage = 1;
+					overhaul.SwingDegree = 70;
+					overhaul.SwingType = BossRushUseStyle.SwipeDown;
+					break;
+				case 4:
+					overhaul.SwingType = BossRushUseStyle.SwipeUp;
+					break;
+				case 5:
+					overhaul.SwingType = BossRushUseStyle.SwipeDown;
+					break;
+				case 6:
+					overhaul.SwingType = BossRushUseStyle.SwipeUp;
+					break;
+				case 7:
+					overhaul.OffSetAnimationPercentage = 3;
+					overhaul.SwingStrength = 11;
+					overhaul.SwingDegree = 160;
+					overhaul.SwingType = BossRushUseStyle.SwipeDown;
+					break;
+			}
+		}
+		return base.CanUseItem(player);
+	}
+	public override void ModifyItemScale(Player player, ref float scale) {
+		switch (ComboCounter) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+				return;
+			case 7:
+				scale += .15f;
+				return;
+		}
+	}
+	public override float UseSpeedMultiplier(Player player) {
+		float speedMulti = base.UseSpeedMultiplier(player);
+		switch (ComboCounter) {
+			case 1:
+			case 2:
+				return speedMulti;
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+				return speedMulti * 2f;
+			case 7:
+				return speedMulti * .25f;
+		}
+		return base.UseSpeedMultiplier(player);
+	}
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
+		Timer++;
+		if (!player.ItemAnimationActive) {
+			if (Timer >= 30 + player.itemAnimationMax) {
+				ComboCounter = 0;
+			}
+			return;
+		}
+		Timer = 0;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		if (Main.rand.NextBool()) {

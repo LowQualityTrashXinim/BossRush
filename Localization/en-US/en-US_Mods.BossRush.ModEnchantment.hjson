@@ -1,11 +1,11 @@
 Musket.Description:
 	'''
-	Increases critical strike damage by 50% and weapon critical strike chance by 5%
+	Increases range critical strike damage by 50% and weapon critical strike chance by 5%
 	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 RedRyder.Description:
 	'''
-	Increases critical strike damage by 15% and weapon critical strike chance by 5%
+	Increases range critical strike damage by 15% and weapon critical strike chance by 5%
 	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 FlintlockPistol.Description:
@@ -445,8 +445,7 @@ DiamondStaff.Description:
 	'''
 AmberStaff.Description:
 	'''
-	Increases magic damage by 15% and flat damage by 5
-	Reduce mana cost by 15%
+	Increases magic damage by 15%, flat damage by 5 and reduce mana cost by 15%
 	Convert your projectile into Amber Bolt, if your weapon don't shoot then it will shoot amber bolt
 	Your weapon have 17% chance to shoot out additional Amber Bolt random location
 	'''
@@ -482,8 +481,8 @@ BookOfSkulls.Description:
 	'''
 ThunderStaff.Description:
 	'''
-	Reduce mana cost by 12%
-	Striking NPC will spawn a thunder staff bolt near NPC ( CD : 0.2s )
+	Striking a NPC will spawn a thunder bolt near NPC ( CD : 0.2s )
+	Thunder bolt have 10% chance to spawn itself
 	'''
 ZapinatorGray.Description:
 	'''
@@ -723,9 +722,9 @@ Ruler.Description:
 	'''
 OnyxBlaster.Description:
 	'''
-	Increases base range damage by 5
 	Override your shot to shoot Onyx beam
-	Have 1 in 5 chance to accompany your shot with a Onyx bolt deal 300% damage
+	Shot are accompany with a Onyx bolt that deal 300% weapon damage
+	( Note : Chance are vary depend on weapon attack speed )
 	'''
 BluePhaseblade.Description:
 	'''

@@ -19,7 +19,7 @@ public class Musket : ModEnchantment {
 		ItemIDType = ItemID.Musket;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+		player.GetModPlayer<PlayerStatsHandle>().Range_CritDamage += .25f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 5;
@@ -597,7 +597,7 @@ public class RedRyder : ModEnchantment {
 		ItemIDType = ItemID.RedRyder;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .15f;
+		player.GetModPlayer<PlayerStatsHandle>().Range_CritDamage += .15f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 5;
@@ -786,11 +786,6 @@ public class OnyxBlaster : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.OnyxBlaster;
 	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		if (item.DamageType == DamageClass.Ranged) {
-			damage.Base += 5;
-		}
-	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (velocity.IsLimitReached(10)) {
 			velocity = velocity.SafeNormalize(Vector2.Zero) * 10;
@@ -798,8 +793,8 @@ public class OnyxBlaster : ModEnchantment {
 		type = ModContent.ProjectileType<OnyxBulletProjectile>();
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextBool(5)) {
-			
+		int chance = Math.Max(1, player.itemAnimationMax - 50);
+		if (Main.rand.NextBool(chance)) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback * 3, player.whoAmI);
 		}
 	}

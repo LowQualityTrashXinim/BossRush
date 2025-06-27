@@ -61,7 +61,7 @@ public class ShatteredSky : SynergyModItem {
 		return base.CanUseItem(player);
 	}
 	bool CheckIfComboActivateOnce = false;
-	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
 		Timer++;
 		if (!player.ItemAnimationActive) {
 			CheckIfComboActivateOnce = false;

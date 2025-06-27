@@ -1,0 +1,13 @@
+CobaltSword:
+	'''
+	Swing are accompany with cobalt slash
+	Wait 2.5s to unleash fury of slash
+	Wait additional 2.5s to increase fury of slash
+	'''
+CopperBow:
+	'''
+	Wait 1.5s to shoot out a burst of thunder shots
+	Wait additional 1s to increases shot amount by 5
+	Shoot out a additional thunder shot
+	Arrow shot from this bow have 15% chance to explode into electric sphere
+	'''

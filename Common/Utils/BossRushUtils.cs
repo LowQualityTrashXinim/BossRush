@@ -1,18 +1,26 @@
-﻿using System;
-using Terraria;
+﻿using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using BossRush.Common.Global;
 using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static string LocalizationText(string text, string extra = null) {
+			if (string.IsNullOrEmpty(extra)) {
+				return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}");
+			}
+			return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}");
+		}
 		//Taken from chatGPT
 		public static Color FakeHueShift(Color original, float hueShiftDegrees) {
 			float r = original.R / 255f;
