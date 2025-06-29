@@ -369,6 +369,8 @@ Mods: {
 			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
 			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
 			SimplePiercingProjectile2.DisplayName: Simple Piercing Projectile2
+			ThunderSpearThrowProjectile.DisplayName: Thunder Spear Throw Projectile
+			Roguelike_Starfury_Projectile.DisplayName: Roguelike_ Starfury_ Projectile
 		}
 
 		NPCs: {
@@ -3404,6 +3406,11 @@ Mods: {
 			PlasmaDefensesMelt: {
 				DisplayName: Plasma Defenses Melt
 				Description: Mods.BossRush.Buffs.PlasmaDefensesMelt.Description
+			}
+
+			SandArmorBuff: {
+				DisplayName: Sand Armor Buff
+				Description: Mods.BossRush.Buffs.SandArmorBuff.Description
 			}
 		}
 

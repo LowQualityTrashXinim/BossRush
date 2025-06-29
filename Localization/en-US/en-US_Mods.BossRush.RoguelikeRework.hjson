@@ -11,3 +11,8 @@ CopperBow:
 	Shoot out a additional thunder shot
 	Arrow shot from this bow have 15% chance to explode into electric sphere
 	'''
+Starfury:
+	'''
+	Wait 1.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
+	Wait additional 1.5s to increase the base damage of fallen star
+	'''

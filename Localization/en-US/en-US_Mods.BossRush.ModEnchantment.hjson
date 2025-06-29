@@ -761,3 +761,9 @@ WhitePhaseblade.Description:
 	Ignore 10 defenses when striking enemy
 	Attacking create a phase vortex ( CD : 2s )
 	'''
+ThunderSpear.Description:
+	'''
+	Attack are accompany with a storm bolt ( CD : 1s )
+	Attacking enemy 15 times using projectile summon a ghost storm spear 
+	Attacking enemy 3 times using item summon a ghost storm spear
+	'''

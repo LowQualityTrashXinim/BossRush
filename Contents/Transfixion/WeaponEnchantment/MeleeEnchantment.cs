@@ -1209,3 +1209,89 @@ public class Ruler : ModEnchantment {
 		modifiers.SourceDamage += damageincreases * .1f;
 	}
 }
+public class ThunderSpear : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ThunderSpear;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (!player.ItemAnimationActive || globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, BossRushUtils.ToSecond(1));
+		Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15;
+		Projectile proj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.ThunderSpearShot, player.GetWeaponDamage(item), 3f, player.whoAmI);
+		proj.alpha -= 120;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (++globalItem.Item_Counter3[index] < 3) {
+			return;
+		}
+		globalItem.Item_Counter3[index] = 0;
+		Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, -Vector2.UnitY.Vector2RotateByRandom(40) * Main.rand.NextFloat(7, 9), ModContent.ProjectileType<ThunderSpearThrowProjectile>(), hit.Damage * 3, 8, player.whoAmI, 90);
+
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type) && proj.type != ModContent.ProjectileType<ThunderSpearThrowProjectile>() && proj.type != ProjectileID.ThunderSpearShot && !proj.minion) {
+			if (++globalItem.Item_Counter2[index] < 15) {
+				return;
+			}
+			globalItem.Item_Counter2[index] = 0;
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, -Vector2.UnitY.Vector2RotateByRandom(40) * Main.rand.NextFloat(7, 9), ModContent.ProjectileType<ThunderSpearThrowProjectile>(), hit.Damage * 3, 8, player.whoAmI, 90);
+		}
+	}
+}
+public class ThunderSpearThrowProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.ThunderSpear);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 52;
+		Projectile.penetrate = 1;
+		Projectile.tileCollide = false;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 9999;
+	}
+	public override bool? CanDamage() {
+		return Projectile.ai[0] < 0;
+	}
+	Vector2 toMouse = Vector2.Zero;
+	public override void AI() {
+		if (--Projectile.ai[0] == 0) {
+			toMouse = Main.MouseWorld;
+			Projectile.velocity = Vector2.Zero;
+		}
+		if (Projectile.ai[0] <= -1) {
+			Projectile.velocity = (toMouse - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
+			if (Projectile.ai[0] == -1) {
+				for (int i = 0; i < 50; i++) {
+					var rotate = Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(Projectile.velocity.ToRotation() + MathHelper.PiOver2) * .7f;
+					int dust3 = Dust.NewDust(Projectile.Center.PositionOFFSET(Projectile.velocity, 50), 0, 0, DustID.GemDiamond, newColor: Color.Blue);
+					Main.dust[dust3].noGravity = true;
+					Main.dust[dust3].velocity = rotate;
+				}
+			}
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
+			if (Projectile.Center.IsCloseToPosition(toMouse, 36)) {
+				Projectile.Kill();
+			}
+		}
+		else if (Projectile.ai[0] > 0) {
+			if (Projectile.ai[0] <= 30) {
+				Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (Main.MouseWorld - Projectile.Center).ToRotation(), 1 - Projectile.ai[0] / 30f) + MathHelper.PiOver4 + MathHelper.PiOver2;
+			}
+			else {
+				Projectile.rotation += MathHelper.ToRadians(Projectile.ai[0]);
+			}
+			Projectile.velocity *= .98f;
+		}
+	}
+	public override void OnKill(int timeLeft) {
+		for (int i = 0; i < 16; i++) {
+			Projectile projectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i) * 15, ProjectileID.ThunderSpearShot, Math.Max(Projectile.damage / 3, 1), 3f, Projectile.owner);
+			projectile.alpha -= 100;
+			projectile.penetrate = 5;
+			projectile.maxPenetrate = 5;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 30;
+		}
+	}
+}
