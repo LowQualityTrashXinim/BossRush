@@ -1,17 +1,19 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using BossRush.Common.Global;
 using BossRush.Common.Utils;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
-using BossRush.Common.Global;
+using BossRush.Contents.Projectiles;
+using BossRush.Texture;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class CactusSword : ModEnchantment {
@@ -1292,6 +1294,168 @@ public class ThunderSpearThrowProjectile : ModProjectile {
 			projectile.maxPenetrate = 5;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 30;
+		}
+	}
+}
+public class TheRottedFork : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TheRottedFork;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ModContent.ProjectileType<SwordProjectileSpear>() && proj.ModProjectile is SwordProjectileSpear spear) {
+			if (spear.ItemIDtextureValue == ItemIDType) {
+				target.AddBuff<TheRottedForkEnchantmentDebuff>(BossRushUtils.ToSecond(Main.rand.Next(2, 5)));
+			}
+		}
+		if (globalItem.Item_Counter2[index] <= 0 && !proj.minion && proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			globalItem.Item_Counter2[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+			SpawnFork(target, player.HeldItem, player);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 30);
+			SpawnFork(target, item, player);
+		}
+	}
+	public void SpawnFork(NPC target, Item item, Player player) {
+		Vector2 pos = target.Center;
+		int type = ModContent.ProjectileType<SwordProjectileSpear>();
+		pos += Main.rand.NextVector2CircularEdge(target.width + 150, target.height + 150);
+		int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero), type, player.GetWeaponDamage(item), item.knockBack, player.whoAmI);
+		if (Main.projectile[proj].ModProjectile is SwordProjectileSpear swordspearproj) {
+			swordspearproj.ItemIDtextureValue = ItemIDType;
+			Main.projectile[proj].Resize(ContentSamples.ItemsByType[ItemIDType].width, ContentSamples.ItemsByType[ItemIDType].height);
+			Main.projectile[proj].velocity = (target.Center - pos).SafeNormalize(Vector2.Zero);
+		}
+	}
+}
+public class TheRottedForkEnchantmentDebuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+	public override void Update(NPC npc, ref int buffIndex) {
+		npc.lifeRegen -= 5 + npc.buffTime[buffIndex] / 120;
+	}
+	public override bool ReApply(NPC npc, int time, int buffIndex) {
+		npc.buffTime[buffIndex] += time;
+		return true;
+	}
+}
+public class BeeKeeper : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BeeKeeper;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<BeeKeeperEnchantmentProjectile>()] > 0) {
+			player.AddBuff(BuffID.Honey, 120);
+		}
+		if (globalItem.Item_Counter1[index] >= 30) {
+			globalItem.Item_Counter1[index] = 0;
+			int bee = 0;
+			if (player.strongBees) {
+				bee = 1;
+			}
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.UnitY * -5, ModContent.ProjectileType<BeeKeeperEnchantmentProjectile>(), player.GetWeaponDamage(item), 3f, player.whoAmI, bee);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<BeeKeeperEnchantmentProjectile>()] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index]++;
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<BeeKeeperEnchantmentProjectile>()] > 0) {
+			return;
+		}
+		if (proj.minion || !proj.Check_ItemTypeSource(player.HeldItem.type) || proj.Check_ProjTypeSource<BeeKeeperEnchantmentProjectile>()) {
+			return;
+		}
+		globalItem.Item_Counter1[index]++;
+	}
+}
+public class BeeKeeperEnchantmentProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.BeeKeeper);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 50;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 360;
+		Projectile.penetrate = 1;
+		Projectile.tileCollide = false;
+	}
+	public override bool? CanDamage() {
+		return Projectile.timeLeft < 10;
+	}
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
+		if (!Projectile.Center.IsCloseToPosition(player.Center, 400)) {
+			Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (player.Center - Projectile.Center).Length() / 128f;
+		}
+		if (Projectile.timeLeft < 10) {
+			Projectile.Center.LookForHostileNPC(out NPC npc, 1500, true);
+			if (++Projectile.ai[1] < 30) {
+				Projectile.timeLeft = 9;
+				if (npc != null) {
+					Projectile.rotation = (npc.Center - Projectile.Center).ToRotation() + MathHelper.PiOver4;
+				}
+				return;
+			}
+			if (Projectile.ai[1] == 30) {
+				for (int i = 0; i < 30; i++) {
+					Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Honey);
+					dust.noGravity = true;
+					dust.color.A = 0;
+					dust.velocity = Main.rand.NextVector2CircularEdge(15, 15);
+				}
+				for (int i = 0; i < 12; i++) {
+					SpawnBee(Projectile.Center, Vector2.One.Vector2DistributeEvenlyPlus(12, 360, i) * 8);
+				}
+			}
+			if (npc != null) {
+				Projectile.timeLeft = 9;
+				Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
+				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+			}
+			return;
+		}
+		Projectile.velocity *= .97f;
+		Projectile.rotation = -MathHelper.PiOver4;
+		if (Projectile.timeLeft % 4 != 0) {
+			return;
+		}
+		SpawnBee(Projectile.Center + Main.rand.NextVector2CircularEdge(32, 32), Main.rand.NextVector2CircularEdge(8, 8));
+	}
+	public void SpawnBee(Vector2 position, Vector2 velocity) {
+		int damage = 5 + Math.Max(Projectile.damage / 10, 1);
+		int type = ProjectileID.Bee;
+		int extra = 0;
+		//Detecting whenever player have strong bee perk
+		if (Projectile.ai[0] == 1) {
+			if (Main.rand.NextBool(3)) {
+				type = ProjectileID.GiantBee;
+				damage += Math.Max(Projectile.damage / 7, 1) + 10;
+			}
+			damage += Math.Max(Projectile.damage / 10, 1);
+			extra = 1;
+		}
+		Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), position, velocity, type, damage, 2f, Projectile.owner);
+		proj.penetrate = 1;
+		proj.extraUpdates = extra;
+	}
+	public override void OnKill(int timeLeft) {
+		for (int i = 0; i < 24; i++) {
+			Vector2 velocity = Vector2.One.Vector2DistributeEvenlyPlus(24, 360, i) * 10;
+			int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity, ProjectileID.QueenBeeStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+			Main.projectile[proj].friendly = true;
+			Main.projectile[proj].hostile = false;
+			Main.projectile[proj].usesLocalNPCImmunity = true;
+			Main.projectile[proj].localNPCHitCooldown = 10;
 		}
 	}
 }

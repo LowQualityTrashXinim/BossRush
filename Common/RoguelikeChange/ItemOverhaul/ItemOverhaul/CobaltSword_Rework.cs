@@ -71,7 +71,7 @@ public class Roguelike_CobaltSword_ModPlayer : ModPlayer {
 			}
 		}
 		else {
-			CobaltSword_Counter = 0;
+			CobaltSword_Counter = -Player.itemAnimationMax;
 			CobaltSword_CounterSurpass = false;
 		}
 	}

@@ -371,6 +371,7 @@ Mods: {
 			SimplePiercingProjectile2.DisplayName: Simple Piercing Projectile2
 			ThunderSpearThrowProjectile.DisplayName: Thunder Spear Throw Projectile
 			Roguelike_Starfury_Projectile.DisplayName: Roguelike_ Starfury_ Projectile
+			BeeKeeperEnchantmentProjectile.DisplayName: Bee Keeper Enchantment Projectile
 		}
 
 		NPCs: {
@@ -3411,6 +3412,11 @@ Mods: {
 			SandArmorBuff: {
 				DisplayName: Sand Armor Buff
 				Description: Mods.BossRush.Buffs.SandArmorBuff.Description
+			}
+
+			TheRottedForkEnchantmentDebuff: {
+				DisplayName: The Rotted Fork Enchantment Debuff
+				Description: Mods.BossRush.Buffs.TheRottedForkEnchantmentDebuff.Description
 			}
 		}
 

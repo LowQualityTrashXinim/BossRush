@@ -799,3 +799,26 @@ public class OnyxBlaster : ModEnchantment {
 		}
 	}
 }
+public class PhoenixBlaster : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PhoenixBlaster;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] >= 90) {
+			globalItem.Item_Counter1[index] = -player.itemAnimationMax;
+			if (player.ItemAnimationJustStarted) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15, ProjectileID.DD2PhoenixBowShot, player.GetWeaponDamage(item) * 3, 8f, player.whoAmI);
+			}
+			return;
+		}
+		if (++globalItem.Item_Counter1[index] > 90) {
+			globalItem.Item_Counter1[index] = 90;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * 1.5f), knockback, player.whoAmI);
+			globalItem.Item_Counter2[index] = -1;
+		}
+	}
+}

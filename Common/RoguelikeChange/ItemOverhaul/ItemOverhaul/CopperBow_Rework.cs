@@ -41,6 +41,7 @@ public class Roguelike_CopperBow : GlobalItem {
 			projectile.extraUpdates = 2;
 			projectile.alpha -= 120;
 		}
+		player.GetModPlayer<Roguelike_CopperBow_ModPlayer>().CopperBow_Counter = -player.itemAnimationMax;
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -55,13 +56,6 @@ public class Roguelike_CopperBow_ModPlayer : ModPlayer {
 		CopperBow_Counter++;
 		if (CopperBow_Counter > 150) {
 			CopperBow_Counter = 150;
-		}
-		Item item = Player.HeldItem;
-		if (item.type != ItemID.CopperBow) {
-			return;
-		}
-		if (Player.ItemAnimationActive) {
-			CopperBow_Counter = 0;
 		}
 	}
 }

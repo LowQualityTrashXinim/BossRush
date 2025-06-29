@@ -27,7 +27,7 @@ public class Roguelike_Starfury : GlobalItem {
 			damage += counter / 5;
 			damage *= 5;
 		}
-		player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter = 0;
+		player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter = -player.itemAnimationMax;
 	}
 }
 public class Roguelike_Starfury_ModPlayer : ModPlayer {

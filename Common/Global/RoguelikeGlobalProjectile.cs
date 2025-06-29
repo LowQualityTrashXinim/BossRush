@@ -19,6 +19,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 
 	public int Source_ItemType = -1;
+	public int Source_ProjectileType = -1;
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public bool IsFromMinion = false;
@@ -55,6 +56,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 		if (source is EntitySource_Parent parent3) {
 			if (parent3.Entity is Projectile possibly) {
+				Source_ProjectileType = possibly.type;
 				if (possibly.minion) {
 					IsFromMinion = true;
 				}
@@ -141,11 +143,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		Player player = Main.player[projectile.owner];
 		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
 		modifiers.CritDamage += CritDamage;
-	}
-	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
-		if (IsFromBoss) {
-			modifiers.FinalDamage.Flat += target.statManaMax2 * .1f;
-		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		var player = Main.player[projectile.owner];

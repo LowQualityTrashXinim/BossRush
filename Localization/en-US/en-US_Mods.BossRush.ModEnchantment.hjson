@@ -671,11 +671,10 @@ BloodButcherer.Description:
 	'''
 BreakerBlade.Description:
 	'''
-	Increases Weapon Size by 100%
-	Increases Damage by 25
-	Decreases Attack Speed by 20%
+	Increases melee weapon size by 100%
+	Increases weapon base damage by 25
+	Decreases melee attack speed by 20%
 	Gives a random early-hardmode Melee Weapon
-	(most of these bonuses applies only to melee weapons)
 	'''
 BloodRainBow.Description:
 	'''
@@ -766,4 +765,20 @@ ThunderSpear.Description:
 	Attack are accompany with a storm bolt ( CD : 1s )
 	Attacking enemy 15 times using projectile summon a ghost storm spear 
 	Attacking enemy 3 times using item summon a ghost storm spear
+	'''
+PhoenixBlaster.Description:
+	'''
+	Wait 1.5s to shoot out a phoenix deals 3x weapon damage
+	Every 10th shot, shoot out a flamelash projectile deals 1.5x weapon damage
+	'''
+TheRottedFork.Description:
+	'''
+	Hitting enemy with item summon The Rotted Fork ( CD : 0.5s )
+	Hitting enemy with projectile summon The Rotted Fork ( CD : 2.5s )
+	The Rotteed Fork inflict special debuff that deal damage base on debuff duration
+	'''
+BeeKeeper.Description:
+	'''
+	After striking enemy 30 times, summon a ghost bee keeper that continuously spawn bee
+	During bee keeper sword alive, you will gain Honey buff for 2s
 	'''

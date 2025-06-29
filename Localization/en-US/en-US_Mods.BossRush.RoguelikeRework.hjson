@@ -13,6 +13,13 @@ CopperBow:
 	'''
 Starfury:
 	'''
-	Wait 1.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
-	Wait additional 1.5s to increase the base damage of fallen star
+	Wait 2.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
+	Wait additional 2.5s to increase the base damage of fallen star
+	'''
+PhoenixBlaster:
+	'''
+	Wait 1.5s to shoot out a phoenix deal 3.0x weapon damage
+	Wait additional 1.5s to shoot out flame lash projectile deal 1.5x weapon damage
+	Every 5th shot shoot out a flame lash projectile
+	Shot from this gun deal extra 10 fixed damage on target that is on fire
 	'''

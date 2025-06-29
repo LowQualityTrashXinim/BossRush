@@ -206,7 +206,6 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 			modifiers.SourceDamage -= .5f;
 		}
 		if (npc.boss) {
-			modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .1f);
 			if (EliteBoss) {
 				modifiers.FinalDamage.Flat += (int)(target.statLifeMax2 * .15f);
 			}

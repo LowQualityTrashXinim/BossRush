@@ -106,8 +106,6 @@ public abstract class TitaniumEnchantment : ModEnchantment {
 }
 /*
  TODO; Add these missing enchantment
-- storm spear
-- the rotten fork
 - flymeal
 - breathing reed ( wtf )
 - exotic scimitar
