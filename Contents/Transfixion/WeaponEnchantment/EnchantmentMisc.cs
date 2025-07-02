@@ -110,7 +110,6 @@ public abstract class TitaniumEnchantment : ModEnchantment {
 - breathing reed ( wtf )
 - exotic scimitar
 - purple clubberfish
-- bee keeper
 - fruitcake chakram
 - bloody machete
 - thorn chakram
@@ -119,9 +118,7 @@ public abstract class TitaniumEnchantment : ModEnchantment {
 - flaming mace
 - blue moon
 - sunfury
-- blood rain bow
 - helwing bow
-- phoenix blaster
 - pew-matic horn
 - harpoon
 - starcannon

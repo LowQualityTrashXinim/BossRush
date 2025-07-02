@@ -680,7 +680,7 @@ BloodRainBow.Description:
 	'''
 	Using weapon can shoot will shoot additional blood arrow
 	Hitting enemy with the weapon will shoot 3 blood arrows
-	(All blood arrow spawm by this achievement deal 15% less damage)
+	(Note: blood arrow deal 85% weapon damage)
 	'''
 DirtBlock.Description:
 	'''

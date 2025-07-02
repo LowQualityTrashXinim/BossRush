@@ -30,6 +30,15 @@ public class Chaotic : ModPrefix {
 		return base.CanRoll(item);
 	}
 }
+public class Unstable : ModPrefix {
+	public override PrefixCategory Category => PrefixCategory.AnyWeapon;
+	public override float RollChance(Item item) {
+		return .1f;
+	}
+	public override bool CanRoll(Item item) {
+		return base.CanRoll(item);
+	}
+}
 public class Evasive : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel * 4;
 	public override void ApplyAccessoryEffects(Player player) {

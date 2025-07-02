@@ -2,7 +2,8 @@ CobaltSword:
 	'''
 	Swing are accompany with cobalt slash
 	Wait 2.5s to unleash fury of slash
-	Wait additional 2.5s to increase fury of slash
+	Wait additional 2.5s to increase fury of slash damage
+	Striking at perfect moment will make fury of slash deal maximum damage
 	'''
 CopperBow:
 	'''

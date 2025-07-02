@@ -3652,6 +3652,7 @@ Mods: {
 			Jumpy.DisplayName: Floating
 			Holy.DisplayName: Phasing
 			Chaotic.DisplayName: Chaotic
+			Unstable.DisplayName: Unstable
 		}
 	}
 }

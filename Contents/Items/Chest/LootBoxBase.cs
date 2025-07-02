@@ -988,6 +988,20 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
+		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+			ColorHandle();
+			Main.instance.LoadItem(Type);
+			Main.GetItemDrawFrame(Type, out Texture2D texture, out Rectangle itemFrame);
+			Vector2 origin = itemFrame.Size() / 2;
+			Vector2 drawPos = Item.Bottom - Main.screenPosition - new Vector2(0, origin.Y);
+			for (int i = 0; i < 3; i++) {
+				spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+			}
+			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+		}
 	}
 	public class LootboxSystem : ModSystem {
 		protected static List<LootBoxItemPool> LootBoxDropPool { get; private set; } = new List<LootBoxItemPool>();

@@ -11,8 +11,8 @@ using BossRush.Common.Global;
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
 		public override void SetDefaults() {
-			Item.width = 54;
-			Item.height = 38;
+			Item.width = 38;
+			Item.height = 30;
 			Item.rare = ItemRarityID.White;
 		}
 		public override bool CanActivateSpoil => !ModContent.GetInstance<RogueLikeConfig>().RoguelikeMode;

@@ -372,11 +372,22 @@ namespace BossRush {
 		public static float InSine(float t) => (float)-Math.Cos(t * MathHelper.PiOver2);
 		public static float OutSine(float t) => (float)Math.Sin(t * MathHelper.PiOver2);
 		public static float InOutSine(float t) => (float)(Math.Cos(t * Math.PI) - 1) * -.5f;
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
+		/// <param name="t"></param>
+		/// <returns></returns>
 		public static float InBack(float t) {
 			float s = 1.70158f;
 			return t * t * ((s + 1) * t - s);
 		}
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
 		public static float OutBack(float t) => 1 - InBack(1 - t);
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
 		public static float InOutBack(float t) {
 			if (t < .5f) return InBack(t) * .5f;
 			return 1 - InBack((1 - t)) * .5f;
