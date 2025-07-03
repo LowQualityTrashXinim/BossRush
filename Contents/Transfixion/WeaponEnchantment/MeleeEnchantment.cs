@@ -708,8 +708,8 @@ public class BallOHurt : ModEnchantment {
 		if (player.ItemAnimationActive) {
 			if (globalItem.Item_Counter1[index] <= 0) {
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<BallOfHurtProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
-				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.BallOHurt);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
 			}
 		}
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
@@ -717,40 +717,6 @@ public class BallOHurt : ModEnchantment {
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(6));
-	}
-}
-public class BallOfHurtProjectile : ModProjectile {
-	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.BallOHurt);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
-		Projectile.tileCollide = true;
-		Projectile.friendly = true;
-		Projectile.penetrate = -1;
-		Projectile.timeLeft = 300;
-	}
-	public override bool OnTileCollide(Vector2 oldVelocity) {
-		if (Projectile.velocity.X != oldVelocity.X) {
-			Projectile.velocity.X = -oldVelocity.X * 0.85f;
-		}
-		if (Projectile.velocity.Y != oldVelocity.Y) {
-			Projectile.velocity.Y = -oldVelocity.Y * 0.85f;
-		}
-		return false;
-	}
-	public override void AI() {
-		Projectile.rotation = Projectile.direction * MathHelper.ToRadians(Projectile.timeLeft * -10 - Projectile.velocity.Length());
-		if (++Projectile.ai[0] <= 10) {
-			return;
-		}
-		if (!Projectile.wet) {
-			if (Projectile.velocity.Y <= 20)
-				Projectile.velocity.Y += .5f;
-		}
-		else {
-			if (Projectile.velocity.Y >= -10)
-				Projectile.velocity.Y -= .5f;
-		}
-
 	}
 }
 public class TheMeatball : ModEnchantment {
@@ -762,50 +728,15 @@ public class TheMeatball : ModEnchantment {
 		player.GetCritChance(DamageClass.Melee) += 5;
 		if (player.ItemAnimationActive) {
 			if (globalItem.Item_Counter1[index] <= 0) {
-
 				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<TheMeatBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
-				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 60);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.TheMeatball);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
 			}
 		}
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));
-	}
-}
-public class TheMeatBallProjectile : ModProjectile {
-	public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.TheMeatball);
-	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 32;
-		Projectile.tileCollide = true;
-		Projectile.friendly = true;
-		Projectile.penetrate = -1;
-		Projectile.timeLeft = 300;
-	}
-	public override bool OnTileCollide(Vector2 oldVelocity) {
-		if (Projectile.velocity.X != oldVelocity.X) {
-			Projectile.velocity.X = -oldVelocity.X * 0.85f;
-		}
-		if (Projectile.velocity.Y != oldVelocity.Y) {
-			Projectile.velocity.Y = -oldVelocity.Y * 0.85f;
-		}
-		return false;
-	}
-	public override void AI() {
-		Projectile.rotation = Projectile.direction * MathHelper.ToRadians(Projectile.timeLeft * -10 - Projectile.velocity.Length());
-		if (++Projectile.ai[0] <= 10) {
-			return;
-		}
-		if (!Projectile.wet) {
-			if (Projectile.velocity.Y <= 20)
-				Projectile.velocity.Y += .5f;
-		}
-		else {
-			if (Projectile.velocity.Y >= -10)
-				Projectile.velocity.Y -= .5f;
-		}
-
 	}
 }
 public class SwordFish : ModEnchantment {
@@ -1463,14 +1394,44 @@ public class Mace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Mace;
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+			}
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
 }
 public class FlamingMace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.FlamingMace;
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.FlamingMace);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+			}
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
 }
 public class BlueMoon : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlueMoon;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.BlueMoon);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+			}
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 }

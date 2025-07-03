@@ -114,7 +114,7 @@ internal class RareSpoil {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
-				Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+				Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (item.ModItem is Relic relic) {
 					relic.AutoAddRelicTemplate(player, 3);
 				}

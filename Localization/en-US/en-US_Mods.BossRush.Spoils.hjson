@@ -10,7 +10,7 @@ AccessorySpoil: {
 
 ArmorSpoil: {
 	DisplayName: Armor Pack
-	Description: Contains 1 randomized armor set.
+	Description: Contains 1 randomized armor piece.
 }
 
 PotionSpoil: {

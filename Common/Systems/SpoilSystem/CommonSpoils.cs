@@ -54,7 +54,7 @@ public class ArmorSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player);
+		LootBoxBase.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player, true);
 	}
 }
 

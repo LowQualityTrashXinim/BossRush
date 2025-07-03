@@ -467,7 +467,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
-		public static void GetArmorForPlayer(IEntitySource entitySource, Player player) {
+		public static void GetArmorForPlayer(IEntitySource entitySource, Player player, bool returnOnlyPiece = false) {
 			List<int> HeadArmor = new List<int>();
 			List<int> BodyArmor = new List<int>();
 			List<int> LegArmor = new List<int>();
@@ -509,9 +509,14 @@ namespace BossRush.Contents.Items.Chest {
 				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
 				LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
 			}
-			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+			if (!returnOnlyPiece) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
+				player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
+				player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+			}
+			else {
+				player.QuickSpawnItem(entitySource, Main.rand.Next([.. LegArmor,.. BodyArmor,.. HeadArmor]));
+			}
 		}
 		/// <summary>
 		/// Return a random accessory 

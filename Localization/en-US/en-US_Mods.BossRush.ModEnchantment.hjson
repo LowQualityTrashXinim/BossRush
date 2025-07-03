@@ -633,13 +633,13 @@ TheMeatball.Description:
 	'''
 	20% Melee damage and 5% critcal strike chance
 	Melee attacks inflict ichor
-	Shoot out deadly MeatBall ( CD : 1s )
+	Shoot out deadly MeatBall ( CD : 2.5s )
 	'''
 BallOHurt.Description:
 	'''
 	+20% melee damage and +5% critcal strike chance
 	True melee attacks inflict cursed flames debuff
-	Shoot out Ball of Hurt ( CD : 1s )
+	Shoot out Ball of Hurt ( CD : 2.5s )
 	'''
 SwordFish.Description:
 	'''
