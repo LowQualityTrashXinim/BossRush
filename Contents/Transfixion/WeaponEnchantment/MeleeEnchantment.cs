@@ -1459,3 +1459,18 @@ public class BeeKeeperEnchantmentProjectile : ModProjectile {
 		}
 	}
 }
+public class Mace : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Mace;
+	}
+}
+public class FlamingMace : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FlamingMace;
+	}
+}
+public class BlueMoon : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BlueMoon;
+	}
+}

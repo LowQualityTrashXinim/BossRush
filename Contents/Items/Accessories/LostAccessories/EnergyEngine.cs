@@ -15,7 +15,7 @@ internal class EnergyEngine : ModItem {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: -100);
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyRecharge, 1.11f);
-		modplayer.EnergyCap.Base += 1;
+		modplayer.EnergyRegen.Base += 1;
 	}
 }
 public class EnergyEngine_ModPlayer : ModPlayer {

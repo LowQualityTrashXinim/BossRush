@@ -36,6 +36,7 @@ public class PalmWoodBreastplate : ModArmorPiece {
 	}
 	public override void UpdateEquip(Player player, Item item) {
 		player.GetDamage(DamageClass.Generic).Base += 5;
+		player.GetModPlayer<PalmwoodArmorModPlayer>().Temporary_SandArmor = true;
 	}
 }
 public class SandArmorBuff : ModBuff {
@@ -62,11 +63,13 @@ public class PalmWoodGreaves : ModArmorPiece {
 }
 public class PalmwoodArmorModPlayer : ModPlayer {
 	public bool SandJump = false;
+	public bool Temporary_SandArmor = false;
 	public override void ResetEffects() {
 		SandJump = false;
+		Temporary_SandArmor = false;
 	}
 	public override void UpdateEquips() {
-		if(SandJump) {
+		if (SandJump) {
 			if (Player.justJumped) {
 				for (int i = 0; i < 4; i++) {
 					Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).Vector2RotateByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
@@ -76,10 +79,14 @@ public class PalmwoodArmorModPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		Player.AddBuff<SandArmorBuff>(BossRushUtils.ToSecond(5));
+		if (Temporary_SandArmor) {
+			Player.AddBuff<SandArmorBuff>(BossRushUtils.ToSecond(5));
+		}
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		Player.AddBuff<SandArmorBuff>(BossRushUtils.ToSecond(5));
+		if (Temporary_SandArmor) {
+			Player.AddBuff<SandArmorBuff>(BossRushUtils.ToSecond(5));
+		}
 	}
 }
 public class PalmwoodArmorPlayer : PlayerArmorHandle {

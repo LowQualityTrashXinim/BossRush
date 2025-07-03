@@ -276,52 +276,45 @@ Katana.Description:
 	'''
 WoodenBow.Description:
 	'''
-	Increases damage by 1 and multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
-	Weapon will shoot additional wooden arrow
+	Increases damage by 1
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Holding weapon will increases user's movement speed by 10%
 	'''
 AshWoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to light enemy on fire
 	Deal extra 25% damage to enemy on fire
 	'''
 BorealWoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to inflict frost burn on enemy
 	Deal extra 25% damage to enemy have frost burn
 	'''
 RichMahoganyBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to poison enemy
 	Deal extra 15% damage to poisoned enemy 
 	'''
 EbonwoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 ShadewoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 PalmWoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 CopperBow.Description:
 	'''

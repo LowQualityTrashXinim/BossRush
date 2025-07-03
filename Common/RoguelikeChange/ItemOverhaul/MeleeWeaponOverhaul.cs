@@ -514,7 +514,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				Texture2D texture = drawinfo.DrawDataCache[i].texture;
 				if (texture == TextureAssets.Item[item.type].Value) {
 					drawdata = drawinfo.DrawDataCache[i];
-					drawdata.scale = meleeItem.scaleWarp;
 					float scale = drawdata.scale.X;
 					Vector2 size = drawdata.texture.Size() * scale;
 					Vector2 origin = size * .5f;
@@ -576,7 +575,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				float baseAngle = PlayerToMouseDirection.ToRotation();
 				startSwordSwingAngle = MathHelper.TwoPi * baseAngle / MathHelper.TwoPi;
 				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-					swordLength += meleeItem.ShaderOffSetLength;
 					if (!meleeItem.HideSwingVisual) {
 						Array.Fill(swordTipPositions, Vector2.Zero);
 						Array.Fill(swordRotations, 0);
@@ -623,6 +621,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				if (overhaul.HideSwingVisual) {
 					return;
 				}
+				swordLength += overhaul.ShaderOffSetLength;
 				float extraAdd = MathHelper.ToRadians(2) * Player.direction;
 				float customAddByXinim = startSwordSwingAngle;
 				if (overhaul.SwingType == BossRushUseStyle.Spin) {

@@ -45,7 +45,7 @@ Tier2RelicSpoil: {
 
 RareRelicSpoil: {
 	DisplayName: Rare Relic
-	Description: Contains {0} [Tier 2] relic(s).
+	Description: Contains {0} [Tier 3] relic(s).
 }
 
 LostAccessorySpoil: {

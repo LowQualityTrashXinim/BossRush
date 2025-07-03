@@ -5,9 +5,10 @@
     <AssemblyName>BossRush</AssemblyName>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AnalysisLevel>latest-recommended</AnalysisLevel>
-    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-    <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+    <AnalysisLevel>6.0-recommended</AnalysisLevel>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />

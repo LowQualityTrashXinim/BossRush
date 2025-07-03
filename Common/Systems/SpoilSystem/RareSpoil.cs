@@ -102,10 +102,13 @@ internal class RareSpoil {
 	}
 	public class RareRelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.SuperRare;
+			RareValue = SpoilDropRarity.Rare;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.SuperRareDrop();
+			return SpoilDropRarity.RareDrop();
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);

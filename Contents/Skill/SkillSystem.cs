@@ -492,13 +492,13 @@ public class SkillHandlePlayer : ModPlayer {
 			SkillStatTotal(out int energy, out int duration, out int cooldown);
 			Duration += duration;
 			CoolDown += cooldown;
+			MaximumCoolDown = 0;
+			MaximumDuration = 0;
 			if (energy > Energy) {
 				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
 				CoolDown = 0;
 				Activate = false;
-				MaximumCoolDown = 0;
-				MaximumDuration = 0;
 			}
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
@@ -760,8 +760,8 @@ internal class SkillUI : UIState {
 		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
 		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
-		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
-		cooldownText.SetText($"Cool down = {MathF.Round(cooldown / 60f, 2)}s");
+		durationText.SetText($"Duration = {MathF.Round(modplayer.MaximumDuration / 60f, 2)}s");
+		cooldownText.SetText($"Cool down = {MathF.Round(modplayer.MaximumCoolDown / 60f, 2)}s");
 	}
 
 	private void ActivateSkillUI(Player player) {

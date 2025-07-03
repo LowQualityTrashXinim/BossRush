@@ -126,15 +126,11 @@ public abstract class TitaniumEnchantment : ModEnchantment {
 - blowgun ( not to be confused with blowpipe )
 - flinx staff
 - abigail flower
-- hornet staff
 - vampire flog staff
 - hondius shootius
 - lighting aura rod
 - flameburst rod
 - explosive trap rod
 - ballista rod
-- lether whip
-- snapthorn
-- spinal tap
 - flare gun ( rework honestly )
  */

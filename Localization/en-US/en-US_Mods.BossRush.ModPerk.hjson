@@ -851,3 +851,11 @@ EssenceExtraction: {
 		Consume the essence of a weapon to temporary gain a power boost
 		'''
 }
+
+EnchantmentSmith: {
+	DisplayName: Enchantment Smith
+	Description:
+		'''
+		Increases the amount of enchantment can be put onto weapon by 1
+		'''
+}

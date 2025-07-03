@@ -19,6 +19,8 @@ using Terraria.ModLoader.UI;
 using System.Diagnostics.Metrics;
 using BossRush.Contents.Transfixion.SoulBound;
 using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Texture;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -177,12 +179,17 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
+	public int SlotUnlock = 0;
 	public void SafeRequest_EnchantItem(int requestAmount, int amountEnchant) {
 		Request_EnchantedItem = requestAmount;
 		Request_EnchantedAmount = amountEnchant;
 	}
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
+	public override void ResetEffects() {
+		Player.GetModPlayer<PerkPlayer>().perks.TryGetValue(Perk.GetPerkType<EnchantmentSmith>(), out int value);
+		SlotUnlock = value;
+	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
@@ -924,6 +931,9 @@ public class EnchantmentUIslot : Roguelike_UIImage {
 		Append(text);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		if (Main.LocalPlayer.GetModPlayer<EnchantmentModplayer>().SlotUnlock < WhoAmI) {
+			return;
+		}
 		if (itemOwner == null)
 			return;
 		if (Main.mouseItem.type != ItemID.None) {
@@ -941,6 +951,13 @@ public class EnchantmentUIslot : Roguelike_UIImage {
 	}
 	public override void DrawImage(SpriteBatch spriteBatch) {
 		try {
+			if (Main.LocalPlayer.GetModPlayer<EnchantmentModplayer>().SlotUnlock < WhoAmI) {
+				Texture2D lockTexture = ModContent.Request<Texture2D>(BossRushTexture.Lock).Value;
+				Vector2 origin = lockTexture.Size() * .5f;
+				Vector2 drawpos = this.GetInnerDimensions().Position() + texture.Size() * .5f;
+				spriteBatch.Draw(lockTexture, drawpos, null, Color.White, 0, origin, .87f, SpriteEffects.None, 0);
+				return;
+			}
 			if (itemOwner == null)
 				return;
 			if (itemType != 0) {
