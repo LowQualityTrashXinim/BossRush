@@ -99,7 +99,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 				modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: def.Add_Defense);
 		}
 		if (item.type == ItemID.NightVisionHelmet) {
-			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			player.ModPlayerStats().AddStatsToPlayer(PlayerStats.RangeDMG, Multiplicative: 1.1f);
 		}
 		if (item.type == ItemID.VikingHelmet) {
 			player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;

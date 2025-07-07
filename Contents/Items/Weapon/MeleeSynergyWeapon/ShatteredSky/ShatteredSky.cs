@@ -31,6 +31,7 @@ public class ShatteredSky : SynergyModItem {
 	int Timer = 0;
 	public override bool CanUseItem(Player player) {
 		if (!player.ItemAnimationActive) {
+			CheckIfComboActivateOnce = false;
 			ComboCounter++;
 			MeleeWeaponOverhaul overhaul = Item.GetGlobalItem<MeleeWeaponOverhaul>();
 			switch (ComboCounter) {
@@ -61,7 +62,7 @@ public class ShatteredSky : SynergyModItem {
 		return base.CanUseItem(player);
 	}
 	bool CheckIfComboActivateOnce = false;
-	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
 		Timer++;
 		if (!player.ItemAnimationActive) {
 			CheckIfComboActivateOnce = false;
@@ -78,7 +79,7 @@ public class ShatteredSky : SynergyModItem {
 		Vector2 position = player.Center;
 		int damage = player.GetWeaponDamage(Item);
 		float knockback = player.GetWeaponKnockback(Item);
-		if (ComboCounter == 3 && player.itemAnimation <= player.itemAnimationMax - 1 && !CheckIfComboActivateOnce) {
+		if (ComboCounter == 3 && player.itemAnimation <= Math.Max(player.itemAnimationMax - 1, 1) && !CheckIfComboActivateOnce) {
 			CheckIfComboActivateOnce = true;
 			float offsetLength = Item.Size.Length();
 			for (int i = 0; i < 16; i++) {
@@ -94,7 +95,7 @@ public class ShatteredSky : SynergyModItem {
 			}
 			SoundEngine.PlaySound(SoundID.Thunder);
 		}
-		else if (ComboCounter == 0 && player.itemAnimation <= player.itemAnimationMax * .4f && !CheckIfComboActivateOnce) {
+		else if (ComboCounter == 0 && player.itemAnimation <= Math.Max(player.itemAnimationMax * .4f, 1) && !CheckIfComboActivateOnce) {
 			CheckIfComboActivateOnce = true;
 			if (RealCounter >= 8) {
 				RealCounter = 0;

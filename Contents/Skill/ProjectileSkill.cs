@@ -54,7 +54,7 @@ public class FireArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 9));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(9);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -88,7 +88,7 @@ public class FrostburnArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 9));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(9);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -122,7 +122,7 @@ public class Skill_UnholyArrow : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 11));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(11);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
 		position.Y += 500;
@@ -156,7 +156,7 @@ public class Skill_BoneArrow : ModSkill {
 		if (modplayer.Duration % 30 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 10));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(10);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		for (int i = 0; i < 16; i++) {
 			Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(16, 360, i).RotatedBy(MathHelper.ToRadians(modplayer.Duration));
@@ -185,7 +185,7 @@ public class Skill_HolyArrow : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 8));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(8);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = modplayer.Skill_PlayerLastPositionBeforeSkillActivation;
 		position.Y -= 500;
@@ -219,7 +219,7 @@ public class WoodenArrowRain : ModSkill {
 		if (modplayer.Duration % 5 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 6));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(6);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = player.Center;
 		position.Y -= 1000;
@@ -253,7 +253,7 @@ public class CholorophyteArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 11));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(11);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -287,7 +287,7 @@ public class CursedArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 12));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(12);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -321,7 +321,7 @@ public class IchorArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 12));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(12);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -355,7 +355,7 @@ public class JesterArrowRain : ModSkill {
 		if (modplayer.Duration % 20 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 15));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(15);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = player.Center + Main.rand.NextVector2RectangleEdge(new(0, 0, 1000, 1000)) * Main.rand.NextBool().ToDirectionInt();
 		Vector2 vel = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Main.rand.Next(12, 15);
@@ -388,7 +388,7 @@ public class ChaosArrowRain : ModSkill {
 		if (modplayer.Duration % 5 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, Main.rand.Next(6, 19)));
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(Main.rand.Next(6, 19));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -432,7 +432,7 @@ public class SpiritBurst : ModSkill {
 	public override void Update(Player player, SkillHandlePlayer skillplayer) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (Main.rand.NextBool(10) || modplayer.Duration % 15 == 0) {
-			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 44));
+			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(44);
 			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 			Vector2 vel = Main.rand.NextVector2CircularEdge(4, 4);
 			List<Projectile> projlist = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center + vel * 100, vel, 1, ModContent.ProjectileType<SpiritProjectile>(), damage, knockback);
@@ -451,7 +451,7 @@ public class Icicle : ModSkill {
 		if (modplayer.Duration % 20 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 9));
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(9);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 		float rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
 		int Index = Main.rand.Next(6);
@@ -469,6 +469,10 @@ public class Icicle : ModSkill {
 			skillplayer.NewSkillProjectile(player.GetSource_FromThis(), pos, vel, (10 + Main.rand.NextFloat(-3, 3)), ProjectileID.Blizzard, damage, knockback);
 		}
 	}
+	public override void AlwaysUpdate(Player player, SkillHandlePlayer skillplayer) {
+		skillplayer.ProjectileCritDamage += .1f;
+		skillplayer.ProjectileCritChance += 5;
+	}
 }
 public class FireBall : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<FireBall>();
@@ -483,13 +487,15 @@ public class FireBall : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(SkillDamage(player, 23));
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(23);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(4);
-		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15f;
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Flamelash, damage, knockback, player.whoAmI);
-		Main.projectile[proj].friendly = true;
-		Main.projectile[proj].hostile = false;
-		Main.projectile[proj].timeLeft = 120;
+		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+		List<Projectile> proj = skillplayer.NewSkillProjectile(player.GetSource_FromThis(), player.Center, velocity, 15, ProjectileID.Flamelash, damage, knockback);
+		foreach (var item in proj) {
+			item.friendly = true;
+			item.hostile = false;
+			item.timeLeft = 120;
+		}
 	}
 }
 public class StarFury : ModSkill {

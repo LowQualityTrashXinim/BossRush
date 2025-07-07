@@ -19,8 +19,7 @@ public class Musket : ModEnchantment {
 		ItemIDType = ItemID.Musket;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+		player.GetModPlayer<PlayerStatsHandle>().Range_CritDamage += .25f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 5;
@@ -198,144 +197,6 @@ public class Marked : ModBuff {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = true;
-	}
-}
-public class WoodenBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.WoodenBow;
-	}
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.1f);
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		float multiply = 1.1f;
-		if (item.useAmmo == AmmoID.Arrow) {
-			multiply += .1f;
-		}
-		velocity *= multiply;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-}
-public class AshWoodBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.AshWoodBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
-			modifiers.SourceDamage += .25f;
-		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type == ProjectileID.WoodenArrowFriendly && Main.rand.NextFloat() <= .3f) {
-			target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(5));
-		}
-	}
-}
-public class BorealWoodBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.BorealWoodBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
-			modifiers.SourceDamage += .25f;
-		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type == ProjectileID.WoodenArrowFriendly && Main.rand.NextFloat() <= .3f) {
-			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(5));
-		}
-	}
-}
-public class RichMahoganyBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.RichMahoganyBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (target.HasBuff(BuffID.Poisoned)) {
-			modifiers.SourceDamage += .15f;
-		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type == ProjectileID.WoodenArrowFriendly && Main.rand.NextFloat() <= .3f) {
-			target.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(5));
-		}
-	}
-}
-public class EbonwoodBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.EbonwoodBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		float multiply = 1.1f;
-		if (item.useAmmo == AmmoID.Arrow) {
-			multiply += .1f;
-		}
-		velocity += velocity.SafeNormalize(Vector2.Zero) * multiply;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-}
-public class ShadewoodBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.ShadewoodBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		float multiply = 1.1f;
-		if (item.useAmmo == AmmoID.Arrow) {
-			multiply += .1f;
-		}
-		velocity += velocity.SafeNormalize(Vector2.Zero) * multiply;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-	}
-}
-public class PalmWoodBow : ModEnchantment {
-	public override void SetDefaults() {
-		ItemIDType = ItemID.PalmWoodBow;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 1;
-	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		float multiply = 1.1f;
-		if (item.useAmmo == AmmoID.Arrow) {
-			multiply += .1f;
-		}
-		velocity += velocity.SafeNormalize(Vector2.Zero) * multiply;
-	}
-	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 	}
 }
 public class CopperBow : ModEnchantment {
@@ -598,8 +459,7 @@ public class RedRyder : ModEnchantment {
 		ItemIDType = ItemID.RedRyder;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .15f;
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .15f;
+		player.GetModPlayer<PlayerStatsHandle>().Range_CritDamage += .15f;
 	}
 	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 		crit += 5;
@@ -655,22 +515,6 @@ public class MoltenFury : ModEnchantment {
 		for (int i = 0; i < 2; i++) {
 			int proj = Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(40, 40), velocity, ProjectileID.FireArrow, damage, knockback, player.whoAmI);
 			Main.projectile[proj].extraUpdates += 1;
-		}
-	}
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.type == ProjectileID.FireArrow && target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
-			modifiers.SourceDamage += .35f;
-		}
-	}
-	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType != player.HeldItem.type) {
-			return;
-		}
-		if (Main.rand.NextBool(3)) {
-			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(target.width + 125, target.height + 125);
-			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 7f;
-			int projectile = Projectile.NewProjectile(proj.GetSource_OnHit(target), pos, vel, ProjectileID.FireArrow, proj.damage, proj.knockBack, player.whoAmI);
-			Main.projectile[projectile].extraUpdates += 1;
 		}
 	}
 }
@@ -804,11 +648,6 @@ public class OnyxBlaster : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.OnyxBlaster;
 	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		if (item.DamageType == DamageClass.Ranged) {
-			damage.Base += 5;
-		}
-	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (velocity.IsLimitReached(10)) {
 			velocity = velocity.SafeNormalize(Vector2.Zero) * 10;
@@ -816,9 +655,32 @@ public class OnyxBlaster : ModEnchantment {
 		type = ModContent.ProjectileType<OnyxBulletProjectile>();
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextBool(5)) {
-			
+		int chance = Math.Max(1, player.itemAnimationMax - 50);
+		if (Main.rand.NextBool(chance)) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback * 3, player.whoAmI);
+		}
+	}
+}
+public class PhoenixBlaster : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PhoenixBlaster;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] >= 90) {
+			globalItem.Item_Counter1[index] = -player.itemAnimationMax;
+			if (player.ItemAnimationJustStarted) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15, ProjectileID.DD2PhoenixBowShot, player.GetWeaponDamage(item) * 3, 8f, player.whoAmI);
+			}
+			return;
+		}
+		if (++globalItem.Item_Counter1[index] > 90) {
+			globalItem.Item_Counter1[index] = 90;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter2[index] >= 10) {
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * 1.5f), knockback, player.whoAmI);
+			globalItem.Item_Counter2[index] = -1;
 		}
 	}
 }

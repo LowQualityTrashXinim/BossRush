@@ -35,6 +35,8 @@
 		public const string QuestionMark_Help = CommonTextureStringPattern + "UI/Help";
 		public const string Page_StateSelected = CommonTextureStringPattern + "UI/page_selected";
 		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
+		public const string DrawBrush = CommonTextureStringPattern + "UI/Brush";
+		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 		public static string Get_StructureHelperTex(string text) => $"BossRush/Texture/StructureHelper_{text}";

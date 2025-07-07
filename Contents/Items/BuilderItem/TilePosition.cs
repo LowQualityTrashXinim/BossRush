@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.aDebugItem {
+namespace BossRush.Contents.Items.BuilderItem {
 	class TilePosition : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CelestialWand);
 		public override void SetDefaults() {
@@ -36,14 +36,14 @@ namespace BossRush.Contents.Items.aDebugItem {
 				int shortY = Math.Min(point1.Y, point2.Y);
 				int distanceY = farY - shortY;
 
-				Tile tile1 = Framing.GetTileSafely(point1);
+				var tile1 = Framing.GetTileSafely(point1);
 				string tileinfo =
 					$"Tile type : {tile1.TileType}\n" +
 					$"Tile Frame X : {tile1.TileFrameX}\n" +
 					$"Tile Frame Y : {tile1.TileFrameY}\n" +
 					$"Tile position in tile : {point1.ToString()}\n";
 
-				Tile tile2 = Framing.GetTileSafely(point2);
+				var tile2 = Framing.GetTileSafely(point2);
 				string tileinfo2 =
 					$"Tile type : {tile2.TileType}\n" +
 					$"Tile Frame X : {tile2.TileFrameX}\n" +
@@ -86,9 +86,9 @@ namespace BossRush.Contents.Items.aDebugItem {
 				return;
 			}
 			string tileinfo;
-			Vector2 pos = Main.MouseWorld;
-			Point point = pos.ToTileCoordinates();
-			Tile tile = Framing.GetTileSafely(point.X, point.Y);
+			var pos = Main.MouseWorld;
+			var point = pos.ToTileCoordinates();
+			var tile = Framing.GetTileSafely(point.X, point.Y);
 			if (tile == new Tile()) {
 				return;
 			}

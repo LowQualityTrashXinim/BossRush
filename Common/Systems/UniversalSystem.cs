@@ -1176,6 +1176,9 @@ public class EnchantmentButton : Roguelike_UIImageButton {
 		}
 		Main.instance.LoadItem(InteralItemID);
 		Texture2D item = TextureAssets.Item[InteralItemID].Value;
+		if (IsMouseHovering) {
+			Main.instance.MouseText(ContentSamples.ItemsByType[InteralItemID].Name);
+		}
 		Vector2 origin = item.Size() * .5f;
 		Vector2 drawPos = this.GetInnerDimensions().Position() + new Vector2(26, 26);
 		float scale;

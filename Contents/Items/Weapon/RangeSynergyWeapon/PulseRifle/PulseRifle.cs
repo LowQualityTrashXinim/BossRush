@@ -1,13 +1,14 @@
-﻿using Terraria.ID;
-using Terraria;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
+﻿using BossRush.Common.Global;
 using BossRush.Texture;
-using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using BossRush.Common.Global;
 using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 internal class PulseRifle : SynergyModItem {
@@ -17,9 +18,9 @@ internal class PulseRifle : SynergyModItem {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ClockworkAssaultRifle, $"[i:{ItemID.ClockworkAssaultRifle}] Shoot burst arch and missle more common");
 	}
 	public override void SetDefaults() {
-		Item.width = Item.height = 32;
-		Item.BossRushDefaultRange(94, 34, 34, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
+		Item.BossRushDefaultRange(94, 34, 64, 4f, 7, 7, ItemUseStyleID.Shoot, ProjectileID.PulseBolt, 16f, true, AmmoID.Bullet);
 		Item.scale = .78f;
+		Item.crit = 12;
 		Item.UseSound = SoundID.Item75 with { Pitch = 1 };
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
@@ -56,6 +57,7 @@ internal class PulseRifle : SynergyModItem {
 		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile) && (Main.rand.NextBool(5) || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ClockworkAssaultRifle))) {
 			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 50), velocity.Vector2RotateByRandom(30) * .1f, ProjectileID.MagicMissile, (int)(damage), knockback, player.whoAmI);
 			Main.projectile[proj].penetrate = 1;
+			Main.projectile[proj].maxPenetrate = 1;
 		}
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
 	}
@@ -71,6 +73,20 @@ public class PulseRifle_ModPlayer : ModPlayer {
 		if (proj.type == ProjectileID.PulseBolt && proj.Check_ItemTypeSource(ModContent.ItemType<PulseRifle>()) && SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<PulseRifle>(), ItemID.SniperRifle)) {
 			modifiers.ScalingArmorPenetration += 1;
 		}
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.PulseBolt && proj.Check_ItemTypeSource(ModContent.ItemType<PulseRifle>())) {
+			target.AddBuff<PlasmaDefensesMelt>(BossRushUtils.ToSecond(.5f));
+		}
+	}
+}
+public class PlasmaDefensesMelt : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+	public override void Update(NPC npc, ref int buffIndex) {
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense -= .5f;
 	}
 }
 public class PulseHomingProjectile : SynergyModProjectile {
@@ -92,11 +108,8 @@ public class PulseHomingProjectile : SynergyModProjectile {
 		return new Color(255, 255, 255, 255);
 	}
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-		if (++Projectile.ai[0] <= 90) {
-			return;
-		}
 		if (npc == null) {
-			if (Main.MouseWorld.LookForHostileNPC(out NPC target, 500f)) {
+			if (Main.MouseWorld.LookForHostileNPC(out NPC target, 1500f)) {
 				npc = target;
 			}
 		}
@@ -105,8 +118,15 @@ public class PulseHomingProjectile : SynergyModProjectile {
 				npc = null;
 				return;
 			}
-			Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (npc.Center - Projectile.Center).Length() / 6400f;
-			Projectile.velocity = Projectile.velocity.LimitedVelocity(Math.Clamp((npc.Center - Projectile.Center).Length() / 128f, .75f, int.MaxValue));
+			Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (npc.Center - Projectile.Center).Length() / 32f;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
+		}
+	}
+	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		for (int i = 0; i < 35; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemSapphire);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(.9f, 1.2f);
 		}
 	}
 	public override bool PreDraw(ref Color lightColor) {

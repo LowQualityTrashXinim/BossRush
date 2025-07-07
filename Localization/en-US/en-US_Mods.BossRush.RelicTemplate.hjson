@@ -35,7 +35,7 @@ DebuffedHealthTemplate: {
 
 BattleMountTemplate: {
 	DisplayName: Battle ride
-	Description: Increases damage by [c/{0}:{1}%] while on a mount
+	Description: Increases damage by [c/{0}:{1}] while on a mount
 }
 
 StaticDefeneseTemplate: {

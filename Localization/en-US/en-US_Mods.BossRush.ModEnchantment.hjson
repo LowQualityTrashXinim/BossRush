@@ -1,13 +1,11 @@
 Musket.Description:
 	'''
-	Decreases gun spread by 25%
-	Increases critical strike damage by 50% and weapon critical strike chance by 5%
+	Increases range critical strike damage by 50% and weapon critical strike chance by 5%
 	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 RedRyder.Description:
 	'''
-	Decreases gun spread by 15%
-	Increases critical strike damage by 15% and weapon critical strike chance by 5%
+	Increases range critical strike damage by 15% and weapon critical strike chance by 5%
 	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 FlintlockPistol.Description:
@@ -19,15 +17,13 @@ FlintlockPistol.Description:
 	'''
 Handgun.Description:
 	'''
-	Weapon that can shoot :
-	+ Have 50% to shoot out additional bullet dealing the same damage
+	Have 50% to shoot out a additional bullet dealing the same damage
 	Increases damage by 10%
 	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
 	'''
 Revolver.Description:
 	'''
-	Weapon that can shoot :
-	+ Have 1 in 5 chance to shoot out additional bullet dealing the same damage
+	Have 1 in 5 chance to shoot out a additional bullet dealing the same damage
 	For each hit dealt onto NPC, increases crit chance by and damage by 5% ( CD : 1s )
 	Getting hit will reset the buff
 	'''
@@ -148,36 +144,30 @@ CactusSword.Description:
 	'''
 EnchantedSword.Description:
 	'''
-	Increases melee item use speed by 10%
-	Weapon that can shoot :
-	+ Shoot out additional enchanted beam that deal 25% more damage ( CD : 0.5s )
-	Weapon that can't shoot :
-	+ Upon hitting enemy will spawn enchanted beam that ignore tile collision around player
+	Increases melee weapon attack speed by 10%
+	Shoot out a additional enchanted beam that deal 125% damage ( CD : 0.5s )
+	Upon hitting enemy with item spawn enchanted beam that ignore tile collision around player
 	'''
 StarFury.Description:
 	'''
-	Weapon that can shoot :
-	+ Shoot down a Star that deal 50% more damage ( CD : 1s )
-	Weapon that can't shoot :
-	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( CD : 1.5s )
+	Strike down a Star that deal 150% damage ( CD : 1s )
+	Striking enemy with item will create 3 star fall down that deal 150% damage ( CD : 1.5s )
 	'''
 IceBlade.Description:
 	'''
 	Weapon that can shoot will shoot additional ice bolt ( CD : 0.5s )
 	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
-	While in snow biome, increases damage by 12% and critical strike chance by 3%
 	'''
 BatBat.Description:
 	'''
 	Increases player movement speed by 12% and jump boost by 30% when held the item 
-	On hitting enemy, heal for 1 HP ( CD : 0.2s )
+	On striking enemy with item, heal for 1 HP ( CD : 0.2s )
 	Have 1 in 10 chance to spawn a bat dealing 65% of original damage
 	'''
 BoneSword.Description:
 	'''
 	Increases weapon size by 15%
-	Attacking enemy have 25% chance to shoot out a infinite piercing bone
-	( trigger every 1s )
+	Attacking enemy have 25% chance to shoot out a infinite piercing bone (CD:1s)
 	'''
 BladedGlove.Description:
 	'''
@@ -187,8 +177,7 @@ BladedGlove.Description:
 ZombieArm.Description:
 	'''
 	Increases critical strike chance by 10 during night
-	Getting hit while holding the weapon will deal 55% damage to all nearby enemy
-	( trigger every 1s )
+	Getting hit while holding the weapon will deal 55% damage to all nearby enemy (CD:1s)
 	'''
 MandibleBlade.Description:
 	'''
@@ -211,7 +200,7 @@ BladeOfGrass.Description:
 	Increases damage by 1.2x when in jungle
 	Have 50% chance to either :
 	+ Shoot a leaf like Blade of Grass
-	+ Shoot a leaf straight toward cursor
+	+ Shoot a leaf toward cursor
 	( Leaf deal 45% of weapon damage )
 	'''
 Volcano.Description:
@@ -287,52 +276,45 @@ Katana.Description:
 	'''
 WoodenBow.Description:
 	'''
-	Increases damage by 1 and multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
-	Weapon will shoot additional wooden arrow
+	Increases damage by 1
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Holding weapon will increases user's movement speed by 10%
 	'''
 AshWoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to light enemy on fire
 	Deal extra 25% damage to enemy on fire
 	'''
 BorealWoodBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to inflict frost burn on enemy
 	Deal extra 25% damage to enemy have frost burn
 	'''
 RichMahoganyBow.Description:
 	'''
 	Increases damage by 1
-	Weapon will shoot additional wooden arrow
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	Wooden arrow have 30% to poison enemy
 	Deal extra 15% damage to poisoned enemy 
 	'''
 EbonwoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 ShadewoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 PalmWoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot a additional wooden arrow ( CD: 1s )
 	'''
 CopperBow.Description:
 	'''
@@ -401,20 +383,18 @@ MoltenFury.Description:
 	Increases range damage by 15%
 	Wooden arrow will be converted into Fire arrow
 	Weapon will shoot 2 additional fire arrow
-	Fire arrow will deal 35% more damage when target is on fire
-	Have 1 in 3 chance to spawn a fire arrow near enemy when hitting enemy with projectile
 	'''
 SnowballCannon.Description:
 	'''
-	Increases uses speed by 5%
-	Weapon that can shoot projectile will additionally shoot a snowball that deal 55% of original damage
+	Increases weapon attack speed by 5%
+	Shoot a additional snowball that deal 55% of original damage
 	'''
 Blowpipe.Description:
 	'''
 	Increases critical strike chance by 15% for your next shot ( CD : 4s )
-	Weapon that can shoot projectile will additionally shoot a seed that deal 35% of original damage
+	Shoot a additional seed that deal 35% of original damage
 	'''
-PainterPaintballGun.Description: Shooting will be accompany with a arch of 3 paint projectile that deal 45% of original damage ( CD : 1s )
+PainterPaintballGun.Description: shot will be accompany with a arch of 3 paint ball that deal 45% of original damage ( CD : 1s )
 AmethystStaff.Description:
 	'''
 	Reduce mana cost by 15%
@@ -458,8 +438,7 @@ DiamondStaff.Description:
 	'''
 AmberStaff.Description:
 	'''
-	Increases magic damage by 15% and flat damage by 5
-	Reduce mana cost by 15%
+	Increases magic damage by 15%, flat damage by 5 and reduce mana cost by 15%
 	Convert your projectile into Amber Bolt, if your weapon don't shoot then it will shoot amber bolt
 	Your weapon have 17% chance to shoot out additional Amber Bolt random location
 	'''
@@ -495,8 +474,8 @@ BookOfSkulls.Description:
 	'''
 ThunderStaff.Description:
 	'''
-	Reduce mana cost by 12%
-	Striking NPC will spawn a thunder staff bolt near NPC ( CD : 0.2s )
+	Striking a NPC will spawn a thunder bolt near NPC ( CD : 0.2s )
+	Thunder bolt have 10% chance to spawn itself
 	'''
 ZapinatorGray.Description:
 	'''
@@ -523,6 +502,7 @@ Vilethorn.Description:
 	'''
 	Reduce mana cost by 5%
 	Create vilethorn from the enemy on strike ( CD : 1s )
+	Every 5th attack, summon a circle of vilethorn
 	'''
 CrimsonRod.Description:
 	'''
@@ -531,7 +511,6 @@ CrimsonRod.Description:
 	'''
 MagicMissile.Description:
 	'''
-	Increases mana cost by 10%
 	Using weapon that can't shoot projectile will have following effect :
 	+ Shoot out magic missile behind player at the cost of 14 mana ( CD : 1.5s )
 	Using weapon that create projectile will have following effect :
@@ -540,13 +519,13 @@ MagicMissile.Description:
 Flamelash.Description:
 	'''
 	Increases damage by 33% when hitting a enemy on fire
-	Shooting magic projectile have 1 in 5 chance to be accompany flamelash projectile
+	Shooting have 1 in 5 chance to shoot out a additional flamelash projectile
 	'''
 AquaScepter.Description:
 	'''
 	Decreases mana cost by 9%
 	Hitting enemy have 1 in 3 chance to shoot out water stream near the enemy
-	Enemy that is hit by water stream will regen your mana by 10
+	Enemy that is hit by water stream will heal back your mana by 10
 	'''
 WeatherPain.Description:
 	'''
@@ -654,13 +633,13 @@ TheMeatball.Description:
 	'''
 	20% Melee damage and 5% critcal strike chance
 	Melee attacks inflict ichor
-	Shoot out deadly MeatBall ( CD : 1s )
+	Shoot out deadly MeatBall ( CD : 2.5s )
 	'''
 BallOHurt.Description:
 	'''
 	+20% melee damage and +5% critcal strike chance
 	True melee attacks inflict cursed flames debuff
-	Shoot out Ball of Hurt ( CD : 1s )
+	Shoot out Ball of Hurt ( CD : 2.5s )
 	'''
 SwordFish.Description:
 	'''
@@ -685,17 +664,16 @@ BloodButcherer.Description:
 	'''
 BreakerBlade.Description:
 	'''
-	Increases Weapon Size by 100%
-	Increases Damage by 25
-	Decreases Attack Speed by 20%
+	Increases melee weapon size by 100%
+	Increases weapon base damage by 25
+	Decreases melee attack speed by 20%
 	Gives a random early-hardmode Melee Weapon
-	(most of these bonuses applies only to melee weapons)
 	'''
 BloodRainBow.Description:
 	'''
 	Using weapon can shoot will shoot additional blood arrow
 	Hitting enemy with the weapon will shoot 3 blood arrows
-	(All blood arrow spawm by this achievement deal 15% less damage)
+	(Note: blood arrow deal 85% weapon damage)
 	'''
 DirtBlock.Description:
 	'''
@@ -736,7 +714,64 @@ Ruler.Description:
 	'''
 OnyxBlaster.Description:
 	'''
-	Increases base range damage by 5
 	Override your shot to shoot Onyx beam
-	Have 1 in 5 chance to accompany your shot with a Onyx bolt deal 300% damage
+	Shot are accompany with a Onyx bolt that deal 300% weapon damage
+	( Note : Chance are vary depend on weapon attack speed )
+	'''
+BluePhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+RedPhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+YellowPhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+OrangePhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+PurplePhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+GreenPhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+WhitePhaseblade.Description:
+	'''
+	Ignore 10 defenses when striking enemy
+	Attacking create a phase vortex ( CD : 2s )
+	'''
+ThunderSpear.Description:
+	'''
+	Attack are accompany with a storm bolt ( CD : 1s )
+	Attacking enemy 15 times using projectile summon a ghost storm spear 
+	Attacking enemy 3 times using item summon a ghost storm spear
+	'''
+PhoenixBlaster.Description:
+	'''
+	Wait 1.5s to shoot out a phoenix deals 3x weapon damage
+	Every 10th shot, shoot out a flamelash projectile deals 1.5x weapon damage
+	'''
+TheRottedFork.Description:
+	'''
+	Hitting enemy with item summon The Rotted Fork ( CD : 0.5s )
+	Hitting enemy with projectile summon The Rotted Fork ( CD : 2.5s )
+	The Rotteed Fork inflict special debuff that deal damage base on debuff duration
+	'''
+BeeKeeper.Description:
+	'''
+	After striking enemy 30 times, summon a ghost bee keeper that continuously spawn bee
+	During bee keeper sword alive, you will gain Honey buff for 2s
 	'''

@@ -1,0 +1,26 @@
+CobaltSword:
+	'''
+	Swing are accompany with cobalt slash
+	Wait 2.5s to unleash fury of slash
+	Wait additional 2.5s to increase fury of slash damage
+	Striking at perfect moment will make fury of slash deal maximum damage
+	'''
+CopperBow:
+	'''
+	Wait 1.5s to shoot out a burst of thunder shots
+	Wait additional 1s to increases shot amount by 5
+	Shoot out a additional thunder shot
+	Arrow shot from this bow have 15% chance to explode into electric sphere
+	'''
+Starfury:
+	'''
+	Wait 2.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
+	Wait additional 2.5s to increase the base damage of fallen star
+	'''
+PhoenixBlaster:
+	'''
+	Wait 1.5s to shoot out a phoenix deal 3.0x weapon damage
+	Wait additional 1.5s to shoot out flame lash projectile deal 1.5x weapon damage
+	Every 5th shot shoot out a flame lash projectile
+	Shot from this gun deal extra 10 fixed damage on target that is on fire
+	'''

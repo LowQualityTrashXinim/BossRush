@@ -16,6 +16,30 @@ namespace BossRush {
 			}
 			return false;
 		}
+		public static bool Check_ItemTypeSource<T>(this Projectile projectile) where T : ModItem {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.Source_ItemType == ModContent.ItemType<T>();
+			}
+			return false;
+		}
+		public static bool Check_ProjTypeSource(this Projectile projectile, int ProjType) {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.Source_ProjectileType == ProjType;
+			}
+			return false;
+		}
+		public static bool Check_ProjTypeSource<T>(this Projectile projectile) where T : ModProjectile {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.Source_ProjectileType == ModContent.ProjectileType<T>();
+			}
+			return false;
+		}
+		public static int Get_ProjectileTimeInitial(this Projectile projectile) {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.InitialTimeLeft;
+			}
+			return 1;
+		}
 		public static void FillProjectileOldPosAndRot(this Projectile projectile) {
 			for (int i = 0; i < projectile.oldPos.Length; i++) {
 				projectile.oldPos[i] = projectile.position - projectile.velocity.SafeNormalize(Vector2.UnitY) * i;

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.Global;
 
-namespace BossRush.Contents.Transfixion.WeaponEnchantment.BroadSwordEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment.BroadSwordEnchantments;
 public class CopperBroadsword : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.CopperBroadsword;

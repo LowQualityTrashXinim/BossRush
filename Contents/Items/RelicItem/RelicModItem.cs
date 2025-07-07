@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -238,18 +239,24 @@ public class Relic : ModItem {
 		return overrideColor;
 	}
 	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+		itemColor = GetRelicTierColor(itemColor);
+		drawColor = GetRelicTierColor(drawColor);
+		Texture2D texture = TextureAssets.Item[Type].Value;
 		if (RelicPrefixedType == -1) {
-			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
+			return false;
 		}
 		RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
 		if (relicprefix == null) {
-			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
+			return false;
 		}
 		if (string.IsNullOrEmpty(relicprefix.TextureString)) {
-			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+			spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
+			return false;
 		}
-		Texture2D texture = ModContent.Request<Texture2D>(relicprefix.TextureString).Value;
-		spriteBatch.Draw(texture, position, null, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
+		texture = ModContent.Request<Texture2D>(relicprefix.TextureString).Value;
+		spriteBatch.Draw(texture, position, frame, GetRelicTierColor(drawColor), 0, origin, scale, SpriteEffects.None, 0);
 		return false;
 	}
 	public void SetRelicData(List<int> type, List<PlayerStats> stat, List<StatModifier> value) {

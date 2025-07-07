@@ -102,16 +102,19 @@ internal class RareSpoil {
 	}
 	public class RareRelicSpoil : ModSpoil {
 		public override void SetStaticDefault() {
-			RareValue = SpoilDropRarity.SuperRare;
+			RareValue = SpoilDropRarity.Rare;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.SuperRareDrop();
+			return SpoilDropRarity.RareDrop();
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1));
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
 			int amount = player.GetModPlayer<PlayerStatsHandle>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
-				Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+				Item item = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 				if (item.ModItem is Relic relic) {
 					relic.AutoAddRelicTemplate(player, 3);
 				}

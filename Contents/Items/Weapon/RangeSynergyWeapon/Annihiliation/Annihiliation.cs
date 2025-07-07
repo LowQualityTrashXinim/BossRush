@@ -21,11 +21,17 @@ internal class Annihiliation : SynergyModItem {
 	public override Vector2? HoldoutOffset() {
 		return new(-30, 0);
 	}
-	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
+		int counter = ++modplayer.Annihiliation_Counter;
+		if (counter >= 600) {
+			modplayer.Annihiliation_Counter = 600;
+		}
+		if (!player.IsHeldingModItem<Annihiliation>()) {
+			return;
+		}
 		if (!player.ItemAnimationActive) {
-			modplayer.Annihiliation_Counter++;
-			if (modplayer.Annihiliation_Counter >= 360) {
-				player.AddBuff<Epilogue_Ishboshet>(BossRushUtils.ToSecond(5));
+			if (counter >= 360) {
+				player.AddBuff<Epilogue_Ishboshet>(BossRushUtils.ToSecond(5) + counter - 360);
 			}
 		}
 		else {

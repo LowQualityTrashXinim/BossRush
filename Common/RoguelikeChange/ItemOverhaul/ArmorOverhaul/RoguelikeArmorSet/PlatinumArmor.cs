@@ -26,7 +26,8 @@ public class PlatinumHelmet : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.04f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.06f);
+		player.endurance += .03f;
 	}
 }
 public class PlatinumChainmail : ModArmorPiece {
@@ -38,7 +39,8 @@ public class PlatinumChainmail : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.04f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.06f);
+		player.endurance += .04f;
 	}
 }
 public class PlatinumGreaves : ModArmorPiece {
@@ -50,7 +52,8 @@ public class PlatinumGreaves : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.04f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.06f);
+		player.endurance += .03f;
 	}
 }
 public class PlatinumArmorModPlayer : PlayerArmorHandle {
@@ -369,6 +372,7 @@ public class PlatinumDefense : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override bool ReApply(Player player, int time, int buffIndex) {
+		player.buffTime[buffIndex] = time;
 		return true;
 	}
 }

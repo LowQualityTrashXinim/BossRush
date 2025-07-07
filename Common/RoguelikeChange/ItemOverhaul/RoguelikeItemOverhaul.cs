@@ -18,11 +18,11 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
-	/// This is where we should modify vanilla item
+	/// This is where we should modify vanilla item simple<br/>
+	/// Any complex rework should be put into their own file
 	/// </summary>
-	class RoguelikeItemOverhaul : GlobalItem {
+	public class RoguelikeItemOverhaul : GlobalItem {
 		public override void SetDefaults(Item entity) {
-			base.SetDefaults(entity);
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
@@ -77,7 +77,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.crit = 4;
 					item.ArmorPenetration = 5;
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					item.useTime = item.useAnimation = 12;
 					break;
@@ -184,7 +183,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					velocity = velocity.Vector2RotateByRandom(5);
 					break;
@@ -227,9 +225,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 				return false;
 			}
-			if (modplayer.ModeSwitch_Revolver == 1) {
-				SoundEngine.PlaySound(item.UseSound);
-			}
 			switch (item.type) {
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
@@ -245,7 +240,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						return false;
 					}
 					return true;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					int counter = 1;
 					for (int i = 0; i < counter; i++) {
@@ -315,7 +309,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					line.OverrideColor = Color.Yellow;
 					tooltips.Add(line);
 					break;
-				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow");
 					tooltips.Add(line);
@@ -336,7 +329,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_TheUndertaker", "Hitting your shot heal you for 1hp"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases gun accurancy by 25%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases range damage by 1.1x"));
 			}
 			else if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose", "Grant immunity to OnFire debuff !"));
@@ -345,17 +338,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
-			}
-			else if (item.type == ItemID.Revolver) {
-				string text;
-				if (modplayer.ModeSwitch_Revolver == 1) {
-					text = $"[c/{Color.Yellow.Hex3()}:Rapid fire Mode]";
-				}
-				else {
-					text = $"[c/{Color.Blue.Hex3()}:Precise fire Mode]";
-				}
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Revolver",
-					text));
 			}
 			else if (item.type == ItemID.CopperWatch) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch",
@@ -369,9 +351,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override void HoldItem(Item item, Player player) {
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			if (modplayer.ModeSwitch_Revolver == 1) {
-				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify += 1f;
-			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
@@ -393,8 +372,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public bool WeaponKeyHeld = false;
 		public int ReuseDelay = 0;
 
-		public int ModeSwitch_Revolver = 0;
-
 		public int ShortSword_ThrownCD = 90;
 		public bool ShortSword_OnCoolDown = false;
 		public int FrostBandBurst = 0;
@@ -404,9 +381,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			RoguelikeOverhaul_VikingHelmet = false;
 			Item item = Player.HeldItem;
 			if (WeaponKeyPressed) {
-				if (item.type == ItemID.Revolver) {
-					ModeSwitch_Revolver = BossRushUtils.Safe_SwitchValue(ModeSwitch_Revolver, 1);
-				}
 			}
 			if (UniversalSystem.Check_RLOH()) {
 				Player.downedDD2EventAnyDifficulty = true;
@@ -434,11 +408,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override float UseTimeMultiplier(Item item) {
 			float time = base.UseTimeMultiplier(item);
-			if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
-				float useAni = Player.itemAnimationMax;
-				float SimulatedUseTime = useAni / 4f;
-				return SimulatedUseTime / useAni;
-			}
 			return base.UseTimeMultiplier(item);
 		}
 		public override void PostUpdate() {
@@ -448,9 +417,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			else {
 				Item item = Player.HeldItem;
-				if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
-					ReuseDelay = 40;
-				}
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {

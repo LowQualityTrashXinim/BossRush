@@ -165,6 +165,17 @@ public class SkillHandlePlayer : ModPlayer {
 	public int ProjectileTimeLeft = 0;
 	public float ProjectileSpreadAmount = 5;
 	public float ProjectileSpreadMultiplier = 1;
+	/// <summary>
+	/// This method automatically handle skill damage, critical chance, energy regain and anything related
+	/// </summary>
+	/// <param name="source"></param>
+	/// <param name="position"></param>
+	/// <param name="velNormalize"></param>
+	/// <param name="speed"></param>
+	/// <param name="type"></param>
+	/// <param name="damage"></param>
+	/// <param name="knockback"></param>
+	/// <returns></returns>
 	public List<Projectile> NewSkillProjectile(IEntitySource source, Vector2 position, Vector2 velNormalize, float speed, int type, int damage, float knockback) {
 		List<Projectile> projList = new();
 		speed *= ProjectileSpeedMultiplier;
@@ -481,13 +492,13 @@ public class SkillHandlePlayer : ModPlayer {
 			SkillStatTotal(out int energy, out int duration, out int cooldown);
 			Duration += duration;
 			CoolDown += cooldown;
+			MaximumCoolDown = 0;
+			MaximumDuration = 0;
 			if (energy > Energy) {
 				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
 				CoolDown = 0;
 				Activate = false;
-				MaximumCoolDown = 0;
-				MaximumDuration = 0;
 			}
 			else {
 				Skill_DirectionPlayerFaceBeforeSkillActivation = Player.direction;
@@ -749,8 +760,8 @@ internal class SkillUI : UIState {
 		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
 		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
-		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
-		cooldownText.SetText($"Cool down = {MathF.Round(cooldown / 60f, 2)}s");
+		durationText.SetText($"Duration = {MathF.Round(modplayer.MaximumDuration / 60f, 2)}s");
+		cooldownText.SetText($"Cool down = {MathF.Round(modplayer.MaximumCoolDown / 60f, 2)}s");
 	}
 
 	private void ActivateSkillUI(Player player) {

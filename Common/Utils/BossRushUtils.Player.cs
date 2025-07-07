@@ -33,7 +33,7 @@ namespace BossRush {
 			player.name.Contains("Debug") ||
 			player.name == "LowQualityTrashXinim" ||
 			player.name.Contains("#Beta");
-		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
+		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryTracker.Kills.GetKillCount(ContentSamples.NpcsByNetId[NPCtype]) > 0;
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.PlayerCurrentArtifact<T>(player);
@@ -42,16 +42,17 @@ namespace BossRush {
 		public static bool HasPerk<T>(this Player player) where T : Perk {
 			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="player"></param>
+
 		/// <returns>
 		/// Return true if player is helding the item in hand<br/>
 		/// Return false when player is not helding the item in hand
 		/// </returns>
 		public static bool IsHeldingModItem<T>(this Player player) where T : ModItem => player.HeldItem.type == ModContent.ItemType<T>();
+		/// <returns>
+		/// Return true if player is helding the item in hand<br/>
+		/// Return false when player is not helding the item in hand
+		/// </returns>
+		public static bool IsHeldingModItem(this Player player, int type) => player.HeldItem.type == type;
 		public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
 					stats is PlayerStats.Defense
 					|| stats is PlayerStats.MaxMinion

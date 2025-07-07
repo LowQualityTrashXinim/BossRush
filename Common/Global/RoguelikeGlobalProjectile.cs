@@ -11,12 +11,15 @@ using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PulseRifle;
 using BossRush.Contents.Skill;
+using BossRush.Common.Systems;
+using System;
 
 namespace BossRush.Common.Global;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 
 	public int Source_ItemType = -1;
+	public int Source_ProjectileType = -1;
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public bool IsFromMinion = false;
@@ -53,6 +56,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 		if (source is EntitySource_Parent parent3) {
 			if (parent3.Entity is Projectile possibly) {
+				Source_ProjectileType = possibly.type;
 				if (possibly.minion) {
 					IsFromMinion = true;
 				}
@@ -118,16 +122,27 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 				player.StrikeNPCDirect(npc, hitweaker);
 			}
 		}
+		if (Source_ItemType == ItemID.CopperBow && projectile.type != ProjectileID.Electrosphere) {
+			if (Main.rand.NextFloat() <= .15f) {
+				int min = Math.Max(projectile.damage / 4, 1);
+				Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ProjectileID.Electrosphere, min, projectile.knockBack, projectile.owner);
+				proj.timeLeft = 30;
+			}
+		}
+	}
+	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+		if (projectile.type == ProjectileID.StarCannonStar 
+			|| projectile.type == ProjectileID.Starfury 
+			|| projectile.type == ProjectileID.StarWrath 
+			&& UniversalSystem.Check_RLOH()) {
+			fallThrough = true;
+		}
+		return base.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac);
 	}
 	public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers) {
 		Player player = Main.player[projectile.owner];
 		player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount(EnergyRegainOnHit);
 		modifiers.CritDamage += CritDamage;
-	}
-	public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers) {
-		if (IsFromBoss) {
-			modifiers.FinalDamage.Flat += target.statManaMax2 * .1f;
-		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		var player = Main.player[projectile.owner];

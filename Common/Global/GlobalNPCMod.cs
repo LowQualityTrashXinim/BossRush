@@ -41,6 +41,9 @@ namespace BossRush.Common.Global {
 			var dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			LeadingConditionRule legacyLootboxCheck = new(new CheckLegacyLootboxBoss());
+			if(npc.boss) {
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new LootBoxLordDrop(), ModContent.ItemType<LootboxLordSummon>()));
+			}
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
@@ -222,12 +225,9 @@ namespace BossRush.Common.Global {
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalDrop(), ItemID.LifeCrystal));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalDrop(), ItemID.ManaCrystal));
 			LeadingConditionRule perkrule = new(new PerkDrop());
-			LeadingConditionRule perkrule2 = new(new PerkDrop2());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
-			perkrule2.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new SkillUnlockRule(), ModContent.ItemType<SkillSlotUnlock>()));
 			npcLoot.Add(perkrule);
-			npcLoot.Add(perkrule2);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);
 			npcLoot.Add(ExpertVSnormal);

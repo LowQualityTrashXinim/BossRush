@@ -368,8 +368,10 @@ Mods: {
 			Trial_IronBroadsword.DisplayName: Trial_ Iron Broadsword
 			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
 			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
-			EvilFlamesProj.DisplayName: Evil Flames Proj
-			LingeringEvilFlames.DisplayName: Lingering Evil Flames
+			SimplePiercingProjectile2.DisplayName: Simple Piercing Projectile2
+			ThunderSpearThrowProjectile.DisplayName: Thunder Spear Throw Projectile
+			Roguelike_Starfury_Projectile.DisplayName: Roguelike_ Starfury_ Projectile
+			BeeKeeperEnchantmentProjectile.DisplayName: Bee Keeper Enchantment Projectile
 		}
 
 		NPCs: {
@@ -1961,7 +1963,7 @@ Mods: {
 					'''
 					"Made to be perfect"
 					Replace normal bullet with Light-speed round
-					Drastically reduce gun inaccuracy
+					Increases critical chance strike by 5 and critical damage by 15%
 					'''
 			}
 
@@ -2707,6 +2709,21 @@ Mods: {
 				DisplayName: Old Skull Revolver
 				Tooltip: ""
 			}
+
+			FillTool: {
+				DisplayName: Fill Tool
+				Tooltip: ""
+			}
+
+			SuperTilePlacer: {
+				DisplayName: Super Tile Placer
+				Tooltip: ""
+			}
+
+			GeneralBuilderTool: {
+				DisplayName: General Builder Tool
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -3386,6 +3403,21 @@ Mods: {
 				DisplayName: Cursed Status
 				Description: Mods.BossRush.Buffs.CursedStatus.Description
 			}
+
+			PlasmaDefensesMelt: {
+				DisplayName: Plasma Defenses Melt
+				Description: Mods.BossRush.Buffs.PlasmaDefensesMelt.Description
+			}
+
+			SandArmorBuff: {
+				DisplayName: Sand Armor Buff
+				Description: Mods.BossRush.Buffs.SandArmorBuff.Description
+			}
+
+			TheRottedForkEnchantmentDebuff: {
+				DisplayName: The Rotted Fork Enchantment Debuff
+				Description: Mods.BossRush.Buffs.TheRottedForkEnchantmentDebuff.Description
+			}
 		}
 
 		Configs: {
@@ -3619,6 +3651,8 @@ Mods: {
 			Alchemic.DisplayName: Alchemic
 			Jumpy.DisplayName: Floating
 			Holy.DisplayName: Phasing
+			Chaotic.DisplayName: Chaotic
+			Unstable.DisplayName: Unstable
 		}
 	}
 }

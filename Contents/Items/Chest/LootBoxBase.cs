@@ -467,7 +467,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
-		public static void GetArmorForPlayer(IEntitySource entitySource, Player player) {
+		public static void GetArmorForPlayer(IEntitySource entitySource, Player player, bool returnOnlyPiece = false) {
 			List<int> HeadArmor = new List<int>();
 			List<int> BodyArmor = new List<int>();
 			List<int> LegArmor = new List<int>();
@@ -509,9 +509,14 @@ namespace BossRush.Contents.Items.Chest {
 				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
 				LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
 			}
-			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+			if (!returnOnlyPiece) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
+				player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
+				player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+			}
+			else {
+				player.QuickSpawnItem(entitySource, Main.rand.Next([.. LegArmor,.. BodyArmor,.. HeadArmor]));
+			}
 		}
 		/// <summary>
 		/// Return a random accessory 
@@ -987,6 +992,20 @@ namespace BossRush.Contents.Items.Chest {
 				spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, color4, 0, origin, scale, SpriteEffects.None, 0);
 			}
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+			ColorHandle();
+			Main.instance.LoadItem(Type);
+			Main.GetItemDrawFrame(Type, out Texture2D texture, out Rectangle itemFrame);
+			Vector2 origin = itemFrame.Size() / 2;
+			Vector2 drawPos = Item.Bottom - Main.screenPosition - new Vector2(0, origin.Y);
+			for (int i = 0; i < 3; i++) {
+				spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+			}
+			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 	}
 	public class LootboxSystem : ModSystem {

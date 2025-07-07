@@ -104,3 +104,33 @@ public abstract class TitaniumEnchantment : ModEnchantment {
 
 
 }
+/*
+ TODO; Add these missing enchantment
+- flymeal
+- breathing reed ( wtf )
+- exotic scimitar
+- purple clubberfish
+- fruitcake chakram
+- bloody machete
+- thorn chakram
+- combat wrench
+- mace
+- flaming mace
+- blue moon
+- sunfury
+- helwing bow
+- pew-matic horn
+- harpoon
+- starcannon
+- ale tosser
+- blowgun ( not to be confused with blowpipe )
+- flinx staff
+- abigail flower
+- vampire flog staff
+- hondius shootius
+- lighting aura rod
+- flameburst rod
+- explosive trap rod
+- ballista rod
+- flare gun ( rework honestly )
+ */

@@ -898,4 +898,10 @@ namespace BossRush.Contents.Perks {
 			player.ModPlayerStats().CappedHealthAmount = 50;
 		}
 	}
+	public class EnchantmentSmith : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+	}
 }

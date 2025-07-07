@@ -38,8 +38,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
 		public int SwingType = 0;
-		public float offset = 0;
 		public float SwingStrength = 15f;
+		/// <summary>
+		/// This will offset the animation percentage so that it create a still like sword
+		/// </summary>
+		public float OffSetAnimationPercentage = 1;
+		/// <summary>
+		/// This is the swing degree of the weapon, default value is 140
+		/// </summary>
 		public float SwingDegree = 140;
 		/// <summary>
 		/// use this if your swing type is <see cref="BossRushUseStyle.RapidThurst"/>
@@ -59,6 +65,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// </summary>
 		public float CircleSwingAmount = 1;
 		public float ShaderOffSetLength = 0;
+		public Vector2 scaleWarp = Vector2.One;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -71,6 +78,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			SwordWeaponOverhaul(item);
 			AxeWeaponOverhaul(item);
+			scaleWarp = new(item.scale);
 		}
 		public void SwordWeaponOverhaul(Item item) {
 			if (item.noMelee || item.noUseGraphic) {
@@ -328,10 +336,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case BossRushUseStyle.Swipe:
 					switch (modPlayer.ComboNumber) {
 						case 0:
-							SwipeAttack(player, 1, SwingDegree, SwingStrength);
+							SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
 							break;
 						case 1:
-							SwipeAttack(player, -1, SwingDegree, SwingStrength);
+							SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
 							break;
 						case 2:
 							CircleSwingAttack(player);
@@ -339,10 +347,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					}
 					break;
 				case BossRushUseStyle.SwipeDown:
-					SwipeAttack(player, 1, SwingDegree, SwingStrength);
+					SwipeAttack(player, 1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
 					break;
 				case BossRushUseStyle.SwipeUp:
-					SwipeAttack(player, -1, SwingDegree, SwingStrength);
+					SwipeAttack(player, -1, SwingDegree, SwingStrength, OffSetAnimationPercentage);
 					break;
 				case BossRushUseStyle.Spin:
 					CircleSwingAttack(player, CircleSwingAmount);
@@ -404,14 +412,19 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, tomouse.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke;
 		}
-		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 15f) {
-			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			percentDone = BossRushUtils.InExpo(percentDone, strength);
-			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
+		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 15f, float offsetAnimation = 1) {
+			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+			if (player.itemAnimation == player.itemAnimationMax) {
+				modPlayer.itemAnimationImproved = player.itemAnimationMax;
+			}
+			float percentDone = modPlayer.itemAnimationImproved / (float)player.itemAnimationMax;
+			percentDone = Math.Clamp(BossRushUtils.InExpo(percentDone, strength), -.1f, 1.1f);
+			float baseAngle = modPlayer.PlayerToMouseDirection.ToRotation();
 			float angle = MathHelper.ToRadians(swingDegree) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
+			modPlayer.itemAnimationImproved -= 1 * offsetAnimation;
 		}
 		private static void CircleSwingAttack(Player player, float spinAmount = 1) {
 			float percentDone = 1 - player.itemAnimation / (float)player.itemAnimationMax;
@@ -532,6 +545,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int oldHeldItem;
 		public int CountDownToResetCombo = 0;
 		public float CustomItemRotation = 0;
+		public float itemAnimationImproved = 0;
 		// sword trail fields
 		public Vector2[] swordTipPositions = new Vector2[30];
 		public float[] swordRotations = new float[30];
@@ -539,7 +553,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public float lastFrameArmRotation = 0;
 		public float startSwordSwingAngle = 0;
 		public int swordTrailLength = 30;
-
 		//This is spear value
 		public float NormalizeThrustAmount = 0;
 		public float CurrentThrust = 0;
@@ -559,12 +572,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override bool CanUseItem(Item item) {
 			if (!Player.ItemAnimationActive && item.type == Player.HeldItem.type) {
 				PlayerToMouseDirection = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
-				float scale = Player.GetAdjustedItemScale(item);
-				swordLength = item.Size.Length() * .5f * scale;
 				float baseAngle = PlayerToMouseDirection.ToRotation();
 				startSwordSwingAngle = MathHelper.TwoPi * baseAngle / MathHelper.TwoPi;
 				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-					swordLength += meleeItem.ShaderOffSetLength;
 					if (!meleeItem.HideSwingVisual) {
 						Array.Fill(swordTipPositions, Vector2.Zero);
 						Array.Fill(swordRotations, 0);
@@ -604,11 +614,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			if (Player.ItemAnimationActive) {
+				float scale = Player.GetAdjustedItemScale(item);
+				swordLength = item.Size.Length() * .55f * scale;
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
 				MeleeWeaponOverhaul overhaul = item.GetGlobalItem<MeleeWeaponOverhaul>();
 				if (overhaul.HideSwingVisual) {
 					return;
 				}
+				swordLength += overhaul.ShaderOffSetLength;
 				float extraAdd = MathHelper.ToRadians(2) * Player.direction;
 				float customAddByXinim = startSwordSwingAngle;
 				if (overhaul.SwingType == BossRushUseStyle.Spin) {

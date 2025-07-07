@@ -112,6 +112,22 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Drop if player beat boss without getting hit";
 	}
+	public class LootBoxLordDrop : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return BossRushUtils.HasPlayerKillThisNPC(NPCID.KingSlime) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.EyeofCthulhu) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.BrainofCthulhu) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.EaterofWorldsHead) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.SkeletronHead) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.QueenBee) &&
+					BossRushUtils.HasPlayerKillThisNPC(NPCID.Deerclops) && !Main.hardMode;
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "Drop if player beat all of pre HM bosses in pre HM";
+	}
 	public class DontHitBoss : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
@@ -140,17 +156,8 @@ namespace BossRush.Common.General {
 	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => false;
-		public string GetConditionDescription() => "";
-	}
-	public class PerkDrop2 : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5;
+				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1 
+					|| ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5;
 			}
 			return false;
 		}

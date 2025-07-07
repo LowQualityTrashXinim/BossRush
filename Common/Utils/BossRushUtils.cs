@@ -1,18 +1,26 @@
-﻿using System;
-using Terraria;
+﻿using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using BossRush.Common.Global;
 using Terraria.WorldBuilding;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static string LocalizationText(string text, string extra = null) {
+			if (string.IsNullOrEmpty(extra)) {
+				return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}");
+			}
+			return Language.GetTextValue($"Mods.BossRush.{Regex.Replace(text, @"\s+", "")}.{Regex.Replace(extra, @"\s+", "")}");
+		}
 		//Taken from chatGPT
 		public static Color FakeHueShift(Color original, float hueShiftDegrees) {
 			float r = original.R / 255f;
@@ -364,13 +372,24 @@ namespace BossRush {
 		public static float InSine(float t) => (float)-Math.Cos(t * MathHelper.PiOver2);
 		public static float OutSine(float t) => (float)Math.Sin(t * MathHelper.PiOver2);
 		public static float InOutSine(float t) => (float)(Math.Cos(t * Math.PI) - 1) * -.5f;
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
+		/// <param name="t"></param>
+		/// <returns></returns>
 		public static float InBack(float t) {
 			float s = 1.70158f;
 			return t * t * ((s + 1) * t - s);
 		}
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
 		public static float OutBack(float t) => 1 - InBack(1 - t);
+		/// <summary>
+		/// These are broken do not use them
+		/// </summary>
 		public static float InOutBack(float t) {
-			if (t < 0.5) return InBack(t) * .5f;
+			if (t < .5f) return InBack(t) * .5f;
 			return 1 - InBack((1 - t)) * .5f;
 		}
 		public static bool lineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
