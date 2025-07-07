@@ -35,43 +35,28 @@ VertexShaderOutput ShaderVS(VertexShaderInput input)
     return output;
 
 }
-
-
-float2 Rotate(float2 uv, float amount)
-{
-    float2 uv2 = uv;
-    float s = sin(amount);
-    float c = cos(amount);
-    uv2.x = (uv.x * c) + (uv.y * -s);
-    uv2.y = (uv.x * s) + (uv.y * c);
-
-    return uv2;
-    
-}
-
-float2 expandInsideOutside(float2 uv)
-{
-    float1 t = time + shaderData.w;
-    float2 uv2 = Rotate(uv, t);
-    float1 d = length(uv2);
-
-    return (d * uv2 + ((t) - uv2));
-    
-}
 float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COLOR0
 {
+    float2 centeredUV = texCoords;
+    centeredUV -= 0.5;
+    centeredUV *= 2.;
+    float2 pixelatedUV = round(centeredUV * (128.)) / 128.;
+    float d = length(pixelatedUV);
+    float angle = atan2(pixelatedUV.y, pixelatedUV.x);
+    float2 VortexUV = float2(sin(angle + d * 5 - time * 3), d + time);
+    float4 finalCol = tex2D(image1, VortexUV).r * lerp(float4(color, 15), float4(1, .0, 0, 1), smoothstep(0, 2, d * 2)) * smoothstep(1, 0., d);
+    finalCol.rgb = lerp(finalCol.rgb, color, finalCol.rgb);
+    finalCol = floor(finalCol * (6)) / 6;
+    finalCol += smoothstep(float4(1,0,1,1),finalCol,d * 4).rrrr;
     
-    float laserStyle = length(((texCoords.x) - 1) / 120) * length(1 / ((texCoords.y) - 0.5));
-    float4 coloredLine = color.rgbr * laserStyle;
-    return coloredLine;
-    
+    return finalCol * 3;
 }
 
 technique t0
 {
-    pass ColorIndicatorEffect
+    pass Rift
     {
-        VertexShader = compile vs_2_0 ShaderVS();
-        PixelShader = compile ps_2_0 ShaderPS();
+        VertexShader = compile vs_3_0 ShaderVS();
+        PixelShader = compile ps_3_0 ShaderPS();
     }
 }

@@ -16,7 +16,7 @@ using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 
-namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses;
+namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses.KingSlime;
 internal class KingSlime : NPCReworker {
 	public override int VanillaNPCType => NPCID.KingSlime;
 
@@ -34,12 +34,12 @@ internal class KingSlime : NPCReworker {
 	NPC crownNPC = null;
 	State state {
 
-		get { return (State)AIState; }
+		get { return (State)AIStateSync; }
 		set {
-			AIState = (int)value;
+			AIStateSync = (int)value;
 
 
-			switch ((State)AIState) {
+			switch ((State)AIStateSync) {
 
 
 				case State.Idle: {
@@ -54,14 +54,14 @@ internal class KingSlime : NPCReworker {
 
 								case 1: {
 
-										AIState = (int)State.LaserRotate;
+										AIStateSync = (int)State.LaserRotate;
 
 										break;
 									}
 
 								case 2: {
 
-										AIState = (int)State.RubySpray;
+										AIStateSync = (int)State.RubySpray;
 
 										break;
 									}
@@ -72,7 +72,7 @@ internal class KingSlime : NPCReworker {
 						}
 						else if (Main.rand.NextBool(7)) {
 
-							AIState = (int)State.SlamJump;
+							AIStateSync = (int)State.SlamJump;
 
 						}
 						NeedsNetUpdate = true;
@@ -114,7 +114,7 @@ internal class KingSlime : NPCReworker {
 
 		}
 
-		foreach (Projectile proj in Main.ActiveProjectiles) {
+		foreach (var proj in Main.ActiveProjectiles) {
 
 			if (proj.type == ModContent.ProjectileType<KingSlimeSludgeProjectile>())
 				proj.Kill();
@@ -175,7 +175,7 @@ internal class KingSlime : NPCReworker {
 						// i love calculas! (said by someone who got below F on calculas class)
 
 						float t = 3;
-						Vector2 distanceToTarget = new Vector2(MathF.Abs(npc.Center.X - npc.targetRect.Center.X), MathF.Abs(npc.Center.Y - npc.targetRect.Top));
+						var distanceToTarget = new Vector2(MathF.Abs(npc.Center.X - npc.targetRect.Center.X), MathF.Abs(npc.Center.Y - npc.targetRect.Top));
 						float angle = MathHelper.ToRadians(Main.rand.NextFloat(60, 80));
 						float maxJumpHeight = 12 + distanceToTarget.Y / 32f * (npc.gravity * t);
 						//float trajectoryFormula1 = MathF.Sqrt(MathF.Pow(maxJumpHeight, 4f) - npc.gravity * (npc.gravity * MathF.Pow(distanceToTarget.X, 2f) + 2f * distanceToTarget.Y * MathF.Pow(maxJumpHeight, 2f)));
@@ -197,7 +197,7 @@ internal class KingSlime : NPCReworker {
 						afterimages = true;
 						if (npc.oldVelocity.Y <= 1 && npc.velocity.Y > 0 && !firedRuby && crownNPC == null && Delay2 == 0) {
 							firedRuby = true;
-							Projectile.NewProjectile(npc.GetSource_FromAI(), crownPos, (crownPos).DirectionTo(npc.targetRect.Center()) * 5, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI);
+							NewProjectileWithMPCheck(npc.GetSource_FromAI(), crownPos, crownPos.DirectionTo(npc.targetRect.Center()) * 5, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI);
 
 						}
 
@@ -239,7 +239,7 @@ internal class KingSlime : NPCReworker {
 							Counter = 0;
 							Counter2 = 0;
 						}
-						this.distanceToTarget = npc.Distance(npc.targetRect.Center());
+						distanceToTarget = npc.Distance(npc.targetRect.Center());
 
 
 						break;
@@ -263,7 +263,7 @@ internal class KingSlime : NPCReworker {
 
 
 						}
-						this.distanceToTarget = npc.Distance(npc.targetRect.Center());
+						distanceToTarget = npc.Distance(npc.targetRect.Center());
 
 						if (Counter >= 5 && npc.Center.X > npc.targetRect.Center.X - 16 && npc.Center.X < npc.targetRect.Center.X + 16)
 							state = State.Slamming;
@@ -285,20 +285,26 @@ internal class KingSlime : NPCReworker {
 						}
 
 						if (Counter % 110 == 0) {
-							Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
+							NewProjectileWithMPCheck(npc.GetSource_FromAI(), npc.Center - new Vector2(0, npc.Center.Y - crownPos.Y), Vector2.Zero, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 2, npc.Center.Y - crownPos.Y);
 
 
 
 						}
 
-						if (Counter % 220 == 0) {
-							NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(7, -7);
-							NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(-7, -7);
 
+						if(Counter % 220 == 0)
+						{
 
+							if(Main.netMode != NetmodeID.MultiplayerClient)
+							{
+								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(7, -7);
+								NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<KingSlimeMinion>(), 0, 0).velocity = new Vector2(-7, -7);
+
+							}
+						
 						}
 
-						currentScale = BossRushUtils.ClampedLerp(new Vector2(0.8f, 1), new Vector2(1.15f, 1), MathF.Cos(Counter * 0.1f) + 0.5f);
+						currentScale = new Vector2(0.8f, 1).ClampedLerp(new Vector2(1.15f, 1), MathF.Cos(Counter * 0.1f) + 0.5f);
 
 
 
@@ -325,14 +331,14 @@ internal class KingSlime : NPCReworker {
 
 						}
 						else
-							currentScale = Vector2.One.ClampedLerp(new Vector2(2f, 0.5f), Terraria.Utils.PingPongFrom01To010(BossRushUtils.OutSine((Counter) / 40f)));
+							currentScale = Vector2.One.ClampedLerp(new Vector2(2f, 0.5f), Terraria.Utils.PingPongFrom01To010(BossRushUtils.OutSine(Counter / 40f)));
 
 
 						if (Counter % 5 == 0 && Counter2 <= 9) {
 
 							for (int i = 0; i < 2; i++) {
 
-								Projectile.NewProjectileDirect(npc.GetSource_FromAI(), crownPos, (npc.Center - new Vector2(0, 64)).DirectionTo(npc.targetRect.Center()).RotatedBy((Counter2 / 8f) * -MathHelper.Pi + MathHelper.PiOver2) * 6, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 0).FillProjectileOldPosAndRot();
+								NewProjectileWithMPCheck(npc.GetSource_FromAI(), crownPos, (npc.Center - new Vector2(0, 64)).DirectionTo(npc.targetRect.Center()).RotatedBy(Counter2 / 8f * -MathHelper.Pi + MathHelper.PiOver2) * 6, ModContent.ProjectileType<SlimeKingRubyBolt>(), npc.damage / 5, 0, -1, npc.whoAmI, 0);
 
 
 							}
@@ -346,7 +352,7 @@ internal class KingSlime : NPCReworker {
 						currentScale.X = 1f.ClampedLerp(2f, Counter / 100f);
 						currentScale.Y = 1f.ClampedLerp(0.5f, BossRushUtils.EaseOutBounce(Counter / 100f));
 						Counter++;
-						Point tilePos = npc.Center.ToTileCoordinates();
+						var tilePos = npc.Center.ToTileCoordinates();
 
 						if (Counter == 100)
 							targetDirectionPredicate = target.velocity.X >= target.maxRunSpeed ? target.velocity.SafeNormalize(Vector2.Zero) : Vector2.Zero;
@@ -360,7 +366,7 @@ internal class KingSlime : NPCReworker {
 
 
 							if (Counter < 160 && Counter > 140)
-								npc.position.X = npc.position.X.ClampedLerp((npc.targetRect.Center().X + targetDirectionPredicate.X * 250) - npc.Hitbox.Width / 2f, 0.2f);
+								npc.position.X = npc.position.X.ClampedLerp(npc.targetRect.Center().X + targetDirectionPredicate.X * 250 - npc.Hitbox.Width / 2f, 0.2f);
 						}
 						if (Counter >= 180) {
 
@@ -368,16 +374,16 @@ internal class KingSlime : NPCReworker {
 
 						}
 
-						if (npc.Center.Y + npc.height >= target.Bottom.Y && ((Counter >= 180 + 1000 / 40f - npc.Hitbox.Height / 40) && !WorldGen.TileEmpty(tilePos.X, tilePos.Y + 8))) {
+						if (npc.Center.Y + npc.height >= target.Bottom.Y && Counter >= 180 + 1000 / 40f - npc.Hitbox.Height / 40 && !WorldGen.TileEmpty(tilePos.X, tilePos.Y + 8)) {
 							npc.noTileCollide = false;
 							npc.noGravity = false;
 							state = State.Idle;
 							Counter = 0;
 							Delay = 40;
 							for (int i = 0; i < 12; i++) {
-								Vector2 vel = Vector2.UnitX.Vector2RotateByRandom(30) * Main.rand.NextFloat(5, 11);
+								var vel = Vector2.UnitX.Vector2RotateByRandom(30) * Main.rand.NextFloat(5, 11);
 
-								Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<KingSlimeSludgeProjectile>(), 0, 0);
+								NewProjectileWithMPCheck(npc.GetSource_FromAI(), npc.Center, vel.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<KingSlimeSludgeProjectile>(), 0, 0);
 
 
 							}
@@ -390,7 +396,7 @@ internal class KingSlime : NPCReworker {
 					}
 
 			}
-		crownPos = npc.Center - new Vector2(-npc.velocity.X, ((MathHelper.Lerp(0, 40, npc.scale - ((1 - npc.scale))))) * currentScale.Y);
+		crownPos = npc.Center - new Vector2(-npc.velocity.X, MathHelper.Lerp(0, 40, npc.scale - (1 - npc.scale)) * currentScale.Y);
 
 	}
 	// also dust cuz it makes sense to be here also
@@ -411,14 +417,14 @@ internal class KingSlime : NPCReworker {
 
 		//DrawAfterimages(npc, spriteBatch, screenPos, drawColor);
 
-		Main.EntitySpriteDraw(TextureAssets.Npc[npc.type].Value, npc.Center - screenPos + new Vector2(0, npc.frame.Height / 2 * (1f - currentScale.Y + (1f - npc.scale)) + 8 * (npc.scale)), npc.frame, drawColor * 0.9f, npc.rotation, npc.frame.Size() / 2f, npc.scale * currentScale, SpriteEffects.None);
+		Main.EntitySpriteDraw(TextureAssets.Npc[npc.type].Value, npc.Center - screenPos + new Vector2(0, npc.frame.Height / 2 * (1f - currentScale.Y + (1f - npc.scale)) + 8 * npc.scale), npc.frame, drawColor * 0.9f, npc.rotation, npc.frame.Size() / 2f, npc.scale * currentScale, SpriteEffects.None);
 
 		if (crownNPC == null)
 			Main.EntitySpriteDraw(TextureAssets.Extra[39].Value, crownPos - screenPos - new Vector2(0, 8), null, drawColor, npc.rotation, TextureAssets.Extra[39].Size() / 2f, 1f, SpriteEffects.None);
 
 		if (state == State.SlamJump && Counter >= 140 && Counter < 180) {
 
-			ShaderSettings shaderSettings = new ShaderSettings();
+			var shaderSettings = new ShaderSettings();
 			shaderSettings.image1 = TextureAssets.Extra[193];
 			shaderSettings.image2 = null;
 			shaderSettings.image3 = null;
@@ -523,7 +529,7 @@ public class SlimeKingRubyBolt : ModProjectile {
 
 			case 2: {
 					if (Projectile.timeLeft <= 30) {
-						progress = 1f.ClampedLerp(0f, BossRushUtils.InOutExpo((Projectile.timeLeft) / 30f, 3f));
+						progress = 1f.ClampedLerp(0f, BossRushUtils.InOutExpo(Projectile.timeLeft / 30f, 3f));
 
 					}
 
@@ -546,10 +552,10 @@ public class SlimeKingRubyBolt : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 
-		BossRushUtils.DrawPrettyStarSparkle(1f, SpriteEffects.None, startingPos - Main.screenPosition, Color.Red, Color.Red, ((Projectile.timeLeft - 280f) / 20f), 0.2f, 1, 0.5f, 0f, Projectile.rotation, Vector2.One * 5f, Vector2.One);
+		BossRushUtils.DrawPrettyStarSparkle(1f, SpriteEffects.None, startingPos - Main.screenPosition, Color.Red, Color.Red, (Projectile.timeLeft - 280f) / 20f, 0.2f, 1, 0.5f, 0f, Projectile.rotation, Vector2.One * 5f, Vector2.One);
 
 		if (Projectile.ai[1] != 2) {
-			ShaderSettings settings = new ShaderSettings();
+			var settings = new ShaderSettings();
 			settings.Color = Color.IndianRed;
 			settings.shaderData = new Vector4(0, 0, 0, 0);
 			settings.image1 = TextureAssets.Extra[193];
@@ -560,18 +566,18 @@ public class SlimeKingRubyBolt : ModProjectile {
 
 		for (float i = MathHelper.TwoPi; i > 0; i -= MathHelper.TwoPi / numOfLasers) {
 			int length = 4000;
-			ShaderSettings shaderSettings = new ShaderSettings();
+			var shaderSettings = new ShaderSettings();
 			shaderSettings.image1 = TextureAssets.Extra[193];
 			shaderSettings.image2 = null;
 			shaderSettings.image3 = null;
 			shaderSettings.Color = Color.IndianRed;
 			shaderSettings.shaderData = new Vector4(progress, length, 0, 0);
-			ShaderSettings shaderSettings2 = new ShaderSettings();
+			var shaderSettings2 = new ShaderSettings();
 			shaderSettings2.image1 = TextureAssets.Extra[193];
 			shaderSettings2.image2 = null;
 			shaderSettings2.image3 = null;
-			shaderSettings2.Color = Color.Lerp(Color.Red, Color.CornflowerBlue, (Projectile.timeLeft / 140f));
-			shaderSettings2.shaderData = new Vector4(1f - (Projectile.timeLeft / 120f), length, 0, 0);
+			shaderSettings2.Color = Color.Lerp(Color.Red, Color.CornflowerBlue, Projectile.timeLeft / 140f);
+			shaderSettings2.shaderData = new Vector4(1f - Projectile.timeLeft / 120f, length, 0, 0);
 			if (progress < 0.25)
 				default(ColorIndicatorQuad).Draw(Projectile.Center, i + lasersRotation, new Vector2(length, 256), shaderSettings2);
 			else
@@ -618,7 +624,7 @@ public class KingSlimeSludgeTile : ModTile {
 		return true;
 	}
 	public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
-		Tile t = Main.tile[i, j];
+		var t = Main.tile[i, j];
 
 		return base.TileFrame(i, j, ref resetFrame, ref noBreak);
 	}
@@ -632,7 +638,9 @@ public class KingSlimeSludgeTile : ModTile {
 	}
 
 	public override void RandomUpdate(int i, int j) {
-		NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
+
+		if(Main.netMode != NetmodeID.MultiplayerClient)
+			NPC.NewNPCDirect(null, new Point(i, j).ToWorldCoordinates(), ModContent.NPCType<KingSlimeMinionSpawner>());
 
 
 	}
@@ -665,7 +673,7 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 		Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -999, 20);
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		Dust.NewDustPerfect(Projectile.position, DustID.t_Slime, newColor: Color.CornflowerBlue);
-		Point tilePos = Projectile.position.ToTileCoordinates();
+		var tilePos = Projectile.position.ToTileCoordinates();
 
 		if (!WorldGen.TileEmpty(tilePos.X, tilePos.Y) && TileID.Sets.Platforms[WorldGen.TileType(tilePos.X, tilePos.Y)] && Main.rand.NextBool(15)) {
 			Projectile.Kill();
@@ -683,12 +691,12 @@ public class KingSlimeSludgeProjectile : ModProjectile {
 	}
 	public override void OnKill(int timeLeft) {
 
-		Point tilePos = Projectile.oldPosition.ToTileCoordinates();
+		var tilePos = Projectile.oldPosition.ToTileCoordinates();
 
 		for (int i = 0; i < 32; i++)
 			Dust.NewDustPerfect(Projectile.position, DustID.t_Slime, Main.rand.NextVector2CircularEdge(5, 5), 0, Color.CornflowerBlue);
 
-		Shapes.Mound circle = new Shapes.Mound(2, Main.rand.Next(0, 4));
+		var circle = new Shapes.Mound(2, Main.rand.Next(0, 4));
 
 		WorldUtils.Gen(tilePos, circle, Actions.Chain(new GenAction[]
 		{
@@ -713,8 +721,8 @@ public class KingSlimePlayer : ModPlayer {
 	}
 
 	public override void PostUpdate() {
-		Point oldPos = (Player.oldPosition - Player.Hitbox.Size() / 2f + new Vector2(0, Player.Hitbox.Height)).ToTileCoordinates();
-		if (Terraria.WorldGen.TileType(oldPos.X, oldPos.Y) == ModContent.TileType<KingSlimeSludgeTile>() && WorldGen.TileEmpty(Player.Center.ToTileCoordinates().X, Player.Center.ToTileCoordinates().Y)) {
+		var oldPos = (Player.oldPosition - Player.Hitbox.Size() / 2f + new Vector2(0, Player.Hitbox.Height)).ToTileCoordinates();
+		if (WorldGen.TileType(oldPos.X, oldPos.Y) == ModContent.TileType<KingSlimeSludgeTile>() && WorldGen.TileEmpty(Player.Center.ToTileCoordinates().X, Player.Center.ToTileCoordinates().Y)) {
 			WorldGen.KillTile(oldPos.X, oldPos.Y);
 
 		}
@@ -750,7 +758,7 @@ public class KingSlimeMinionSpawner : ModNPC {
 
 	}
 	public override void AI() {
-		Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2CircularEdge(MathHelper.Lerp(64, 16, 1f - (Duration / 160f)), MathHelper.Lerp(64, 16, 1f - (Duration / 160f))), DustID.GemSapphire, Vector2.Zero, 0, Color.Cyan, 2f).noGravity = true;
+		Dust.NewDustPerfect(NPC.Center + Main.rand.NextVector2CircularEdge(MathHelper.Lerp(64, 16, 1f - Duration / 160f), MathHelper.Lerp(64, 16, 1f - Duration / 160f)), DustID.GemSapphire, Vector2.Zero, 0, Color.Cyan, 2f).noGravity = true;
 
 		if (--Duration < 0) {
 			var npc = NPC.NewNPCDirect(null, NPC.Center, ModContent.NPCType<KingSlimeMinion>());
@@ -817,10 +825,10 @@ public class KingSlimeCrown : ModNPC {
 	ref float Delay => ref NPC.ai[1];
 	ref float Counter2 => ref NPC.ai[2];
 	public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-		if (NPC.HasValidTarget && ((state == AIState.Charging && Counter <= 15) || (state == AIState.Idle && Counter < 260 && Counter > 245f && magnetSlime != null))) {
+		if (NPC.HasValidTarget && (state == AIState.Charging && Counter <= 15 || state == AIState.Idle && Counter < 260 && Counter > 245f && magnetSlime != null)) {
 			var player = Main.player[NPC.target];
 			float length = NPC.Distance(player.Center);
-			ShaderSettings shaderSettings = new ShaderSettings();
+			var shaderSettings = new ShaderSettings();
 			shaderSettings.image1 = TextureAssets.Extra[193];
 			shaderSettings.image2 = null;
 			shaderSettings.image3 = null;
@@ -866,7 +874,7 @@ public class KingSlimeCrown : ModNPC {
 						Counter2 += MathHelper.TwoPi / 120f;
 						//slime magnet
 						if (Counter == 60) {
-							foreach (NPC npc in Main.ActiveNPCs) {
+							foreach (var npc in Main.ActiveNPCs) {
 
 								if (npc.type == ModContent.NPCType<KingSlimeMinion>()) {
 									magnetSlime = npc;
@@ -984,7 +992,7 @@ public class KingSlimeMinion : ModNPC {
 		NPC.lifeMax = 50;
 	}
 	public override Color? GetAlpha(Color drawColor) {
-		Color blend = Color.CornflowerBlue;
+		var blend = Color.CornflowerBlue;
 		blend.A = 100;
 		return blend;
 	}

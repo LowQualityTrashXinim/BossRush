@@ -38,12 +38,14 @@ public class Tween<T> where T : struct {
 	private TweenEaseType easeType;
 	public TweenState state;
 	private float endDuration = 0;
-	public Action onFinsihed;
+	public Action<Tween<T>> onFinsihed;
 	public delegate T lerpFunction(T value1, T value2, float amount);
 	public lerpFunction lerp;
-	public Tween(lerpFunction lerpFunc) {
+	public bool pingpongEnabled = false;
+	public Tween(lerpFunction lerpFunc, bool pingpong = false) {
 
 		lerp = lerpFunc;
+		pingpongEnabled = pingpong;
 	}
 	public Tween<T> Start(T start, T finish, TweenEaseType type, int duration) {
 		this.start = start;
@@ -95,25 +97,20 @@ public class Tween<T> where T : struct {
 				currentProgressPercentage = BossRushUtils.OutSine(currentDuration / endDuration);
 				break;
 			case TweenEaseType.InExpo:
-				currentProgressPercentage = BossRushUtils.InExpo(currentDuration / endDuration);
+				currentProgressPercentage = BossRushUtils.InExpo(currentDuration / endDuration,11f);
 				break;
 			case TweenEaseType.OutExpo:
-				currentProgressPercentage = BossRushUtils.OutExpo(currentDuration / endDuration);
+				currentProgressPercentage = BossRushUtils.OutExpo(currentDuration / endDuration,11f);
 				break;
 		}
+		if (pingpongEnabled)
+			Terraria.Utils.PingPongFrom01To010(currentProgressPercentage);
 		currentProgress = lerp(start, finish, currentProgressPercentage);
-
 		if (currentDuration == endDuration) {
-
-			onFinsihed?.Invoke();
+			onFinsihed?.Invoke(this);
 			state = TweenState.Stopped;
-
 		}
-
-
 	}
-
-
 }
 
 /// <summary>
@@ -125,30 +122,28 @@ public class TweenHandler<T> where T : struct {
 	public List<Tween<T>> tweens = new List<Tween<T>>();
 	public Tween<T> currentTween;
 	public void PlayTweens() {
-		int i = 0;
-		foreach (var t in tweens) {
-			i++;
-
-			t.onFinsihed += () => {
-				currentTween = tweens.ElementAt(i - 1).Start();
-			};
-
+	
+		foreach(var t in tweens)
+		{
+			t.onFinsihed += LinkTween;
 		}
 
-		currentTween = tweens.First().Start();
+		currentTween = tweens[0].Start();
 	}
+
+	public void LinkTween(Tween<T> finishedTween)
+	{	
+		int nextIndex = tweens.IndexOf(finishedTween) + 1;
+		if(nextIndex < tweens.Count)
+			currentTween = tweens[nextIndex].Start();
+	}
+
 	public void Pause() => currentTween.Pause();
 	public void Resume() => currentTween.Resume();
 
 	public void Update() {
-
 		foreach (var t in tweens) {
-
 			t.Update();
-
 		}
-
 	}
-
-
 }
