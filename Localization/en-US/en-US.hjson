@@ -368,6 +368,8 @@ Mods: {
 			Trial_IronBroadsword.DisplayName: Trial_ Iron Broadsword
 			CursedSkullPortalProjectile.DisplayName: Cursed Skull Portal Projectile
 			ShadowFlameSkullPortalProjectile.DisplayName: Shadow Flame Skull Portal Projectile
+			EvilFlamesProj.DisplayName: Evil Flames Proj
+			LingeringEvilFlames.DisplayName: Lingering Evil Flames
 		}
 
 		NPCs: {
