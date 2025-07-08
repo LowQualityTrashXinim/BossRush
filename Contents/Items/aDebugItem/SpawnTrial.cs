@@ -1,5 +1,7 @@
-﻿using BossRush.Common.Systems.TrialSystem;
+﻿using BossRush.Common.Systems.ObjectSystem;
+using BossRush.Common.Systems.TrialSystem;
 using BossRush.Texture;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,5 +17,16 @@ internal class SpawnTrial : ModItem {
 			TrialModSystem.SetTrial(0, player.Center);
 		}
 		return base.UseItem(player);
+	}
+}
+class TrialProtal : ModObject {
+	public override void SetDefaults() {
+		timeLeft = 9999;
+	}
+	public override void AI() {
+		base.AI();
+	}
+	public override void Draw(SpriteBatch spritebatch) {
+		base.Draw(spritebatch);
 	}
 }

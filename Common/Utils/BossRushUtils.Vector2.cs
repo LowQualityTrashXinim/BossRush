@@ -1,8 +1,9 @@
-﻿using System;
+﻿using BossRush;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
+using System;
 using Terraria;
 using Terraria.Utilities;
-using Microsoft.Xna.Framework;
-using BossRush;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -40,7 +41,12 @@ namespace BossRush {
 		}
 		public static Vector2 NextPointOn2Vector2(Vector2 point1, Vector2 point2) {
 			float length = Vector2.Distance(point1, point2);
-			return point1.PositionOFFSET(point2 - point1, Main.rand.NextFloat(length));
+			return point1.IgnoreTilePositionOFFSET(point2 - point1, Main.rand.NextFloat(length));
+		}
+		public static Vector2 NextPointOn2Vector2(Point point1, Point point2) {
+			Vector2 vec1 = point1.ToVector2(), vec2 = point2.ToVector2();
+			float length = Vector2.Distance(vec1, vec2);
+			return vec1.IgnoreTilePositionOFFSET(vec2 - vec1, Main.rand.NextFloat(length));
 		}
 		public static bool Vector2WithinRectangle(this Vector2 position, float X, float Y, Vector2 Center) {
 			Vector2 positionNeedCheck1 = new Vector2(Center.X + X, Center.Y + Y);

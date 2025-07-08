@@ -22,6 +22,9 @@ public class Roguelike_Starfury : GlobalItem {
 			return;
 		}
 		int counter = player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter;
+		if(player.GetModPlayer<Roguelike_Starfury_ModPlayer>().PerfectStrike) {
+			counter = 300;
+		}
 		if (counter >= 150) {
 			type = ModContent.ProjectileType<Roguelike_Starfury_Projectile>();
 			damage += counter / 5;
@@ -32,9 +35,50 @@ public class Roguelike_Starfury : GlobalItem {
 }
 public class Roguelike_Starfury_ModPlayer : ModPlayer {
 	public int Starfury_Counter = 0;
+	public bool PerfectStrike = false;
 	public override void ResetEffects() {
 		if (++Starfury_Counter >= 300) {
 			Starfury_Counter = 300;
+		}
+		if (Player.HeldItem.type != ItemID.Starfury) {
+			return;
+		}
+		PerfectStrike = Starfury_Counter >= 150 && Starfury_Counter <= 165;
+		if (PerfectStrike && Starfury_Counter == 150) {
+			SpawnStarEffect();
+		}
+	}
+	private void SpawnStarEffect() {
+		//Taken from vanilla code :>>
+		Vector2 center3 = Player.Center - Vector2.UnitY * 150;
+		Color celeb2Color3 = new Color(255, 255, 0, 0);
+		float num9 = .1f;
+		float num10 = .1f;
+
+		float num11 = Main.rand.NextFloatDirection();
+		for (float num12 = 0f; num12 < 5f; num12 += 1f) {
+			Vector2 spinningpoint = new Vector2(0f, -100f);
+			Vector2 vector4 = center3 + spinningpoint.RotatedBy(num11 + num12 * ((float)Math.PI * 2f / 5f));
+			Vector2 vector5 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 1f) * ((float)Math.PI * 2f / 5f));
+			Vector2 vector6 = center3 + spinningpoint.RotatedBy(num11 + (num12 + 0.5f) * ((float)Math.PI * 2f / 5f)) * 0.4f;
+			for (int num13 = 0; num13 < 2; num13++) {
+				Vector2 value = vector4;
+				Vector2 value2 = vector6;
+				if (num13 == 1) {
+					value = vector6;
+					value2 = vector5;
+				}
+
+				for (float num14 = 0f; num14 < 1f; num14 += num10) {
+					Vector2 vector7 = Vector2.Lerp(value, value2, num14);
+					Vector2 vector8 = Vector2.Lerp(vector7, center3, 0.9f);
+					Vector2 vector9 = (vector7 - vector8).SafeNormalize(Vector2.Zero);
+					Dust dust5 = Dust.NewDustPerfect(vector8, 267, Vector2.Zero, 0, celeb2Color3, 0.5f);
+					dust5.fadeIn = 1.2f;
+					dust5.noGravity = true;
+					dust5.velocity = vector9 * Vector2.Distance(vector7, vector8) * num9;
+				}
+			}
 		}
 	}
 }

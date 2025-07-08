@@ -347,6 +347,9 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
+		public virtual void OutroAttack(Player player) {
+
+		}
 		public string Set_TooltipName(int ItemID) => $"{Name}_{ContentSamples.ItemsByType[ItemID].Name}";
 		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();

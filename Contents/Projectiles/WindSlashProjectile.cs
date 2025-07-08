@@ -1,8 +1,11 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Projectiles;
 public class WindSlashProjectile : ModProjectile {
@@ -61,6 +64,45 @@ public class WindSlashProjectile : ModProjectile {
 			color.A = 0;
 			Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, origin, Projectile.scale - k * .02f, SpriteEffects.None, 0);
 		}
+		return false;
+	}
+}
+public class FlyingSlashProjectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<FlyingSlashProjectile>("SlashProjectile2");
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 60;
+		Projectile.timeLeft = 120;
+		Projectile.friendly = true;
+		Projectile.hostile = false;
+		Projectile.penetrate = 8;
+		Projectile.tileCollide = false;
+		Projectile.ignoreWater = true;
+		Projectile.light = 10f;
+		Projectile.ArmorPenetration = 2;
+		Projectile.stopsDealingDamageAfterPenetrateHits = true;
+		Projectile.extraUpdates = 3;
+	}
+
+	public override void SetStaticDefaults() {
+	}
+	public Color projectileColor = Color.White;
+	public override void AI() {
+		Projectile.velocity *= .98f;
+		Projectile.spriteDirection = Projectile.direction;
+		Projectile.rotation = Projectile.velocity.ToRotation();
+		if(Projectile.timeLeft < 30) {
+			projectileColor *= .8f;
+		}
+		if (Projectile.spriteDirection == -1) {
+			Projectile.rotation += MathHelper.Pi;
+		}
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Type);
+		Texture2D texture = TextureAssets.Projectile[Type].Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = Projectile.Center - Main.screenPosition;
+		Main.EntitySpriteDraw(texture, drawPos, null, projectileColor, Projectile.rotation, origin, Projectile.scale, Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
 		return false;
 	}
 }

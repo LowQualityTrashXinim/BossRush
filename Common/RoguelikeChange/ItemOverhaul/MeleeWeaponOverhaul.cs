@@ -1,24 +1,14 @@
-﻿using BossRush.Common.General;
-using BossRush.Common.Global;
-using BossRush.Common.Graphics;
+﻿using BossRush.Common.Graphics;
 using BossRush.Common.Graphics.Structs.TrailStructs;
 using BossRush.Common.Systems;
-using BossRush.Contents.Perks;
-using BossRush.Contents.Perks.WeaponUpgrade.Content;
-using BossRush.Contents.Projectiles;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Steamworks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -64,6 +54,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// This will tell the code how much should the player spin the weapon
 		/// </summary>
 		public float CircleSwingAmount = 1;
+		public int AnimationEndTime = 0;
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
 		public override bool InstancePerEntity => true;
@@ -318,8 +309,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modifiers.HitDirectionOverride = BossRushUtils.DirectionFromEntityAToEntityB(player.Center.X, target.Center.X);
 			}
 		}
+		public override bool? CanAutoReuseItem(Item item, Player player) {
+			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) && player.ItemAnimationActive) {
+				ModdedUseStyle(item, player);
+			}
+			return base.CanAutoReuseItem(item, player);
+		}
 		public override bool CanUseItem(Item item, Player player) {
-			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
+			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) && player.ItemAnimationActive) {
 				ModdedUseStyle(item, player);
 			}
 			return base.CanUseItem(item, player);
@@ -497,8 +494,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		private void On_PlayerDrawLayers_DrawPlayer_RenderAllLayers(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo) {
 			Player player = Main.LocalPlayer;
 			Item item = player.HeldItem;
+			if(item.noMelee || item.noUseGraphic) {
+				orig.Invoke(ref drawinfo);
+				return; 
+			}
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer) && item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-				if (modplayer.ComboNumber == 1 || meleeItem.SwingType == BossRushUseStyle.SwipeUp) {
+				if (modplayer.ComboNumber == 1 || meleeItem.SwingType == BossRushUseStyle.SwipeUp ) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
 				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual) {
@@ -557,16 +558,18 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public float NormalizeThrustAmount = 0;
 		public float CurrentThrust = 0;
 		public float PercentageHandle = 0;
+		public float Item_LastFrameRotation = 0;
+		public Vector2 Item_LastFramePosition = Vector2.Zero;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
 				oldHeldItem = item.type;
-				ComboNumber = -1;
+				ComboNumber = 1;
 				CountDownToResetCombo = 0;
 			}
 			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
 			if (CountDownToResetCombo <= 0) {
-				ComboNumber = -1;
+				ComboNumber = 1;
 			}
 		}
 		public override bool CanUseItem(Item item) {

@@ -23,7 +23,6 @@ using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace BossRush.Common.RoguelikeChange.NPCsOverhaul.Bosses.EyeofCuthulu;
 public class EyeofCuthulu : NPCReworkerFSM {
@@ -403,8 +402,6 @@ public class EoC_Idle : AIState {
 				break;
 		}
 		attackCounter++;
-		nextAttack = StateType<EoC_SwarmShield>();
-
 	}
 
 	float mag = 0;

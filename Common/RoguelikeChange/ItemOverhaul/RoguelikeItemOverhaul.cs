@@ -444,6 +444,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			OnHitNPC_WoodBow(proj, target);
 			OnHitNPC_TheUnderTaker(proj, target);
+			OnHitNPC_Boomerang(proj, target);
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool(4)) {

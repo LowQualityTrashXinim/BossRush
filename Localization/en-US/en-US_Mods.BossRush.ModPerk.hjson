@@ -854,8 +854,5 @@ EssenceExtraction: {
 
 EnchantmentSmith: {
 	DisplayName: Enchantment Smith
-	Description:
-		'''
-		Increases the amount of enchantment can be put onto weapon by 1
-		'''
+	Description: Increases the amount of enchantment can be put onto weapon by 1
 }

@@ -41,7 +41,7 @@ public class PlayerBiome : ModPlayer {
 			return;
 		}
 		for (int i = 0; i < zone.Length; i++) {
-			short biomeID = RogueLikeWorldGen.CharToBid(gen.BiomeMapping[WorldIndex], i);
+			short biomeID = RogueLikeWorldGen.CharToBid(zone, i);
 			CurrentBiome.Add(biomeID);
 		}
 	}
@@ -98,7 +98,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeID = new();
 		FieldInfo[] field = typeof(Bid).GetFields();
 		for (int i = 0; i < field.Length; i++) {
-			object? obj = field[i].GetValue(null);
+			var obj = field[i].GetValue(null);
 			if (obj == null) {
 				continue;
 			}
@@ -233,7 +233,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		return (short)c[index];
 	}
 	public static GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
-	public UnifiedRandom Rand => WorldGen.genRand;
+	private static UnifiedRandom Rand => WorldGen.genRand;
 	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
 	Point counter = OffSetPoint;
@@ -243,34 +243,46 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	int offsetcount = 0;
 	int additionaloffset = -1;
 	public string[] BiomeMapping = new string[24 * 24];
-	public string GetStringDataBiomeMapping(int x, int y) {
+	public static string GetStringDataBiomeMapping(int x, int y) {
 		x = Math.Clamp(x, 0, 23);
 		y = Math.Clamp(y, 0, 23);
-		string assign = BiomeMapping[x + y * 24];
+		string assign = ModContent.GetInstance<RogueLikeWorldGen>().BiomeMapping[x + y * 24];
 		if (assign == null) {
 			return " ";
 		}
 		return assign;
 	}
 	public int MapIndex(int x, int y) => x + y * 24;
+	public static short Get_BiomeIDViaPos(Vector2 position, int WorldBiomeIndex) {
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		Point positionInWorld = (new Vector2(position.X / GridPart_X, position.Y / GridPart_Y)).ToTileCoordinates();
+		int WorldIndex = gen.MapIndex(positionInWorld.X, positionInWorld.Y);
+		if (WorldIndex >= gen.BiomeMapping.Length) {
+			return Bid.None;
+		}
+		string zone = gen.BiomeMapping[WorldIndex];
+		return CharToBid(zone, WorldBiomeIndex);
+	}
+	public static short Get_BiomeIDViaPos(Point position, int WorldBiomeIndex) {
+		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
+		Point positionInWorld = new(position.X / GridPart_X, position.Y / GridPart_Y);
+		int WorldIndex = gen.MapIndex(positionInWorld.X, positionInWorld.Y);
+		if (WorldIndex >= gen.BiomeMapping.Length) {
+			return Bid.None;
+		}
+		string zone = gen.BiomeMapping[WorldIndex];
+		return CharToBid(zone, WorldBiomeIndex);
+	}
 	public List<Rectangle> ZoneToBeIgnored = new();
-	[Task]
-	public void SetUp() {
-		ZoneToBeIgnored.Clear();
-		WatchTracker = TimeSpan.Zero;
-		Biome = new();
-		GridPart_X = Main.maxTilesX / 24;//small world : 175
-		GridPart_Y = Main.maxTilesY / 24;//small world : 50
-		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
-		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
-		Main.spawnTileX = GridPart_X * 11;
-		Main.spawnTileY = GridPart_Y * 14;
-
-		//Forest spawn zone
-		ZoneToBeIgnored.Add(new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200));
-
-		Stopwatch watch = new();
-		watch.Start();
+	/// <summary>
+	/// This code here is pure definition of evil for the sake of "optimization", idfk if this is fast or not<br/>
+	/// But don't touch this code<br/>
+	/// <br/>
+	/// For brief explanation of the code, the <see cref="BiomeMapping"/> is a array of string that store world biome data<br/>
+	/// The array of string have a size of 24x24, because we are using grid of 24x24 system<br/>
+	/// The biome ID <see cref="Bid"/> is stored as a char data
+	/// </summary>
+	private void InitializeBiomeWorld() {
 		//Initialize Space biome
 		Array.Fill(BiomeMapping, ToC(Bid.Space), 0, 14);
 		Array.Fill(BiomeMapping, ToC(Bid.Space), MapIndex(0, 1), 7);
@@ -406,13 +418,47 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(9, 21), 6);
 		Array.Fill(BiomeMapping, ToC(Bid.Underworld), MapIndex(20, 21), 52);
 
+	}
+	[Task]
+	public void SetUp() {
+		ZoneToBeIgnored.Clear();
+		WatchTracker = TimeSpan.Zero;
+		Biome = new();
+		GridPart_X = Main.maxTilesX / 24;//small world : 175
+		GridPart_Y = Main.maxTilesY / 24;//small world : 50
+		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
+		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
+		Main.spawnTileX = GridPart_X * 11;
+		Main.spawnTileY = GridPart_Y * 14;
+
+		Stopwatch watch = new();
+		watch.Start();
+		InitializeBiomeWorld();
 		watch.Stop();
 		Mod.Logger.Info(watch.ToString());
+
+		//Forest spawn zone
+		ZoneToBeIgnored.Add(new(Main.spawnTileX - 200, Main.spawnTileY - 200, 400, 200));
+		//Space trial
+		Point pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
+		while (Get_BiomeIDViaPos(pos_SpaceTrial, 0) != Bid.Space) {
+			pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
+		}
+		ZoneToBeIgnored.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
 
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		if (modsystem.dict_Struture.TryGetValue(RogueLikeWorldGenSystem.FileDestination + "Watcher", out List<GenPassData> datalist)) {
 			WatcherStructure = datalist;
 		}
+	}
+	StructureData Trial_Space = Generator.GetStructureData("Assets/Trial_Space", ModContent.GetInstance<BossRush>());
+	public static bool Get_BiomeData(Point positions, int BiomeIndex, out BiomeDataBundle bundle) {
+		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(GetStringDataBiomeMapping(positions.X / GridPart_X, positions.Y / GridPart_Y)[BiomeIndex]), out BiomeDataBundle value1)) {
+			bundle = value1;
+			return true;
+		}
+		bundle = new();
+		return false;
 	}
 	List<GenPassData> WatcherStructure = new();
 	[Task]
@@ -437,10 +483,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			}
 			IsUsingHorizontal = ++count % 2 == 0;
 			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+			List<GenPassData> datalistOuter;
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-
 				if (bundle.FormatFile == "") {
 					file = horizontal + Rand.Next(1, 10);
 				}
@@ -453,108 +500,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					}
 				}
 				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+				if (modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+					datalistOuter = datalist;
+				}
+				else {
 					Console.WriteLine("Structure not found !");
 					continue;
-				}
-				int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-				switch (Rand.Next(styles)) {
-					case GenerateStyle.None:
-						for (int i = 0; i < datalist.Count; i++) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = 0; l < gdata.Count; l++) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
-							}
-						}
-						break;
-					case GenerateStyle.FlipHorizon:
-						for (int i = 0; i < datalist.Count; i++) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = gdata.Count; l > 0; l--) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
-							}
-						}
-						break;
-					case GenerateStyle.FlipVertical:
-						for (int i = datalist.Count - 1; i >= 0; i--) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = 0; l < gdata.Count; l++) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
-							}
-						}
-						break;
-					case GenerateStyle.FlipBoth:
-						for (int i = datalist.Count - 1; i >= 0; i--) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = gdata.Count; l > 0; l--) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
-							}
-						}
-						break;
 				}
 			}
 			else {
@@ -572,113 +523,116 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
 					}
 				}
-				if (!modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+				if (modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
+					datalistOuter = datalist;
+				}
+				else {
 					Console.WriteLine("Structure not found !");
 					continue;
 				}
-				int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-				switch (Rand.Next(styles)) {
-					case GenerateStyle.None:
-						for (int i = 0; i < datalist.Count; i++) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = 0; l < gdata.Count; l++) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
+
+			}
+			switch (Rand.Next(styles)) {
+				case GenerateStyle.None:
+					for (int i = 0; i < datalistOuter.Count; i++) {
+						GenPassData gdata = datalistOuter[i];
+						TileData data = gdata.tileData;
+						data.Tile_Type = tileID;
+						data.Tile_WallData = wallID;
+						for (int l = 0; l < gdata.Count; l++) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
 							}
-						}
-						break;
-					case GenerateStyle.FlipHorizon:
-						for (int i = 0; i < datalist.Count; i++) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = gdata.Count; l > 0; l--) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
+							holdX = X + offsetX; holdY = Y + offsetY;
+							foreach (Rectangle zone in ZoneToBeIgnored) {
+								if (zone.Contains(holdX, holdY)) {
+									break;
 								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
-								offsetY++;
 							}
+							offsetY++;
 						}
-						break;
-					case GenerateStyle.FlipVertical:
-						for (int i = datalist.Count - 1; i >= 0; i--) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = 0; l < gdata.Count; l++) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
-								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
-								}
-								offsetY++;
+					}
+					break;
+				case GenerateStyle.FlipHorizon:
+					for (int i = 0; i < datalistOuter.Count; i++) {
+						GenPassData gdata = datalistOuter[i];
+						TileData data = gdata.tileData;
+						data.Tile_Type = tileID;
+						data.Tile_WallData = wallID;
+						for (int l = gdata.Count; l > 0; l--) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
 							}
-						}
-						break;
-					case GenerateStyle.FlipBoth:
-						for (int i = datalist.Count - 1; i >= 0; i--) {
-							GenPassData gdata = datalist[i];
-							TileData data = gdata.tileData;
-							data.Tile_Type = tileID;
-							data.Tile_WallData = wallID;
-							for (int l = gdata.Count; l > 0; l--) {
-								if (offsetY >= re.Height) {
-									offsetY = 0;
-									offsetX++;
+							holdX = X + offsetX; holdY = Y + offsetY;
+							foreach (Rectangle zone in ZoneToBeIgnored) {
+								if (zone.Contains(holdX, holdY)) {
+									break;
 								}
-								holdX = X + offsetX; holdY = Y + offsetY;
-								foreach (Rectangle zone in ZoneToBeIgnored) {
-									if (zone.Contains(holdX, holdY)) {
-										continue;
-									}
-									if (WorldGen.InWorld(holdX, holdY)) {
-										GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-									}
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
-								offsetY++;
 							}
+							offsetY++;
 						}
-						break;
-				}
+					}
+					break;
+				case GenerateStyle.FlipVertical:
+					for (int i = datalistOuter.Count - 1; i >= 0; i--) {
+						GenPassData gdata = datalistOuter[i];
+						TileData data = gdata.tileData;
+						data.Tile_Type = tileID;
+						data.Tile_WallData = wallID;
+						for (int l = 0; l < gdata.Count; l++) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
+							}
+							holdX = X + offsetX; holdY = Y + offsetY;
+							foreach (Rectangle zone in ZoneToBeIgnored) {
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+							}
+							offsetY++;
+						}
+					}
+					break;
+				case GenerateStyle.FlipBoth:
+					for (int i = datalistOuter.Count - 1; i >= 0; i--) {
+						GenPassData gdata = datalistOuter[i];
+						TileData data = gdata.tileData;
+						data.Tile_Type = tileID;
+						data.Tile_WallData = wallID;
+						for (int l = gdata.Count; l > 0; l--) {
+							if (offsetY >= re.Height) {
+								offsetY = 0;
+								offsetX++;
+							}
+							holdX = X + offsetX; holdY = Y + offsetY;
+							foreach (Rectangle zone in ZoneToBeIgnored) {
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
+								if (WorldGen.InWorld(holdX, holdY)) {
+									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+								}
+							}
+							offsetY++;
+						}
+					}
+					break;
 			}
 			if (counter.X < rect.Width) {
 				counter.X += re.Width;
-				if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(GetStringDataBiomeMapping(counter.X / GridPart_X, counter.Y / GridPart_Y)[0]), out BiomeDataBundle value1)) {
+				if (Get_BiomeData(counter, 0, out BiomeDataBundle value1)) {
 					bundle = value1;
 				}
 				tileID = bundle.tile;
@@ -694,7 +648,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		watch.Stop();
 		WatchTracker += watch.Elapsed;
-		//Biome.Add(Bid.Forest);
 		ResetTemplate_GenerationValue();
 		Mod.Logger.Info("Time it took to generate whole world with template :" + watch.ToString());
 	}
@@ -737,6 +690,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
 		}
+		Rectangle SpaceTrial = ZoneToBeIgnored[1];
+		Generator.GenerateFromData(Trial_Space, new(SpaceTrial.X, SpaceTrial.Y));
 	}
 	[Task]
 	public void Generate_EyeRoom() {
@@ -748,8 +703,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Generate_PostWorld() {
 		Rectangle goldRoomSize = new(0, 0, 150, 150);
-		int trialLimit = 3;
-		bool HasGenerated = false;
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
 				if (CanGenerateGoldRoom(i, j)) {

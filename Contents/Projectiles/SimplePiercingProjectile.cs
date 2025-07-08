@@ -99,7 +99,7 @@ public class SimplePiercingProjectile2 : ModProjectile {
 	public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 		Vector2 pointEdgeOfProjectile = Projectile.Center.IgnoreTilePositionOFFSET(Projectile.rotation.ToRotationVector2(), 18 * ScaleX);
 		Vector2 pointEdgeOfProjectile2 = Projectile.Center.IgnoreTilePositionOFFSET((Projectile.rotation + MathHelper.Pi).ToRotationVector2(), 18 * ScaleX);
-			return BossRushUtils.Collision_PointAB_EntityCollide(targetHitbox, pointEdgeOfProjectile, pointEdgeOfProjectile2);
+		return BossRushUtils.Collision_PointAB_EntityCollide(targetHitbox, pointEdgeOfProjectile, pointEdgeOfProjectile2);
 	}
 	public override Color? GetAlpha(Color lightColor) {
 		ProjectileColor.A = 0;
@@ -114,7 +114,6 @@ public class SimplePiercingProjectile2 : ModProjectile {
 		Vector2 origin = texture.Size() * .5f;
 		Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, new Vector2(ScaleX, Projectile.scale), SpriteEffects.None, 0);
-		//DrawTrail2(texture, lightColor, origin);
 		return false;
 	}
 }

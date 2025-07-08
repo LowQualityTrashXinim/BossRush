@@ -372,6 +372,11 @@ Mods: {
 			ThunderSpearThrowProjectile.DisplayName: Thunder Spear Throw Projectile
 			Roguelike_Starfury_Projectile.DisplayName: Roguelike_ Starfury_ Projectile
 			BeeKeeperEnchantmentProjectile.DisplayName: Bee Keeper Enchantment Projectile
+			MaceBallProjectile.DisplayName: Mace Ball Projectile
+			ChlorophyteOrb_SimplePiercingTrailProjectile.DisplayName: Chlorophyte Orb_ Simple Piercing Trail Projectile
+			FlyingSlashProjectile.DisplayName: Flying Slash Projectile
+			EvilFlamesProj.DisplayName: Evil Flames Proj
+			LingeringEvilFlames.DisplayName: Lingering Evil Flames
 		}
 
 		NPCs: {
@@ -2722,6 +2727,11 @@ Mods: {
 
 			GeneralBuilderTool: {
 				DisplayName: General Builder Tool
+				Tooltip: ""
+			}
+
+			TestAnimationSwingMeleeSword: {
+				DisplayName: Test Animation Swing Melee Sword
 				Tooltip: ""
 			}
 		}

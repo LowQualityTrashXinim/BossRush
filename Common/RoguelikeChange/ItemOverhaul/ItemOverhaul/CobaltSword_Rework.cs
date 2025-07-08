@@ -1,10 +1,6 @@
-﻿using System;
-using Terraria;
-using System.Text;
-using System.Linq;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Graphics;
@@ -32,8 +28,9 @@ public class Roguelike_CobaltSword : GlobalItem {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		int counter = player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter;
+		player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().CobaltSword_Counter = -player.itemAnimationMax;
 		if (counter >= 150) {
-			if (counter <= 165) {
+			if (player.GetModPlayer<Roguelike_CobaltSword_ModPlayer>().PerfectStrike) {
 				counter = 150;
 			}
 			else {
@@ -61,7 +58,7 @@ public class Roguelike_CobaltSword : GlobalItem {
 }
 public class Roguelike_CobaltSword_ModPlayer : ModPlayer {
 	public int CobaltSword_Counter = 0;
-	public bool CobaltSword_CounterSurpass = false;
+	public bool PerfectStrike = false;
 	public override void ResetEffects() {
 		Item item = Player.HeldItem;
 		CobaltSword_Counter++;
@@ -71,15 +68,9 @@ public class Roguelike_CobaltSword_ModPlayer : ModPlayer {
 		if (item.type != ItemID.CobaltSword) {
 			return;
 		}
-		if (!Player.ItemAnimationActive) {
-			if (CobaltSword_Counter >= 150 && !CobaltSword_CounterSurpass) {
-				CobaltSword_CounterSurpass = true;
-				SpawnSpecialCobaltDustEffect();
-			}
-		}
-		else {
-			CobaltSword_Counter = -Player.itemAnimationMax;
-			CobaltSword_CounterSurpass = false;
+		PerfectStrike = CobaltSword_Counter >= 150 && CobaltSword_Counter <= 165;
+		if (PerfectStrike && CobaltSword_Counter == 150) {
+			SpawnSpecialCobaltDustEffect();
 		}
 	}
 	public void SpawnSpecialCobaltDustEffect() {

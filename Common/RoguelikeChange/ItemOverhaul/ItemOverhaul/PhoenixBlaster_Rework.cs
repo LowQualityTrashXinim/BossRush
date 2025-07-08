@@ -19,6 +19,11 @@ public class Roguelike_PhoenixBlaster : GlobalItem {
 			entity.crit = 6;
 		}
 	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		if (item.type == ItemID.PhoenixBlaster) {
+			BossRushUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_PhoenixBlaster", BossRushUtils.LocalizationText("RoguelikeRework", item.Name)));
+		}
+	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (item.type != ItemID.PhoenixBlaster) {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

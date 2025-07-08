@@ -16,6 +16,7 @@ Starfury:
 	'''
 	Wait 2.5s to summon a bigger fallen star from the sky ( 5.0x weapon damage )
 	Wait additional 2.5s to increase the base damage of fallen star
+	Striking at perfect moment will deal maximum damage without the need of waiting
 	'''
 PhoenixBlaster:
 	'''
@@ -23,4 +24,11 @@ PhoenixBlaster:
 	Wait additional 1.5s to shoot out flame lash projectile deal 1.5x weapon damage
 	Every 5th shot shoot out a flame lash projectile
 	Shot from this gun deal extra 10 fixed damage on target that is on fire
+	'''
+ChlorophyteClaymore:
+	'''
+	Shoot out a bouncy chlorophyte orb that each time it bounces creates a chlorophyte bolt
+	Wait 1.5s to create a slash that deal 3x damage
+	Wait additional 1s to shoot out chlorophyte bolts along with the slash
+	Striking at perfect moment will multiply damage by 2x and attack as if you waited for 2.5s
 	'''
