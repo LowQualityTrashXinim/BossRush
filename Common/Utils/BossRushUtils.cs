@@ -164,7 +164,7 @@ namespace BossRush {
 		}
 		public static int FastDropItem(Item item, int fastCheckSlot = 0) {
 			Player player = Main.LocalPlayer;
-			if (item == null || item.type == 0)
+			if (item == null || item.type == ItemID.None)
 				return 0;
 			for (int i = fastCheckSlot; i < 50; i++) {
 				if (player.CanItemSlotAccept(player.inventory[i], item)) {
@@ -173,7 +173,7 @@ namespace BossRush {
 					return i;
 				}
 			}
-			player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+			player.TryDroppingSingleItem(player.GetSource_DropAsItem(), item);
 			return 50;
 		}
 		public static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness) {

@@ -1,91 +1,55 @@
 FireI: {
 	DisplayName: Fire I
+	DisplayName1: Fire II
+	DisplayName2: Fire III
 	Description: Inflict on fire upon enemy hit
-}
-
-FireII: {
-	DisplayName: Fire II
-	Description: Enemy with on fire debuff receive 20% more damage
-}
-
-FireIII: {
-	DisplayName: Fire III
-	Description: Enemy with on fire debuff receive 40% more knockback
+	Description1: Enemy with on fire debuff receive 20% more damage
+	Description2: Enemy with on fire debuff receive 40% more knockback
 }
 
 FrostBurnI: {
 	DisplayName: FrostBurn I
+	DisplayName1: FrostBurn II
+	DisplayName2: FrostBurn III
 	Description: Inflict frost burn upon enemy hit
-}
-
-FrostBurnII: {
-	DisplayName: FrostBurn II
-	Description: Enemy with frost burn debuff receive 20% more damage
-}
-
-FrostBurnIII: {
-	DisplayName: FrostBurn III
-	Description: Enemy with frost burn debuff receive 40% more knockback
+	Description1: Enemy with frost burn debuff receive 20% more damage
+	Description2: Enemy with frost burn debuff receive 40% more knockback
 }
 
 ShadowFlameI: {
 	DisplayName: ShadowFlame I
 	Description: Inflict ShadowFlame upon enemy hit
-}
-
-ShadowFlameII: {
-	DisplayName: ShadowFlame II
-	Description: Enemy with ShadowFlame debuff receive 20% more damage
-}
-
-ShadowFlameIII: {
-	DisplayName: ShadowFlame III
-	Description: Enemy with ShadowFlame debuff receive 40% more knockback
+	DisplayName1: ShadowFlame II
+	Description1: Enemy with ShadowFlame debuff receive 20% more damage
+	DisplayName2: ShadowFlame III
+	Description2: Enemy with ShadowFlame debuff receive 40% more knockback
 }
 
 CursedFlameI: {
 	DisplayName: CursedFlame I
 	Description: Inflict cursed flame upon enemy hit
-}
-
-CursedFlameII: {
-	DisplayName: CursedFlame II
-	Description: Enemy with cursed flame debuff receive 20% more damage
-}
-
-CursedFlameIII: {
-	DisplayName: CursedFlame III
-	Description: Enemy with cursed flame debuff receive 40% more knockback
+	DisplayName1: CursedFlame II
+	Description1: Enemy with cursed flame debuff receive 20% more damage
+	DisplayName2: CursedFlame III
+	Description2: Enemy with cursed flame debuff receive 40% more knockback
 }
 
 PoisonI: {
 	DisplayName: Poison I
 	Description: Inflict poisoned upon enemy hit
-}
-
-PoisonII: {
-	DisplayName: Poison II
-	Description: Enemy with poisoned debuff receive 20% more damage
-}
-
-PoisonIII: {
-	DisplayName: Poison III
-	Description: Enemy with poisoned debuff receive 40% more knockback
+	DisplayName1: Poison II
+	Description1: Enemy with poisoned debuff receive 20% more damage
+	DisplayName2: Poison III
+	Description2: Enemy with poisoned debuff receive 40% more knockback
 }
 
 VenomI: {
 	DisplayName: Venom I
 	Description: Inflict venom upon enemy hit
-}
-
-VenomII: {
-	DisplayName: Venom II
-	Description: Enemy with venom debuff receive 20% more damage
-}
-
-VenomIII: {
-	DisplayName: Venom III
-	Description: Enemy with venom debuff receive 40% more knockback
+	DisplayName1: Venom II
+	Description1: Enemy with venom debuff receive 20% more damage
+	DisplayName2: Venom III
+	Description2: Enemy with venom debuff receive 40% more knockback
 }
 
 BerserkI: {
@@ -93,7 +57,7 @@ BerserkI: {
 	Description: Deal more damage the lower your health get
 }
 
-True: {
+TrueStatus: {
 	DisplayName: True
 	Description: Deal 10% of weapon damage as True damage
 }
@@ -115,24 +79,14 @@ TitanII: {
 
 CriticalI: {
 	DisplayName: Critical I
-	Description: Critically strike a enemy will heal player for 1% of player health
+	Description: Increases critical chance by 5 but reduce critical damage by 10%
+	DisplayName1: Critical II
+	Description1: Critical strike ignore 50% of enemy defense
+	DisplayName2: Critical III
+	Description2: Critically strike a enemy will heal player for 1% of player health
+	DisplayName3: Critical IV
+	Description3: Critical strike will roll again increasing critical strike damage by 100%
 }
-
-CriticalII: {
-	DisplayName: Critical II
-	Description: Critical strike ignore 50% of enemy defense
-}
-
-CriticalIII: {
-	DisplayName: Critical III
-	Description: Critical strike will roll again increasing critical strike damage by 100%
-}
-
-CriticalIV: {
-	DisplayName: Critical IV
-	Description: Increases critical chance by 25 but reduce critical damage by 50%
-}
-
 VampireI: {
 	DisplayName: Vampire I
 	Description: Increase Life steal by 1%
@@ -173,34 +127,14 @@ Union: {
 	Description: For every weapon in your inventory, +0.5 flat damage
 }
 
-StrengthenI: {
-	DisplayName: Strengthen I
-	Description: 25% damage
+Strengthen: {
+	DisplayName: Strengthen
+	Description: Grant various minor increases in stats
 }
 
-StrengthenII: {
-	DisplayName: Strengthen II
-	Description: 35% critical strike damage
-}
-
-StrengthenIII: {
-	DisplayName: Strengthen III
-	Description: 10 defenses
-}
-
-StrengthenIV: {
-	DisplayName: Strengthen IV
-	Description: 50 maximum health
-}
-
-StrengthenV: {
-	DisplayName: Strengthen V
-	Description: 10% critical strike chance
-}
-
-DarkSoul: {
-	DisplayName: Dark Soul
-	Description: Grant 12 tick of I-frame when hitting enemy with item
+Ghost: {
+	DisplayName: Ghost
+	Description: Grant 8 tick of I-frame when hitting enemy with item
 }
 
 ExtraLife: {

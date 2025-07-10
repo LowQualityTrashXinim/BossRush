@@ -178,7 +178,6 @@ public class StructureUI : UIState {
 		VisibilityUI(true);
 		VisibilitySettingUI(false);
 	}
-	bool Confirm = false;
 	public bool secondPoint;
 
 	public Point16 point1;

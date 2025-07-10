@@ -24,7 +24,7 @@ using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
-	public static void EnchantmentRNG(Player self, Item item) {
+	public static void EnchantmentRNG(Player self,ref Item item) {
 		if (item == null || !EnchantmentGlobalItem.CanBeEnchanted(item)) {
 			return;
 		}
@@ -535,6 +535,17 @@ public class DivineHammerUIState : UIState {
 		if (!item.GetGlobalItem<AugmentsWeapon>().AugmentsSlots.Contains(0)) {
 			return;
 		}
+		int[] slots = item.GetGlobalItem<AugmentsWeapon>().AugmentsSlots;
+		int counter = 0;
+		for (int i = 0; i < slots.Length; i++) {
+			if (slots[i] == 0) {
+				continue;
+			}
+			counter++;
+		}
+		if(counter >= 1) {
+			return;
+		}
 		AugmentsWeapon.AddAugments(Main.LocalPlayer, ref item, 1, chance: 1);
 		AccSacrificeAugmentSlot.item.TurnToAir();
 		AccAugmentResult.item = item.Clone();
@@ -545,7 +556,7 @@ public class DivineHammerUIState : UIState {
 		Player player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == AccAugmentSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (!item.accessory) {
+			if (!item.accessory && item.type != ItemID.None) {
 				return;
 			}
 			if (AccAugmentSlot.item.type == 0) {

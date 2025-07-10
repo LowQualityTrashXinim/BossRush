@@ -445,7 +445,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			pos_SpaceTrial = new(Main.rand.Next(Main.maxTilesX), Main.rand.Next(Main.maxTilesY));
 		}
 		ZoneToBeIgnored.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
-
+		TrialArea.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		if (modsystem.dict_Struture.TryGetValue(RogueLikeWorldGenSystem.FileDestination + "Watcher", out List<GenPassData> datalist)) {
 			WatcherStructure = datalist;
@@ -546,9 +546,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
+								//if (zone.Contains(holdX, holdY)) {
+								//	break;
+								//}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -570,9 +570,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
+								//if (zone.Contains(holdX, holdY)) {
+								//	break;
+								//}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -594,9 +594,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
+								//if (zone.Contains(holdX, holdY)) {
+								//	break;
+								//}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -618,9 +618,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
+								//if (zone.Contains(holdX, holdY)) {
+								//	break;
+								//}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}

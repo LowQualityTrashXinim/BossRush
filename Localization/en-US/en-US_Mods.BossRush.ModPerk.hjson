@@ -596,18 +596,6 @@ NightTerror: {
 		'''
 }
 
-NaturalUpgrade: {
-	DisplayName: Natural Upgrade
-	Description:
-		'''
-		+ Shooting a bow have a 20-40% chance to shoot a wind shot that deal 150% of bow damage 
-		+ Wooden type bow now shoot 2 arrow at high velocity at once and is a lot stronger
-		Hitting enemy with wooden arrow will 
-		+ Have 20-40% chance to spawn a wind shot
-		+ Have a 10-15% chance to do a wind explosion which deal 200% damage
-		'''
-}
-
 StrikeOfFury: {
 	DisplayName: Strike Of Fury
 	Description:

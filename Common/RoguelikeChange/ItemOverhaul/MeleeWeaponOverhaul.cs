@@ -28,7 +28,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
 		public int SwingType = 0;
-		public float SwingStrength = 15f;
+		public float SwingStrength = 7f;
 		/// <summary>
 		/// This will offset the animation percentage so that it create a still like sword
 		/// </summary>
@@ -54,6 +54,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// This will tell the code how much should the player spin the weapon
 		/// </summary>
 		public float CircleSwingAmount = 1;
+		/// <summary>
+		/// This will offset the animation time so that the item animation won't start after certain frame
+		/// </summary>
+		public int ItemAnimationStarTimeOffset = 5;
 		public int AnimationEndTime = 0;
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
@@ -327,6 +331,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public void ModdedUseStyle(Item item, Player player) {
+			SwingStrength = 7;
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
 			switch (SwingType) {
@@ -409,12 +414,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, tomouse.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke;
 		}
-		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 15f, float offsetAnimation = 1) {
+		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float offsetAnimation = 1) {
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			if (player.itemAnimation == player.itemAnimationMax) {
 				modPlayer.itemAnimationImproved = player.itemAnimationMax;
 			}
-			float percentDone = modPlayer.itemAnimationImproved / (float)player.itemAnimationMax;
+			float percentDone = modPlayer.itemAnimationImproved / (float)(player.itemAnimationMax);
 			percentDone = Math.Clamp(BossRushUtils.InExpo(percentDone, strength), -.1f, 1.1f);
 			float baseAngle = modPlayer.PlayerToMouseDirection.ToRotation();
 			float angle = MathHelper.ToRadians(swingDegree) * player.direction;
@@ -499,6 +504,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return; 
 			}
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer) && item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				if(!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
+					orig.Invoke(ref drawinfo);
+					return;
+				}
 				if (modplayer.ComboNumber == 1 || meleeItem.SwingType == BossRushUseStyle.SwipeUp ) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
@@ -570,6 +579,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
 			if (CountDownToResetCombo <= 0) {
 				ComboNumber = 1;
+			}
+			if (item.axe > 0) {
+				ComboNumber = 0;
 			}
 		}
 		public override bool CanUseItem(Item item) {

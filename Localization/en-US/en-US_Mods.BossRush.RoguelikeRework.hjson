@@ -32,3 +32,8 @@ ChlorophyteClaymore:
 	Wait additional 1s to shoot out chlorophyte bolts along with the slash
 	Striking at perfect moment will multiply damage by 2x and attack as if you waited for 2.5s
 	'''
+WoodenBow:
+	'''
+	Shoot out 2 very fast arrow
+	Have 30% chance to create a wind that deal 55% of weapon damage
+	'''

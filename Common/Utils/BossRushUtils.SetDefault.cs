@@ -132,11 +132,6 @@ namespace BossRush {
 				globalitem.LostAccessories = Lost;
 			}
 		}
-		public static void Set_ItemAugmentsChance(this Item item, float chance) {
-			if (item.TryGetGlobalItem(out AugmentsWeapon globalitem)) {
-				globalitem.AugmentsChance = chance;
-			}
-		}
 		public static void Set_ItemIsRPG(this Item item, bool RPG = true) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.RPGItem = RPG;

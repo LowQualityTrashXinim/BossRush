@@ -607,7 +607,7 @@ namespace BossRush.Contents.Items.Weapon {
 				return whoamI;
 			}
 			Item worlditem = Main.item[whoamI];
-			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
 			AugmentsWeapon.AddAugments(self, ref worlditem);
 			return whoamI;
 		}
@@ -617,19 +617,19 @@ namespace BossRush.Contents.Items.Weapon {
 				return whoamI;
 			}
 			Item worlditem = Main.item[whoamI];
-			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
 			AugmentsWeapon.AddAugments(self, ref worlditem);
 			return whoamI;
 		}
 		private Item On_Player_QuickSpawnItemDirect_IEntitySource_int_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_int_int orig, Player self, IEntitySource source, int type, int stack) {
 			Item worlditem = orig(self, source, type, stack);
-			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
 			AugmentsWeapon.AddAugments(self, ref worlditem);
 			return worlditem;
 		}
 		private Item On_Player_QuickSpawnItemDirect_IEntitySource_Item_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
 			Item worlditem = orig(self, source, item, stack);
-			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			EnchantmentSystem.EnchantmentRNG(self, ref worlditem);
 			AugmentsWeapon.AddAugments(self, ref worlditem);
 			return worlditem;
 		}

@@ -231,6 +231,9 @@ csharp_prefer_system_threading_lock = true:suggestion
 dotnet_diagnostic.CA1805.severity = none
 dotnet_diagnostic.CA1309.severity = none
 
+# CA1310: Specify StringComparison for correctness
+dotnet_diagnostic.CA1310.severity = silent
+
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
