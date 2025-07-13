@@ -16,9 +16,9 @@ class ReInitializeUI : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.RemoveAllChildren();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.OnInitialize();
-			ModContent.GetInstance<UniversalSystem>().transmutationUI.Activate();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.RemoveAllChildren();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.OnInitialize();
+			ModContent.GetInstance<UniversalSystem>().DivineHammer_uiState.Activate();
 		}
 		return false;
 	}

@@ -44,6 +44,10 @@ public class PlayerBiome : ModPlayer {
 			short biomeID = RogueLikeWorldGen.CharToBid(zone, i);
 			CurrentBiome.Add(biomeID);
 		}
+		foreach (var item in CurrentBiome) {
+			if (item == Bid.Forest) {
+			}
+		}
 	}
 }
 /// <summary>
@@ -546,9 +550,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								//if (zone.Contains(holdX, holdY)) {
-								//	break;
-								//}
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -570,9 +574,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								//if (zone.Contains(holdX, holdY)) {
-								//	break;
-								//}
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -594,9 +598,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								//if (zone.Contains(holdX, holdY)) {
-								//	break;
-								//}
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -618,9 +622,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 							}
 							holdX = X + offsetX; holdY = Y + offsetY;
 							foreach (Rectangle zone in ZoneToBeIgnored) {
-								//if (zone.Contains(holdX, holdY)) {
-								//	break;
-								//}
+								if (zone.Contains(holdX, holdY)) {
+									break;
+								}
 								if (WorldGen.InWorld(holdX, holdY)) {
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
@@ -668,6 +672,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		int startingPoint = forestArea.Height - forestArea.Height / 8 + forestArea.Y;
 		int offsetRaise = 0;
 		bool MoveToNextX;
+		float left = Rand.NextFloat(.25f, .35f);
+		float right = Rand.NextFloat(.75f, .85f);
+		int CurrentPosY = 0;
+		int LeftPos = forestArea.X + (int)(forestArea.Width * left);
+		int RightPos = forestArea.X + (int)(forestArea.Width * right);
+		int datawidth = 20;
 		for (int i = forestArea.X; i < forestArea.Width + forestArea.X; i++) {
 			MoveToNextX = true;
 			if (Main.spawnTileX == i) {
@@ -675,7 +685,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				StructureData data = Generator.GetStructureData("Assets/ShrineOfOffering", Mod);
 				Generator.GenerateStructure("Assets/ShrineOfOffering", new(i - data.width / 2, forestArea.Y + forestArea.Height / 2), Mod);
 				Rectangle zone = new Rectangle(i - data.width / 2, forestArea.Y + forestArea.Height / 2, data.width, data.height);
-				//BiomeZone.Add(Bid.ShrineOfOffering, new() { zone });
+				BiomeZone.TryAdd(Bid.ShrineOfOffering, new() { zone });
 			}
 			for (int j = startingPoint; j < forestArea.Height + forestArea.Y; j++) {
 				if (MoveToNextX) {
@@ -689,6 +699,21 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
+			CurrentPosY = startingPoint - offsetRaise;
+			if (i == LeftPos) {
+				StructureData data = Generator.GetStructureData("Assets/StarterZoneHouse1", Mod);
+				Generator.GenerateFromData(data, new(i - data.width / 2, CurrentPosY - data.height + 3));
+			}
+			else if (i == RightPos) {
+				StructureData data = Generator.GetStructureData("Assets/StarterZoneHouse2", Mod);
+				Generator.GenerateFromData(data, new(i - data.width / 2, CurrentPosY - data.height + 3));
+			}
+			else if (Rand.NextBool(26)
+				&& i < LeftPos - datawidth || i > LeftPos + datawidth
+				&& i < RightPos - datawidth || i > RightPos + datawidth) {
+				WorldGen.GrowTree(i, CurrentPosY);
+			}
+
 		}
 		Rectangle SpaceTrial = ZoneToBeIgnored[1];
 		Generator.GenerateFromData(Trial_Space, new(SpaceTrial.X, SpaceTrial.Y));

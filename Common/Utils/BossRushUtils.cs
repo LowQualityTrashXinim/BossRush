@@ -203,7 +203,7 @@ namespace BossRush {
 		public static void AddTooltip(ref List<TooltipLine> tooltipsLines, TooltipLine newline) {
 			int index = tooltipsLines.FindIndex(l => l.Name == "Tooltip0");
 			if (index != -1) {
-				tooltipsLines.Insert(index, newline);
+				tooltipsLines.Insert(index + 1, newline);
 			}
 			else {
 				index = tooltipsLines.FindIndex(l => l.Name == "JourneyResearch");

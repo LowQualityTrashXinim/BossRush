@@ -33,8 +33,8 @@ public class AugmentsWeapon : GlobalItem {
 				continue;
 			}
 			TooltipLine line = Augments.ModifyDescription(Main.LocalPlayer, this, i, item, Check_ChargeConvertToStackAmount(i));
-			line.Text = $"[c/{Augments.ModifyName(Main.LocalPlayer, this, i, item, Check_ChargeConvertToStackAmount(i))}:{Augments.DisplayName}] : {line.Text}";
-			tooltips.Add(line);
+			line.Text = $"{Augments.ModifyName(Main.LocalPlayer, this, i, item, Check_ChargeConvertToStackAmount(i))} : {line.Text}";
+			BossRushUtils.AddTooltip(ref tooltips, line);
 		}
 	}
 	public override bool InstancePerEntity => true;
@@ -51,7 +51,7 @@ public class AugmentsWeapon : GlobalItem {
 	/// <param name="limit">The limit amount of Augments can have on weapon by pure chance</param>
 	/// <param name="chance">the chance to add Augments</param>
 	/// <param name="decayable">disable the decay of custom chance</param>
-	public static void AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
+	public static void Chance_AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
 		if (!item.accessory) {
 			return;
 		}
@@ -60,7 +60,7 @@ public class AugmentsWeapon : GlobalItem {
 			for (int i = 1; i <= AugmentsLoader.TotalCount; i++) {
 				ModAugments Augments = AugmentsLoader.GetAugments(i);
 				if (Augments.ConditionToBeApplied(player, item, out float Chance)) {
-					AugmentsList.Add(i,Chance);
+					AugmentsList.Add(i, Chance);
 				}
 			}
 			AugmentsPlayer modplayer = player.GetModPlayer<AugmentsPlayer>();
@@ -103,7 +103,41 @@ public class AugmentsWeapon : GlobalItem {
 		}
 	}
 	public static void AddAugments<T>(Player player, ref Item item) where T : ModAugments {
-
+		if (!item.accessory) {
+			return;
+		}
+		float chance = player.ModPlayerStats().AugmentationChance;
+		int type = ModAugments.GetAugmentType<T>();
+		ModAugments aug = AugmentsLoader.GetAugments(type);
+		if (aug == null) {
+			Main.NewText($"Augmentation not found ! Look up type: {type}");
+			return;
+		}
+		if (item.TryGetGlobalItem(out AugmentsWeapon acc)) {
+			for (int i = 0; i < acc.AugmentsSlots.Length; i++) {
+				if (acc.AugmentsSlots[i] == 0) {
+					acc.AugmentsSlots[i] = type;
+				}
+			}
+		}
+	}
+	public static void AddAugments(Player player, ref Item item, int type) {
+		if (!item.accessory) {
+			return;
+		}
+		float chance = player.ModPlayerStats().AugmentationChance;
+		ModAugments aug = AugmentsLoader.GetAugments(type);
+		if (aug == null) {
+			Main.NewText($"Augmentation not found ! Look up type: {type}");
+			return;
+		}
+		if (item.TryGetGlobalItem(out AugmentsWeapon acc)) {
+			for (int i = 0; i < acc.AugmentsSlots.Length; i++) {
+				if (acc.AugmentsSlots[i] == 0) {
+					acc.AugmentsSlots[i] = type;
+				}
+			}
+		}
 	}
 	public void Modify_Charge(Player player, int index, int amount) {
 		AugmentsSlotsCharge[index] += amount;
@@ -172,6 +206,7 @@ public abstract class ModAugments : ModType {
 	protected string Description2(string Extra) => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.Description{Extra}");
 	public virtual TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) => new(Mod, "", Description);
 	public string ColorWrapper(string Name) => $"[c/{tooltipColor.Hex3()}:{Name}]";
+	public virtual void OnAdded(Player player, Item itme, AugmentsWeapon acc, int index) { }
 	public virtual string ModifyName(Player player, AugmentsWeapon acc, int index, Item item, int stack) => ColorWrapper(DisplayName);
 	public virtual void ModifyHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, AugmentsWeapon acc, int index, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }

@@ -365,16 +365,16 @@ public class TransmutationUIState : UIState {
 		Item item = Main.mouseItem;
 		if (item.IsAWeapon() || item.accessory || item.IsThisArmorPiece() || item.type == ModContent.ItemType<Relic>() || item.type == 0) {
 			if (listeningElement.UniqueId == energyItemslot1.UniqueId) {
-				SimpleItemMouseExchange(player, ref energyItemslot1.item);
+				BossRushUtils.SimpleItemMouseExchange(player, ref energyItemslot1.item);
 			}
 			else if (listeningElement.UniqueId == energyItemslot2.UniqueId) {
-				SimpleItemMouseExchange(player, ref energyItemslot2.item);
+				BossRushUtils.SimpleItemMouseExchange(player, ref energyItemslot2.item);
 			}
 			else if (listeningElement.UniqueId == energyItemslot3.UniqueId) {
-				SimpleItemMouseExchange(player, ref energyItemslot3.item);
+				BossRushUtils.SimpleItemMouseExchange(player, ref energyItemslot3.item);
 			}
 			else if (listeningElement.UniqueId == energyItemslot4.UniqueId) {
-				SimpleItemMouseExchange(player, ref energyItemslot4.item);
+				BossRushUtils.SimpleItemMouseExchange(player, ref energyItemslot4.item);
 			}
 		}
 	}
@@ -485,7 +485,7 @@ public class TransmutationUIState : UIState {
 		Player player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == ItemShiftSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			SimpleItemMouseExchange(player, ref ItemShiftSlot.item);
+			BossRushUtils.SimpleItemMouseExchange(player, ref ItemShiftSlot.item);
 		}
 		else if (listeningElement.UniqueId == ItemResultSlotShift.UniqueId) {
 			Item item = Main.mouseItem;
@@ -575,33 +575,10 @@ public class TransmutationUIState : UIState {
 			return;
 		}
 		if (listeningElement.UniqueId == Relicslot1.UniqueId) {
-			SimpleItemMouseExchange(player, ref Relicslot1.item);
+			BossRushUtils.SimpleItemMouseExchange(player, ref Relicslot1.item);
 		}
 		else if (listeningElement.UniqueId == Relicslot2.UniqueId) {
-			SimpleItemMouseExchange(player, ref Relicslot2.item);
-		}
-	}
-	public void SimpleItemMouseExchange(Player player, ref Item item) {
-		Item mouseitem = Main.mouseItem;
-		if (item.type == 0) {
-			if (Main.mouseItem.type != 0) {
-				item = Main.mouseItem.Clone();
-				Main.mouseItem.TurnToAir();
-				player.inventory[58].TurnToAir();
-			}
-		}
-		else {
-			if (Main.mouseItem.type != 0) {
-				Item cached = item.Clone();
-				item = Main.mouseItem.Clone();
-				Main.mouseItem = cached.Clone();
-				player.inventory[58] = cached.Clone();
-			}
-			else {
-				Main.mouseItem = item.Clone();
-				player.inventory[58] = item.Clone();
-				item.TurnToAir();
-			}
+			BossRushUtils.SimpleItemMouseExchange(player, ref Relicslot2.item);
 		}
 	}
 	public override void OnDeactivate() {

@@ -1,30 +1,32 @@
-﻿using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.UI;
-using System.Linq;
-using ReLogic.Content;
-using Terraria.ModLoader;
-using Terraria.GameContent;
-using Terraria.ModLoader.IO;
-using BossRush.Common.Global;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using BossRush.Common.Systems;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
+﻿using BossRush.Common.Global;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using Terraria.ModLoader.UI;
-using System.Diagnostics.Metrics;
-using BossRush.Contents.Transfixion.SoulBound;
-using BossRush.Contents.Transfixion.Arguments;
-using BossRush.Texture;
+using BossRush.Common.Systems;
+using BossRush.Common.Systems.Achievement;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Contents.Transfixion.SoulBound;
+using BossRush.Texture;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using Terraria;
+using Terraria.Achievements;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
-	public static void EnchantmentRNG(Player self,ref Item item) {
+	public static void EnchantmentRNG(Player self, ref Item item) {
 		if (item == null || !EnchantmentGlobalItem.CanBeEnchanted(item)) {
 			return;
 		}
@@ -479,7 +481,11 @@ public class DivineHammerUIState : UIState {
 	public void Visual_Enchantment(bool hide) {
 		weaponEnchantmentUIslot.Hide = hide;
 	}
+	Roguelike_UIPanel AugmentationSelection;
+	Roguelike_UIPanel AugmentationSelection_Head;
+	Roguelike_UIPanel AugmentationSelection_Body;
 	public void AugmentationInit() {
+		textlist.Clear();
 		augmentation = new(tex);
 		augmentation.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<DivineHammerUIState>("Augmentation")), true);
 		augmentation.UISetWidthHeight(52, 52);
@@ -519,8 +525,60 @@ public class DivineHammerUIState : UIState {
 		AccAugmentResult.Hide = true;
 		AccAugmentResult.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccAugmentResult);
+
+		Vector2 position = Mainpanel.GetOuterDimensions().Position();
+		AugmentationSelection = new();
+		AugmentationSelection.Top.Set(position.Y + Mainpanel.Height.Pixels, 0);
+		AugmentationSelection.UISetWidthHeight(400, 400);
+		AugmentationSelection.Hide = true;
+		AugmentationSelection.HAlign = .5f;
+		AugmentationSelection.VAlign = .5f;
+		AugmentationSelection.BackgroundColor = AugmentationSelection.BackgroundColor with { A = 255 };
+		AugmentationSelection.SetPadding(5);
+		Append(AugmentationSelection);
+
+		float num = 4;
+		for (int x = 0; x < num; x++) {
+			for (int y = 0; y < num + 2; y++) {
+				int counter = (int)(x * num) + y + 1;
+				ModAugments aug = AugmentsLoader.GetAugments(counter);
+				string augText = "";
+				Color color = Color.White;
+				if (aug != null) {
+					augText = aug.DisplayName;
+					color = aug.tooltipColor;
+				}
+				AugmentationText btn = new(counter, augText, .7f);
+				btn.BorderColor = color;
+				btn.VAlign = MathHelper.Lerp(0f, 1f, y / (num + 1));
+				btn.HAlign = MathHelper.Lerp(0f, 1f, x / (num - 1f));
+				btn.UISetWidthHeight(100, 10);
+				btn.OnLeftClick += Btn_OnLeftClick;
+				btn.OnUpdate += Btn_OnUpdate;
+				btn.SetPadding(8);
+				AugmentationSelection.Append(btn);
+				textlist.Add(btn);
+			}
+		}
 	}
 
+	private void Btn_OnUpdate(UIElement affectedElement) {
+		if (affectedElement is AugmentationText btn) {
+			if (btn.AugmentationType != SelectedAugmentationType) {
+				btn.TextColor = Color.White;
+			}
+		}
+	}
+
+	int SelectedAugmentationType = 0;
+	private void Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (listeningElement is AugmentationText btn) {
+			SelectedAugmentationType = btn.AugmentationType;
+			btn.TextColor = Color.Yellow;
+		}
+	}
+
+	List<AugmentationText> textlist = new();
 	private void ConfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (AccAugmentSlot.item == null || AccAugmentSlot.item.type == 0) {
 			return;
@@ -543,10 +601,13 @@ public class DivineHammerUIState : UIState {
 			}
 			counter++;
 		}
-		if(counter >= 1) {
+		if (counter >= 1) {
 			return;
 		}
-		AugmentsWeapon.AddAugments(Main.LocalPlayer, ref item, 1, chance: 1);
+		if (AugmentsLoader.GetAugments(SelectedAugmentationType) == null) {
+			return;
+		}
+		AugmentsWeapon.AddAugments(Main.LocalPlayer, ref item, SelectedAugmentationType);
 		AccSacrificeAugmentSlot.item.TurnToAir();
 		AccAugmentResult.item = item.Clone();
 		AccAugmentSlot.item.TurnToAir();
@@ -559,54 +620,22 @@ public class DivineHammerUIState : UIState {
 			if (!item.accessory && item.type != ItemID.None) {
 				return;
 			}
-			if (AccAugmentSlot.item.type == 0) {
+			BossRushUtils.SimpleItemMouseExchange(player, ref AccAugmentSlot.item);
+			if (AccAugmentSlot.item.type == ItemID.None) {
 				AccAugmentSlot.drawInfo.Hide = true;
-				if (Main.mouseItem.type != 0) {
-					AccAugmentSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem.TurnToAir();
-					player.inventory[58].TurnToAir();
-				}
 			}
 			else {
-				if (Main.mouseItem.type != 0) {
-					Item cached = AccAugmentSlot.item.Clone();
-					AccAugmentSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem = cached.Clone();
-					player.inventory[58] = cached.Clone();
-				}
-				else {
+				if (Main.mouseItem.type == ItemID.None) {
 					AccAugmentSlot.drawInfo.Hide = false;
-					Main.mouseItem = AccAugmentSlot.item.Clone();
-					player.inventory[58] = AccAugmentSlot.item.Clone();
-					AccAugmentSlot.item.TurnToAir();
 				}
 			}
 		}
 		else if (listeningElement.UniqueId == AccSacrificeAugmentSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (!item.accessory) {
+			if (!item.accessory && item.type != ItemID.None) {
 				return;
 			}
-			if (AccSacrificeAugmentSlot.item.type == 0) {
-				if (Main.mouseItem.type != 0) {
-					AccSacrificeAugmentSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem.TurnToAir();
-					player.inventory[58].TurnToAir();
-				}
-			}
-			else {
-				if (Main.mouseItem.type != 0) {
-					Item cached = AccSacrificeAugmentSlot.item.Clone();
-					AccSacrificeAugmentSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem = cached.Clone();
-					player.inventory[58] = cached.Clone();
-				}
-				else {
-					Main.mouseItem = AccSacrificeAugmentSlot.item.Clone();
-					player.inventory[58] = AccSacrificeAugmentSlot.item.Clone();
-					AccSacrificeAugmentSlot.item.TurnToAir();
-				}
-			}
+			BossRushUtils.SimpleItemMouseExchange(player, ref AccSacrificeAugmentSlot.item);
 		}
 		else if (listeningElement.UniqueId == AccAugmentResult.UniqueId) {
 			Item item = Main.mouseItem;
@@ -627,6 +656,7 @@ public class DivineHammerUIState : UIState {
 		AccSacrificeAugmentSlot.Hide = hide;
 		confirmButton.Hide = hide;
 		AccAugmentResult.Hide = hide;
+		AugmentationSelection.Hide = hide;
 	}
 	public void SoulBindInit() {
 		soulBind = new(tex);
@@ -684,67 +714,28 @@ public class DivineHammerUIState : UIState {
 			}
 		}
 	}
-
 	private void ArmorholderSlot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Player player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == armorholderSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (!item.IsThisArmorPiece()) {
+			if (!item.IsThisArmorPiece() && item.type != 0) {
 				return;
 			}
-			if (armorholderSlot.item.type == 0) {
-				if (Main.mouseItem.type != 0) {
-					armorholderSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem.TurnToAir();
-					player.inventory[58].TurnToAir();
-				}
-			}
-			else {
-				if (Main.mouseItem.type != 0) {
-					Item cached = armorholderSlot.item.Clone();
-					armorholderSlot.item = Main.mouseItem.Clone();
-					Main.mouseItem = cached.Clone();
-					player.inventory[58] = cached.Clone();
-				}
-				else {
-					Main.mouseItem = armorholderSlot.item.Clone();
-					player.inventory[58] = armorholderSlot.item.Clone();
-					armorholderSlot.item.TurnToAir();
-				}
-			}
+			BossRushUtils.SimpleItemMouseExchange(player, ref armorholderSlot.item);
 		}
 		else if (listeningElement.UniqueId == soulBindUIslot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (item.ModItem == null || item.ModItem is not BaseSoulBoundItem) {
+			if ((item.ModItem == null || item.ModItem is not BaseSoulBoundItem) && item.type != 0) {
 				return;
 			}
-			if (soulBindUIslot.item.type == 0) {
-				if (Main.mouseItem.type != 0) {
-					soulBindUIslot.item = Main.mouseItem.Clone();
-					Main.mouseItem.TurnToAir();
-					player.inventory[58].TurnToAir();
-				}
-			}
-			else {
-				if (Main.mouseItem.type != 0) {
-					Item cached = soulBindUIslot.item.Clone();
-					soulBindUIslot.item = Main.mouseItem.Clone();
-					Main.mouseItem = cached.Clone();
-					player.inventory[58] = cached.Clone();
-				}
-				else {
-					Main.mouseItem = soulBindUIslot.item.Clone();
-					player.inventory[58] = soulBindUIslot.item.Clone();
-					soulBindUIslot.item.TurnToAir();
-				}
-			}
+			BossRushUtils.SimpleItemMouseExchange(Main.LocalPlayer, ref soulBindUIslot.item);
 		}
 		else if (listeningElement.UniqueId == armorResultBindUIslot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (item.type != 0) {
+			if (item.type != ItemID.None) {
 				return;
 			}
-			if (armorResultBindUIslot.item.type == 0) {
+			if (armorResultBindUIslot.item.type == ItemID.None) {
 				return;
 			}
 			Main.mouseItem = armorResultBindUIslot.item.Clone();
@@ -752,7 +743,6 @@ public class DivineHammerUIState : UIState {
 			armorResultBindUIslot.item.TurnToAir();
 		}
 	}
-
 	public void Visual_SoulBound(bool hide) {
 		armorholderSlot.Hide = hide;
 		soulBindUIslot.Hide = hide;
@@ -802,6 +792,15 @@ public class DivineHammerUIState : UIState {
 		slot3.Hide = true;
 		slot2.Hide = true;
 		slot1.Hide = true;
+	}
+}
+public class AugmentationText : Roguelike_UITextPanel {
+	public int AugmentationType { get; private set; }
+	public AugmentationText(int type, string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+		if (AugmentsLoader.GetAugments(type) == null) {
+			return;
+		}
+		AugmentationType = type;
 	}
 }
 public class WeaponEnchantmentUIslot : Roguelike_UIImage {
@@ -926,7 +925,6 @@ public class ConfirmButton : Roguelike_UIImageButton {
 	public ConfirmButton(Asset<Texture2D> texture) : base(texture) {
 	}
 }
-
 public class EnchantmentUIslot : Roguelike_UIImage {
 	public int itemType = 0;
 	public int WhoAmI = -1;

@@ -46,7 +46,7 @@ public class Fire : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -115,7 +115,7 @@ public class FrostBurn : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -323,7 +323,7 @@ public class Critical : ModAugments {
 				name = DisplayName2("5");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void UpdateAccessory(Player player, AugmentsWeapon acc, int index, Item item) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -484,7 +484,7 @@ public class Union : ModAugments {
 	}
 }
 
-public class ShadowFlameI : ModAugments {
+public class ShadowFlame : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.MediumPurple;
 	}
@@ -519,7 +519,7 @@ public class ShadowFlameI : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -555,7 +555,7 @@ public class ShadowFlameI : ModAugments {
 	}
 }
 
-public class CursedFlameI : ModAugments {
+public class CursedFlame : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.ForestGreen;
 	}
@@ -590,7 +590,7 @@ public class CursedFlameI : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -627,9 +627,8 @@ public class CursedFlameI : ModAugments {
 		}
 	}
 }
-public class PoisonI : ModAugments {
+public class Poison : ModAugments {
 	public override void SetStaticDefaults() {
-		Chance = .15f;
 		tooltipColor = Color.PaleGreen;
 	}
 	public override TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
@@ -663,7 +662,7 @@ public class PoisonI : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -697,9 +696,8 @@ public class PoisonI : ModAugments {
 		}
 	}
 }
-public class VenomI : ModAugments {
+public class Venom : ModAugments {
 	public override void SetStaticDefaults() {
-		Chance = .07f;
 		tooltipColor = Color.Purple;
 	}
 	public override TooltipLine ModifyDescription(Player player, AugmentsWeapon acc, int index, Item item, int stack) {
@@ -733,7 +731,7 @@ public class VenomI : ModAugments {
 				name = DisplayName2("2");
 				break;
 		}
-		return name;
+		return ColorWrapper(name);
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
@@ -785,7 +783,7 @@ public class Strengthen : ModAugments {
 
 public class Ghost : ModAugments {
 	public override void SetStaticDefaults() {
-		tooltipColor = Color.DarkBlue;
+		tooltipColor = Color.Wheat;
 	}
 	public override void OnHitNPCWithItem(Player player, AugmentsWeapon acc, int index, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (!player.immune) {

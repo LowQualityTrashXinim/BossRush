@@ -20,10 +20,32 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static void SimpleItemMouseExchange(Player player, ref Item item) {
+			Item mouseitem = Main.mouseItem;
+			if (item.type == 0) {
+				if (Main.mouseItem.type != 0) {
+					item = Main.mouseItem.Clone();
+					Main.mouseItem.TurnToAir();
+					player.inventory[58].TurnToAir();
+				}
+			}
+			else {
+				if (Main.mouseItem.type != 0) {
+					Item cached = item.Clone();
+					item = Main.mouseItem.Clone();
+					Main.mouseItem = cached.Clone();
+					player.inventory[58] = cached.Clone();
+				}
+				else {
+					Main.mouseItem = item.Clone();
+					player.inventory[58] = item.Clone();
+					item.TurnToAir();
+				}
+			}
+		}
 		//for real, who the fuk came up with these name
 		public readonly static int ScreenWidth = Main.PendingResolutionWidth;
 		public readonly static int ScreenHeight = Main.PendingResolutionHeight;

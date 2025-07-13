@@ -1,4 +1,4 @@
-FireI: {
+Fire: {
 	DisplayName: Fire I
 	DisplayName1: Fire II
 	DisplayName2: Fire III
@@ -7,7 +7,7 @@ FireI: {
 	Description2: Enemy with on fire debuff receive 40% more knockback
 }
 
-FrostBurnI: {
+FrostBurn: {
 	DisplayName: FrostBurn I
 	DisplayName1: FrostBurn II
 	DisplayName2: FrostBurn III
@@ -16,7 +16,7 @@ FrostBurnI: {
 	Description2: Enemy with frost burn debuff receive 40% more knockback
 }
 
-ShadowFlameI: {
+ShadowFlame: {
 	DisplayName: ShadowFlame I
 	Description: Inflict ShadowFlame upon enemy hit
 	DisplayName1: ShadowFlame II
@@ -25,7 +25,7 @@ ShadowFlameI: {
 	Description2: Enemy with ShadowFlame debuff receive 40% more knockback
 }
 
-CursedFlameI: {
+CursedFlame: {
 	DisplayName: CursedFlame I
 	Description: Inflict cursed flame upon enemy hit
 	DisplayName1: CursedFlame II
@@ -34,7 +34,7 @@ CursedFlameI: {
 	Description2: Enemy with cursed flame debuff receive 40% more knockback
 }
 
-PoisonI: {
+Poison: {
 	DisplayName: Poison I
 	Description: Inflict poisoned upon enemy hit
 	DisplayName1: Poison II
@@ -43,7 +43,7 @@ PoisonI: {
 	Description2: Enemy with poisoned debuff receive 40% more knockback
 }
 
-VenomI: {
+Venom: {
 	DisplayName: Venom I
 	Description: Inflict venom upon enemy hit
 	DisplayName1: Venom II
@@ -77,7 +77,7 @@ TitanII: {
 	Description: Knock back strength are increased by 5% of weapon damage
 }
 
-CriticalI: {
+Critical: {
 	DisplayName: Critical I
 	Description: Increases critical chance by 5 but reduce critical damage by 10%
 	DisplayName1: Critical II
@@ -87,6 +87,7 @@ CriticalI: {
 	DisplayName3: Critical IV
 	Description3: Critical strike will roll again increasing critical strike damage by 100%
 }
+
 VampireI: {
 	DisplayName: Vampire I
 	Description: Increase Life steal by 1%
