@@ -4,7 +4,7 @@ using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.aDebugItem {
+namespace BossRush.Contents.Items.aDebugItem.Resetter {
 	internal class ClearAllNoHit : ModItem {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {

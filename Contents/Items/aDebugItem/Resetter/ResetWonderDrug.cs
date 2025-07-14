@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.aDebugItem {
+namespace BossRush.Contents.Items.aDebugItem.Resetter {
 	internal class ResetWonderDrug : ModItem {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
