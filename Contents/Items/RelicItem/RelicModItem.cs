@@ -239,7 +239,6 @@ public class Relic : ModItem {
 		return overrideColor;
 	}
 	public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-		itemColor = GetRelicTierColor(itemColor);
 		drawColor = GetRelicTierColor(drawColor);
 		Texture2D texture = TextureAssets.Item[Type].Value;
 		if (RelicPrefixedType == -1) {

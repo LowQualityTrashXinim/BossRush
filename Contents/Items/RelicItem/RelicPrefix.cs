@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -39,6 +40,15 @@ public abstract class RelicPrefix : ModType {
 		SetStaticDefaults();
 		Type = RelicPrefixSystem.Register(this);
 	}
+	/// <summary>
+	/// This act as a StatModifier for <see cref="Relic"/>, but you can also treat it as update function
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="relic"></param>
+	/// <param name="value"></param>
+	/// <param name="TemplateType"></param>
+	/// <param name="index"></param>
+	/// <returns></returns>
 	public virtual StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) { return value; }
 }
 
@@ -106,6 +116,57 @@ public class Phi : RelicPrefix {
 		if (RelicTemplateLoader.GetTemplate(TemplateType).relicType == RelicType.Stat) {
 			return value + .2f;
 		}
+		return value;
+	}
+}
+public class Archer : RelicPrefix {
+	public override void SetStaticDefaults() {
+		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("ArcherRelic");
+	}
+	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (player.HeldItem.useAmmo == AmmoID.Arrow) {
+			player.arrowDamage += .06f;
+			value.Base += 5;
+			return value;
+		}
+		return value;
+	}
+}
+public class Defense : RelicPrefix {
+	public override void SetStaticDefaults() {
+		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("DefenseRelic");
+	}
+	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		player.ModPlayerStats().UpdateDefenseBase += 5;
+		if (player.statDefense >= 50) {
+			value.Base += 5;
+			return value;
+		}
+		return value;
+	}
+}
+public class Melee : RelicPrefix {
+	public override void SetStaticDefaults() {
+		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("MeleeRelic");
+	}
+	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (player.HeldItem.DamageType == DamageClass.Melee) {
+			player.ModPlayerStats().DirectItemDamage.Base += 10;
+			return value + .1f;
+		}
+		return value;
+	}
+}
+public class Staff : RelicPrefix {
+	public override void SetStaticDefaults() {
+		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("StaffRelic");
+	}
+	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (Item.staff[player.HeldItem.type]) {
+			player.manaCost -= .05f;
+			return value + .2f;
+		}
+
 		return value;
 	}
 }
