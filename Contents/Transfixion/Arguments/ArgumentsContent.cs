@@ -189,13 +189,6 @@ public class TrueStatus : ModAugments {
 }
 
 public class Terra : ModAugments {
-	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
-		Chance = 0;
-		if (player.HeldItem.type == ItemID.TerraBlade) {
-			Chance = .2f;
-		}
-		return true;
-	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Green;
 	}

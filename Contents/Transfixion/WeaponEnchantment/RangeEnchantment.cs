@@ -4,14 +4,12 @@ using Terraria.ID;
 using Terraria.Audio;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
-using BossRush.Common.Global;
-using BossRush;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class Musket : ModEnchantment {
@@ -682,5 +680,34 @@ public class PhoenixBlaster : ModEnchantment {
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30), ProjectileID.Flamelash, (int)(damage * 1.5f), knockback, player.whoAmI);
 			globalItem.Item_Counter2[index] = -1;
 		}
+	}
+}
+public class StarCannon : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.StarCannon;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (++globalItem.Item_Counter2[index] >= 5) {
+			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		}
+		if(globalItem.Item_Counter1[index] >= 100) {
+			player.GetDamage(DamageClass.Generic) += .15f;
+			player.GetCritChance(DamageClass.Generic) += 5;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] >= 200) {
+			globalItem.Item_Counter1[index] -= 200;
+			damage = 100 + (int)(damage * .35f);
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.StarCannonStar, damage, knockback, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			globalItem.Item_Counter1[index] += hit.Damage;
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		globalItem.Item_Counter1[index] += hit.Damage;
 	}
 }

@@ -1,4 +1,4 @@
 displayName = Roguelike Terraria Unstable Alpha
 author = Xinim
 version = 0.5.9072025
-modReferences  = StructureHelper@3.0
+modReferences  = StructureHelper@3.0, SubworldLibrary

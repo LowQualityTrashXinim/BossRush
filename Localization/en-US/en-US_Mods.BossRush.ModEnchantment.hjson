@@ -775,3 +775,10 @@ BeeKeeper.Description:
 	After striking enemy 30 times, summon a ghost bee keeper that continuously spawn bee
 	During bee keeper sword alive, you will gain Honey buff for 2s
 	'''
+StarCannon.Description:
+	'''
+	Dealing damage will accumulate point which have beneficial effect ( point will slowly decreases )
+	Accumulating 100 points increase attack damage by 15% and 5% critical strike chance
+	And at 200 points will make next shot shoot out Star projectile ( if weapon can shoot )
+	Star projectile deal 100 + 35% weapon damage
+	'''

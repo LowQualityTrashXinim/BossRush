@@ -481,9 +481,13 @@ public class DivineHammerUIState : UIState {
 	public void Visual_Enchantment(bool hide) {
 		weaponEnchantmentUIslot.Hide = hide;
 	}
-	Roguelike_UIPanel AugmentationSelection;
+	Roguelike_UITextPanel AugmentationSelection_Text;
+	Roguelike_UIPanel AugmentationSelection_Container;
 	Roguelike_UIPanel AugmentationSelection_Head;
 	Roguelike_UIPanel AugmentationSelection_Body;
+	Roguelike_UIImageButton AugmentationSelection_BackIcon;
+	Roguelike_UIImageButton AugmentationSelection_Forward;
+	Roguelike_UIImageButton AugmentationSelection_Backward;
 	public void AugmentationInit() {
 		textlist.Clear();
 		augmentation = new(tex);
@@ -496,7 +500,7 @@ public class DivineHammerUIState : UIState {
 
 		AccAugmentSlot = new(tex);
 		AccAugmentSlot.HAlign = 0;
-		AccAugmentSlot.VAlign = .5f;
+		AccAugmentSlot.VAlign = 1;
 		AccAugmentSlot.Hide = true;
 		AccAugmentSlot.SetPostTex(TextureAssets.Item[ItemID.AvengerEmblem], attemptToLoad: true);
 		AccAugmentSlot.drawInfo.Opacity = .3f;
@@ -505,14 +509,14 @@ public class DivineHammerUIState : UIState {
 
 		AccSacrificeAugmentSlot = new(tex);
 		AccSacrificeAugmentSlot.HAlign = .33f;
-		AccSacrificeAugmentSlot.VAlign = .5f;
+		AccSacrificeAugmentSlot.VAlign = 1;
 		AccSacrificeAugmentSlot.Hide = true;
 		AccSacrificeAugmentSlot.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccSacrificeAugmentSlot);
 
 		confirmButton = new(tex);
 		confirmButton.HAlign = .66f;
-		confirmButton.VAlign = .5f;
+		confirmButton.VAlign = 1;
 		confirmButton.Hide = true;
 		confirmButton.OnLeftClick += ConfirmButton_OnLeftClick;
 		confirmButton.SetPostTex(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<DivineHammerUIState>("Augmentation")), true);
@@ -521,21 +525,39 @@ public class DivineHammerUIState : UIState {
 
 		AccAugmentResult = new(tex);
 		AccAugmentResult.HAlign = 1f;
-		AccAugmentResult.VAlign = .5f;
+		AccAugmentResult.VAlign = 1;
 		AccAugmentResult.Hide = true;
 		AccAugmentResult.OnLeftClick += AccAugmentSlot_OnLeftClick;
 		BodyPanel.Append(AccAugmentResult);
 
+		AugmentationSelection_Text = new("", .8f);
+		AugmentationSelection_Text.Width.Percent = 1f;
+		AugmentationSelection_Text.Height.Pixels = 30;
+		AugmentationSelection_Text.TextHAlign = .5f;
+		AugmentationSelection_Text.Hide = true;
+		BodyPanel.Append(AugmentationSelection_Text);
+
 		Vector2 position = Mainpanel.GetOuterDimensions().Position();
-		AugmentationSelection = new();
-		AugmentationSelection.Top.Set(position.Y + Mainpanel.Height.Pixels, 0);
-		AugmentationSelection.UISetWidthHeight(400, 400);
-		AugmentationSelection.Hide = true;
-		AugmentationSelection.HAlign = .5f;
-		AugmentationSelection.VAlign = .5f;
-		AugmentationSelection.BackgroundColor = AugmentationSelection.BackgroundColor with { A = 255 };
-		AugmentationSelection.SetPadding(5);
-		Append(AugmentationSelection);
+		AugmentationSelection_Container = new();
+		AugmentationSelection_Container.UISetWidthHeight(400, 500);
+		AugmentationSelection_Container.Hide = true;
+		AugmentationSelection_Container.HAlign = .5f;
+		AugmentationSelection_Container.VAlign = .5f;
+		AugmentationSelection_Container.BackgroundColor = AugmentationSelection_Container.BackgroundColor with { A = 200 };
+		AugmentationSelection_Container.SetPadding(5);
+		Append(AugmentationSelection_Container);
+
+		AugmentationSelection_Head = new();
+		AugmentationSelection_Head.Width.Percent = 1;
+		AugmentationSelection_Head.Height.Pixels = 70;
+		AugmentationSelection_Head.SetPadding(5);
+		AugmentationSelection_Container.Append(AugmentationSelection_Head);
+
+		AugmentationSelection_Body = new();
+		AugmentationSelection_Body.Width.Percent = 1;
+		AugmentationSelection_Body.Height.Pixels = AugmentationSelection_Container.Height.Pixels - 90;
+		AugmentationSelection_Body.VAlign = 1f;
+		AugmentationSelection_Container.Append(AugmentationSelection_Body);
 
 		float num = 4;
 		for (int x = 0; x < num; x++) {
@@ -555,13 +577,79 @@ public class DivineHammerUIState : UIState {
 				btn.UISetWidthHeight(100, 10);
 				btn.OnLeftClick += Btn_OnLeftClick;
 				btn.OnUpdate += Btn_OnUpdate;
-				btn.SetPadding(8);
-				AugmentationSelection.Append(btn);
+				btn.TextHAlign = .5f;
+				btn.SetPadding(10);
+				AugmentationSelection_Body.Append(btn);
 				textlist.Add(btn);
 			}
 		}
-	}
+		auglist.Clear();
+		auglist.AddRange(AugmentsLoader.ReturnListOfAugment());
+		maxPage = AugmentsLoader.TotalCount / 24;
+		if (AugmentsLoader.TotalCount % 24 != 0) {
+			maxPage++;
+		}
 
+		AugmentationSelection_BackIcon = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		AugmentationSelection_BackIcon.SetPostTex(ModContent.Request<Texture2D>(BossRushTexture.BackIcon));
+		AugmentationSelection_BackIcon.UISetWidthHeight(52, 52);
+		AugmentationSelection_BackIcon.HAlign = 1f;
+		AugmentationSelection_BackIcon.VAlign = .5f;
+		AugmentationSelection_BackIcon.OnLeftClick += AugmentationSelection_OnLeftClick;
+		AugmentationSelection_Head.Append(AugmentationSelection_BackIcon);
+
+		AugmentationSelection_Backward = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		AugmentationSelection_Backward.SetPostTex(ModContent.Request<Texture2D>(BossRushTexture.Arrow_Left));
+		AugmentationSelection_Backward.UISetWidthHeight(52, 52);
+		AugmentationSelection_Backward.VAlign = .5f;
+		AugmentationSelection_Backward.OnLeftClick += AugmentationSelection_OnLeftClick;
+		AugmentationSelection_Head.Append(AugmentationSelection_Backward);
+
+		AugmentationSelection_Forward = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		AugmentationSelection_Forward.SetPostTex(ModContent.Request<Texture2D>(BossRushTexture.Arrow_Right));
+		AugmentationSelection_Forward.UISetWidthHeight(52, 52);
+		AugmentationSelection_Forward.VAlign = .5f;
+		AugmentationSelection_Forward.MarginLeft = AugmentationSelection_Backward.Width.Pixels + 10;
+		AugmentationSelection_Forward.OnLeftClick += AugmentationSelection_OnLeftClick;
+		AugmentationSelection_Head.Append(AugmentationSelection_Forward);
+	}
+	List<ModAugments> auglist = new();
+	int maxPage = 0;
+	int currentPage = 0;
+	private void AugmentationSelection_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (listeningElement.UniqueId == AugmentationSelection_BackIcon.UniqueId) {
+			Visual_Augmentation(false);
+		}
+		else if (listeningElement.UniqueId == AugmentationSelection_Forward.UniqueId) {
+			currentPage++;
+			Reflesh_VisibleAugList();
+		}
+		else if (listeningElement.UniqueId == AugmentationSelection_Backward.UniqueId) {
+			currentPage--;
+			Reflesh_VisibleAugList();
+		}
+		currentPage = Math.Clamp(currentPage, 0, maxPage - 1);
+	}
+	private void Reflesh_VisibleAugList() {
+		if (currentPage >= maxPage || currentPage < 0 || maxPage <= 1) {
+			return;
+		}
+		int startingPoint = 24 * currentPage;
+		for (int i = 0; i < textlist.Count; i++) {
+			AugmentationText btn = textlist[i];
+			int indexChecker = startingPoint + i + 1;
+			if (textlist.Count - 1 < i || indexChecker >= auglist.Count) {
+				btn.BorderColor = Color.White;
+				btn.SetAug(0);
+				btn.SetText(" ");
+				continue;
+			}
+			ModAugments aug = auglist[indexChecker];
+			btn.SetAug(aug.Type);
+			btn.SetText(aug.DisplayName);
+			btn.BorderColor = aug.tooltipColor;
+		}
+	}
 	private void Btn_OnUpdate(UIElement affectedElement) {
 		if (affectedElement is AugmentationText btn) {
 			if (btn.AugmentationType != SelectedAugmentationType) {
@@ -575,18 +663,30 @@ public class DivineHammerUIState : UIState {
 		if (listeningElement is AugmentationText btn) {
 			SelectedAugmentationType = btn.AugmentationType;
 			btn.TextColor = Color.Yellow;
+			ModAugments aug = AugmentsLoader.GetAugments(SelectedAugmentationType);
+			if (aug == null) {
+				return;
+			}
+			AugmentationSelection_Text.SetText(aug.DisplayName);
+			AugmentationSelection_Text.TextColor = aug.tooltipColor;
 		}
 	}
 
 	List<AugmentationText> textlist = new();
 	private void ConfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (AccAugmentSlot.item == null || AccAugmentSlot.item.type == 0) {
+		if (SelectedAugmentationType == 0) {
+			Visual_AugmentationSelection();
 			return;
 		}
-		if (AccSacrificeAugmentSlot.item == null || AccSacrificeAugmentSlot.item.type == 0) {
+		if (AccAugmentSlot.item == null || AccAugmentSlot.item.type == ItemID.None) {
+			Visual_AugmentationSelection();
 			return;
 		}
-		if (AccAugmentResult.item != null && AccAugmentResult.item.type != 0) {
+		if (AccSacrificeAugmentSlot.item == null || AccSacrificeAugmentSlot.item.type == ItemID.None) {
+			Visual_AugmentationSelection();
+			return;
+		}
+		if (AccAugmentResult.item != null && AccAugmentResult.item.type != ItemID.None) {
 			return;
 		}
 		Item item = AccAugmentSlot.item;
@@ -607,6 +707,7 @@ public class DivineHammerUIState : UIState {
 		if (AugmentsLoader.GetAugments(SelectedAugmentationType) == null) {
 			return;
 		}
+		SelectedAugmentationType = 0;
 		AugmentsWeapon.AddAugments(Main.LocalPlayer, ref item, SelectedAugmentationType);
 		AccSacrificeAugmentSlot.item.TurnToAir();
 		AccAugmentResult.item = item.Clone();
@@ -639,10 +740,10 @@ public class DivineHammerUIState : UIState {
 		}
 		else if (listeningElement.UniqueId == AccAugmentResult.UniqueId) {
 			Item item = Main.mouseItem;
-			if (item.type != 0) {
+			if (item.type != ItemID.None) {
 				return;
 			}
-			if (AccAugmentResult.item.type == 0) {
+			if (AccAugmentResult.item.type == ItemID.None) {
 				return;
 			}
 			Main.mouseItem = AccAugmentResult.item.Clone();
@@ -652,11 +753,19 @@ public class DivineHammerUIState : UIState {
 	}
 
 	public void Visual_Augmentation(bool hide) {
+		AugmentationSelection_Text.Hide = hide;
 		AccAugmentSlot.Hide = hide;
 		AccSacrificeAugmentSlot.Hide = hide;
 		confirmButton.Hide = hide;
 		AccAugmentResult.Hide = hide;
-		AugmentationSelection.Hide = hide;
+		AugmentationSelection_Container.Hide = true;
+		AugmentationSelection_Head.Hide = true;
+		AugmentationSelection_Body.Hide = true;
+	}
+	public void Visual_AugmentationSelection() {
+		AugmentationSelection_Container.Hide = false;
+		AugmentationSelection_Head.Hide = false;
+		AugmentationSelection_Body.Hide = false;
 	}
 	public void SoulBindInit() {
 		soulBind = new(tex);
@@ -697,13 +806,13 @@ public class DivineHammerUIState : UIState {
 		BodyPanel.Append(armorResultBindUIslot);
 	}
 	private void SoulBindconfirmButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (armorholderSlot.item == null || armorholderSlot.item.type == 0) {
+		if (armorholderSlot.item == null || armorholderSlot.item.type == ItemID.None) {
 			return;
 		}
-		if (soulBindUIslot.item == null || soulBindUIslot.item.type == 0) {
+		if (soulBindUIslot.item == null || soulBindUIslot.item.type == ItemID.None) {
 			return;
 		}
-		if (armorResultBindUIslot.item != null && armorResultBindUIslot.item.type != 0) {
+		if (armorResultBindUIslot.item != null && armorResultBindUIslot.item.type != ItemID.None) {
 			return;
 		}
 		if (soulBindUIslot.item.ModItem is BaseSoulBoundItem moditem) {
@@ -718,14 +827,14 @@ public class DivineHammerUIState : UIState {
 		Player player = Main.LocalPlayer;
 		if (listeningElement.UniqueId == armorholderSlot.UniqueId) {
 			Item item = Main.mouseItem;
-			if (!item.IsThisArmorPiece() && item.type != 0) {
+			if (!item.IsThisArmorPiece() && item.type != ItemID.None) {
 				return;
 			}
 			BossRushUtils.SimpleItemMouseExchange(player, ref armorholderSlot.item);
 		}
 		else if (listeningElement.UniqueId == soulBindUIslot.UniqueId) {
 			Item item = Main.mouseItem;
-			if ((item.ModItem == null || item.ModItem is not BaseSoulBoundItem) && item.type != 0) {
+			if ((item.ModItem == null || item.ModItem is not BaseSoulBoundItem) && item.type != ItemID.None) {
 				return;
 			}
 			BossRushUtils.SimpleItemMouseExchange(Main.LocalPlayer, ref soulBindUIslot.item);
@@ -796,6 +905,9 @@ public class DivineHammerUIState : UIState {
 }
 public class AugmentationText : Roguelike_UITextPanel {
 	public int AugmentationType { get; private set; }
+	public void SetAug(int type) {
+		AugmentationType = type;
+	}
 	public AugmentationText(int type, string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		if (AugmentsLoader.GetAugments(type) == null) {
 			return;
@@ -886,7 +998,7 @@ public class WeaponEnchantmentUIslot : Roguelike_UIImage {
 				return;
 			}
 		}
-		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+		player.TryDroppingSingleItem(player.GetSource_DropAsItem(), item);
 		item = null;
 	}
 	public override void OnDeactivate() {

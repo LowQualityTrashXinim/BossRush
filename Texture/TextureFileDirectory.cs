@@ -36,6 +36,7 @@
 		public const string Page_StateSelected = CommonTextureStringPattern + "UI/page_selected";
 		public const string Page_StateUnselected = CommonTextureStringPattern + "UI/page_unselected";
 		public const string DrawBrush = CommonTextureStringPattern + "UI/Brush";
+		public const string BackIcon = CommonTextureStringPattern + "UI/BackIcon";
 		public const string FillBucket = CommonTextureStringPattern + "UI/FillBucket";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";

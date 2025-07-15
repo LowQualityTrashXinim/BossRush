@@ -18,6 +18,7 @@ internal class AugmentsLoader : ModSystem {
 		_Augmentss.Add(enchant);
 		return _Augmentss.Count;
 	}
+	public static List<ModAugments> ReturnListOfAugment() => _Augmentss;
 	public static ModAugments GetAugments(int type) {
 		return type > 0 && type <= _Augmentss.Count ? _Augmentss[type - 1] : null;
 	}

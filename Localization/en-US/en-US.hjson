@@ -377,6 +377,7 @@ Mods: {
 			FlyingSlashProjectile.DisplayName: Flying Slash Projectile
 			EvilFlamesProj.DisplayName: Evil Flames Proj
 			LingeringEvilFlames.DisplayName: Lingering Evil Flames
+			PurpleClubberfishPRojectile.DisplayName: Purple Clubberfish P Rojectile
 		}
 
 		NPCs: {

@@ -14,6 +14,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static BossRush.Contents.Transfixion.WeaponEnchantment.SwordFish;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class CactusSword : ModEnchantment {
@@ -1390,6 +1391,7 @@ public class BeeKeeperEnchantmentProjectile : ModProjectile {
 		}
 	}
 }
+//TODO : add some special mechanic to this
 public class Mace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Mace;
@@ -1405,6 +1407,7 @@ public class Mace : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 }
+//TODO : add some special mechanic to this
 public class FlamingMace : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.FlamingMace;
@@ -1420,6 +1423,7 @@ public class FlamingMace : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 }
+//TODO : add some special mechanic to this
 public class BlueMoon : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlueMoon;
@@ -1433,5 +1437,78 @@ public class BlueMoon : ModEnchantment {
 			}
 		}
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+}
+//TODO : add some special mechanic to this
+public class Sunfury : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Sunfury;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ItemAnimationActive) {
+			if (globalItem.Item_Counter1[index] <= 0) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 10;
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<MaceBallProjectile>(), item.damage + 30, item.knockBack, player.whoAmI, ai2: ProjectileID.Sunfury);
+				globalItem.Item_Counter1[index] = PlayerStatsHandle.WE_CoolDown(player, 150);
+			}
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+}
+//TODO : add some special mechanic to this
+public class PurpleClubberfish : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PurpleClubberfish;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		int projectiletype = ModContent.ProjectileType<PurpleClubberfishPRojectile>();
+		if (player.ownedProjectileCounts[projectiletype] < 1) {
+			if (player.Center.LookForAnyHostileNPC(300)) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.UnitY - Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(6, 8), projectiletype, item.damage, item.knockBack, player.whoAmI, Main.rand.Next(60, 90));
+			}
+		}
+	}
+}
+public class PurpleClubberfishPRojectile : ModProjectile {
+	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PurpleClubberfish);
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 30;
+		Projectile.friendly = true;
+		Projectile.tileCollide = false;
+		Projectile.timeLeft = 300;
+		Projectile.penetrate = -1;
+	}
+	public override void AI() {
+		for (int i = 0; i < 4; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+			dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+			dust.noGravity = true;
+			dust.velocity = Vector2.Zero;
+			dust.position += Main.rand.NextVector2Circular(60, 30).RotatedBy(Projectile.velocity.ToRotation());
+		}
+
+		Projectile.spriteDirection = Projectile.direction;
+		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+		Projectile.rotation += Projectile.spriteDirection != 1 ? MathHelper.PiOver4 : MathHelper.PiOver4 - MathHelper.Pi + MathHelper.PiOver2;
+		if (Projectile.ai[0] <= 0) {
+			Projectile.ai[0]--;
+			Projectile.timeLeft = 300;
+			return;
+		}
+		Projectile.Center.LookForHostileNPCNotImmune(out NPC closestNPC, 1500, Projectile.owner, true);
+		if (closestNPC == null) {
+			Projectile.velocity.Y += 0.3f;
+			return;
+		}
+		Projectile.velocity += (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 2f;
+		Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+	}
+	public override void OnKill(int timeLeft) {
+		for (int i = 0; i < 50; i++) {
+			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+			dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+			dust.noGravity = true;
+			dust.velocity = Main.rand.NextVector2Circular(10, 10);
+		}
 	}
 }
