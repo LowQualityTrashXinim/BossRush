@@ -27,8 +27,8 @@ Phi: {
 	DisplayName: Phi
 	Description: Increases relic stats value effect effect by 20%
 }
-Sword: {
-	DisplayName: Sword
+Melee: {
+	DisplayName: Melee
 	Description: Increases base relic stats by 5 when helding melee weapon, +10 direct item damage
 }
 Archer: {
