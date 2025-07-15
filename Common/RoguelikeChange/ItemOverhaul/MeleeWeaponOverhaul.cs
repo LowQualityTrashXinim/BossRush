@@ -295,19 +295,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 		}
-		public override float UseSpeedMultiplier(Item item, Player player) {
-			float SpeedAdd = 0;
-			if (!player.autoReuseAllWeapons) {
-				SpeedAdd += .11f;
-			}
-			if (SwingType != BossRushUseStyle.Swipe ||
-				item.noMelee) {
-				return base.UseSpeedMultiplier(item, player) + SpeedAdd;
-			}
-			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f + SpeedAdd;
-			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-			return useSpeedMultiplierOnCombo;
-		}
 		public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
 			if (SwingType == BossRushUseStyle.Spin) {
 				modifiers.HitDirectionOverride = BossRushUtils.DirectionFromEntityAToEntityB(player.Center.X, target.Center.X);

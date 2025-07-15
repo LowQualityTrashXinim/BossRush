@@ -148,7 +148,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.WhitePhasesaber:
 					item.shoot = ModContent.ProjectileType<StarWarSwordProjectile>();
 					item.shootSpeed = 1;
-					item.useAnimation = item.useTime = 25;
+					item.useAnimation = item.useTime = 15;
 					item.ArmorPenetration = 30;
 					break;
 			}
