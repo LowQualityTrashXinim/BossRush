@@ -603,7 +603,7 @@ public class EoC_DashTeleport : AIState {
 	}
 
 	public override void OnStateUpdate(CommonNPCInfo info) {
-		npc.velocity = npc.rotation.ToRotationVector2() * 20 * BossRushUtils.InExpo(1f - (float)counter / 60, ((float)counter / 60) * 5f);
+		npc.velocity = npc.rotation.ToRotationVector2() * 30 * BossRushUtils.InExpo(1f - counter / 60f, (counter / 60f) * 2f);
 		if (counter == 60)
 			if (tpCount < 6)
 				ChangeState(StateType<EoC_RandomTeleport>());

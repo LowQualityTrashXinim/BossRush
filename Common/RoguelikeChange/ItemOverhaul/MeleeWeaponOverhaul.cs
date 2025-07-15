@@ -499,16 +499,13 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		private void On_PlayerDrawLayers_DrawPlayer_RenderAllLayers(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo) {
 			Player player = Main.LocalPlayer;
 			Item item = player.HeldItem;
-			if(item.noMelee || item.noUseGraphic) {
+			if (item.noMelee || item.noUseGraphic) {
 				orig.Invoke(ref drawinfo);
-				return; 
+				return;
 			}
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer) && item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-				if(!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-					orig.Invoke(ref drawinfo);
-					return;
-				}
-				if (modplayer.ComboNumber == 1 || meleeItem.SwingType == BossRushUseStyle.SwipeUp ) {
+				if (modplayer.ComboNumber == 1
+					|| meleeItem.SwingType == BossRushUseStyle.SwipeUp) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
 				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual) {
@@ -582,6 +579,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			if (item.axe > 0) {
 				ComboNumber = 0;
+			}
+			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				if (meleeItem.SwingType != BossRushUseStyle.Swipe) {
+					ComboNumber = 0;
+				}
 			}
 		}
 		public override bool CanUseItem(Item item) {
