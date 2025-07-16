@@ -83,9 +83,12 @@ public class GeneralBuilderToolUI : UIState {
 		Panel = new();
 		Panel.Width.Pixels = 350;
 		Panel.Height.Pixels = 100;
-		Panel.HAlign = .5f;
-		Panel.VAlign = .4f;
+		Panel.Left.Percent = .5f;
+		Panel.Top.Percent = .5f;
 		Panel.BackgroundColor.A = 255;
+		Panel.OnLeftMouseDown += Panel_OnLeftMouseDown;
+		Panel.OnLeftMouseUp += Panel_OnLeftMouseUp;
+		Panel.OnUpdate += Panel_OnUpdate;
 		Append(Panel);
 
 		DrawMode = new(thesameuitextureasvanilla);
@@ -181,6 +184,48 @@ public class GeneralBuilderToolUI : UIState {
 		GeneralBuilderToolSystem.CurrentMode = GeneralBuilderToolSystem.Fill;
 		DrawMode.Highlight = false;
 		FillMode.Highlight = true;
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+	}
+	Vector2 offsetExtra = Vector2.Zero;
+	Vector2 lastPressedPositionDistance = Vector2.Zero;
+	private void Panel_OnLeftMouseUp(UIMouseEvent evt, UIElement listeningElement) {
+		if (evt.Target != listeningElement) {
+			return;
+		}
+		dragging = false;
+	}
+
+	private void Panel_OnLeftMouseDown(UIMouseEvent evt, UIElement listeningElement) {
+		if (evt.Target != listeningElement) {
+			return;
+		}
+		if (!dragging) {
+			offsetExtra = lastPressedPositionDistance - evt.MousePosition;
+		}
+		dragging = true;
+		Vector2 pos = Panel.GetInnerDimensions().Position();
+		Vector2 distanceFromWhereTopLeftToMouse = pos - evt.MousePosition;
+		offset = distanceFromWhereTopLeftToMouse;
+	}
+
+	private void Panel_OnUpdate(UIElement affectedElement) {
+
+		if (dragging) {
+			Panel.Left.Set(Main.mouseX - offset.X + offsetExtra.X * 2, 0f); // Main.MouseScreen.X and Main.mouseX are the same
+			Panel.Top.Set(Main.mouseY - offset.Y + offsetExtra.Y * 2, 0f);
+			Panel.Recalculate();
+		}
+		else {
+			lastPressedPositionDistance = Panel.GetOuterDimensions().Position();
+		}
+	}
+
+	private Vector2 offset;
+	private bool dragging;
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+
 	}
 }
 public class ImprovedUIImage : UIImage {
