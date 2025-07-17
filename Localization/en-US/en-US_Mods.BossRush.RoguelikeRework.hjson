@@ -28,12 +28,20 @@ PhoenixBlaster:
 ChlorophyteClaymore:
 	'''
 	Shoot out a bouncy chlorophyte orb that each time it bounces creates a chlorophyte bolt
-	Wait 1.5s to create a slash that deal 3x damage
-	Wait additional 1s to shoot out chlorophyte bolts along with the slash
-	Striking at perfect moment will multiply damage by 2x and attack as if you waited for 2.5s
+	Wait 2.5s to create a slash that deal 3x damage
+	Wait additional 1.6s to shoot out chlorophyte bolts along with the slash
+	Striking at perfect moment will multiply damage by 2x and attack as if you waited
 	'''
 WoodenBow:
 	'''
 	Shoot out 2 very fast arrow
 	Have 30% chance to create a wind that deal 55% of weapon damage
+	'''
+TinBow:
+	'''
+	Shoot a additional tin ore
+	Wait 2s to shoot down 3 tin bolt from the sky deal 2x weapon damage
+	Wait additional 2s to rain down more tin bolt
+	When tin bolt are spawned, there is a 1 in 3 chance to spawn additional tin ore
+	Falling tin ore deal 2.5x weapon damage
 	'''

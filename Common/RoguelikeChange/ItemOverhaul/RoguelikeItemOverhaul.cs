@@ -77,9 +77,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.crit = 4;
 					item.ArmorPenetration = 5;
 					break;
-				case ItemID.TinBow:
-					item.useTime = item.useAnimation = 12;
-					break;
 				case ItemID.PlatinumBow:
 				case ItemID.GoldBow:
 					item.useTime = item.useAnimation = 42;
@@ -240,16 +237,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						return false;
 					}
 					return true;
-				case ItemID.TinBow:
-					int counter = 1;
-					for (int i = 0; i < counter; i++) {
-						if (Main.rand.NextBool(5)) {
-							Vector2 newVelocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
-							Projectile.NewProjectile(source, position, newVelocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
-							counter++;
-						}
-					}
-					return true;
 				case ItemID.GoldBow:
 				case ItemID.PlatinumBow:
 					Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
@@ -307,10 +294,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.TungstenShortsword:
 					line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 1.5s cool down )");
 					line.OverrideColor = Color.Yellow;
-					tooltips.Add(line);
-					break;
-				case ItemID.TinBow:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow");
 					tooltips.Add(line);
 					break;
 				case ItemID.WoodenBoomerang:
