@@ -106,11 +106,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.ChainKnife:
 					item.damage += 12;
 					break;
-				case ItemID.ChlorophyteClaymore:
-					item.damage += 10;
-					item.useTime = item.useAnimation = 35;
-					item.shootsEveryUse = true;
-					break;
 				case ItemID.EnchantedSword:
 					item.scale += .5f;
 					item.shootsEveryUse = true;

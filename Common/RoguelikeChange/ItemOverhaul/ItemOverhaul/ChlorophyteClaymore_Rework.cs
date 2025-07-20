@@ -16,6 +16,8 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 		if (entity.type == ItemID.ChlorophyteClaymore) {
 			entity.damage += 20;
 			entity.knockBack += 5;
+			entity.useTime = entity.useAnimation = 35;
+			entity.shootsEveryUse = true;
 		}
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

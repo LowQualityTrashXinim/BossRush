@@ -114,7 +114,7 @@ public class TinArmorPlayer : PlayerArmorHandle {
 			return false;
 		}
 		if (item.useStyle == ItemUseStyleID.Rapier) {
-			Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
+			Vector2 pos = position + Main.rand.NextVector2Circular(20, 20);
 			Projectile.NewProjectile(source, pos, Main.MouseWorld - pos, ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
 		}
 		return true;

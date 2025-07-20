@@ -13,7 +13,7 @@ public class Roguelike_TinBow : GlobalItem {
 			return;
 		}
 		entity.damage += 5;
-		entity.useTime = entity.useAnimation = 22;
+		entity.useTime = entity.useAnimation = 33;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (item.type == ItemID.TinBow) {
@@ -25,7 +25,7 @@ public class Roguelike_TinBow : GlobalItem {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		int counter = player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter;
-		player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter = -22;
+		player.GetModPlayer<Roguelike_TinBow_ModPlayer>().Counter = -player.itemAnimationMax;
 		if (counter >= 120) {
 			int amount = 3;
 			bool randomizeYAxis = false;

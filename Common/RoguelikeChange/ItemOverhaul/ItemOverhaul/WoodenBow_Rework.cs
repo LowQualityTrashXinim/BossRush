@@ -23,6 +23,17 @@ public class Roguelike_WoodenBow : GlobalItem {
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (item.type == ItemID.WoodenBow) {
+			int Counter = player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter;
+			player.GetModPlayer<Roguelike_WoodenBow_ModPlayer>().Counter = 0;
+			if (Counter >= 90) {
+				Counter -= 90;
+				int amount = Counter / 10 + 3;
+				for (int i = 0; i < amount; i++) {
+					Vector2 pos = Main.MouseWorld + Main.rand.NextVector2CircularEdge(2000, 700);
+					Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 5;
+					Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<WindShot>(), (int)(damage * .55f), 5f, player.whoAmI);
+				}
+			}
 			if (Main.rand.NextFloat() <= .3f) {
 				Vector2 pos = Main.MouseWorld + Main.rand.NextVector2CircularEdge(2000, 700);
 				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 5;
@@ -45,6 +56,14 @@ public class Roguelike_WoodenBow : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (item.type == ItemID.WoodenBow) {
 			BossRushUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_WoodenBow", BossRushUtils.LocalizationText("RoguelikeRework", item.Name)));
+		}
+	}
+}
+public class Roguelike_WoodenBow_ModPlayer : ModPlayer {
+	public int Counter = 0;
+	public override void ResetEffects() {
+		if (++Counter >= 150) {
+			Counter = 150;
 		}
 	}
 }

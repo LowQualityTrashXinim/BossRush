@@ -159,8 +159,6 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public int SinisterBook_DemonScythe_Counter = 0;
 
-		public bool QuadDemonBlaster = false;
-		public float QuadDemonBlaster_SpeedMultiplier = 1;
 		public override void ResetEffects() {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;

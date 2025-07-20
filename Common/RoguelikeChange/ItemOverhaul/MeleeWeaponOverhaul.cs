@@ -471,7 +471,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			trailShaderSettings.Color = SwordSlashTrail.averageColorByID[modplayer.Player.HeldItem.type] * 2;
 			default(GenericTrail).Draw(trailShaderSettings,
 			(progress) => { return MathHelper.Lerp(modplayer.swordLength, modplayer.swordLength, progress); },
-			(progress) => { return Color.White; });
+			//Tf this do nothing ??
+			(progress) => { return new(0, 0, 0, 0); });
 		}
 
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {

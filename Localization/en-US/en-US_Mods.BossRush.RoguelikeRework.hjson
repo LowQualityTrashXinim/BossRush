@@ -36,6 +36,8 @@ WoodenBow:
 	'''
 	Shoot out 2 very fast arrow
 	Have 30% chance to create a wind that deal 55% of weapon damage
+	Wait 1.5s to make your next shot always company with wind projectiles
+	Waiting longer will increases the amount of wind projectiles
 	'''
 TinBow:
 	'''

@@ -145,8 +145,12 @@ namespace BossRush.Contents.Projectiles {
 		int progression = 0;
 		Vector2 spawnPosition = Vector2.Zero;
 		float length = 0;
+		public override bool? CanDamage() {
+			return progression > 0;
+		}
 		public override void AI() {
 			if (Projectile.timeLeft == 300) {
+				MaxProgression = 10;
 				progression = MaxProgression;
 				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero);
 				spawnPosition = Projectile.Center;
@@ -154,10 +158,9 @@ namespace BossRush.Contents.Projectiles {
 			}
 			Projectile.rotation = Projectile.velocity.ToRotation();
 			if (progression <= 0) {
-				if (Projectile.timeLeft > 30)
-					Projectile.timeLeft = 30;
-				Projectile.alpha = (int)MathHelper.Lerp(0, 255, (30 - Projectile.timeLeft) / 30f);
-
+				if (Projectile.timeLeft > 10)
+					Projectile.timeLeft = 10;
+				Projectile.alpha = (int)MathHelper.Lerp(0, 255, 1 - Projectile.timeLeft / 10f);
 			}
 			float halfMaxprogress = MaxProgression * .5f;
 			float progress;
