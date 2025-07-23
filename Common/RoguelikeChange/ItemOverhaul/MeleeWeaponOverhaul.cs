@@ -18,16 +18,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// This is for general sword swing uses, this use style automatically handle itself so no modification needed<br/>
 		/// If your sword have a weird hand offset, it is recommend to enable UseSwipeTwo in <see cref="MeleeOverhaulSystem"/>
 		/// </summary>
-		public const int Swipe = 999;
+		public const byte Swipe = byte.MaxValue;
 		//These below are more for customization in combo attack animation that still want to use the overhaul system
-		public const int Spin = 996;
-		public const int Thrust = 995;
-		public const int SwipeDown = 994;
-		public const int SwipeUp = 993;
-		public const int RapidThurst = 992;
+		public const byte Spin = 254;
+		public const byte Thrust = 253;
+		public const byte SwipeDown = 252;
+		public const byte SwipeUp = 251;
+		public const byte RapidThurst = 250;
+		/// <summary>
+		/// Use this so that you can implement custom useStyle
+		/// </summary>
+		public const int None = 0;
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
-		public int SwingType = 0;
+		public byte SwingType = 0;
+		public int PostSwingAnimationType = 0;
 		public float SwingStrength = 7f;
 		/// <summary>
 		/// This will offset the animation percentage so that it create a still like sword
@@ -58,7 +63,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// This will offset the animation time so that the item animation won't start after certain frame
 		/// </summary>
 		public int ItemAnimationStarTimeOffset = 5;
+		/// <summary>
+		/// Use this to set animation end duration, the animation end will offset the item animation timer
+		/// </summary>
 		public int AnimationEndTime = 0;
+		public float RotationAfterMainAnimationEnd = 0;
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
 		public override bool InstancePerEntity => true;
@@ -74,6 +83,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			SwordWeaponOverhaul(item);
 			AxeWeaponOverhaul(item);
 			scaleWarp = new(item.scale);
+			if (AnimationEndTime != 0) {
+				item.useAnimation += AnimationEndTime;
+				item.useTime += AnimationEndTime;
+			}
 		}
 		public void SwordWeaponOverhaul(Item item) {
 			if (item.noMelee || item.noUseGraphic) {
@@ -314,7 +327,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-				ModdedUseStyle(item, player);
+				if (player.itemAnimation <= AnimationEndTime) {
+
+				}
+				else {
+					ModdedUseStyle(item, player);
+				}
 			}
 		}
 		public void ModdedUseStyle(Item item, Player player) {
@@ -353,6 +371,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				default:
 					break;
 			}
+			RotationAfterMainAnimationEnd = player.itemRotation;
 		}
 		public float DistanceThrust = 30;
 		public float OffsetThrust = 0;
@@ -401,7 +420,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, tomouse.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke;
 		}
-		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float offsetAnimation = 1) {
+		private static void SwipeAttack(Player player, int direct, float swingDegree = 135, float strength = 7f, float animationSpeedMulti = 1) {
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			if (player.itemAnimation == player.itemAnimationMax) {
 				modPlayer.itemAnimationImproved = player.itemAnimationMax;
@@ -413,7 +432,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
-			modPlayer.itemAnimationImproved -= 1 * offsetAnimation;
+			modPlayer.itemAnimationImproved -= 1 * animationSpeedMulti;
 		}
 		private static void CircleSwingAttack(Player player, float spinAmount = 1) {
 			float percentDone = 1 - player.itemAnimation / (float)player.itemAnimationMax;
@@ -496,7 +515,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					|| meleeItem.SwingType == BossRushUseStyle.SwipeUp) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
-				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual) {
+				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual && player.itemAnimation > meleeItem.AnimationEndTime) {
 					DrawSwordTrail(modplayer);
 				}
 			}

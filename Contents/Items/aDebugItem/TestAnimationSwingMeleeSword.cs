@@ -1,5 +1,6 @@
 ﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,8 @@ internal class TestAnimationSwingMeleeSword : ModItem {
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 			meleeItem.SwingType = BossRushUseStyle.Swipe;
 		}
+	}
+	public override void UseStyle(Player player, Rectangle heldItemFrame) {
+		base.UseStyle(player, heldItemFrame);
 	}
 }

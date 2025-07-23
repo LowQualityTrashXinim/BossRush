@@ -262,14 +262,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
-		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-			if (item.type == ItemID.CopperWatch) {
-				if (player.Center.LookForHostileNPC(out NPC npc, 400f)) {
-					npc.GetGlobalNPC<RoguelikeGlobalNPC>().VelocityMultiplier -= .3f;
-				}
-				player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition -= .3f;
-			}
-		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
@@ -316,11 +308,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
-			}
-			else if (item.type == ItemID.CopperWatch) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch",
-					"Decreases the nearest NPC speed by 30%" +
-					"\nDecreases hostile projectile velocity by 30%"));
 			}
 			else if (item.type == ItemID.GolemFist) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_GolemFist",
