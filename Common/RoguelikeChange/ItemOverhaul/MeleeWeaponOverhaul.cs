@@ -67,7 +67,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		/// Use this to set animation end duration, the animation end will offset the item animation timer
 		/// </summary>
 		public int AnimationEndTime = 0;
+		public float StartRotation = 0;
 		public float RotationAfterMainAnimationEnd = 0;
+		public Vector2 PositionAfterMainAnimationEnd = Vector2.Zero;
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
 		public override bool InstancePerEntity => true;
@@ -322,16 +324,19 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override bool CanUseItem(Item item, Player player) {
 			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) && player.ItemAnimationActive) {
 				ModdedUseStyle(item, player);
+				StartRotation = player.itemRotation;
 			}
 			return base.CanUseItem(item, player);
 		}
 		public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
-			if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-				if (player.itemAnimation <= AnimationEndTime) {
+			if (item.type == player.HeldItem.type || item.type == Main.mouseItem.type) {
+				if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
+					if (player.itemAnimation <= AnimationEndTime) {
 
-				}
-				else {
-					ModdedUseStyle(item, player);
+					}
+					else {
+						ModdedUseStyle(item, player);
+					}
 				}
 			}
 		}
@@ -372,6 +377,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					break;
 			}
 			RotationAfterMainAnimationEnd = player.itemRotation;
+			PositionAfterMainAnimationEnd = player.itemLocation;
 		}
 		public float DistanceThrust = 30;
 		public float OffsetThrust = 0;
@@ -443,11 +449,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		private static void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			bool directIsnegative = direct == -1;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
-			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			player.itemRotation = currentAngle;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3;
 			if (directIsnegative) {
+				MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 				modPlayer.CustomItemRotation = currentAngle;
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
@@ -515,7 +521,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					|| meleeItem.SwingType == BossRushUseStyle.SwipeUp) {
 					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
-				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual && player.itemAnimation > meleeItem.AnimationEndTime) {
+				if (item.axe <= 0 && SwordSlashTrail.averageColorByID.ContainsKey(item.type) && !meleeItem.HideSwingVisual) {
 					DrawSwordTrail(modplayer);
 				}
 			}
