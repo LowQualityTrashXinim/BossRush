@@ -62,8 +62,8 @@ namespace BossRush.Contents.Items.Weapon.PureSynergyWeapon.Resolve {
 		}
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddRecipeGroup("OreShortSword")
-				.AddRecipeGroup("OreBow")
+				.AddRecipeGroup("Ore shortsword")
+				.AddRecipeGroup("Ore bow")
 				.Register();
 		}
 	}

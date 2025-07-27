@@ -181,8 +181,6 @@ namespace BossRush.Common.Global {
 					else {
 						yield return new Item(ModContent.ItemType<CelestialEssence>());
 					}
-					//yield return new Item(ModContent.ItemType<WindSlashPerk>());
-					//yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					yield return new Item(ModContent.ItemType<UserInfoTablet>());
 					yield return new Item(ModContent.ItemType<TransmuteTablet>());
 					yield return new Item(ModContent.ItemType<SkillOrb>());

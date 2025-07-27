@@ -4,13 +4,12 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using BossRush.Contents.Items;
 using BossRush.Common.Systems;
+using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
-using BossRush.Common.General;
 
 namespace BossRush.Common.Mode.BossRushMode {
-	internal class BossRushRecipe : ModSystem {
+	internal class CommonRecipe : ModSystem {
 		List<int> list = new List<int>();
 		public override void AddRecipes() {
 			//QoL convert
@@ -62,7 +61,7 @@ namespace BossRush.Common.Mode.BossRushMode {
 				ItemID.GoldShortsword,
 				ItemID.PlatinumShortsword,
 			});
-			RecipeGroup.RegisterGroup("OreShortSword", OreShortSword);
+			RecipeGroup.RegisterGroup("Ore shortsword", OreShortSword);
 
 			RecipeGroup OreBroadSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Ore broad sword", new int[]
 			{
@@ -75,7 +74,7 @@ namespace BossRush.Common.Mode.BossRushMode {
 				ItemID.GoldBroadsword,
 				ItemID.PlatinumBroadsword,
 			});
-			RecipeGroup.RegisterGroup("OreBroadSword", OreBroadSword);
+			RecipeGroup.RegisterGroup("Ore broadsword", OreBroadSword);
 
 			RecipeGroup OreBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Ore Bow", new int[]
 			{
@@ -88,14 +87,14 @@ namespace BossRush.Common.Mode.BossRushMode {
 				ItemID.GoldBow,
 				ItemID.PlatinumBow,
 			});
-			RecipeGroup.RegisterGroup("OreBow", OreBow);
+			RecipeGroup.RegisterGroup("Ore bow", OreBow);
 		}
 		public override void PostAddRecipes() {
 			RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 			foreach (Recipe recipe in Main.recipe) {
 				SynergyRecipe(recipe);
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					ChallengeModeRecipe(recipe);
+					BossRush_Recipe(recipe);
 				}
 			}
 		}
@@ -104,7 +103,7 @@ namespace BossRush.Common.Mode.BossRushMode {
 				recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
 			}
 		}
-		private void ChallengeModeRecipe(Recipe recipe) {
+		private void BossRush_Recipe(Recipe recipe) {
 			if (recipe.HasResult(ItemID.FlamingArrow) ||
 				recipe.HasResult(ItemID.FrostburnArrow) ||
 				recipe.HasResult(ItemID.CursedArrow)) {

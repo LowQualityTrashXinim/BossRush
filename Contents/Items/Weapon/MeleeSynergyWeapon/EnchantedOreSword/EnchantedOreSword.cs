@@ -91,8 +91,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		}
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddRecipeGroup("OreShortSword")
-				.AddRecipeGroup("OreBroadSword")
+				.AddRecipeGroup("Ore shortsword")
+				.AddRecipeGroup("Ore broadsword")
 				.Register();
 		}
 	}

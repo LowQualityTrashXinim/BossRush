@@ -22,7 +22,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana {
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Katana)
-				.AddRecipeGroup("OreBroadSword")
+				.AddRecipeGroup("Ore broadsword")
 				.Register();
 		}
 	}

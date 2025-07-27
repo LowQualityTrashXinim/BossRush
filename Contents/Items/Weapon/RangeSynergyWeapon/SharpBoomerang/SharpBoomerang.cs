@@ -40,7 +40,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.WoodenBoomerang)
-				.AddRecipeGroup("OreShortSword")
+				.AddRecipeGroup("Ore shortsword")
 				.Register();
 		}
 	}
