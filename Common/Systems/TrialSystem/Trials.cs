@@ -24,9 +24,7 @@ public class TestTrial : ModTrial {
 	//		{NPCID.DemonEye, 5 }
 	//	};
 	//}
-	public override int WaveAmount() {
-		return 1;
-	}
+	public override int WaveAmount => 1;
 	public override void TrialReward(IEntitySource source, Player player) {
 		player.QuickSpawnItem(source, ModContent.ItemType<WeaponLootBox>());
 	}

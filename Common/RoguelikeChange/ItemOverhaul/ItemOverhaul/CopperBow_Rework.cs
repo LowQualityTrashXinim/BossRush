@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 public class Roguelike_CopperBow : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.CopperBow) {
 			entity.damage += 5;
@@ -53,8 +57,10 @@ public class Roguelike_CopperBow : GlobalItem {
 public class Roguelike_CopperBow_ModPlayer : ModPlayer {
 	public int CopperBow_Counter = 0;
 	public override void ResetEffects() {
-		CopperBow_Counter++;
-		if (CopperBow_Counter > 150) {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
+		if (++CopperBow_Counter > 150) {
 			CopperBow_Counter = 150;
 		}
 	}

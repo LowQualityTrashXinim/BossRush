@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.aDebugItem;
+namespace BossRush.Contents.Items.aDebugItem.Trial;
 internal class SpawnTrial : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {

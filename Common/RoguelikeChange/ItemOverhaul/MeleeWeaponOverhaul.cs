@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -72,6 +73,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public Vector2 PositionAfterMainAnimationEnd = Vector2.Zero;
 		public float ShaderOffSetLength = 0;
 		public Vector2 scaleWarp = Vector2.One;
+		public bool Ignore_AttackSpeed = false;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -88,6 +90,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (AnimationEndTime != 0) {
 				item.useAnimation += AnimationEndTime;
 				item.useTime += AnimationEndTime;
+			}
+			if(Ignore_AttackSpeed) {
+				ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = 0;
 			}
 		}
 		public void SwordWeaponOverhaul(Item item) {
@@ -242,6 +247,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					SwingDegree = 155;
 					break;
 			}
+		}
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if (Ignore_AttackSpeed)
+				BossRushUtils.AddTooltip(ref tooltips, new(Mod, "", "This weapon use speed doesn't get affected by attack speed"));
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
 			//Since we are using entirely new collision detection, we no longer need this

@@ -47,3 +47,11 @@ TinBow:
 	When tin bolt are spawned, there is a 1 in 3 chance to spawn additional tin ore
 	Falling tin ore deal 2.5x weapon damage
 	'''
+BoneSword:
+	'''
+	Every 5th swing summon a fast cursed skull
+	Striking enemy will shoot out a piercing bone upward
+	Wait 1s to deal 1.2x damage and summon arch of 3 cursed skull
+	Wait additional 2s to instead deal 1.5x damage
+	Striking at perfect moment will make your attacks as if you waited
+	'''

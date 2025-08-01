@@ -22,10 +22,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// Any complex rework should be put into their own file
 	/// </summary>
 	public class RoguelikeItemOverhaul : GlobalItem {
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			return UniversalSystem.Check_RLOH();
+		}
 		public override void SetDefaults(Item entity) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return;
-			}
 			//Attempt to fix item size using texture asset
 			if (entity.IsAWeapon()) {
 				Asset<Texture2D> texture = TextureAssets.Item[entity.type];
@@ -72,11 +72,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.TheUndertaker:
 					item.autoReuse = true;
 					break;
-				case ItemID.BoneSword:
-					item.damage = 23;
-					item.crit = 4;
-					item.ArmorPenetration = 5;
-					break;
 				case ItemID.PlatinumBow:
 				case ItemID.GoldBow:
 					item.useTime = item.useAnimation = 42;
@@ -94,6 +89,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.PlatinumShortsword:
 					item.crit += 21;
 					item.useTime = item.useAnimation = 9;
+					item.Set_ItemCriticalDamage(3f);
 					break;
 				case ItemID.HeatRay:
 					item.useTime = item.useAnimation = 4;
@@ -167,9 +163,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return;
-			}
 			switch (item.type) {
 				case ItemID.Stynger:
 					SoundEngine.PlaySound(item.UseSound);
@@ -183,9 +176,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override bool AltFunctionUse(Item item, Player player) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return base.AltFunctionUse(item, player);
-			}
 			switch (item.type) {
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
@@ -200,9 +190,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			return base.AltFunctionUse(item, player);
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-			}
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			if (StarWarSword(item.type)) {
 				if (++modplayer.PhaseSaberBlade_Counter >= 3) {
@@ -263,9 +250,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if (!UniversalSystem.Check_RLOH()) {
-				return;
-			}
 			Player player = Main.LocalPlayer;
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			//We are using name format RoguelikeOverhaul_+ item name

@@ -2737,6 +2737,11 @@ Mods: {
 				DisplayName: Test Animation Swing Melee Sword
 				Tooltip: ""
 			}
+
+			TrialWand: {
+				DisplayName: Trial Wand
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

@@ -6,6 +6,7 @@ namespace BossRush.Common.General {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 		[Header($"BaseGameHeader")]
 		[DefaultValue(true)]
+		[ReloadRequired]
 		public bool RoguelikeOverhaul { get; set; }
 
 		[Header($"GameModeHeader")]

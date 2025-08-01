@@ -1,16 +1,20 @@
-﻿using Terraria;
+﻿using BossRush.Common.Graphics;
+using BossRush.Common.Systems;
+using BossRush.Contents.Projectiles;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using BossRush.Common.Graphics;
-using System.Collections.Generic;
-using BossRush.Contents.Projectiles;
-using Terraria.Audio;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 
 public class Roguelike_CobaltSword : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.CobaltSword) {
 			entity.shoot = ModContent.ProjectileType<SimplePiercingProjectile2>();
@@ -60,6 +64,9 @@ public class Roguelike_CobaltSword_ModPlayer : ModPlayer {
 	public int CobaltSword_Counter = 0;
 	public bool PerfectStrike = false;
 	public override void ResetEffects() {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		Item item = Player.HeldItem;
 		CobaltSword_Counter++;
 		if (CobaltSword_Counter > 300) {

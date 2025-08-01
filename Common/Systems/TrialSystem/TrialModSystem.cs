@@ -146,7 +146,7 @@ internal class TrialModSystem : ModSystem {
 			//Since the trial NPC is empty, we are moving to new wave if possible
 			NextWave++;
 			//If new wave is not possible, that mean we have reached the end of the wave
-			if (NextWave > Trial.WaveAmount()) {
+			if (NextWave > Trial.WaveAmount) {
 				//Spawn reward for player
 				Trial.TrialReward(Main.LocalPlayer.GetSource_Misc("trial_reward"), Main.LocalPlayer);
 				//Reset the trial
@@ -186,7 +186,7 @@ internal class TrialModSystem : ModSystem {
 		if (Trial == null) {
 			return;
 		}
-		if (NextWave > Trial.WaveAmount()) {
+		if (NextWave > Trial.WaveAmount) {
 			return;
 		}
 	}
@@ -194,6 +194,9 @@ internal class TrialModSystem : ModSystem {
 public abstract class ModTrial : ModType {
 	public string TrialRoom = null;
 	public bool IsABattleTrial = true;
+	/// <summary>
+	/// Set this in <see cref="ModType.SetStaticDefaults"/> to set structure file to go along with it
+	/// </summary>
 	public string FilePath = string.Empty;
 	public int Type { get; private set; }
 	public static int GetTrialType<T>() where T : ModTrial {
@@ -203,7 +206,7 @@ public abstract class ModTrial : ModType {
 		SetStaticDefaults();
 		Type = TrialModSystem.Register(this);
 	}
-	public virtual int WaveAmount() => 0;
+	public virtual int WaveAmount => 0;
 	/// <summary>
 	/// Keys : NPC type<br/>
 	/// Values : Amount of npc<br/>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,11 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 public class Roguelike_PhoenixBlaster : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
-		if (entity.type == ItemID.PhoenixBlaster) {
+		if (entity.type == ItemID.PhoenixBlaster && UniversalSystem.Check_RLOH()) {
 			entity.damage += 12;
 			entity.useTime = entity.useAnimation = 30;
 			entity.knockBack += 1;
@@ -49,6 +53,9 @@ public class Roguelike_PhoenixBlaster_ModPlayer : ModPlayer {
 	public int PhoenixBlaster_Counter = 0;
 	public int PhoenixBlaster_ShootCounter = 0;
 	public override void ResetEffects() {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		if (++PhoenixBlaster_Counter >= 150) {
 			PhoenixBlaster_Counter = 150;
 		}

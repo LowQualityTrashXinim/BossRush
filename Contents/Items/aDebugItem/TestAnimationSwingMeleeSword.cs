@@ -18,6 +18,7 @@ internal class TestAnimationSwingMeleeSword : ModItem {
 		Item.DamageType = DamageClass.Melee;
 		Item.UseSound = SoundID.Item1;
 		if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul system)) {
+			system.Ignore_AttackSpeed = true;
 			system.AnimationEndTime = 25;
 			system.SwingDegree = 155;
 			system.SwingStrength = 7f;

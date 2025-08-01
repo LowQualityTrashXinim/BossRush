@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,17 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 public class Roguelike_Starfury : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.Starfury) {
 			entity.damage += 5;
+		}
+	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		if (item.type == ItemID.Starfury) {
+			BossRushUtils.AddTooltip(ref tooltips, new(Mod, "Roguelike_TinBow", BossRushUtils.LocalizationText("RoguelikeRework", item.Name)));
 		}
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -37,6 +46,9 @@ public class Roguelike_Starfury_ModPlayer : ModPlayer {
 	public int Starfury_Counter = 0;
 	public bool PerfectStrike = false;
 	public override void ResetEffects() {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		if (++Starfury_Counter >= 300) {
 			Starfury_Counter = 300;
 		}

@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.Systems;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -8,6 +9,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 public class Roguelike_TinBow : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type != ItemID.TinBow) {
 			return;
@@ -55,6 +59,9 @@ public class Roguelike_TinBow : GlobalItem {
 public class Roguelike_TinBow_ModPlayer : ModPlayer {
 	public int Counter = 0;
 	public override void ResetEffects() {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		if (++Counter >= 240) {
 			Counter = 240;
 		}

@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
+﻿using BossRush.Common.Systems;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 public class Roguelike_WoodenBow : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.WoodenBow) {
 			entity.shootSpeed += 3;
@@ -62,6 +66,9 @@ public class Roguelike_WoodenBow : GlobalItem {
 public class Roguelike_WoodenBow_ModPlayer : ModPlayer {
 	public int Counter = 0;
 	public override void ResetEffects() {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		if (++Counter >= 150) {
 			Counter = 150;
 		}

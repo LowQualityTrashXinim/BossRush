@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Projectiles;
+﻿using BossRush.Common.Systems;
+using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ using Terraria.ModLoader;
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ItemOverhaul;
 
 public class Roguelike_ChlorophyteClaymore : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		return UniversalSystem.Check_RLOH();
+	}
 	public override void SetDefaults(Item entity) {
 		if (entity.type == ItemID.ChlorophyteClaymore) {
 			entity.damage += 20;
@@ -38,7 +42,7 @@ public class Roguelike_ChlorophyteClaymore : GlobalItem {
 		if (counter >= 100) {
 			int amount = counter / 10;
 			for (int i = 0; i < amount; i++) {
-				Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(45), ModContent.ProjectileType<ChlorophyteOrb_SimplePiercingTrailProjectile>(), damage, knockback, player.whoAmI, Main.rand.NextFloat(3,5), 180);
+				Projectile.NewProjectileDirect(source, position, velocity.SafeNormalize(Vector2.Zero).Vector2RotateByRandom(45), ModContent.ProjectileType<ChlorophyteOrb_SimplePiercingTrailProjectile>(), damage, knockback, player.whoAmI, Main.rand.NextFloat(3, 5), 180);
 			}
 		}
 		if (counter >= 0) {
@@ -57,8 +61,10 @@ public class Roguelike_ChlorophyteClaymore_ModPlayer : ModPlayer {
 	public int ChlorophyteClaymore_Counter = 0;
 	public bool PerfectStrike = false;
 	public override void ResetEffects() {
-		ChlorophyteClaymore_Counter++;
-		if (ChlorophyteClaymore_Counter > 250) {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
+		if (++ChlorophyteClaymore_Counter > 250) {
 			ChlorophyteClaymore_Counter = 250;
 		}
 		if (Player.HeldItem.type != ItemID.ChlorophyteClaymore) {
