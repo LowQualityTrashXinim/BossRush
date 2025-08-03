@@ -146,7 +146,7 @@ public class Defense : RelicPrefix {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("DefenseRelic");
 	}
 	public override void Update(Player player, Relic relic, int index) {
-		player.ModPlayerStats().UpdateDefenseBase += 5;
+		player.ModPlayerStats().UpdateDefenseBase.Base += 5;
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
 		if (player.statDefense >= 50 && index == 0) {

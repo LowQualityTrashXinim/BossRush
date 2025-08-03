@@ -198,14 +198,18 @@ public class Relic : ModItem {
 		if (!modplayer.RelicActivation) {
 			return;
 		}
+		RelicPrefix relicprefix = null;
+		if (RelicPrefixedType != -1) {
+			relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
+			if (relicprefix != null) {
+				relicprefix.Update(player, this, 0);
+			}
+		}
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
 				StatModifier value = valuelist[i];
-				if (RelicPrefixedType != -1) {
-					RelicPrefix relicprefix = RelicPrefixSystem.GetRelicPrefix(RelicPrefixedType);
-					if (relicprefix != null) {
-						value = relicprefix.StatsModifier(player, this, value, templatelist[i], i);
-					}
+				if (relicprefix != null) {
+					value = relicprefix.StatsModifier(player, this, value, templatelist[i], i);
 				}
 				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(this, modplayer, player, value, statlist[i]);
 			}
