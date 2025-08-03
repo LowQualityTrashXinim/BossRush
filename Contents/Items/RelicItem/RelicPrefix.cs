@@ -50,6 +50,7 @@ public abstract class RelicPrefix : ModType {
 	/// <param name="index"></param>
 	/// <returns></returns>
 	public virtual StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) { return value; }
+	public virtual void Update(Player player, Relic relic, int index) { }
 }
 
 public class Hearty : RelicPrefix {
@@ -57,6 +58,9 @@ public class Hearty : RelicPrefix {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("HeartyRelic");
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (index != 0) {
+			return value;
+		}
 		float percentageSet = player.statLife / (player.statLifeMax2 * .75f);
 		percentageSet = Math.Clamp(percentageSet, .8f, 1.2f);
 		return value * percentageSet;
@@ -67,6 +71,9 @@ public class Arcane : RelicPrefix {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("ArcaneRelic");
 	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (index != 0) {
+			return value;
+		}
 		float percentageSet = player.statMana / (player.statMana * .55f);
 		percentageSet = Math.Clamp(percentageSet, .8f, 1.2f);
 		return value * percentageSet;
@@ -123,9 +130,11 @@ public class Archer : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("ArcherRelic");
 	}
+	public override void Update(Player player, Relic relic, int index) {
+		player.arrowDamage += .06f;
+	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (player.HeldItem.useAmmo == AmmoID.Arrow) {
-			player.arrowDamage += .06f;
+		if (player.HeldItem.useAmmo == AmmoID.Arrow && index == 0) {
 			value.Base += 5;
 			return value;
 		}
@@ -136,9 +145,11 @@ public class Defense : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("DefenseRelic");
 	}
-	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+	public override void Update(Player player, Relic relic, int index) {
 		player.ModPlayerStats().UpdateDefenseBase += 5;
-		if (player.statDefense >= 50) {
+	}
+	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
+		if (player.statDefense >= 50 && index == 0) {
 			value.Base += 5;
 			return value;
 		}
@@ -149,9 +160,11 @@ public class Melee : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("MeleeRelic");
 	}
+	public override void Update(Player player, Relic relic, int index) {
+		player.ModPlayerStats().DirectItemDamage.Base += 10;
+	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (player.HeldItem.DamageType == DamageClass.Melee) {
-			player.ModPlayerStats().DirectItemDamage.Base += 10;
+		if (player.HeldItem.DamageType == DamageClass.Melee && index == 0) {
 			return value + .1f;
 		}
 		return value;
@@ -161,9 +174,11 @@ public class Staff : RelicPrefix {
 	public override void SetStaticDefaults() {
 		TextureString = BossRushUtils.GetTheSameTextureAs<Relic>("StaffRelic");
 	}
+	public override void Update(Player player, Relic relic, int index) {
+		player.manaCost -= .05f;
+	}
 	public override StatModifier StatsModifier(Player player, Relic relic, StatModifier value, int TemplateType, int index) {
-		if (Item.staff[player.HeldItem.type]) {
-			player.manaCost -= .05f;
+		if (Item.staff[player.HeldItem.type] && index == 0) {
 			return value + .2f;
 		}
 

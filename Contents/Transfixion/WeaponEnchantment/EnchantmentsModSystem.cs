@@ -190,7 +190,7 @@ public class EnchantmentModplayer : ModPlayer {
 	public int Request_EnchantedAmount = 1;
 	public override void ResetEffects() {
 		Player.GetModPlayer<PerkPlayer>().perks.TryGetValue(Perk.GetPerkType<EnchantmentSmith>(), out int value);
-		SlotUnlock = value;
+		SlotUnlock = value + 1;
 	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
 	public override void PostUpdate() {

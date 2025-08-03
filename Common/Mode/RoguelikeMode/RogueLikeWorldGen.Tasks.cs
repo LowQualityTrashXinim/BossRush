@@ -98,6 +98,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static TimeSpan WatchTracker = TimeSpan.Zero;
 	public static Dictionary<short, BiomeDataBundle> dict_BiomeBundle = new();
 	public static Dictionary<short, List<Rectangle>> BiomeZone = new();
+	public static Dictionary<short, List<short>> BiomeGroup = new();
 	public override void OnModLoad() {
 		BiomeID = new();
 		FieldInfo[] field = typeof(Bid).GetFields();
