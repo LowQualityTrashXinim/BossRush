@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 			Projectile.tileCollide = false;
 			Projectile.penetrate = 1;
 			Projectile.light = 1f;
-			Projectile.extraUpdates = 6;
+			Projectile.extraUpdates = 10;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.timeLeft = 3000;
 			Projectile.usesLocalNPCImmunity = true;

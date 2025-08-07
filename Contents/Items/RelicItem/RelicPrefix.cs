@@ -181,7 +181,6 @@ public class Staff : RelicPrefix {
 		if (Item.staff[player.HeldItem.type] && index == 0) {
 			return value + .2f;
 		}
-
 		return value;
 	}
 }

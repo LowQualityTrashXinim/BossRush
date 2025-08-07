@@ -303,6 +303,7 @@ public class StructureUI : UIState {
 public class RogueLikeWorldGenSystem : ModSystem {
 
 	public List<GenPassData> list_genPass = new();
+	public List<Structure_XinimVer> list_Structure = new();
 	/// <summary>
 	/// This dictionary only load file in folder "Assets/Structures/..." so make sure you got the naming right<br/>
 	/// You can ignore inputing "Assets/Structures/..." 
@@ -312,6 +313,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 	public override void Unload() {
 		list_genPass = null;
 		dict_Struture = null;
+		list_Structure = null;
 	}
 	public override void PostSetupContent() {
 		Stopwatch watch = new();
@@ -343,11 +345,13 @@ public class RogueLikeWorldGenSystem : ModSystem {
 							list_genPass.Add(new(tile, result));
 						}
 					}
+					list_Structure.Add(new(fileName, new(list_genPass)));
 					dict_Struture.Add(fileName, new(list_genPass));
 				}
 				else if (currentchar == '2') {
 					r.Read();
 					FileFormatVer2(ref currentchar, ref r, ref strbld, ref tile);
+					list_Structure.Add(new(fileName, new(list_genPass)));
 					dict_Struture.Add(fileName, new(list_genPass));
 				}
 				else {
@@ -357,6 +361,7 @@ public class RogueLikeWorldGenSystem : ModSystem {
 							list_genPass.Add(new(tile, result));
 						}
 					}
+					list_Structure.Add(new(fileName, new(list_genPass)));
 					dict_Struture.Add(fileName, new(list_genPass));
 				}
 				list_genPass.Clear();
@@ -501,6 +506,82 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		}
 	}
 }
+public class Structure_XinimVer {
+	private string filePath = "";
+	private GenPassData[] data = null;
+	int cachedIndexOld = -1, cachedIndex = -1, cachedcounter = -1;
+	public string Get_FilePath => filePath;
+	public Structure_XinimVer(string path, List<GenPassData> gendata) {
+		filePath = path;
+		data = gendata.ToArray();
+	}
+	/// <summary>
+	/// It is highly recommended to cached this result
+	/// </summary>
+	/// <returns></returns>
+	public int Get_TotalLength() {
+		int currentIndex = 0;
+		for (int i = 0; i < data.Length; i++) {
+			currentIndex += data[i].Count;
+		}
+		return currentIndex;
+	}
+	public GenPassData[] Get_Data => (GenPassData[])data.Clone();
+
+	/// <summary>
+	/// The current index of 1d array, the function will simulated a tile map
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	public TileData Get_CurrentTileData(int index) {
+		if (data == null) {
+			Console.WriteLine("Tile map haven't been initialized, returning new tiledata");
+			return new();
+		}
+		if (index < 0) {
+			Console.WriteLine("Out of bound indexes");
+			return new();
+		}
+		if (index == cachedIndex) {
+			return data[cachedcounter].tileData;
+		}
+		if (cachedIndexOld != -1) {
+			if (index >= cachedIndexOld && index <= cachedIndexOld + data[cachedcounter].Count) {
+				return data[cachedcounter].tileData;
+			}
+			int AttemptToJump = cachedcounter + 1;
+			if (AttemptToJump < data.Length) {
+				int JumpCounter = cachedIndexOld + data[cachedcounter].Count;
+				if (index >= JumpCounter && index <= JumpCounter + data[AttemptToJump].Count) {
+					return data[AttemptToJump].tileData;
+				}
+			}
+			int AttemptToFall = cachedcounter - 1;
+			if (AttemptToFall > -1) {
+				int JumpCounter = cachedIndexOld - data[AttemptToFall].Count;
+				if (index >= JumpCounter && index <= cachedIndexOld) {
+					return data[AttemptToFall].tileData;
+				}
+			}
+		}
+		int currentIndex = 0;
+		for (int i = 0; i < data.Length; i++) {
+			currentIndex += data[i].Count;
+			if (currentIndex >= index) {
+				cachedIndex = index;
+				cachedcounter = i;
+				return data[i].tileData;
+			}
+			cachedIndexOld = currentIndex;
+		}
+		cachedIndex = cachedcounter = cachedIndexOld = -1;
+		Console.WriteLine("Out of bound indexes");
+		return new();
+	}
+}
+/// <summary>
+/// A light weight container for structure
+/// </summary>
 public struct GenPassData {
 	public TileData tileData { get; private set; }
 	public ushort Count { get; private set; }

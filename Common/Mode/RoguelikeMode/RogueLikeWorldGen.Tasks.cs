@@ -1,11 +1,10 @@
-﻿using BossRush.Common.ChallengeMode;
-using BossRush.Common.General;
+﻿using BossRush.Common.General;
 using BossRush.Common.Systems.ObjectSystem;
 using BossRush.Common.Utils;
 using BossRush.Texture;
-using Microsoft.Build.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using StructureHelper.API;
 using StructureHelper.Models;
 using System;
@@ -45,6 +44,9 @@ public class PlayerBiome : ModPlayer {
 			CurrentBiome.Add(biomeID);
 		}
 		foreach (var item in CurrentBiome) {
+			if (RogueLikeWorldGen.BiomeID.TryGetValue(item, out string value)) {
+				Main.NewText("Player are currently in:" + value);
+			}
 			if (item == Bid.Forest) {
 			}
 		}
@@ -80,7 +82,18 @@ public class Bid {
 	public const short Advanced = 999;
 }
 public struct BiomeDataBundle {
+	/// <summary>
+	/// The main tile that will be used in the tile format
+	/// </summary>
 	public ushort tile = 0;
+	/// <summary>
+	/// This is for sub tile in the file format
+	/// </summary>
+	public ushort tile2 = ushort.MaxValue;
+	/// <summary>
+	/// Determines the chance of tile2 appearing
+	/// </summary>
+	public float weight2 = 1;
 	public ushort wall = 0;
 	public string FormatFile = "";
 	public short Range = -1;
@@ -99,7 +112,28 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static Dictionary<short, BiomeDataBundle> dict_BiomeBundle = new();
 	public static Dictionary<short, List<Rectangle>> BiomeZone = new();
 	public static Dictionary<short, List<short>> BiomeGroup = new();
+	public static bool[] StaticNoise255x255 = new bool[65025];
 	public override void OnModLoad() {
+		Asset<Texture2D> sprite = ModContent.Request<Texture2D>(BossRushTexture.CommonTextureStringPattern + "StaticNoise255x255", AssetRequestMode.ImmediateLoad);
+		Color[] color = new Color[65025];
+
+		Main.RunOnMainThread(() => {
+			sprite.Value.GetData(color);
+		}).Wait();
+
+		for (int i = 0; i < color.Length; i++) {
+			//This is just extra careful
+			if (color[i].R == 0 && color[i].G == 0 && color[i].B == 0) {
+				StaticNoise255x255[i] = false;
+			}
+			else {
+				StaticNoise255x255[i] = true;
+			}
+		}
+		Main.RunOnMainThread(() => {
+			sprite.Dispose();
+		}).Wait();
+
 		BiomeID = new();
 		FieldInfo[] field = typeof(Bid).GetFields();
 		for (int i = 0; i < field.Length; i++) {
@@ -118,7 +152,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 		BiomeZone = new();
 
 		dict_BiomeBundle = new() {
-			{ Bid.Forest, new(TileID.Dirt, WallID.Dirt, "") },
+			{ Bid.Forest, new BiomeDataBundle(TileID.Dirt, WallID.Dirt, "") with { tile2 = TileID.Stone} },
 			{ Bid.Jungle, new(TileID.Mud, WallID.Jungle, "") },
 			{ Bid.Tundra, new(TileID.SnowBlock, WallID.SnowWallUnsafe, "") },
 			{ Bid.Desert, new(TileID.Sandstone, WallID.Sandstone, "") },
@@ -132,12 +166,15 @@ public partial class RogueLikeWorldGen : ModSystem {
 			{ Bid.Underworld, new(TileID.Ash, WallID.None, "") },
 			{ Bid.JungleTemple, new(TileID.LihzahrdBrick, WallID.LihzahrdBrickUnsafe, "") },
 		};
+
+		BiomeGroup = new();
 	}
 	public override void OnModUnload() {
 		BiomeID = null;
 		TrialArea = null;
 		dict_BiomeBundle = null;
 		BiomeZone = null;
+		BiomeGroup = null;
 	}
 	public override void Load() {
 	}
@@ -452,8 +489,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		ZoneToBeIgnored.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
 		TrialArea.Add(new(pos_SpaceTrial.X, pos_SpaceTrial.Y, Trial_Space.width, Trial_Space.height));
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-		if (modsystem.dict_Struture.TryGetValue(RogueLikeWorldGenSystem.FileDestination + "Watcher", out List<GenPassData> datalist)) {
-			WatcherStructure = datalist;
+		foreach (var item in modsystem.list_Structure) {
+			if (item.Get_FilePath == RogueLikeWorldGenSystem.FileDestination + "Watcher") {
+				WatcherStructure = item;
+			}
 		}
 	}
 	StructureData Trial_Space = Generator.GetStructureData("Assets/Trial_Space", ModContent.GetInstance<BossRush>());
@@ -465,31 +504,42 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		bundle = new();
 		return false;
 	}
-	List<GenPassData> WatcherStructure = new();
+
+	Structure_XinimVer WatcherStructure = null;
 	[Task]
 	public void Create_Biome() {
 		Stopwatch watch = new();
 		watch.Start();
 		rect = GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 24);
 		string TemplatePath = "Template/WG_Template";
-		ushort tileID = TileID.Dirt;
-		ushort wallID = WallID.Dirt;
 		string horizontal = TemplatePath + "Horizontal";
 		string vertical = TemplatePath + "Vertical";
 		string file = "";
 		BiomeDataBundle bundle = new();
+		short CurrentBiome = 0;
 		if (dict_BiomeBundle.TryGetValue(Convert.ToInt16(BiomeMapping[0][0]), out BiomeDataBundle value)) {
 			bundle = value;
+			CurrentBiome = Convert.ToInt16(BiomeMapping[0][0]);
 		}
+		int noiseCounter = 0;
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
 				counter.X += 32;
 				additionaloffset = 0;
 			}
+			if (WorldGen.InWorld(counter.X, counter.Y)) {
+				short possibleIDATM = Get_BiomeIDViaPos(counter, 0);
+				if (CurrentBiome != possibleIDATM) {
+					CurrentBiome = possibleIDATM;
+					if (dict_BiomeBundle.TryGetValue(CurrentBiome, out BiomeDataBundle val)) {
+						bundle = val;
+					}
+				}
+			}
 			IsUsingHorizontal = ++count % 2 == 0;
 			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
 			int X = re.X, Y = re.Y, offsetY = 0, offsetX = 0, holdX, holdY;
-			List<GenPassData> datalistOuter;
+			Structure_XinimVer structure = null;
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
@@ -505,11 +555,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					}
 				}
 				RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
-				if (modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
-					datalistOuter = datalist;
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+					}
 				}
-				else {
-					Console.WriteLine("Structure not found !");
+				if (structure == null) {
 					continue;
 				}
 			}
@@ -528,46 +579,51 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						file = "Template/WG_" + bundle.FormatFile + "_TemplateVertical" + Rand.Next(1, bundle.Range);
 					}
 				}
-				if (modsystem.dict_Struture.TryGetValue(file, out List<GenPassData> datalist)) {
-					datalistOuter = datalist;
+				foreach (var item in modsystem.list_Structure) {
+					if (item.Get_FilePath == file) {
+						structure = item;
+					}
 				}
-				else {
-					Console.WriteLine("Structure not found !");
+				if (structure == null) {
 					continue;
 				}
-
 			}
-			switch (Rand.Next(styles)) {
+			int length;
+			switch (Main.rand.Next(styles)) {
 				case GenerateStyle.None:
-					for (int i = 0; i < datalistOuter.Count; i++) {
-						GenPassData gdata = datalistOuter[i];
-						TileData data = gdata.tileData;
-						data.Tile_Type = tileID;
-						data.Tile_WallData = wallID;
-						for (int l = 0; l < gdata.Count; l++) {
-							if (offsetY >= re.Height) {
-								offsetY = 0;
-								offsetX++;
-							}
-							holdX = X + offsetX; holdY = Y + offsetY;
-							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
-								if (WorldGen.InWorld(holdX, holdY)) {
-									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-								}
-							}
-							offsetY++;
+					length = structure.Get_TotalLength();
+					for (int i = 0; i < length; i++) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
 						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						foreach (Rectangle zone in ZoneToBeIgnored) {
+							if (zone.Contains(holdX, holdY)) {
+								break;
+							}
+							if (WorldGen.InWorld(holdX, holdY)) {
+								if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+									if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
+										data.Tile_Type = val.tile2;
+									}
+									else {
+										data.Tile_Type = val.tile;
+									}
+									data.Tile_WallData = val.wall;
+								}
+								GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+							}
+						}
+						offsetY++;
+						noiseCounter = BossRushUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 					}
 					break;
 				case GenerateStyle.FlipHorizon:
-					for (int i = 0; i < datalistOuter.Count; i++) {
-						GenPassData gdata = datalistOuter[i];
+					for (int i = 0; i < structure.Get_Data.Length; i++) {
+						GenPassData gdata = structure.Get_Data[i];
 						TileData data = gdata.tileData;
-						data.Tile_Type = tileID;
-						data.Tile_WallData = wallID;
 						for (int l = gdata.Count; l > 0; l--) {
 							if (offsetY >= re.Height) {
 								offsetY = 0;
@@ -579,19 +635,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 									break;
 								}
 								if (WorldGen.InWorld(holdX, holdY)) {
+									if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+										if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
+											data.Tile_Type = val.tile2;
+										}
+										else {
+											data.Tile_Type = val.tile;
+										}
+										data.Tile_WallData = val.wall;
+									}
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
 							}
 							offsetY++;
+							noiseCounter = BossRushUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 						}
 					}
 					break;
 				case GenerateStyle.FlipVertical:
-					for (int i = datalistOuter.Count - 1; i >= 0; i--) {
-						GenPassData gdata = datalistOuter[i];
+					for (int i = structure.Get_Data.Length - 1; i >= 0; i--) {
+						GenPassData gdata = structure.Get_Data[i];
 						TileData data = gdata.tileData;
-						data.Tile_Type = tileID;
-						data.Tile_WallData = wallID;
 						for (int l = 0; l < gdata.Count; l++) {
 							if (offsetY >= re.Height) {
 								offsetY = 0;
@@ -603,35 +667,51 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 									break;
 								}
 								if (WorldGen.InWorld(holdX, holdY)) {
+									if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+										if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
+											data.Tile_Type = val.tile2;
+										}
+										else {
+											data.Tile_Type = val.tile;
+										}
+										data.Tile_WallData = val.wall;
+									}
 									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
 								}
 							}
 							offsetY++;
+							noiseCounter = BossRushUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 						}
 					}
 					break;
 				case GenerateStyle.FlipBoth:
-					for (int i = datalistOuter.Count - 1; i >= 0; i--) {
-						GenPassData gdata = datalistOuter[i];
-						TileData data = gdata.tileData;
-						data.Tile_Type = tileID;
-						data.Tile_WallData = wallID;
-						for (int l = gdata.Count; l > 0; l--) {
-							if (offsetY >= re.Height) {
-								offsetY = 0;
-								offsetX++;
-							}
-							holdX = X + offsetX; holdY = Y + offsetY;
-							foreach (Rectangle zone in ZoneToBeIgnored) {
-								if (zone.Contains(holdX, holdY)) {
-									break;
-								}
-								if (WorldGen.InWorld(holdX, holdY)) {
-									GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
-								}
-							}
-							offsetY++;
+					length = structure.Get_TotalLength();
+					for (int i = length; i >= 0; i--) {
+						TileData data = structure.Get_CurrentTileData(i);
+						if (offsetY >= re.Height) {
+							offsetY = 0;
+							offsetX++;
 						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						foreach (Rectangle zone in ZoneToBeIgnored) {
+							if (zone.Contains(holdX, holdY)) {
+								break;
+							}
+							if (WorldGen.InWorld(holdX, holdY)) {
+								if (Get_BiomeData(new Point(holdX, holdY), 0, out BiomeDataBundle val)) {
+									if (val.tile2 != ushort.MaxValue && StaticNoise255x255[noiseCounter] && Rand.NextFloat() <= val.weight2) {
+										data.Tile_Type = val.tile2;
+									}
+									else {
+										data.Tile_Type = val.tile;
+									}
+									data.Tile_WallData = val.wall;
+								}
+								GenerationHelper.Structure_PlaceTile(holdX, holdY, ref data);
+							}
+						}
+						offsetY++;
+						noiseCounter = BossRushUtils.Safe_SwitchValue(noiseCounter, StaticNoise255x255.Length - 1);
 					}
 					break;
 			}
@@ -640,8 +720,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (Get_BiomeData(counter, 0, out BiomeDataBundle value1)) {
 					bundle = value1;
 				}
-				tileID = bundle.tile;
-				wallID = bundle.wall;
 			}
 			else {
 				offsetcount++;

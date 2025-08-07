@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,7 +32,7 @@ public class Roguelike_Starfury : GlobalItem {
 			return;
 		}
 		int counter = player.GetModPlayer<Roguelike_Starfury_ModPlayer>().Starfury_Counter;
-		if(player.GetModPlayer<Roguelike_Starfury_ModPlayer>().PerfectStrike) {
+		if (player.GetModPlayer<Roguelike_Starfury_ModPlayer>().PerfectStrike) {
 			counter = 300;
 		}
 		if (counter >= 150) {
@@ -62,6 +63,7 @@ public class Roguelike_Starfury_ModPlayer : ModPlayer {
 	}
 	private void SpawnStarEffect() {
 		//Taken from vanilla code :>>
+		SoundEngine.PlaySound(SoundID.Item4);
 		Vector2 center3 = Player.Center - Vector2.UnitY * 150;
 		Color celeb2Color3 = new Color(255, 255, 0, 0);
 		float num9 = .1f;
