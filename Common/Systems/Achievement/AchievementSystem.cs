@@ -27,7 +27,7 @@ public enum AchievementTag : byte {
 /// <summary>
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
-public abstract class ModAchievement {
+public abstract class BRAchievement {
 	public AchievementTag CategoryTag = AchievementTag.None;
 	public AchievementTag DifficultyTag = AchievementTag.None;
 	public bool Achieved { get; set; }
@@ -51,9 +51,9 @@ public abstract class ModAchievement {
 }
 
 public class AchievementSystem : ModSystem {
-	public static readonly List<ModAchievement> Achievements = [];
-	public static ModAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
-	public static ModAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
+	public static readonly List<BRAchievement> Achievements = [];
+	public static BRAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
+	public static BRAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
 	public static bool IsAchieved(string AchievementName) => GetAchievement(AchievementName).Achieved;
 	public override void PostSetupContent() {
 		foreach (var item in Achievements) {
@@ -97,7 +97,7 @@ public class AchievementUI : UIState {
 	TagPanel tagMisc;
 	HashSet<AchievementTag> hash_tag = new();
 	Asset<Texture2D> asset = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
-	List<ModAchievement> lib_achievement = new();
+	List<BRAchievement> lib_achievement = new();
 	UIPanel currentSelectAchievement;
 	AchievementHeaderPreview achievementheader;
 	UITextPanel<string> txtachievementheader;
@@ -320,7 +320,7 @@ public class AchievementUI : UIState {
 				txt_Achievement[i].SetText("");
 				continue;
 			}
-			ModAchievement achievement = lib_achievement[i];
+			BRAchievement achievement = lib_achievement[i];
 			btn.SetAchievement(achievement.Name);
 			txt_Achievement[i].SetText(achievement.DisplayName);
 		}
@@ -380,7 +380,7 @@ public class AchievementUI : UIState {
 				txt_Achievement[i].SetText("");
 				continue;
 			}
-			ModAchievement achievement = lib_achievement[indexChecker];
+			BRAchievement achievement = lib_achievement[indexChecker];
 			btn.SetAchievement(achievement.Name);
 			txt_Achievement[i].SetText(achievement.DisplayName);
 		}
@@ -426,7 +426,7 @@ public class AchievementUI : UIState {
 			return;
 		}
 		//Main.NewText(CurrentSelectedIndex);
-		ModAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
+		BRAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
 		if (achievement == null) {
 			return;
 		}
@@ -498,7 +498,7 @@ public class PageImage : UIImage {
 }
 public class AchievementHeaderPreview : UIImageButton {
 	public string achievementname;
-	private ModAchievement achievement;
+	private BRAchievement achievement;
 	Texture2D texture;
 	Asset<Texture2D> Lock;
 	Asset<Texture2D> achieved;
@@ -572,7 +572,7 @@ public class AchievementHeaderPreview : UIImageButton {
 }
 public class AchievementButton : UIImageButton {
 	public string achievementname;
-	private ModAchievement achievement;
+	private BRAchievement achievement;
 	Texture2D texture;
 	Asset<Texture2D> Lock;
 	Asset<Texture2D> achieved;

@@ -12,7 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.Achievement.Hard;
-public class OceanOfFortune : ModAchievement {
+public class OceanOfFortune : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -21,7 +21,7 @@ public class OceanOfFortune : ModAchievement {
 	}
 }
 
-public class LordOfLootBox : ModAchievement {
+public class LordOfLootBox : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -30,7 +30,7 @@ public class LordOfLootBox : ModAchievement {
 		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(ModContent.NPCType<LootBoxLord>());
 	}
 }
-public class NightmareOvercome : ModAchievement {
+public class NightmareOvercome : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -38,7 +38,7 @@ public class NightmareOvercome : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld();
 	}
 }
-public class SpeedRunner : ModAchievement {
+public class SpeedRunner : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 	}
@@ -49,7 +49,7 @@ public class SpeedRunner : ModAchievement {
 		return false;
 	}
 }
-public class BossRushRunnerI : ModAchievement {
+public class BossRushRunnerI : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.BossRush;
@@ -61,7 +61,7 @@ public class BossRushRunnerI : ModAchievement {
 		return false;
 	}
 }
-public class BossRushRunnerII : ModAchievement {
+public class BossRushRunnerII : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.BossRush;
@@ -73,7 +73,7 @@ public class BossRushRunnerII : ModAchievement {
 		return false;
 	}
 }
-public class StraightForTheWall : ModAchievement {
+public class StraightForTheWall : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Hard;
 		CategoryTag = AchievementTag.Challenge;

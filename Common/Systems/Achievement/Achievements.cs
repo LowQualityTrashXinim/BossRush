@@ -6,7 +6,7 @@ using BossRush.Common.Systems.IOhandle;
 
 namespace BossRush.Common.Systems.Achievement;
 
-public class TheBeginningOfEndless : ModAchievement {
+public class TheBeginningOfEndless : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Tutorial;
 	}
@@ -18,7 +18,7 @@ public class TheBeginningOfEndless : ModAchievement {
 	}
 }
 
-public class TheFirstOfMany : ModAchievement {
+public class TheFirstOfMany : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Tutorial;
 	}
@@ -26,7 +26,7 @@ public class TheFirstOfMany : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod();
 	}
 }
-public class WeaponChallenge1 : ModAchievement {
+public class WeaponChallenge1 : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Mastery;
 		CategoryTag = AchievementTag.Challenge;

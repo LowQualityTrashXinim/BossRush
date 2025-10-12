@@ -1,4 +1,4 @@
 displayName = Roguelike Terraria (ARCHIVED)
 author = Xinim
-version = 0.5.5
+version = 0.5.5.1
 modReferences  = StructureHelper@3.0, SubworldLibrary

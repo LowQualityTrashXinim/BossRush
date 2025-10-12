@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Terraria;
 
 namespace BossRush.Common.Systems.Achievement.Mastery;
-public class TrueNightmare : ModAchievement {
+public class TrueNightmare : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Mastery;
 		CategoryTag = AchievementTag.Challenge;
@@ -17,7 +17,7 @@ public class TrueNightmare : ModAchievement {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld() && Main.masterMode && Main.getGoodWorld;
 	}
 }
-public class GodOfChallenge : ModAchievement {
+public class GodOfChallenge : BRAchievement {
 	public override void SetStaticDefault() {
 		DifficultyTag = AchievementTag.Mastery;
 		CategoryTag = AchievementTag.Challenge;

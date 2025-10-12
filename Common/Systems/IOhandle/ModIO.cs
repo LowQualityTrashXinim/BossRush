@@ -33,8 +33,8 @@ class ModIO : ModSystem {
 	private static string DataFilePath => Path.Join(DirectoryPath, "Data");
 	private static string AchievementFilePath => Path.Join(DirectoryPath, "Achievements");
 	public override void Load() {
-		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(ModAchievement)))) {
-			var achievement = (ModAchievement)Activator.CreateInstance(type);
+		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(BRAchievement)))) {
+			var achievement = (BRAchievement)Activator.CreateInstance(type);
 			AchievementSystem.Achievements.Add(achievement);
 		}
 		try {
