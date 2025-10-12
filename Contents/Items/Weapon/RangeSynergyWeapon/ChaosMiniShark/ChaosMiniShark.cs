@@ -53,7 +53,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark {
 				.AddIngredient(ItemID.IceBlade)
 				.AddIngredient(ItemID.Grenade)
 				.AddIngredient(ItemID.BeeGun)
-				.AddIngredient(ItemID.WaspGun)
 				.AddIngredient(ItemID.StarCannon)
 				.Register();
 		}

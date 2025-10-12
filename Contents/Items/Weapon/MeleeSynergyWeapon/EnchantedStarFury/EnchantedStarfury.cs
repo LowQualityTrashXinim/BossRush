@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BreakerBlade, $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal 250% of your weapon damage");
 		}
 		public override void SetDefaults() {
-			Item.BossRushSetDefault(66, 66, 24, 4f, 60, 20, ItemUseStyleID.Swing, true);
+			Item.BossRushSetDefault(66, 66, 24, 4f, 20, 20, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
 			Item.shoot = ProjectileID.EnchantedBeam;
 			Item.shootSpeed = 20f;
@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 					Projectile.NewProjectile(source, position, rotate * .5f, ModContent.ProjectileType<EnchantedSwordProjectile>(), damage, knockback, player.whoAmI, i);
 				}
 			}
-			switchProj++;
+			switchProj = BossRushUtils.Safe_SwitchValue(switchProj, 100);
 			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BreakerBlade)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingBreakerBladeProjectile>(), (int)(damage * 2.5f), knockback, player.whoAmI);
 			}
@@ -79,6 +79,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 		int timer = 0;
 		Vector2 localOriginalvelocity;
 		public override void AI() {
+			if(Projectile.alpha >= 255) {
+				Projectile.ai[1] = 15;
+			}
+			if(Projectile.alpha <= 0) {
+				Projectile.ai[1] = -15;
+			}
+			Projectile.alpha += (int)Projectile.ai[1];
 			int dustPar = Main.rand.Next(new int[] { DustID.TintableDustLighted, DustID.YellowStarDust, 57, 58 });
 			int dust = Dust.NewDust(Projectile.Center, 0, 0, dustPar, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
 			Main.dust[dust].noGravity = true;
@@ -94,6 +101,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 			else {
 				if (!Projectile.velocity.IsLimitReached(20)) Projectile.velocity += localOriginalvelocity;
 			}
+		}
+		public override Color? GetAlpha(Color lightColor) {
+			lightColor.A = (byte)Projectile.alpha;
+			return lightColor;
 		}
 		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 40; i++) {

@@ -53,19 +53,13 @@ public class GoldArmorPlayer : PlayerArmorHandle {
 	public override void Armor_ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		if (npc.HasBuff(BuffID.Midas)) {
 			modifiers.SetMaxDamage(1);
+			modifiers.SourceDamage.Base += npc.defense;
 		}
 	}
 	public override void Armor_OnHitByNPC(NPC target, Player.HurtInfo hurtInfo) {
 		if (target.HasBuff(BuffID.Midas)) {
 			Player.Heal(5);
 			target.buffTime[target.FindBuffIndex(BuffID.Midas)] = 0;
-		}
-	}
-	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		int damage = hit.Damage;
-		if (target.HasBuff(BuffID.Midas)) {
-			int GoldArmorBonusDamage = damage + target.defense;
-			Player.StrikeNPCDirect(target, target.CalculateHitInfo(GoldArmorBonusDamage, 1, false, 1, DamageClass.Generic, true, Player.luck));
 		}
 	}
 }

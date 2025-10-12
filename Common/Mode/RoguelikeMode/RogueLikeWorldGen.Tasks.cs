@@ -31,7 +31,7 @@ public class PlayerBiome : ModPlayer {
 		CurrentBiome.Clear();
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		Point position = (new Vector2(Player.position.X / RogueLikeWorldGen.GridPart_X, Player.position.Y / RogueLikeWorldGen.GridPart_Y)).ToTileCoordinates();
-		int WorldIndex = gen.MapIndex(position.X, position.Y);
+		int WorldIndex = RogueLikeWorldGen.MapIndex(position.X, position.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return;
 		}
@@ -294,11 +294,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		return assign;
 	}
-	public int MapIndex(int x, int y) => x + y * 24;
+	public static int MapIndex(int x, int y) => x + y * 24;
 	public static short Get_BiomeIDViaPos(Vector2 position, int WorldBiomeIndex) {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		Point positionInWorld = (new Vector2(position.X / GridPart_X, position.Y / GridPart_Y)).ToTileCoordinates();
-		int WorldIndex = gen.MapIndex(positionInWorld.X, positionInWorld.Y);
+		int WorldIndex = MapIndex(positionInWorld.X, positionInWorld.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return Bid.None;
 		}
@@ -308,7 +308,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public static short Get_BiomeIDViaPos(Point position, int WorldBiomeIndex) {
 		RogueLikeWorldGen gen = ModContent.GetInstance<RogueLikeWorldGen>();
 		Point positionInWorld = new(position.X / GridPart_X, position.Y / GridPart_Y);
-		int WorldIndex = gen.MapIndex(positionInWorld.X, positionInWorld.Y);
+		int WorldIndex = MapIndex(positionInWorld.X, positionInWorld.Y);
 		if (WorldIndex >= gen.BiomeMapping.Length) {
 			return Bid.None;
 		}
