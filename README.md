@@ -17,3 +17,5 @@ Papyro for sticking with me from the beginning of the mod to now and your consta
 
 Note from the main dev :
 - The mod is as the name suggest, in beta and also a demo, the mod as right now act like a boss rush, so please play the mod with open mind, cause this mod isn't like your regular terraria
+
+The mod is on the workshop : https://steamcommunity.com/sharedfiles/filedetails/?id=2989254566
